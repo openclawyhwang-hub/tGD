@@ -54,7 +54,7 @@ Skills also activate automatically based on what you're doing — designing an A
 **Local / development:**
 
 ```bash
-git clone https://github.com/addyosmani/agent-skills.git
+git clone https://github.com/openclawyhwang-hub/Agentic-PDLC-Workflow.git
 claude --plugin-dir /path/to/agent-skills
 ```
 
@@ -129,7 +129,7 @@ Skills are plain Markdown - they work with any agent that accepts system prompts
 
 #### 📋 PLAN
 **Actor:** 🤖 Agent breaks down → 👤 Human approves
-**Skills:** `planning-and-task-breakdown`, `jira-auto-worker`, `context-mapping`
+**Skills:** `planning-and-task-breakdown`, `jira-auto-worker`
 **Input:** `SPEC.md` + `.planning/CONTEXT.md` (if exists)
 **Output:** Jira tickets with acceptance criteria, dependency ordering, story point estimates
 **Gate:** 👤 Human approves task breakdown
@@ -335,7 +335,7 @@ Each skill encodes hard-won engineering judgment: *when* to write a spec, *what*
 
 Skills bake in best practices from Google's engineering culture — including concepts from [Software Engineering at Google](https://abseil.io/resources/swe-book) and Google's [engineering practices guide](https://google.github.io/eng-practices/). You'll find Hyrum's Law in API design, the Beyonce Rule and test pyramid in testing, change sizing and review speed norms in code review, Chesterton's Fence in simplification, trunk-based development in git workflow, Shift Left and feature flags in CI/CD, and a dedicated deprecation skill treating code as a liability.
 
-This fork extends the original with **Jira integration** for automated workflow management — auto-fetching tickets, isolated worktree development, automated PR creation, and CI-powered code review. These aren't abstract principles — they're embedded directly into the step-by-step workflows agents follow.
+This repo adds **Jira integration** for automated workflow management — auto-fetching tickets, isolated worktree development, automated PR creation, and CI-powered code review. These aren't abstract principles — they're embedded directly into the step-by-step workflows agents follow.
 
 ---
 
