@@ -1,9 +1,16 @@
 ---
 name: context-mapping
-description: Analyzes the codebase to build a context map. Essential for Brownfield projects.
+description: Analyzes the codebase to build a context map. Essential for Brownfield projects. Use when starting work on an existing codebase, or when `.planning/CONTEXT.md` is missing.
 ---
 
 # Context Mapping Workflow
+
+## Trigger
+
+Run via `/context-map` command, or auto-trigger when:
+- `.planning/CONTEXT.md` does not exist
+- CONTEXT.md is older than 30 days (flag for refresh)
+- User explicitly requests context refresh
 
 ## Process
 
