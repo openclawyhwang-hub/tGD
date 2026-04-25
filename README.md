@@ -1,6 +1,6 @@
-# Agent Skills
+# Agentic PDLC Workflow
 
-**Production-grade engineering skills for AI coding agents.**
+**Production-grade engineering skills with Jira integration for AI coding agents.**
 
 Skills encode the workflows, quality gates, and best practices that senior engineers use when building software. These ones are packaged so AI agents follow them consistently across every phase of development.
 
@@ -124,9 +124,9 @@ Skills are plain Markdown - they work with any agent that accepts system prompts
 
 ---
 
-## All 20 Skills
+## All 24 Skills
 
-The commands above are the entry points. Under the hood, they activate these 20 skills — each one a structured workflow with steps, verification gates, and anti-rationalization tables. You can also reference any skill directly.
+The commands above are the entry points. Under the hood, they activate these 24 skills — each one a structured workflow with steps, verification gates, and anti-rationalization tables. You can also reference any skill directly.
 
 ### Define - Clarify what to build
 
@@ -140,6 +140,8 @@ The commands above are the entry points. Under the hood, they activate these 20 
 | Skill | What It Does | Use When |
 |-------|-------------|----------|
 | [planning-and-task-breakdown](skills/planning-and-task-breakdown/SKILL.md) | Decompose specs into small, verifiable tasks with acceptance criteria and dependency ordering | You have a spec and need implementable units |
+| [jira-auto-worker](skills/jira-auto-worker/SKILL.md) | Background worker that fetches Jira tickets, works in isolated git worktree, pushes PR | Automating development workflow |
+| [context-mapping](skills/context-mapping/SKILL.md) | Analyzes codebase to build context map, essential for Brownfield projects | Starting work on existing codebase |
 
 ### Build - Write the code
 
@@ -151,6 +153,7 @@ The commands above are the entry points. Under the hood, they activate these 20 
 | [source-driven-development](skills/source-driven-development/SKILL.md) | Ground every framework decision in official documentation - verify, cite sources, flag what's unverified | You want authoritative, source-cited code for any framework or library |
 | [frontend-ui-engineering](skills/frontend-ui-engineering/SKILL.md) | Component architecture, design systems, state management, responsive design, WCAG 2.1 AA accessibility | Building or modifying user-facing interfaces |
 | [api-and-interface-design](skills/api-and-interface-design/SKILL.md) | Contract-first design, Hyrum's Law, One-Version Rule, error semantics, boundary validation | Designing APIs, module boundaries, or public interfaces |
+| [rapid-prototyping](skills/rapid-prototyping/SKILL.md) | Generates throwaway HTML/JS prototypes to visualize concepts | Need to explore UI concepts before spec |
 
 ### Verify - Prove it works
 
@@ -167,6 +170,7 @@ The commands above are the entry points. Under the hood, they activate these 20 
 | [code-simplification](skills/code-simplification/SKILL.md) | Chesterton's Fence, Rule of 500, reduce complexity while preserving exact behavior | Code works but is harder to read or maintain than it should be |
 | [security-and-hardening](skills/security-and-hardening/SKILL.md) | OWASP Top 10 prevention, auth patterns, secrets management, dependency auditing, three-tier boundary system | Handling user input, auth, data storage, or external integrations |
 | [performance-optimization](skills/performance-optimization/SKILL.md) | Measure-first approach - Core Web Vitals targets, profiling workflows, bundle analysis, anti-pattern detection | Performance requirements exist or you suspect regressions |
+| [ci-pr-reviewer](skills/ci-pr-reviewer/SKILL.md) | Automated PR Auditor that posts comments on GitHub/GitLab PRs (read-only) | Setting up CI for automated code review |
 
 ### Ship - Deploy with confidence
 
@@ -239,33 +243,44 @@ Every skill follows a consistent anatomy:
 ## Project Structure
 
 ```
-agent-skills/
-├── skills/                            # 20 core skills (SKILL.md per directory)
+Agentic-PDLC-Workflow/
+├── skills/                            # 24 skills (SKILL.md per directory)
 │   ├── idea-refine/                   #   Define
 │   ├── spec-driven-development/       #   Define
 │   ├── planning-and-task-breakdown/   #   Plan
+│   ├── jira-auto-worker/              #   Plan - Background worker
+│   ├── context-mapping/               #   Plan - Context analysis
 │   ├── incremental-implementation/    #   Build
 │   ├── context-engineering/           #   Build
 │   ├── source-driven-development/     #   Build
 │   ├── frontend-ui-engineering/       #   Build
 │   ├── test-driven-development/       #   Build
 │   ├── api-and-interface-design/      #   Build
+│   ├── rapid-prototyping/             #   Build - Quick prototyping
 │   ├── browser-testing-with-devtools/ #   Verify
 │   ├── debugging-and-error-recovery/  #   Verify
 │   ├── code-review-and-quality/       #   Review
 │   ├── code-simplification/          #   Review
 │   ├── security-and-hardening/        #   Review
 │   ├── performance-optimization/      #   Review
+│   ├── ci-pr-reviewer/                #   Review - Automated PR audit
 │   ├── git-workflow-and-versioning/   #   Ship
 │   ├── ci-cd-and-automation/          #   Ship
 │   ├── deprecation-and-migration/     #   Ship
 │   ├── documentation-and-adrs/        #   Ship
 │   ├── shipping-and-launch/           #   Ship
 │   └── using-agent-skills/            #   Meta: how to use this pack
+├── scripts/                           # 4 Jira bridge scripts (Python)
+│   ├── create_jira_ticket.py
+│   ├── fetch_todo_ticket.py
+│   ├── transition_ticket.py
+│   └── create_bug_ticket.py
 ├── agents/                            # 3 specialist personas
 ├── references/                        # 4 supplementary checklists
 ├── hooks/                             # Session lifecycle hooks
 ├── .claude/commands/                  # 7 slash commands
+├── .github/workflows/                 # CI/CD workflows
+│   └── ai-pr-review.yml               #   Automated PR review
 └── docs/                              # Setup guides per tool
 ```
 
@@ -277,7 +292,9 @@ AI coding agents default to the shortest path - which often means skipping specs
 
 Each skill encodes hard-won engineering judgment: *when* to write a spec, *what* to test, *how* to review, and *when* to ship. These aren't generic prompts - they're the kind of opinionated, process-driven workflows that separate production-quality work from prototype-quality work.
 
-Skills bake in best practices from Google's engineering culture — including concepts from [Software Engineering at Google](https://abseil.io/resources/swe-book) and Google's [engineering practices guide](https://google.github.io/eng-practices/). You'll find Hyrum's Law in API design, the Beyonce Rule and test pyramid in testing, change sizing and review speed norms in code review, Chesterton's Fence in simplification, trunk-based development in git workflow, Shift Left and feature flags in CI/CD, and a dedicated deprecation skill treating code as a liability. These aren't abstract principles — they're embedded directly into the step-by-step workflows agents follow.
+Skills bake in best practices from Google's engineering culture — including concepts from [Software Engineering at Google](https://abseil.io/resources/swe-book) and Google's [engineering practices guide](https://google.github.io/eng-practices/). You'll find Hyrum's Law in API design, the Beyonce Rule and test pyramid in testing, change sizing and review speed norms in code review, Chesterton's Fence in simplification, trunk-based development in git workflow, Shift Left and feature flags in CI/CD, and a dedicated deprecation skill treating code as a liability.
+
+This fork extends the original with **Jira integration** for automated workflow management — auto-fetching tickets, isolated worktree development, automated PR creation, and CI-powered code review. These aren't abstract principles — they're embedded directly into the step-by-step workflows agents follow.
 
 ---
 
