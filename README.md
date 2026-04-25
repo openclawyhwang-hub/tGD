@@ -10,7 +10,7 @@ Skills encode the workflows, quality gates, and best practices that senior engin
  │ Brown │ ──▶ │ Idea │ ───▶ │ Spec │ ───▶ │ Code │ ───▶ │ Test │ ───▶ │  QA  │ ───▶ │  Go  │
  │ field │     │Refine│      │  PRD │      │ Impl │      │Debug │      │ Gate │      │ Live │
  └───────┘     └──────┘      └──────┘      └──────┘      └──────┘      └──────┘      └──────┘
- /context-map   /spec          /plan          /build        /test         /review       /ship
+ /map   /spec          /plan          /build        /test         /review       /ship
 ```
 
 ---
@@ -21,7 +21,7 @@ Skills encode the workflows, quality gates, and best practices that senior engin
 
 | What you're doing | Command | Key principle |
 |-------------------|---------|---------------|
-| Map existing codebase | `/context-map` | Understand before acting |
+| Map existing codebase | `/map` | Understand before acting |
 | Define what to build | `/spec` | Spec before code |
 | Plan how to build it | `/plan` | Small, atomic tasks |
 | Build incrementally | `/build` | One slice at a time |
