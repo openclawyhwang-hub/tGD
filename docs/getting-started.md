@@ -56,7 +56,7 @@ These three cover the most critical quality gaps in AI-assisted development.
 For comprehensive coverage, load skills by phase:
 
 ```
-Starting a project:  spec-driven-development → design-system → planning-and-task-breakdown
+Starting a project:  spec-driven-development (+ design-system if UI) → planning-and-task-breakdown
 During development:  incremental-implementation + test-driven-development
 Before merge:        code-review-and-quality + security-and-hardening
 Before deploy:       shipping-and-launch
@@ -105,8 +105,7 @@ The `.claude/commands/` directory contains slash commands for Claude Code:
 
 | Command | Skill Invoked |
 |---------|---------------|
-| `/spec` | spec-driven-development |
-| `/design` | design-system |
+| `/spec` | spec-driven-development (+ design-system if UI needed) |
 | `/plan` | planning-and-task-breakdown |
 | `/build` | incremental-implementation + test-driven-development |
 | `/test` | test-driven-development |

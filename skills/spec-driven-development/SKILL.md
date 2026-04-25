@@ -132,7 +132,19 @@ REFRAMED SUCCESS CRITERIA:
 
 This lets you loop, retry, and problem-solve toward a clear goal rather than guessing what "faster" means.
 
-### Phase 2: Plan
+### Phase 2: Design (If UI is Needed)
+
+If the spec includes user-facing UI, trigger the `design-system` skill before proceeding to Phase 3:
+
+1. **Collect existing design tokens** — from codebase or human-provided
+2. **Generate Figma designs** — using existing design system
+3. **Human review via Jira** — Design Review ticket
+4. **Extract DESIGN_SPEC.md** — after human approval
+5. **Extract design-tokens.md** — exact token values for implementation
+
+The PLAN phase will use both SPEC.md and DESIGN_SPEC.md.
+
+### Phase 3: Plan
 
 With the validated spec, generate a technical implementation plan:
 
@@ -144,7 +156,7 @@ With the validated spec, generate a technical implementation plan:
 
 The plan should be reviewable: the human should be able to read it and say "yes, that's the right approach" or "no, change X."
 
-### Phase 3: Tasks
+### Phase 4: Tasks
 
 Break the plan into discrete, implementable tasks:
 
@@ -162,7 +174,7 @@ Break the plan into discrete, implementable tasks:
   - Files: [Which files will be touched]
 ```
 
-### Phase 4: Implement
+### Phase 5: Implement
 
 Execute tasks one at a time following `incremental-implementation` and `test-driven-development` skills. Use `context-engineering` to load the right spec sections and source files at each step rather than flooding the agent with the entire spec.
 

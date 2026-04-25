@@ -7,8 +7,8 @@ description: Breaks down requirements into atomic tasks, estimates Story Points,
 
 ## Process
 
-1. **Analyze SPEC.md + DESIGN_SPEC.md**: Read the specifications, Acceptance Criteria, and design specifications.
-2. **Atomic Breakdown**: Break the feature into vertical slices (max 2-4 hours of work each). Each task should reference relevant design sections.
+1. **Analyze SPEC.md + DESIGN_SPEC.md + design-tokens.md**: Read the specifications, Acceptance Criteria, design specifications, and design tokens.
+2. **Atomic Breakdown**: Break the feature into vertical slices (max 2-4 hours of work each). Each UI task should reference the relevant design-tokens.md and DESIGN_SPEC.md sections.
 3. **Estimate Points**: Assign Story Points (e.g., 1, 2, 3) to each atomic task.
 4. **Draft ROADMAP.md**: Save the tasks locally to `.planning/ROADMAP.md`.
 5. **Sync to Jira (Crucial Step)**: 
@@ -19,4 +19,4 @@ description: Breaks down requirements into atomic tasks, estimates Story Points,
 
 ## Verification
 
-You succeed ONLY when `.planning/ROADMAP.md` is created AND the terminal confirms all tasks have been successfully pushed to Jira via the Python script. Each task should reference the relevant DESIGN_SPEC.md section for UI tasks.
+You succeed ONLY when `.planning/ROADMAP.md` is created AND the terminal confirms all tasks have been successfully pushed to Jira via the Python script. Each UI task should reference DESIGN_SPEC.md and design-tokens.md in its acceptance criteria.

@@ -1,20 +1,19 @@
 ---
 name: design-system
-description: Generates UI designs from specs and manages human review workflow. Use when you have an approved SPEC.md and need to create visual designs before breaking down implementation tasks. Use when designing UI screens, design tokens, responsive layouts, or when a design review by humans is needed.
+description: Generates UI designs from specs with context-aware design system adherence. Use when SPEC.md includes user-facing UI and you need to create visual designs before implementation. Automatically collects existing design tokens, generates consistent designs, and manages human review via Jira.
 ---
 
 # Design System
 
 ## Overview
 
-Transform approved specifications into visual designs with a structured human review workflow. This skill bridges the gap between requirements (SPEC.md) and implementation (Jira tasks) by producing design artifacts that ensure visual consistency before any code is written.
+Transform approved specifications into visual designs that respect existing company design systems. This skill ensures new UI designs are visually consistent with established brand guidelines, design tokens, and Figma libraries — not generic "AI aesthetic" output.
 
 ## When to Use
 
-- SPEC.md has been approved and you need visual designs before planning
-- Designing new UI screens, components, or full-page layouts
-- Establishing or updating design tokens (colors, typography, spacing)
-- Creating responsive layouts (mobile, tablet, desktop)
+- SPEC.md has been approved and includes user-facing UI
+- Designing new screens, components, or full-page layouts
+- Extending an existing design system with new patterns
 - Human review of designs is required before implementation begins
 
 **When NOT to use:**
@@ -25,26 +24,162 @@ Transform approved specifications into visual designs with a structured human re
 ## The Gated Workflow
 
 ```
-SPEC APPROVED ──▶ GENERATE ──▶ REVIEW ──▶ APPROVED/REVISED
-     │               │             │            │
-     ▼               ▼             ▼            ▼
-  Read SPEC     Create Figma    Human       Design Approved
-  + CONTEXT    Screenshots     Review      → Extract DESIGN_SPEC
-                                  ↓
-                            Design Revision
-                                → Modify
-                                → Re-review
+CONTEXT ──▶ GENERATE ──▶ REVIEW ──▶ APPROVED/REVISED
+   │           │             │            │
+   ▼           ▼             ▼            ▼
+Collect    Create Figma   Human       Design Approved
+tokens     Screenshots    Review      → Extract DESIGN_SPEC
+                      ↓
+                Design Revision
+                    → Modify
+                    → Re-review
 ```
 
-### Phase 1: Analyze & Extract
+### Phase 0: Collect Existing Design Context
 
-Before generating any designs, understand the full scope:
+**Before generating any designs, understand what already exists.** This prevents visual inconsistency and ensures new screens match established patterns.
+
+#### Step 1: Check for Existing Assets
+
+```
+Checklist:
+├── Does design-tokens.md exist in project root? → Read it
+├── Are there CSS custom properties in the codebase? → Extract them
+├── Is there an existing Figma design system file? → Reference it
+├── Does .planning/CONTEXT.md mention design constraints? → Read it
+└── Are there existing UI screenshots or brand guidelines? → Collect them
+```
+
+**Extract from codebase if no design-tokens.md:**
+
+```bash
+# Find CSS custom properties
+grep -r '\-\-' src/ --include="*.css" --include="*.scss" | head -50
+
+# Find Tailwind config
+cat tailwind.config.js
+
+# Find theme files
+find src/ -name "theme*" -o -name "tokens*" -o -name "variables*"
+```
+
+#### Step 2: Ask the Human for Missing Context
+
+If design tokens or Figma files are not found, ask the human directly:
+
+```
+DESIGN CONTEXT CHECK:
+
+I couldn't find existing design tokens in the codebase. Please provide:
+
+1. Company design system (if any):
+   - Figma file link: ?
+   - Design token file: ?
+   - Brand guidelines: ?
+
+2. If no existing design system:
+   - Any brand colors I should use?
+   - Preferred font family?
+   - Reference sites you like the look of?
+
+→ Please provide what you have, and I'll work from there.
+```
+
+#### Step 3: Create or Update design-tokens.md
+
+If tokens were found in the codebase, create `design-tokens.md`:
+
+```markdown
+# Design Tokens
+
+> Extracted from existing codebase on 2026-04-26
+> Source: src/styles/variables.css, tailwind.config.js
+
+## Colors
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| primary | #3B82F6 | CTAs, links, active states |
+| primary-hover | #2563EB | Hover states |
+| secondary | #10B981 | Success states |
+| error | #EF4444 | Error messages |
+| warning | #F59E0B | Warning states |
+| surface | #F8FAFC | Page background |
+| card | #FFFFFF | Card backgrounds |
+| text-primary | #0F172A | Body text |
+| text-secondary | #64748B | Helper text |
+| border | #E2E8F0 | Borders, dividers |
+
+## Typography
+
+| Level | Font | Size | Weight | Line Height | Usage |
+|-------|------|------|--------|-------------|-------|
+| display-lg | Manrope | 56px | 700 | 1.1 | Page titles |
+| h1 | Manrope | 40px | 700 | 1.2 | Section titles |
+| h2 | Manrope | 32px | 600 | 1.3 | Subsection titles |
+| body-lg | Inter | 18px | 400 | 1.6 | Lead text |
+| body-md | Inter | 16px | 400 | 1.5 | Body text |
+| body-sm | Inter | 14px | 400 | 1.4 | Small text |
+| label-md | Inter | 12px | 500 | 1.0 | Form labels |
+
+## Spacing
+
+Base unit: 4px
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| space-xs | 4px | Tight gaps |
+| space-sm | 8px | Component internals |
+| space-md | 16px | Standard gap |
+| space-lg | 24px | Section gaps |
+| space-xl | 32px | Page sections |
+| space-2xl | 48px | Major sections |
+
+## Border Radius
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| radius-sm | 4px | Buttons, inputs, badges |
+| radius-md | 8px | Cards, dropdowns |
+| radius-lg | 12px | Modals, sheets |
+
+## Shadows
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| shadow-sm | 0 1px 2px rgba(0,0,0,0.05) | Subtle elevation |
+| shadow-md | 0 4px 8px rgba(0,0,0,0.08) | Cards |
+| shadow-lg | 0 8px 32px rgba(0,0,0,0.12) | Modals, dropdowns |
+
+## Existing Figma Files
+
+- Main Design System: https://figma.com/file/ABC123
+- Component Library: https://figma.com/file/DEF456
+
+## Notes
+
+- Dark mode tokens are NOT yet defined — will need to be created for new screens
+- Component library was last updated 2026-03-15
+```
+
+**If no existing design system exists**, create a proposed `design-tokens.md` based on SPEC.md and ask the human to confirm:
+
+```markdown
+# Design Tokens (Proposed)
+
+> Proposed based on SPEC.md requirements. Please confirm or modify.
+```
+
+### Phase 1: Analyze & Plan Designs
+
+After design context is collected, understand the full scope:
 
 1. **Read SPEC.md** — Extract all user-facing features
-2. **Read `.planning/CONTEXT.md`** — If exists, respect all constraints (existing patterns, forbidden modifications, injection points)
-3. **Identify all screens** — List every unique view the user will see
-4. **Identify shared components** — Buttons, cards, forms, navigation, modals
-5. **Identify design tokens** — Colors, typography, spacing, border-radius
+2. **Read design-tokens.md** — Use these tokens for ALL designs
+3. **Read `.planning/CONTEXT.md`** — If exists, respect all constraints
+4. **Identify all screens** — List every unique view the user will see
+5. **Identify shared components** — Buttons, cards, forms, navigation, modals
+6. **Identify gaps** — What components/patterns are NOT in the existing design system?
 
 **Screen Inventory Template:**
 
@@ -58,17 +193,14 @@ Before generating any designs, understand the full scope:
 4. [Settings] — User preferences and account management
 
 ## Shared Components
-- Navigation bar (all pages)
-- Task card (list + detail)
-- Modal dialog (create/edit)
-- Status badge (all pages)
+- Navigation bar (all pages) — ✅ exists in design system
+- Task card (list + detail) — ✅ exists in design system
+- Modal dialog (create/edit) — ✅ exists in design system
+- Status badge (all pages) — 🆕 NEW: needs to be added to design system
 
-## Design Tokens
-- Primary: #3B82F6 (signal blue)
-- Secondary: #10B981 (success green)
-- Error: #EF4444
-- Font: Inter (body), Manrope (display)
-- Spacing scale: 4px base
+## Design Gaps
+- No dark mode tokens defined → propose dark variant
+- No status badge component → propose new component
 ```
 
 ### Phase 2: Generate Designs
@@ -77,6 +209,7 @@ Create visual designs for every screen identified in Phase 1.
 
 #### Design Principles
 
+- **Follow existing design tokens** — Every color, font, spacing value must come from design-tokens.md
 - **Data-first hierarchy** — Most important information is visually dominant
 - **Tonal sectioning** — Use background color shifts, not lines, to separate sections
 - **Premium restraint** — No generic "AI aesthetic" (purple gradients, excessive rounded corners, stock card grids)
@@ -98,24 +231,20 @@ screenshots/
   homepage-desktop.png
   task-list-mobile.png
   task-list-desktop.png
-  task-detail-mobile.png
-  task-detail-desktop.png
-  settings-mobile.png
-  settings-desktop.png
 ```
 
 #### Avoiding the AI Aesthetic
 
 | AI Default | Production Quality |
 |---|---|
-| Purple/indigo everything | Use the project's actual color palette from SPEC.md |
+| Purple/indigo everything | Use tokens from design-tokens.md |
 | Excessive gradients | Flat or subtle gradients matching the design system |
 | Rounded everything (rounded-2xl) | Consistent border-radius from design tokens |
 | Generic hero sections | Content-first layouts driven by SPEC requirements |
 | Lorem ipsum | Realistic placeholder content |
-| Oversized padding everywhere | Consistent spacing scale (4px base) |
+| Oversized padding everywhere | Consistent spacing scale from design tokens |
 | Stock card grids | Purpose-driven layouts based on information priority |
-| Shadow-heavy design | Subtle or no shadows unless design system specifies |
+| Shadow-heavy design | Subtle shadows from design tokens only |
 
 ### Phase 3: Human Review (Jira)
 
@@ -127,17 +256,9 @@ Capture PNG previews of each design for Jira attachment.
 
 #### Step 2: Create Jira Design Review Ticket
 
-Execute the Python script for **each screen** (or one consolidated ticket for small projects):
+Execute the Python script:
 
 ```bash
-# Per-screen review
-python scripts/create_design_review_ticket.py \
-  --screen "Homepage" \
-  --figma "https://figma.com/file/ABC123" \
-  --screenshot "screenshots/homepage-desktop.png" \
-  --tokens "design-tokens.md"
-
-# Or consolidated review (all screens in one ticket)
 python scripts/create_design_review_ticket.py \
   --consolidated \
   --figma "https://figma.com/file/ABC123" \
@@ -148,20 +269,23 @@ python scripts/create_design_review_ticket.py \
 #### Jira Ticket Content
 
 ```markdown
-# Design Review: [Screen Name]
+# Design Review: All Screens
 
 ## Design File
 🔗 Figma: https://figma.com/file/ABC123
 
-## Screenshot
-📎 [attached screenshot]
+## Screenshots
+📎 homepage-desktop.png
+📎 homepage-mobile.png
+📎 task-list-desktop.png
+📎 task-list-mobile.png
 
-## Design Notes
-- Layout: Mobile-first responsive (320px → 1440px)
-- Color system: Signal blue primary, tonal sectioning
-- Typography: Manrope display, Inter body
-- Spacing: 4px base scale
-- Accessibility: WCAG 2.1 AA contrast ratios
+## Design Consistency
+- ✅ Colors: Follow existing design tokens (design-tokens.md)
+- ✅ Typography: Inter body, Manrope display (existing)
+- 🆕 New: Status badge component (not in existing design system)
+- ✅ Spacing: 4px base scale (existing)
+- ✅ Shadows: shadow-sm, shadow-md (existing)
 
 ## Review Checklist
 - [ ] Colors match design tokens
@@ -170,23 +294,22 @@ python scripts/create_design_review_ticket.py \
 - [ ] Shared components consistent across screens
 - [ ] Loading, error, and empty states included
 - [ ] Keyboard navigation paths clear
-- [ ] No "AI aesthetic" patterns (purple gradients, excessive rounding)
+- [ ] New components fit with existing design system
 
 ## Design Decisions
-1. **Why tonal sectioning over dividers?** — Reduces visual noise, cleaner scan paths
-2. **Why Manrope for display?** — Higher x-height improves data readability
-3. **Why 4px spacing base?** — More granular control for dense data layouts
+1. **Status badge:** New component proposed — follows existing color tokens
+2. **Dark mode:** Not included in this round — will be a separate ticket
+3. **Layout:** Tonal sectioning (no dividers) per existing pattern
 ```
 
 #### Ticket Properties
 
 | Field | Value |
 |-------|-------|
-| **Type** | Design Review |
+| **Type** | Task |
+| **Labels** | design, review, ui |
 | **Status** | Design Review |
 | **Assignee** | Human reviewer |
-| **Priority** | Medium |
-| **Labels** | design, review, ui |
 
 ### Phase 4: Review Outcome
 
@@ -198,7 +321,8 @@ When human sets status to "Design Approved":
 2. **Include in DESIGN_SPEC.md:**
    - Screen-by-screen layout descriptions
    - Component hierarchy (parent → children)
-   - Design tokens (colors, fonts, spacing, border-radius)
+   - Design tokens used (reference design-tokens.md)
+   - New components (if any) with specs
    - Responsive breakpoints
    - State specifications (loading, error, empty, hover, focus)
    - Accessibility requirements per screen
@@ -208,50 +332,46 @@ When human sets status to "Design Approved":
 ```markdown
 # Design Spec: [Project Name]
 
-## Design Tokens
+> Based on design-tokens.md (extracted from existing codebase)
 
-### Colors
-| Token | Value | Usage |
-|-------|-------|-------|
-| primary | #3B82F6 | CTAs, links, active states |
-| secondary | #10B981 | Success states |
-| error | #EF4444 | Error messages, destructive actions |
-| surface | #F8FAFC | Page background |
-| card | #FFFFFF | Card backgrounds |
+## Tokens Used
 
-### Typography
-| Level | Font | Size | Weight | Usage |
-|-------|------|------|--------|-------|
-| display-lg | Manrope | 56px | 700 | Page titles |
-| body-md | Inter | 16px | 400 | Body text |
-| label-md | Inter | 12px | 500 | Form labels |
+All colors, fonts, spacing, and shadows come from `design-tokens.md`.
+See that file for the full token list.
 
-### Spacing
-Base: 4px → 4, 8, 12, 16, 24, 32, 48, 64
+## New Components
 
-### Border Radius
-- Small: 4px (buttons, inputs)
-- Medium: 8px (cards)
-- Large: 12px (modals)
+| Component | Status | Spec |
+|-----------|--------|------|
+| StatusBadge | 🆕 NEW | See component spec below |
+
+### StatusBadge
+- **Purpose:** Display task status with color coding
+- **Variants:** pending (warning), in_progress (primary), completed (secondary), cancelled (text-secondary)
+- **Size:** 20px height, padding 0-8px
+- **Font:** label-md (12px, 500 weight)
+- **Border radius:** radius-sm (4px)
 
 ## Screen Specifications
 
 ### Homepage
 - **Layout:** Dashboard grid, 3-column on desktop, 1-column on mobile
 - **Components:** MetricCard × 4, ChartArea × 2, RecentActivity × 1
+- **Tokens used:** surface, card, shadow-md, h1, body-md
 - **States:** Loading skeleton, empty state, error boundary
 - **Responsive:** Collapses to single column at 768px
 
 ### Task List
 - **Layout:** Full-width table with filters above
 - **Components:** FilterBar, DataTable, Pagination, StatusBadge
+- **Tokens used:** card, border, body-md, label-md
 - **States:** Loading, empty (no tasks), error, zero results (filtered)
 - **Responsive:** Table → card list at 768px
 ```
 
 3. **Save DESIGN_SPEC.md** to project root
 4. **Transition Jira** to "Design Approved"
-5. **Proceed to PLAN phase** — tasks will reference DESIGN_SPEC.md
+5. **Proceed to PLAN phase** — tasks will reference both SPEC.md and DESIGN_SPEC.md
 
 #### 📝 Design Revision
 
@@ -277,6 +397,7 @@ After design approval:
 **PLAN phase receives:**
 - SPEC.md (what to build)
 - DESIGN_SPEC.md (how it should look)
+- design-tokens.md (exact token values)
 - CONTEXT.md (constraints, if brownfield)
 
 ## Common Rationalizations
@@ -287,6 +408,7 @@ After design approval:
 | "Design can wait until after implementation" | Retrofitting design is 3x harder than designing first |
 | "The developer will figure out the UI" | Developers optimize for functionality, not visual consistency. Design first prevents UI debt |
 | "One screen is enough, the rest will be similar" | Every screen has unique layout needs. Design all screens to catch inconsistencies early |
+| "I'll use my own colors, the design system is boring" | Inconsistent colors break the user's sense of a unified product |
 | "Figma is too slow, just describe it in text" | Visual designs catch issues text descriptions miss (spacing, hierarchy, responsive behavior) |
 
 ## Red Flags
@@ -298,19 +420,22 @@ After design approval:
 - Design tokens not defined (colors/fonts hardcoded per screen)
 - Screenshots not attached to Jira review ticket
 - DESIGN_SPEC.md missing after design approval
+- New components that don't fit with existing design system
+- Using colors or fonts not in design-tokens.md without human approval
 - Design review ticket assigned to agent instead of human
 
 ## Verification
 
 After completing the design phase:
 
+- [ ] Existing design tokens collected (from codebase or human-provided)
+- [ ] design-tokens.md exists and is referenced by all designs
 - [ ] All screens from SPEC.md have Figma designs
 - [ ] Screenshots exist for every screen (mobile + desktop)
-- [ ] Jira Design Review ticket(s) created with screenshots attached
+- [ ] Jira Design Review ticket created with screenshots attached
+- [ ] Design consistency report included (what's existing vs new)
 - [ ] Review checklist included in ticket description
-- [ ] Design tokens defined and consistent across all screens
-- [ ] Loading, error, and empty states designed for each screen
 - [ ] Human has reviewed and set status to "Design Approved"
 - [ ] DESIGN_SPEC.md extracted and saved to project root
-- [ ] DESIGN_SPEC.md includes: tokens, screen specs, component hierarchy, responsive breakpoints
-- [ ] PLAN phase can proceed with both SPEC.md and DESIGN_SPEC.md
+- [ ] DESIGN_SPEC.md references design-tokens.md for all token values
+- [ ] PLAN phase can proceed with SPEC.md + DESIGN_SPEC.md + design-tokens.md
