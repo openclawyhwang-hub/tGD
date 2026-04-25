@@ -8,22 +8,6 @@ Skills encode the workflows, quality gates, and best practices that senior engin
 
 A complete development workflow that guides AI agents through every phase — from understanding requirements to deploying to production. Each phase has clear inputs, outputs, and quality gates so agents don't skip critical steps.
 
-### How It Works
-
-```
-[CONTEXT] ──▶ DEFINE ──▶ PLAN ──▶ BUILD ──▶ VERIFY ──▶ REVIEW ──▶ SHIP
-   │            │          │        │         │          │         │
-   ▼            ▼          ▼        ▼         ▼          ▼         ▼
- Brownfield   Spec      Tasks    Code      Tests     PR       Deploy
- Discovery    PRD       Jira     Feature   Proof     Review   Release
-```
-
-**Each phase has:**
-- **Input** — What you need to start
-- **Output** — What you produce
-- **Gate** — What must pass before moving on
-- **Human/Agent split** — Who does what
-
 ### Human vs Agent Roles
 
 | Phase | Who Does What | How It Works |
