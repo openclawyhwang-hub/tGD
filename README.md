@@ -1,8 +1,32 @@
 # Agentic PDLC Workflow
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![Skills](https://img.shields.io/badge/Skills-25-orange.svg)](#all-25-skills)
+[![Commands](https://img.shields.io/badge/Commands-8-blue.svg)](#commands)
+[![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)]()
+
 **Production-grade engineering skills with Jira integration for AI coding agents.**
 
-Skills encode the workflows, quality gates, and best practices that senior engineers use when building software. These ones are packaged so AI agents follow them consistently across every phase of development.
+> 🚀 25 skills • 8 commands • 7 development phases • Multi-agent support
+
+## Table of Contents
+
+- [What This Is](#what-this-is)
+- [Human vs Agent Roles](#human-vs-agent-roles)
+- [Commands](#commands)
+- [Quick Start](#quick-start)
+- [Workflow Overview](#workflow-overview)
+  - [Phase Flow](#phase-flow)
+  - [Phase Details](#phase-details)
+- [All 25 Skills](#all-25-skills)
+- [Agent Personas](#agent-personas)
+- [Reference Checklists](#reference-checklists)
+- [How Skills Work](#how-skills-work)
+- [Project Structure](#project-structure)
+- [Why Agent Skills?](#why-agent-skills)
+- [FAQ](#faq)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## What This Is
 
@@ -42,6 +66,27 @@ Skills also activate automatically based on what you're doing — designing an A
 ---
 
 ## Quick Start
+
+### 5-Minute Quick Start
+
+```bash
+# 1. Clone the repo
+git clone https://github.com/openclawyhwang-hub/Agentic-PDLC-Workflow.git
+
+# 2. Install in Claude Code
+/plugin marketplace add addyosmani/agent-skills
+/plugin install agent-skills@addy-agent-skills
+
+# 3. Start your first workflow
+> /spec "I want to build a user login feature"
+> /plan
+> /build
+```
+
+> **SSH errors?** The marketplace clones repos via SSH. If you don't have SSH keys set up on GitHub, either [add your SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) or switch to HTTPS for fetches only:
+> ```bash
+> git config --global url."https://github.com/".insteadOf "git@github.com:"
+> ```
 
 <details>
 <summary><b>Claude Code (recommended)</b></summary>
@@ -361,6 +406,32 @@ Each skill encodes hard-won engineering judgment: *when* to write a spec, *what*
 Skills bake in best practices from Google's engineering culture — including concepts from [Software Engineering at Google](https://abseil.io/resources/swe-book) and Google's [engineering practices guide](https://google.github.io/eng-practices/). You'll find Hyrum's Law in API design, the Beyonce Rule and test pyramid in testing, change sizing and review speed norms in code review, Chesterton's Fence in simplification, trunk-based development in git workflow, Shift Left and feature flags in CI/CD, and a dedicated deprecation skill treating code as a liability.
 
 This repo adds **Jira integration** for automated workflow management — auto-fetching tickets, isolated worktree development, automated PR creation, and CI-powered code review. These aren't abstract principles — they're embedded directly into the step-by-step workflows agents follow.
+
+---
+
+## FAQ
+
+### How do skills activate automatically?
+When you run a slash command like `/build`, the system loads the relevant skills for that phase. You can also reference any skill directly by reading `skills/<name>/SKILL.md`.
+
+### What happens after SPEC.md is written?
+Run `/plan` to break the spec into atomic tasks and create Jira tickets. After human approval, use `/build` to start implementation.
+
+### How do I configure Jira integration?
+See the Python scripts in `scripts/` directory. Set these environment variables:
+```bash
+export JIRA_URL="https://your-domain.atlassian.net"
+export JIRA_USER="your-email@domain.com"
+export JIRA_API_TOKEN="your-api-token"
+export JIRA_PROJECT_KEY="PROJ"
+export JIRA_AI_ACCOUNT_ID="jira-ai-user-id"
+```
+
+### Can I use this without Jira?
+Yes. `/plan` still generates task breakdowns and `.planning/ROADMAP.md`, just without Jira ticket sync.
+
+### What's the difference between `/map` and `/spec`?
+`/map` is for existing projects — it analyzes the codebase and creates `.planning/CONTEXT.md`. `/spec` is for any project — it writes the product requirements document (`SPEC.md`).
 
 ---
 
