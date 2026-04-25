@@ -246,7 +246,7 @@ Every skill follows a consistent anatomy:
 
 ```
 Agentic-PDLC-Workflow/
-├── skills/                            # 24 skills (SKILL.md per directory)
+├── skills/                            # 25 skills (SKILL.md per directory)
 │   ├── idea-refine/                   #   Define
 │   ├── spec-driven-development/       #   Define
 │   ├── rapid-prototyping/             #   Define - Quick prototyping
