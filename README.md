@@ -4,14 +4,37 @@
 
 Skills encode the workflows, quality gates, and best practices that senior engineers use when building software. These ones are packaged so AI agents follow them consistently across every phase of development.
 
+## What This Is
+
+A complete development workflow that guides AI agents through every phase — from understanding requirements to deploying to production. Each phase has clear inputs, outputs, and quality gates so agents don't skip critical steps.
+
+### How It Works
+
 ```
-  [CONTEXT]      DEFINE          PLAN           BUILD          VERIFY         REVIEW          SHIP
- ┌───────┐     ┌──────┐      ┌──────┐      ┌──────┐      ┌──────┐      ┌──────┐      ┌──────┐
- │ Brown │ ──▶ │ Idea │ ───▶ │ Spec │ ───▶ │ Code │ ───▶ │ Test │ ───▶ │  QA  │ ───▶ │  Go  │
- │ field │     │Refine│      │  PRD │      │ Impl │      │Debug │      │ Gate │      │ Live │
- └───────┘     └──────┘      └──────┘      └──────┘      └──────┘      └──────┘      └──────┘
- /map   /spec          /plan          /build        /test         /review       /ship
+[CONTEXT] ──▶ DEFINE ──▶ PLAN ──▶ BUILD ──▶ VERIFY ──▶ REVIEW ──▶ SHIP
+   │            │          │        │         │          │         │
+   ▼            ▼          ▼        ▼         ▼          ▼         ▼
+ Brownfield   Spec      Tasks    Code      Tests     PR       Deploy
+ Discovery    PRD       Jira     Feature   Proof     Review   Release
 ```
+
+**Each phase has:**
+- **Input** — What you need to start
+- **Output** — What you produce
+- **Gate** — What must pass before moving on
+- **Human/Agent split** — Who does what
+
+### Human vs Agent Roles
+
+| Phase | Who Does What | How It Works |
+|-------|---------------|---------------|
+| **CONTEXT** | 👤 Human triggers → 🤖 Agent executes | Human runs `/map` for existing projects, Agent analyzes codebase |
+| **DEFINE** | 👤 Human provides idea → 🤖 Agent writes spec | Human describes what to build, Agent writes SPEC.md |
+| **PLAN** | 🤖 Agent breaks down → 👤 Human approves | Agent creates tasks + Jira tickets, Human reviews |
+| **BUILD** | 🤖 Agent implements | Agent fetches tickets, writes code in isolated worktree |
+| **VERIFY** | 🤖 Agent tests | Agent runs tests, checks browser, debugs failures |
+| **REVIEW** | 🤖 Agent + CI review → 👤 Human approves | Automated review + Human final decision |
+| **SHIP** | 🤖 Agent deploys → 👤 Human monitors | Agent deploys with checklist, Human watches for issues |
 
 ---
 
@@ -111,56 +134,68 @@ Skills are plain Markdown - they work with any agent that accepts system prompts
 
 ### Phase Details
 
-**Legend:** 👤 Human | 🤖 Agent
-
-#### 📍 CONTEXT (Brownfield Only)
-**Actor:** 👤 Human triggers `/map` → 🤖 Agent executes
-**Skills:** `context-mapping`
-**Input:** Existing codebase
-**Output:** `.planning/CONTEXT.md` — Architecture summary, key entities, constraints, injection points
-**Gate:** Context file must exist before proceeding to DEFINE
+#### 📍 CONTEXT (Existing Projects Only)
+| Item | Details |
+|------|--------|
+| **Trigger** | `/map` — Only for existing projects |
+| **Skills** | `context-mapping` |
+| **Input** | Existing codebase |
+| **Output** | `.planning/CONTEXT.md` — Architecture summary, key entities, constraints |
+| **Gate** | Context file must exist before DEFINE |
 
 #### 🎯 DEFINE
-**Actor:** 👤 Human provides idea → 🤖 Agent writes spec
-**Skills:** `idea-refine`, `spec-driven-development`, `rapid-prototyping`
-**Input:** Vague idea or feature request
-**Output:** `SPEC.md` — Product requirements, objectives, commands, project structure, code style, testing strategy, boundaries
-**Gate:** 👤 Human reviews and approves the spec
+| Item | Details |
+|------|--------|
+| **Trigger** | `/spec` |
+| **Skills** | `idea-refine`, `spec-driven-development`, `rapid-prototyping` |
+| **Input** | Vague idea or feature request |
+| **Output** | `SPEC.md` — Product requirements, objectives, commands, structure, code style, testing, boundaries |
+| **Gate** | 👤 Human reviews and approves the spec |
 
 #### 📋 PLAN
-**Actor:** 🤖 Agent breaks down → 👤 Human approves
-**Skills:** `planning-and-task-breakdown`, `jira-auto-worker`
-**Input:** `SPEC.md` + `.planning/CONTEXT.md` (if exists)
-**Output:** Jira tickets with acceptance criteria, dependency ordering, story point estimates
-**Gate:** 👤 Human approves task breakdown
+| Item | Details |
+|------|--------|
+| **Trigger** | `/plan` |
+| **Skills** | `planning-and-task-breakdown`, `jira-auto-worker` |
+| **Input** | `SPEC.md` + `.planning/CONTEXT.md` (if exists) |
+| **Output** | Jira tickets with acceptance criteria, dependency ordering, story points |
+| **Gate** | 👤 Human approves task breakdown |
 
 #### 🔨 BUILD
-**Actor:** 🤖 Agent implements (auto-fetches Jira ticket, works in isolated worktree)
-**Skills:** `incremental-implementation`, `test-driven-development`, `context-engineering`, `source-driven-development`, `frontend-ui-engineering`, `api-and-interface-design`
-**Input:** Jira ticket + context map
-**Output:** Feature branch with implementation, unit tests, and commit
-**Gate:** Tests pass, code compiles, feature works
+| Item | Details |
+|------|--------|
+| **Trigger** | `/build` |
+| **Skills** | `incremental-implementation`, `test-driven-development`, `context-engineering`, `source-driven-development`, `frontend-ui-engineering`, `api-and-interface-design` |
+| **Input** | Jira ticket + context map |
+| **Output** | Feature branch with implementation, unit tests, and commit |
+| **Gate** | Tests pass, code compiles, feature works |
 
 #### ✅ VERIFY
-**Actor:** 🤖 Agent tests
-**Skills:** `browser-testing-with-devtools`, `debugging-and-error-recovery`
-**Input:** Feature branch
-**Output:** Test results, browser runtime data, debugging logs
-**Gate:** All tests pass, no runtime errors
+| Item | Details |
+|------|--------|
+| **Trigger** | `/test` |
+| **Skills** | `browser-testing-with-devtools`, `debugging-and-error-recovery` |
+| **Input** | Feature branch |
+| **Output** | Test results, browser runtime data, debugging logs |
+| **Gate** | All tests pass, no runtime errors |
 
 #### 🔍 REVIEW
-**Actor:** 🤖 Agent + CI automated review → 👤 Human final approval
-**Skills:** `code-review-and-quality`, `code-simplification`, `security-and-hardening`, `performance-optimization`, `ci-pr-reviewer`
-**Input:** Pull request
-**Output:** Review comments, security scan, performance analysis
-**Gate:** Five-axis review passes (correctness, readability, architecture, security, performance) → 👤 Human approves PR
+| Item | Details |
+|------|--------|
+| **Trigger** | `/review` |
+| **Skills** | `code-review-and-quality`, `code-simplification`, `security-and-hardening`, `performance-optimization`, `ci-pr-reviewer` |
+| **Input** | Pull request |
+| **Output** | Review comments, security scan, performance analysis |
+| **Gate** | Five-axis review passes → 👤 Human approves PR |
 
 #### 🚀 SHIP
-**Actor:** 🤖 Agent deploys → 👤 Human monitors
-**Skills:** `git-workflow-and-versioning`, `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs`, `shipping-and-launch`
-**Input:** Approved PR
-**Output:** Production deployment, ADRs, monitoring setup, rollback plan
-**Gate:** Pre-launch checklist complete, feature flags configured, 👤 Human confirms deployment
+| Item | Details |
+|------|--------|
+| **Trigger** | `/ship` |
+| **Skills** | `git-workflow-and-versioning`, `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs`, `shipping-and-launch` |
+| **Input** | Approved PR |
+| **Output** | Production deployment, ADRs, monitoring setup, rollback plan |
+| **Gate** | Pre-launch checklist complete, feature flags configured, 👤 Human confirms deployment |
 
 ---
 
