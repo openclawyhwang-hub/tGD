@@ -62,66 +62,105 @@ claude --plugin-dir /path/to/agent-skills
 
 <details>
 <summary><b>Cursor</b></summary>
-
 Copy any `SKILL.md` into `.cursor/rules/`, or reference the full `skills/` directory. See [docs/cursor-setup.md](docs/cursor-setup.md).
-
 </details>
 
 <details>
 <summary><b>Gemini CLI</b></summary>
-
 Install as native skills for auto-discovery, or add to `GEMINI.md` for persistent context. See [docs/gemini-cli-setup.md](docs/gemini-cli-setup.md).
-
-**Install from the repo:**
-
-```bash
-gemini skills install https://github.com/addyosmani/agent-skills.git --path skills
-```
-
-**Install from a local clone:**
-
-```bash
-gemini skills install ./agent-skills/skills/
-```
-
 </details>
 
 <details>
 <summary><b>Windsurf</b></summary>
-
 Add skill contents to your Windsurf rules configuration. See [docs/windsurf-setup.md](docs/windsurf-setup.md).
-
 </details>
 
 <details>
 <summary><b>OpenCode</b></summary>
-
-Uses agent-driven skill execution via AGENTS.md and the `skill` tool.
-
-See [docs/opencode-setup.md](docs/opencode-setup.md).
-
+Uses agent-driven skill execution via AGENTS.md and the `skill` tool. See [docs/opencode-setup.md](docs/opencode-setup.md).
 </details>
 
 <details>
 <summary><b>GitHub Copilot</b></summary>
-
 Use agent definitions from `agents/` as Copilot personas and skill content in `.github/copilot-instructions.md`. See [docs/copilot-setup.md](docs/copilot-setup.md).
-
 </details>
 
 <details>
-  <summary><b>Kiro IDE & CLI </b></summary>
+  <summary><b>Kiro IDE & CLI</b></summary>
   Skills for Kiro reside under ".kiro/skills/" and can be stored under Project or Global level. Kiro also supports Agents.md. See Kiro docs at https://kiro.dev/docs/skills/
 </details>
 
 <details>
 <summary><b>Codex / Other Agents</b></summary>
-
 Skills are plain Markdown - they work with any agent that accepts system prompts or instruction files. See [docs/getting-started.md](docs/getting-started.md).
-
 </details>
 
+---
 
+## Workflow Overview
+
+### Phase Flow
+
+```
+[CONTEXT] ──▶ DEFINE ──▶ PLAN ──▶ BUILD ──▶ VERIFY ──▶ REVIEW ──▶ SHIP
+   │            │          │        │         │          │         │
+   ▼            ▼          ▼        ▼         ▼          ▼         ▼
+ Brownfield   Spec      Tasks    Code      Tests     PR       Deploy
+ Discovery    PRD       Jira     Feature   Proof     Review   Release
+```
+
+### Phase Details
+
+**Legend:** 👤 Human | 🤖 Agent
+
+#### 📍 CONTEXT (Brownfield Only)
+**Actor:** 👤 Human triggers `/map` → 🤖 Agent executes
+**Skills:** `context-mapping`
+**Input:** Existing codebase
+**Output:** `.planning/CONTEXT.md` — Architecture summary, key entities, constraints, injection points
+**Gate:** Context file must exist before proceeding to DEFINE
+
+#### 🎯 DEFINE
+**Actor:** 👤 Human provides idea → 🤖 Agent writes spec
+**Skills:** `idea-refine`, `spec-driven-development`, `rapid-prototyping`
+**Input:** Vague idea or feature request
+**Output:** `SPEC.md` — Product requirements, objectives, commands, project structure, code style, testing strategy, boundaries
+**Gate:** 👤 Human reviews and approves the spec
+
+#### 📋 PLAN
+**Actor:** 🤖 Agent breaks down → 👤 Human approves
+**Skills:** `planning-and-task-breakdown`, `jira-auto-worker`, `context-mapping`
+**Input:** `SPEC.md` + `.planning/CONTEXT.md` (if exists)
+**Output:** Jira tickets with acceptance criteria, dependency ordering, story point estimates
+**Gate:** 👤 Human approves task breakdown
+
+#### 🔨 BUILD
+**Actor:** 🤖 Agent implements (auto-fetches Jira ticket, works in isolated worktree)
+**Skills:** `incremental-implementation`, `test-driven-development`, `context-engineering`, `source-driven-development`, `frontend-ui-engineering`, `api-and-interface-design`
+**Input:** Jira ticket + context map
+**Output:** Feature branch with implementation, unit tests, and commit
+**Gate:** Tests pass, code compiles, feature works
+
+#### ✅ VERIFY
+**Actor:** 🤖 Agent tests
+**Skills:** `browser-testing-with-devtools`, `debugging-and-error-recovery`
+**Input:** Feature branch
+**Output:** Test results, browser runtime data, debugging logs
+**Gate:** All tests pass, no runtime errors
+
+#### 🔍 REVIEW
+**Actor:** 🤖 Agent + CI automated review → 👤 Human final approval
+**Skills:** `code-review-and-quality`, `code-simplification`, `security-and-hardening`, `performance-optimization`, `ci-pr-reviewer`
+**Input:** Pull request
+**Output:** Review comments, security scan, performance analysis
+**Gate:** Five-axis review passes (correctness, readability, architecture, security, performance) → 👤 Human approves PR
+
+#### 🚀 SHIP
+**Actor:** 🤖 Agent deploys → 👤 Human monitors
+**Skills:** `git-workflow-and-versioning`, `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs`, `shipping-and-launch`
+**Input:** Approved PR
+**Output:** Production deployment, ADRs, monitoring setup, rollback plan
+**Gate:** Pre-launch checklist complete, feature flags configured, 👤 Human confirms deployment
 
 ---
 
