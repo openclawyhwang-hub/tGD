@@ -36,6 +36,7 @@ OpenCode does not support slash commands like `/spec` or `/plan`.
 Instead, the agent must internally follow this lifecycle:
 
 - DEFINE → `spec-driven-development`
+- DESIGN → `design-system`
 - PLAN → `planning-and-task-breakdown`
 - BUILD → `incremental-implementation` + `test-driven-development`
 - VERIFY → `debugging-and-error-recovery`

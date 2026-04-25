@@ -1,13 +1,13 @@
 # Agentic PDLC Workflow
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Skills](https://img.shields.io/badge/Skills-25-orange.svg)](#all-25-skills)
-[![Commands](https://img.shields.io/badge/Commands-8-blue.svg)](#commands)
+[![Skills](https://img.shields.io/badge/Skills-26-orange.svg)](#all-26-skills)
+[![Commands](https://img.shields.io/badge/Commands-9-blue.svg)](#commands)
 [![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)]()
 
 **Production-grade engineering skills with Jira integration for AI coding agents.**
 
-> 🚀 25 skills • 8 commands • 7 development phases • Multi-agent support
+> 🚀 26 skills • 9 commands • 8 development phases • Multi-agent support
 
 ## Table of Contents
 
@@ -18,7 +18,7 @@
 - [Workflow Overview](#workflow-overview)
   - [Phase Flow](#phase-flow)
   - [Phase Details](#phase-details)
-- [All 25 Skills](#all-25-skills)
+- [All 26 Skills](#all-26-skills)
 - [Agent Personas](#agent-personas)
 - [Reference Checklists](#reference-checklists)
 - [How Skills Work](#how-skills-work)
@@ -38,7 +38,8 @@ A complete development workflow that guides AI agents through every phase — fr
 |-------|---------------|---------------|
 | **CONTEXT** | 👤 Human triggers → 🤖 Agent executes | Human runs `/map` for existing projects, Agent analyzes codebase |
 | **DEFINE** | 👤 Human provides idea → 🤖 Agent writes spec | Human describes what to build, Agent writes SPEC.md |
-| **PLAN** | 🤖 Agent breaks down → 👤 Human approves | Agent creates tasks + Jira tickets, Human reviews |
+| **DESIGN** | 🤖 Agent creates designs → 👤 Human reviews | Agent generates Figma screens, Human reviews via Jira ticket |
+| **PLAN** | 🤖 Agent breaks down → 👤 Human approves | Agent creates tasks + Jira tickets (references DESIGN_SPEC.md), Human reviews |
 | **BUILD** | 🤖 Agent implements | Agent fetches tickets, writes code in isolated worktree |
 | **VERIFY** | 🤖 Agent tests | Agent runs tests, checks browser, debugs failures |
 | **REVIEW** | 🤖 Agent + CI review → 👤 Human approves | Automated review + Human final decision |
@@ -48,12 +49,13 @@ A complete development workflow that guides AI agents through every phase — fr
 
 ## Commands
 
-8 slash commands that map to the development lifecycle. Each one activates the right skills automatically.
+9 slash commands that map to the development lifecycle. Each one activates the right skills automatically.
 
 | What you're doing | Command | Key principle |
 |-------------------|---------|---------------|
 | Map existing codebase | `/map` | Understand before acting |
 | Define what to build | `/spec` | Spec before code |
+| Design the UI | `/design` | Visual designs before tasks |
 | Plan how to build it | `/plan` | Small, atomic tasks |
 | Build incrementally | `/build` | One slice at a time |
 | Prove it works | `/test` | Tests are proof |
@@ -154,11 +156,11 @@ Skills are plain Markdown - they work with any agent that accepts system prompts
 ### Phase Flow
 
 ```
-[CONTEXT] ──▶ DEFINE ──▶ PLAN ──▶ BUILD ──▶ VERIFY ──▶ REVIEW ──▶ SHIP
-   │            │          │        │         │          │         │
-   ▼            ▼          ▼        ▼         ▼          ▼         ▼
- Brownfield   Spec      Tasks    Code      Tests     PR       Deploy
- Discovery    PRD       Jira     Feature   Proof     Review   Release
+[CONTEXT] ──▶ DEFINE ──▶ DESIGN ──▶ PLAN ──▶ BUILD ──▶ VERIFY ──▶ REVIEW ──▶ SHIP
+   │            │          │          │        │         │          │         │
+   ▼            ▼          ▼          ▼        ▼         ▼          ▼         ▼
+ Brownfield   Spec     Figma     Tasks    Code      Tests     PR       Deploy
+ Discovery    PRD     Designs   Jira     Feature   Proof     Review   Release
 ```
 
 ### Phase Details
@@ -181,13 +183,22 @@ Skills are plain Markdown - they work with any agent that accepts system prompts
 | **Output** | `SPEC.md` — Product requirements, objectives, commands, structure, code style, testing, boundaries |
 | **Gate** | 👤 Human reviews and approves the spec |
 
+#### 🎨 DESIGN
+| Item | Details |
+|------|--------|
+| **Trigger** | `/design` |
+| **Skills** | `design-system` |
+| **Input** | `SPEC.md` (approved) + `.planning/CONTEXT.md` (if exists) |
+| **Output** | Figma designs + `DESIGN_SPEC.md` — Screen layouts, design tokens, component hierarchy, responsive breakpoints |
+| **Gate** | 👤 Human reviews designs via Jira "Design Review" ticket → Design Approved or Design Revision |
+
 #### 📋 PLAN
 | Item | Details |
 |------|--------|
 | **Trigger** | `/plan` |
 | **Skills** | `planning-and-task-breakdown`, `jira-auto-worker` |
-| **Input** | `SPEC.md` + `.planning/CONTEXT.md` (if exists) |
-| **Output** | Jira tickets with acceptance criteria, dependency ordering, story points |
+| **Input** | `SPEC.md` + `DESIGN_SPEC.md` + `.planning/CONTEXT.md` (if exists) |
+| **Output** | Jira tickets with acceptance criteria (references design specs), dependency ordering, story points |
 | **Gate** | 👤 Human approves task breakdown |
 
 #### 🔨 BUILD
@@ -228,7 +239,7 @@ Skills are plain Markdown - they work with any agent that accepts system prompts
 
 ---
 
-## All 25 Skills
+## All 26 Skills
 
 The commands above are the entry points. Under the hood, they activate these 25 skills — each one a structured workflow with steps, verification gates, and anti-rationalization tables. You can also reference any skill directly.
 
@@ -240,11 +251,17 @@ The commands above are the entry points. Under the hood, they activate these 25 
 | [spec-driven-development](skills/spec-driven-development/SKILL.md) | Write a PRD covering objectives, commands, structure, code style, testing, and boundaries before any code | Starting a new project, feature, or significant change |
 | [rapid-prototyping](skills/rapid-prototyping/SKILL.md) | Generates throwaway HTML/JS prototypes to visualize concepts before writing the spec | Need to explore UI concepts before spec |
 
+### Design - Visual designs before tasks
+
+| Skill | What It Does | Use When |
+|-------|-------------|----------|
+| [design-system](skills/design-system/SKILL.md) | Generates Figma designs from specs, manages human review workflow via Jira tickets | You have an approved spec and need visual designs before implementation |
+
 ### Plan - Break it down
 
 | Skill | What It Does | Use When |
 |-------|-------------|----------|
-| [planning-and-task-breakdown](skills/planning-and-task-breakdown/SKILL.md) | Decompose specs into small, verifiable tasks with acceptance criteria and dependency ordering | You have a spec and need implementable units |
+| [planning-and-task-breakdown](skills/planning-and-task-breakdown/SKILL.md) | Decompose specs into small, verifiable tasks with acceptance criteria and dependency ordering | You have a spec + design spec and need implementable units |
 | [jira-auto-worker](skills/jira-auto-worker/SKILL.md) | Background worker that fetches Jira tickets, works in isolated git worktree, pushes PR | Automating development workflow |
 | [context-mapping](skills/context-mapping/SKILL.md) | Analyzes codebase to build context map, essential for Brownfield projects | Starting work on existing codebase |
 
@@ -355,10 +372,11 @@ Every skill follows a consistent anatomy:
 
 ```
 Agentic-PDLC-Workflow/
-├── skills/                            # 25 skills (SKILL.md per directory)
+├── skills/                            # 26 skills (SKILL.md per directory)
 │   ├── idea-refine/                   #   Define
 │   ├── spec-driven-development/       #   Define
 │   ├── rapid-prototyping/             #   Define - Quick prototyping
+│   ├── design-system/                 #   Design - Figma + human review
 │   ├── planning-and-task-breakdown/   #   Plan
 │   ├── jira-auto-worker/              #   Plan - Background worker
 │   ├── context-mapping/               #   Context - Brownfield analysis
@@ -381,15 +399,16 @@ Agentic-PDLC-Workflow/
 │   ├── documentation-and-adrs/        #   Ship
 │   ├── shipping-and-launch/           #   Ship
 │   └── using-agent-skills/            #   Meta: how to use this pack
-├── scripts/                           # 4 Jira bridge scripts (Python)
+├── scripts/                           # 5 Jira bridge scripts (Python)
 │   ├── create_jira_ticket.py
+│   ├── create_design_review_ticket.py
 │   ├── fetch_todo_ticket.py
 │   ├── transition_ticket.py
 │   └── create_bug_ticket.py
 ├── agents/                            # 3 specialist personas
 ├── references/                        # 5 supplementary checklists
 ├── hooks/                             # Session lifecycle hooks
-├── .claude/commands/                  # 8 slash commands
+├── .claude/commands/                  # 9 slash commands
 ├── .github/workflows/                 # CI/CD workflows
 │   └── ai-pr-review.yml               #   Automated PR review
 └── docs/                              # Setup guides per tool

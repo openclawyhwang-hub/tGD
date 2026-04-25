@@ -16,6 +16,7 @@ docs/         → Setup guides for different tools
 ## Skills by Phase
 
 **Define:** spec-driven-development
+**Design:** design-system
 **Plan:** planning-and-task-breakdown
 **Build:** incremental-implementation, test-driven-development, context-engineering, source-driven-development, frontend-ui-engineering, api-and-interface-design
 **Verify:** browser-testing-with-devtools, debugging-and-error-recovery

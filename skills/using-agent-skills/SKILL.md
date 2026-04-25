@@ -18,6 +18,7 @@ Task arrives
     │
     ├── Vague idea/need refinement? ──→ idea-refine
     ├── New project/feature/change? ──→ spec-driven-development
+    ├── Have a spec, need designs? ────→ design-system
     ├── Have a spec, need tasks? ──────→ planning-and-task-breakdown
     ├── Implementing code? ────────────→ incremental-implementation
     │   ├── UI work? ─────────────────→ frontend-ui-engineering
@@ -137,15 +138,16 @@ For a complete feature, the typical skill sequence is:
 ```
 1. idea-refine                 → Refine vague ideas
 2. spec-driven-development     → Define what we're building
-3. planning-and-task-breakdown → Break into verifiable chunks
-4. context-engineering         → Load the right context
-5. source-driven-development   → Verify against official docs
-6. incremental-implementation  → Build slice by slice
-7. test-driven-development     → Prove each slice works
-8. code-review-and-quality     → Review before merge
-9. git-workflow-and-versioning → Clean commit history
-10. documentation-and-adrs     → Document decisions
-11. shipping-and-launch        → Deploy safely
+3. design-system               → Generate visual designs, human review
+4. planning-and-task-breakdown → Break into verifiable chunks
+5. context-engineering         → Load the right context
+6. source-driven-development   → Verify against official docs
+7. incremental-implementation  → Build slice by slice
+8. test-driven-development     → Prove each slice works
+9. code-review-and-quality     → Review before merge
+10. git-workflow-and-versioning → Clean commit history
+11. documentation-and-adrs     → Document decisions
+12. shipping-and-launch        → Deploy safely
 ```
 
 Not every task needs every skill. A bug fix might only need: `debugging-and-error-recovery` → `test-driven-development` → `code-review-and-quality`.
@@ -158,6 +160,7 @@ Not every task needs every skill. A bug fix might only need: `debugging-and-erro
 | Define | spec-driven-development | Requirements and acceptance criteria before code |
 | Define | rapid-prototyping | Generate throwaway prototypes to visualize concepts before spec |
 | Context | context-mapping | Analyze existing codebase to build context map |
+| Design | design-system | Generate Figma designs from spec, manage human review via Jira |
 | Plan | planning-and-task-breakdown | Decompose into small, verifiable tasks |
 | Plan | jira-auto-worker | Background worker that fetches tickets, works in isolated worktree, pushes PR |
 | Build | incremental-implementation | Thin vertical slices, test each before expanding |
