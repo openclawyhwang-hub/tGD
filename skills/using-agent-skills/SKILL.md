@@ -156,7 +156,10 @@ Not every task needs every skill. A bug fix might only need: `debugging-and-erro
 |-------|-------|-----------------|
 | Define | idea-refine | Refine ideas through structured divergent and convergent thinking |
 | Define | spec-driven-development | Requirements and acceptance criteria before code |
+| Define | rapid-prototyping | Generate throwaway prototypes to visualize concepts before spec |
+| Context | context-mapping | Analyze existing codebase to build context map |
 | Plan | planning-and-task-breakdown | Decompose into small, verifiable tasks |
+| Plan | jira-auto-worker | Background worker that fetches tickets, works in isolated worktree, pushes PR |
 | Build | incremental-implementation | Thin vertical slices, test each before expanding |
 | Build | source-driven-development | Verify against official docs before implementing |
 | Build | context-engineering | Right context at the right time |
@@ -166,9 +169,12 @@ Not every task needs every skill. A bug fix might only need: `debugging-and-erro
 | Verify | browser-testing-with-devtools | Chrome DevTools MCP for runtime verification |
 | Verify | debugging-and-error-recovery | Reproduce → localize → fix → guard |
 | Review | code-review-and-quality | Five-axis review with quality gates |
+| Review | code-simplification | Reduce complexity while preserving behavior |
 | Review | security-and-hardening | OWASP prevention, input validation, least privilege |
 | Review | performance-optimization | Measure first, optimize only what matters |
+| Review | ci-pr-reviewer | Automated PR audit with CI integration |
 | Ship | git-workflow-and-versioning | Atomic commits, clean history |
 | Ship | ci-cd-and-automation | Automated quality gates on every change |
 | Ship | documentation-and-adrs | Document the why, not just the what |
+| Ship | deprecation-and-migration | Manage sunsetting and migration of old systems |
 | Ship | shipping-and-launch | Pre-launch checklist, monitoring, rollback plan |

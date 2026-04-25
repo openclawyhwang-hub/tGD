@@ -1,6 +1,6 @@
 ---
 name: ci-pr-reviewer
-description: Automated PR Auditor that posts comments on GitHub/GitLab PRs. Does NOT modify code.
+description: Automated PR Auditor that posts comments on GitHub/GitLab PRs. Does NOT modify code. Use when setting up CI for automated code review on every pull request.
 ---
 
 # CI PR Reviewer Workflow

@@ -1,6 +1,6 @@
 ---
 name: planning-and-task-breakdown
-description: Breaks down requirements into atomic tasks, estimates Story Points, and creates Jira tickets.
+description: Breaks down requirements into atomic tasks, estimates Story Points, and creates Jira tickets. Use when you have a spec and need implementable units.
 ---
 
 # Task Breakdown & Jira Sync Workflow

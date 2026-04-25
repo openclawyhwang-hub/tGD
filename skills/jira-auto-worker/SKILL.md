@@ -1,6 +1,6 @@
 ---
 name: jira-auto-worker
-description: Background worker that fetches a Jira ticket, works in an isolated git worktree, and pushes a PR.
+description: Background worker that fetches a Jira ticket, works in an isolated git worktree, and pushes a PR. Use when automating development workflow with Jira integration.
 ---
 
 # Isolated Jira Worker Workflow

@@ -7,7 +7,7 @@ description: Analyzes the codebase to build a context map. Essential for Brownfi
 
 ## Trigger
 
-Run via `/context-map` command, or auto-trigger when:
+Run via `/map` command, or auto-trigger when:
 - `.planning/CONTEXT.md` does not exist
 - CONTEXT.md is older than 30 days (flag for refresh)
 - User explicitly requests context refresh

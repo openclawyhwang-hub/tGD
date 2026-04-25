@@ -222,6 +222,12 @@ The commands above are the entry points. Under the hood, they activate these 25 
 | [documentation-and-adrs](skills/documentation-and-adrs/SKILL.md) | Architecture Decision Records, API docs, inline documentation standards - document the *why* | Making architectural decisions, changing APIs, or shipping features |
 | [shipping-and-launch](skills/shipping-and-launch/SKILL.md) | Pre-launch checklists, feature flag lifecycle, staged rollouts, rollback procedures, monitoring setup | Preparing to deploy to production |
 
+### Meta - How to use this pack
+
+| Skill | What It Does | Use When |
+|-------|-------------|----------|
+| [using-agent-skills](skills/using-agent-skills/SKILL.md) | Discovers and invokes agent skills — the meta-skill that governs all other skills | Starting a session or when you need to discover which skill applies |
+
 ---
 
 ## Agent Personas
@@ -291,7 +297,7 @@ Agentic-PDLC-Workflow/
 │   ├── rapid-prototyping/             #   Define - Quick prototyping
 │   ├── planning-and-task-breakdown/   #   Plan
 │   ├── jira-auto-worker/              #   Plan - Background worker
-│   ├── context-mapping/               #   Plan - Context analysis
+│   ├── context-mapping/               #   Context - Brownfield analysis
 │   ├── incremental-implementation/    #   Build
 │   ├── context-engineering/           #   Build
 │   ├── source-driven-development/     #   Build

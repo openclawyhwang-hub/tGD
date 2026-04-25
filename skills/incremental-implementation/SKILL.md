@@ -1,9 +1,9 @@
 ---
 name: incremental-implementation
-description: Ruthless Test-Driven Development with a Two-Stage Quality Gate. Code that fails standards is immediately deleted.
+description: Ruthless Test-Driven Development with a Two-Stage Quality Gate. Code that fails standards is immediately deleted. Use when implementing any change that touches more than one file.
 ---
 
-# Ruthless TDD Workflow
+# Incremental Implementation
 
 ## Process
 
