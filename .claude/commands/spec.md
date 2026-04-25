@@ -4,6 +4,8 @@ description: Start spec-driven development — write a structured specification 
 
 Invoke the agent-skills:spec-driven-development skill.
 
+**Pre-flight check:** If this is an existing project, verify that `.planning/CONTEXT.md` exists. If missing, run `/map` first to understand project constraints before writing the spec.
+
 Begin by understanding what the user wants to build. Ask clarifying questions about:
 1. The objective and target users
 2. Core features and acceptance criteria

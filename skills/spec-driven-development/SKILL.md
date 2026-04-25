@@ -19,6 +19,10 @@ Write a structured specification before writing any code. The spec is the shared
 
 **When NOT to use:** Single-line fixes, typo corrections, or changes where requirements are unambiguous and self-contained.
 
+## Context Check (Brownfield Projects)
+
+Before writing a spec for an existing project, **always read `.planning/CONTEXT.md`** if it exists. This file contains project-specific constraints (backward compatibility rules, forbidden modifications, injection points) that must be reflected in the spec. Ignoring context leads to specs that violate architectural boundaries.
+
 ## The Gated Workflow
 
 Spec-driven development has four phases. Do not advance to the next phase until the current one is validated.

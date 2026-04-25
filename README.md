@@ -135,6 +135,7 @@ The commands above are the entry points. Under the hood, they activate these 25 
 |-------|-------------|----------|
 | [idea-refine](skills/idea-refine/SKILL.md) | Structured divergent/convergent thinking to turn vague ideas into concrete proposals | You have a rough concept that needs exploration |
 | [spec-driven-development](skills/spec-driven-development/SKILL.md) | Write a PRD covering objectives, commands, structure, code style, testing, and boundaries before any code | Starting a new project, feature, or significant change |
+| [rapid-prototyping](skills/rapid-prototyping/SKILL.md) | Generates throwaway HTML/JS prototypes to visualize concepts before writing the spec | Need to explore UI concepts before spec |
 
 ### Plan - Break it down
 
@@ -154,7 +155,6 @@ The commands above are the entry points. Under the hood, they activate these 25 
 | [source-driven-development](skills/source-driven-development/SKILL.md) | Ground every framework decision in official documentation - verify, cite sources, flag what's unverified | You want authoritative, source-cited code for any framework or library |
 | [frontend-ui-engineering](skills/frontend-ui-engineering/SKILL.md) | Component architecture, design systems, state management, responsive design, WCAG 2.1 AA accessibility | Building or modifying user-facing interfaces |
 | [api-and-interface-design](skills/api-and-interface-design/SKILL.md) | Contract-first design, Hyrum's Law, One-Version Rule, error semantics, boundary validation | Designing APIs, module boundaries, or public interfaces |
-| [rapid-prototyping](skills/rapid-prototyping/SKILL.md) | Generates throwaway HTML/JS prototypes to visualize concepts | Need to explore UI concepts before spec |
 
 ### Verify - Prove it works
 
@@ -249,6 +249,7 @@ Agentic-PDLC-Workflow/
 ├── skills/                            # 24 skills (SKILL.md per directory)
 │   ├── idea-refine/                   #   Define
 │   ├── spec-driven-development/       #   Define
+│   ├── rapid-prototyping/             #   Define - Quick prototyping
 │   ├── planning-and-task-breakdown/   #   Plan
 │   ├── jira-auto-worker/              #   Plan - Background worker
 │   ├── context-mapping/               #   Plan - Context analysis
@@ -258,7 +259,6 @@ Agentic-PDLC-Workflow/
 │   ├── frontend-ui-engineering/       #   Build
 │   ├── test-driven-development/       #   Build
 │   ├── api-and-interface-design/      #   Build
-│   ├── rapid-prototyping/             #   Build - Quick prototyping
 │   ├── browser-testing-with-devtools/ #   Verify
 │   ├── debugging-and-error-recovery/  #   Verify
 │   ├── code-review-and-quality/       #   Review
