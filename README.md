@@ -1,62 +1,18 @@
-<p align="center">
-  <img src="https://img.shields.io/badge/Agentic-PDLC-Workflow-blue?style=for-the-badge" alt="Agentic PDLC Workflow">
-</p>
-
-<p align="center">
-  <strong>讓 AI Agent 遵守工程紀律的開發流程</strong>
-</p>
-
-<p align="center">
-  <em>Production-grade engineering skills with Jira integration for AI coding agents.</em>
-</p>
-
-<p align="center">
-  🚀 <strong>26</strong> skills • <strong>8</strong> commands • <strong>7</strong> phases • Multi-agent support
-</p>
-
----
-
-## ✨ 為什麼需要這個？
-
-AI 寫代碼很快，但會走捷徑：
-
-| ❌ 問題 | ✅ 解決方案 |
-|---------|------------|
-| 跳過 spec → 需求不清 → 重做 | **Spec before code** — 先寫規格再寫程式 |
-| 跳過測試 → 上線當機 | **Tests are proof** — 測試通過 = 證明能跑 |
-| 跳過 review → 安全漏洞 | **Review before merge** — 五軸審查確保品質 |
-| Agent 會自我合理化偷懶 | **Anti-rationalization** — 防止 Agent 找藉口 |
-
----
-
-## 🔄 7 階段流程
-
-```text
-[CONTEXT] ──▶ DEFINE ──▶ PLAN ──▶ BUILD ──▶ VERIFY ──▶ REVIEW ──▶ SHIP
-   │            │          │        │         │          │         │
-   ▼            ▼          ▼        ▼         ▼          ▼         ▼
- 分析程式碼   寫規格    分解任務   實作程式碼  測試驗證   審查PR   部署上線
- Brownfield   Spec     Tasks    Code      Tests     PR       Deploy
- Discovery    PRD+Design   Jira     Feature   Proof     Review   Release
-```
-
----
-
-## 🚀 快速開始
+# Agentic PDLC Workflow
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Skills](https://img.shields.io/badge/Skills-26-orange.svg)](#all-26-skills)
 [![Commands](https://img.shields.io/badge/Commands-8-blue.svg)](#commands)
 [![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)]()
 
----
+**Production-grade engineering skills with Jira integration for AI coding agents.**
+
+> 🚀 26 skills • 8 commands • 7 development phases • Multi-agent support
 
 ## Table of Contents
 
-- [✨ 為什麼需要這個？](#-為什麼需要這個)
-- [🔄 7 階段流程](#-7-階段流程)
-- [🚀 快速開始](#-快速開始)
 - [What This Is](#what-this-is)
+- [Human vs Agent Roles](#human-vs-agent-roles)
 - [Commands](#commands)
 - [Quick Start](#quick-start)
 - [Workflow Overview](#workflow-overview)
