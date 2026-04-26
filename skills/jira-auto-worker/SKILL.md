@@ -22,14 +22,26 @@ description: Background worker that fetches a Jira ticket, works in an isolated 
      - Run `python ../[RepoName]/scripts/transition_ticket.py --ticket [Ticket ID] --status "Blocked"`
      - Cleanup worktree and exit with non-zero code.
      - **Do not proceed to PR creation.**
-5. **Self-Review & Commit**: 
+5. **Verify (Test Before PR)**: Run full test suite BEFORE creating PR.
+   - `npm test -- --coverage` — Run all tests
+   - `npm run lint` — Check code quality
+   - `npm run build` — Verify compilation
+   - **If ANY test fails:**
+     - Fix the issue
+     - Re-run tests until all pass
+     - **Do not create PR until all tests pass**
+   - **Browser Testing** (if UI changes):
+     - Use `browser-testing-with-devtools` skill
+     - Verify console is clean (zero errors)
+     - Take screenshots for visual verification
+6. **Commit & Create PR** (Only after all tests pass):
    - `git commit -m "feat: [Ticket ID] implemented AC"`
    - `git push -u origin feature/[Ticket ID]`
    - **Create PR/MR**: Use the configured git provider script:
      ```bash
      python ../[RepoName]/scripts/create_pr.py \
        --title "feat: [Ticket ID] implemented AC" \
-       --body "Automated PR from jira-auto-worker.\n\nJira: [Ticket ID]\n\nCloses [Ticket ID]" \
+       --body "Automated PR from jira-auto-worker.\n\n## Test Results\n- Unit Tests: ✅ All passing\n- Build: ✅ Success\n- Lint: ✅ Clean\n\nJira: [Ticket ID]\n\nCloses [Ticket ID]" \
        --base main \
        --head feature/[Ticket ID]
      ```
@@ -43,18 +55,18 @@ description: Background worker that fetches a Jira ticket, works in an isolated 
      }
      ```
      If no config file exists, falls back to `gh` CLI (GitHub).
-6. **Cleanup & Status**:
+7. **Cleanup & Status**:
    - `cd` back to original repo.
    - `git worktree remove ../worker-[Ticket ID]`
    - `python scripts/transition_ticket.py --ticket [Ticket ID] --status "In Review"`
    - **Verify transition**: Check exit code; if non-zero, log error and alert.
-7. **Notification** (Optional but recommended):
+8. **Notification** (Optional but recommended):
    - Send completion message via configured channel (Telegram/Discord/Slack).
    - Include: Ticket ID, PR URL, test results summary.
 
 ## Verification
 
-Code is pushed to remote, worktree is deleted, and Jira status is updated.
+All tests pass, code is pushed to remote, PR is created, worktree is deleted, and Jira status is updated.
 
 ## Common Rationalizations
 
