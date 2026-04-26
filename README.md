@@ -32,18 +32,6 @@
 
 A complete development workflow that guides AI agents through every phase — from understanding requirements to deploying to production. Each phase has clear inputs, outputs, and quality gates so agents don't skip critical steps.
 
-### Human vs Agent Roles
-
-| Phase | Who Does What | How It Works |
-|-------|---------------|---------------|
-| **CONTEXT** | 👤 Human triggers → 🤖 Agent executes | Human runs `/map` for existing projects, Agent analyzes codebase |
-| **DEFINE** | 👤 Human provides idea → 🤖 Agent writes spec | Human describes what to build, Agent writes SPEC.md. If UI is needed, triggers `design-system` for Figma designs + human review. |
-| **PLAN** | 🤖 Agent breaks down → 👤 Human approves | Agent creates tasks + Jira tickets (references DESIGN_SPEC.md), Human reviews |
-| **BUILD** | 🤖 Agent implements | Agent fetches tickets, writes code in isolated worktree |
-| **VERIFY** | 🤖 Agent tests | Agent runs tests, checks browser, debugs failures |
-| **REVIEW** | 🤖 Agent + CI review → 👤 Human approves | Automated review + Human final decision |
-| **SHIP** | 🤖 Agent deploys → 👤 Human monitors | Agent deploys with checklist, Human watches for issues |
-
 ---
 
 ## Commands
@@ -146,6 +134,7 @@ Skills are plain Markdown - they work with any agent that accepts system prompts
 | Item | Details |
 |------|--------|
 | **Trigger** | `/map` — Only for existing projects |
+| **Who** | 👤 Human runs `/map` → 🤖 Agent analyzes codebase |
 | **Skills** | `context-mapping` |
 | **Input** | Existing codebase |
 | **Output** | `.planning/CONTEXT.md` — Architecture summary, key entities, constraints |
@@ -155,6 +144,7 @@ Skills are plain Markdown - they work with any agent that accepts system prompts
 | Item | Details |
 |------|--------|
 | **Trigger** | `/spec` |
+| **Who** | 👤 Human provides idea → 🤖 Agent writes spec |
 | **Skills** | `idea-refine`, `spec-driven-development`, `rapid-prototyping` |
 | **Input** | Vague idea or feature request |
 | **Output** | `SPEC.md` — Product requirements, objectives, commands, structure, code style, testing, boundaries |
@@ -164,6 +154,7 @@ Skills are plain Markdown - they work with any agent that accepts system prompts
 | Item | Details |
 |------|--------|
 | **Trigger** | `/plan` |
+| **Who** | 🤖 Agent breaks down → 👤 Human approves |
 | **Skills** | `planning-and-task-breakdown`, `jira-auto-worker` |
 | **Input** | `SPEC.md` + `DESIGN_SPEC.md` (if UI) + `design-tokens.md` (if UI) + `.planning/CONTEXT.md` (if exists) |
 | **Output** | Jira tickets with acceptance criteria (references design specs), dependency ordering, story points |
@@ -173,6 +164,7 @@ Skills are plain Markdown - they work with any agent that accepts system prompts
 | Item | Details |
 |------|--------|
 | **Trigger** | `/build` |
+| **Who** | 🤖 Agent implements (fully automated) |
 | **Skills** | `incremental-implementation`, `test-driven-development`, `context-engineering`, `source-driven-development`, `frontend-ui-engineering`, `api-and-interface-design` |
 | **Input** | Jira ticket + context map |
 | **Output** | Feature branch with implementation, unit tests, and commit |
@@ -182,6 +174,7 @@ Skills are plain Markdown - they work with any agent that accepts system prompts
 | Item | Details |
 |------|--------|
 | **Trigger** | `/test` |
+| **Who** | 🤖 Agent tests (fully automated) |
 | **Skills** | `browser-testing-with-devtools`, `debugging-and-error-recovery` |
 | **Input** | Feature branch |
 | **Output** | Test results, browser runtime data, debugging logs |
@@ -191,6 +184,7 @@ Skills are plain Markdown - they work with any agent that accepts system prompts
 | Item | Details |
 |------|--------|
 | **Trigger** | `/review` |
+| **Who** | 🤖 CI auto-review → 🤖 AI five-axis review → 👤 Human approves |
 | **Skills** | `code-review-and-quality`, `code-simplification`, `security-and-hardening`, `performance-optimization`, `ci-pr-reviewer` |
 | **Input** | Pull request |
 | **Output** | Review comments, security scan, performance analysis |
@@ -200,6 +194,7 @@ Skills are plain Markdown - they work with any agent that accepts system prompts
 | Item | Details |
 |------|--------|
 | **Trigger** | `/ship` |
+| **Who** | 🤖 Agent deploys → 👤 Human monitors |
 | **Skills** | `git-workflow-and-versioning`, `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs`, `shipping-and-launch` |
 | **Input** | Approved PR |
 | **Output** | Production deployment, ADRs, monitoring setup, rollback plan |
