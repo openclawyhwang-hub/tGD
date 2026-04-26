@@ -25,7 +25,24 @@ description: Background worker that fetches a Jira ticket, works in an isolated 
 5. **Self-Review & Commit**: 
    - `git commit -m "feat: [Ticket ID] implemented AC"`
    - `git push -u origin feature/[Ticket ID]`
-   - **Create PR**: `gh pr create --title "feat: [Ticket ID] implemented AC" --body "Automated PR from jira-auto-worker.\n\nJira: [Ticket ID]\n\nCloses [Ticket ID]" --base main`
+   - **Create PR/MR**: Use the configured git provider script:
+     ```bash
+     python ../[RepoName]/scripts/create_pr.py \
+       --title "feat: [Ticket ID] implemented AC" \
+       --body "Automated PR from jira-auto-worker.\n\nJira: [Ticket ID]\n\nCloses [Ticket ID]" \
+       --base main \
+       --head feature/[Ticket ID]
+     ```
+     The script reads provider config from `.git-provider.json` in the repo root:
+     ```json
+     {
+       "provider": "gitlab",  // or "github", "bitbucket", etc.
+       "api_url": "https://gitlab.your-company.com/api/v4",
+       "project_id": "12345",
+       "token_env": "GITLAB_TOKEN"
+     }
+     ```
+     If no config file exists, falls back to `gh` CLI (GitHub).
 6. **Cleanup & Status**:
    - `cd` back to original repo.
    - `git worktree remove ../worker-[Ticket ID]`

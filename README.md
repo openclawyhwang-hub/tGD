@@ -438,6 +438,18 @@ export JIRA_AI_ACCOUNT_ID="jira-ai-user-id"
 ### Can I use this without Jira?
 Yes. `/plan` still generates task breakdowns and `.planning/ROADMAP.md`, just without Jira ticket sync.
 
+### Can I use GitLab instead of GitHub?
+Yes. PR/MR creation is configurable via `.git-provider.json` in your repo root:
+```json
+{
+  "provider": "gitlab",
+  "api_url": "https://gitlab.your-company.com/api/v4",
+  "project_id": "12345",
+  "token_env": "GITLAB_TOKEN"
+}
+```
+The `jira-auto-worker` skill reads this config and uses the appropriate API. Falls back to `gh` CLI (GitHub) if no config file exists. CI examples are provided for both GitHub Actions and GitLab CI in the `ci-cd-and-automation` skill.
+
 ### What's the difference between `/map` and `/spec`?
 `/map` is for existing projects — it analyzes the codebase and creates `.planning/CONTEXT.md`. `/spec` is for any project — it writes the product requirements document (`SPEC.md`).
 

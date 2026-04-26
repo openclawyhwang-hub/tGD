@@ -53,7 +53,16 @@ Pull Request Opened
 
 **No gate can be skipped.** If lint fails, fix lint — don't disable the rule. If a test fails, fix the code — don't skip the test.
 
-## GitHub Actions Configuration
+## CI Configuration
+
+This skill covers multiple CI providers. Choose the one that matches your git provider:
+
+- **GitHub Actions** — Built into GitHub, YAML-based
+- **GitLab CI** — Built into GitLab, YAML-based
+- **Jenkins** — Self-hosted, Pipeline-based
+- **CircleCI** — Cloud-based, YAML-based
+
+### GitHub Actions Configuration
 
 ### Basic CI Pipeline
 
@@ -159,6 +168,110 @@ jobs:
         with:
           name: playwright-report
           path: playwright-report/
+```
+
+## GitLab CI Configuration
+
+### Basic CI Pipeline
+
+```yaml
+# .gitlab-ci.yml
+image: node:22
+
+default:
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    policy: pull-push
+    paths:
+      - node_modules/
+
+stages:
+  - quality
+  - test
+  - build
+  - security
+
+lint:
+  stage: quality
+  script:
+    - npm ci
+    - npm run lint
+
+typecheck:
+  stage: quality
+  script:
+    - npm ci
+    - npx tsc --noEmit
+
+test:
+  stage: test
+  script:
+    - npm ci
+    - npm test -- --coverage
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
+    paths:
+      - coverage/
+
+build:
+  stage: build
+  script:
+    - npm ci
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+
+security_audit:
+  stage: security
+  script:
+    - npm ci
+    - npm audit --audit-level=high
+  allow_failure: true
+```
+
+### With Database Integration Tests
+
+```yaml
+# .gitlab-ci.yml
+services:
+  - postgres:16
+
+variables:
+  POSTGRES_DB: testdb
+  POSTGRES_USER: ci_user
+  POSTGRES_PASSWORD: $CI_DB_PASSWORD
+  DATABASE_URL: postgresql://ci_user:$CI_DB_PASSWORD@postgres:5432/testdb
+
+integration:
+  stage: test
+  script:
+    - npm ci
+    - npx prisma migrate deploy
+    - npm run test:integration
+```
+
+> **Note:** Store database credentials in GitLab CI/CD Settings → Variables, not in the YAML file.
+
+### E2E Tests
+
+```yaml
+e2e:
+  stage: test
+  image: mcr.microsoft.com/playwright:v1.40.0-jammy
+  script:
+    - npm ci
+    - npx playwright install --with-deps chromium
+    - npm run build
+    - npx playwright test
+  artifacts:
+    when: always
+    paths:
+      - playwright-report/
+    expire_in: 7 days
 ```
 
 ## Feeding CI Failures Back to Agents
