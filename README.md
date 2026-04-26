@@ -367,9 +367,10 @@ Agentic-PDLC-Workflow/
 │   ├── documentation-and-adrs/        #   Ship
 │   ├── shipping-and-launch/           #   Ship
 │   └── using-agent-skills/            #   Meta: how to use this pack
-├── scripts/                           # 5 Jira bridge scripts (Python)
+├── scripts/                           # 6 Jira bridge scripts (Python)
 │   ├── create_jira_ticket.py
 │   ├── create_design_review_ticket.py
+│   ├── create_pr.py
 │   ├── fetch_todo_ticket.py
 │   ├── transition_ticket.py
 │   └── create_bug_ticket.py
@@ -379,7 +380,9 @@ Agentic-PDLC-Workflow/
 ├── .claude/commands/                  # 8 slash commands
 ├── .github/workflows/                 # CI/CD workflows
 │   └── ai-pr-review.yml               #   Automated PR review
-└── docs/                              # Setup guides per tool
+├── docs/                              # Setup guides and team docs
+│   ├── team-collaboration.md          #   Team sizes, conflict prevention, permissions
+│   └── environment-variables.md       #   Complete env var reference
 ```
 
 ---
@@ -431,6 +434,12 @@ The `jira-auto-worker` skill reads this config and uses the appropriate API. Fal
 
 ### What's the difference between `/map` and `/spec`?
 `/map` is for existing projects — it analyzes the codebase and creates `.planning/CONTEXT.md`. `/spec` is for any project — it writes the product requirements document (`SPEC.md`).
+
+### How do I configure my team to work together?
+See [docs/team-collaboration.md](docs/team-collaboration.md) for team sizes, conflict prevention, permission matrix, and best practices.
+
+### Where can I find all environment variables?
+See [docs/environment-variables.md](docs/environment-variables.md) for the complete list of Jira, Git, CI/CD, and optional integrations.
 
 ---
 
