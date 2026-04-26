@@ -155,6 +155,16 @@ Direct, thoughtful, slightly provocative. You're a sharp thinking partner, not a
 
 Read `examples.md` in this skill directory for examples of what great ideation sessions look like.
 
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "Skip ideation, just build the first idea" | The first idea is rarely the best one. Divergent thinking surfaces options you'd otherwise miss. |
+| "I don't need to ask questions, I already know what to build" | Unvalidated assumptions are the #1 killer of good products. Ask before building. |
+| "20+ ideas is better than 5-8" | Quantity without quality creates decision paralysis. 5-8 well-considered variations beat 20 shallow ones. |
+| "Skip the 'Not Doing' list" | Without explicit trade-offs, scope creep is inevitable. Saying no to good ideas is how you focus. |
+| "Just save the output, no need for user confirmation" | Saving without confirmation risks committing to a direction the user hasn't approved. Always confirm. |
+
 ## Red Flags
 
 - Generating 20+ shallow variations instead of 5-8 considered ones

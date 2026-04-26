@@ -181,3 +181,26 @@ Not every task needs every skill. A bug fix might only need: `debugging-and-erro
 | Ship | documentation-and-adrs | Document the why, not just the what |
 | Ship | deprecation-and-migration | Manage sunsetting and migration of old systems |
 | Ship | shipping-and-launch | Pre-launch checklist, monitoring, rollback plan |
+
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "Skip skill discovery, just start coding" | Skills encode processes that prevent common mistakes. Skipping them leads to rework. |
+| "This is simple, no spec needed" | Every non-trivial task needs a spec. Complexity is often underestimated. |
+| "Skip verification, it looks right" | "Looks right" is never sufficient. Verification proves it works. |
+| "I'll skip the design phase, just build it" | Building without design leads to inconsistent UI and multiple rework cycles. |
+| "Skip context loading, I know what to do" | Without context, you risk violating constraints you didn't know existed. |
+| "Just do it, no need for a skill" | The most common failure mode is making wrong assumptions and running with them unchecked. |
+
+## Verification
+
+After completing any task:
+
+- [ ] The correct skill was identified and followed
+- [ ] Assumptions were surfaced before implementation
+- [ ] Confusion was managed actively (not ignored)
+- [ ] Pushback was provided when warranted (not sycophancy)
+- [ ] Simplicity was enforced (not overcomplicated)
+- [ ] Scope discipline was maintained (only touched what was asked)
+- [ ] Verification passed with evidence (not just "looks right")

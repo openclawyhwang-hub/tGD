@@ -18,3 +18,13 @@ description: Ruthless Test-Driven Development with a Two-Stage Quality Gate. Cod
 ## Verification
 
 You succeed when terminal logs prove the test failed first, then passed, and code survives the Quality Gates.
+
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "Skip the failing test, I know the code works" | Without a failing test first, you can't prove the test actually validates the feature. |
+| "Skip Gate 2 (DRY/YAGNI), it's just a small feature" | Small features compound. Technical debt from skipping DRY/YAGNI checks multiplies across the codebase. |
+| "The test passes, no need to refactor" | Refactoring after green ensures the code is clean and maintainable, not just functional. |
+| "Gate failed, but I'll just patch it instead of deleting" | Patching a failed gate creates fragile code. Delete and restart — it's faster than debugging bad architecture. |
+| "I'll add tests later" | Tests written after implementation are always incomplete and biased toward the happy path. Write first. |

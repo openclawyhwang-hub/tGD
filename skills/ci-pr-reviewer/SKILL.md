@@ -20,6 +20,6 @@ description: Automated PR Auditor that posts comments on PRs (GitHub/GitLab/Bitb
      - Bitbucket: Bitbucket API
    - If perfect, output "LGTM".
 
-## Rationalization
+## Common Rationalizations
 
 - "I will fix the typo." -> Rebuttal: NO. You are an auditor in CI. Post a comment, do NOT edit files.

@@ -20,3 +20,13 @@ description: Breaks down requirements into atomic tasks, estimates Story Points,
 ## Verification
 
 You succeed ONLY when `.planning/ROADMAP.md` is created AND the terminal confirms all tasks have been successfully pushed to Jira via the Python script. Each UI task should reference DESIGN_SPEC.md and design-tokens.md in its acceptance criteria.
+
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "Skip Jira sync, just write ROADMAP.md" | Without Jira tickets, agents can't fetch and execute tasks. ROADMAP.md alone is useless for automation. |
+| "Make tasks too big (8+ hours)" | Large tasks are harder to review, test, and rollback. Keep them at 2-4 hours max. |
+| "Skip design reference in UI tasks" | Without design references, developers won't know which tokens to use. Inconsistent UI results. |
+| "Estimate all tasks as 1 SP" | Underestimating hides complexity. Be honest — if it's complex, give it 3 SP. |
+| "Skip human approval of ROADMAP.md" | Without human approval, tasks might miss requirements or have wrong priorities. Always confirm. |

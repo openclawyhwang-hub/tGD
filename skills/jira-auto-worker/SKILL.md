@@ -55,3 +55,13 @@ description: Background worker that fetches a Jira ticket, works in an isolated 
 ## Verification
 
 Code is pushed to remote, worktree is deleted, and Jira status is updated.
+
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "Skip context check, I know what to do" | Skipping CONTEXT.md risks violating backward compatibility rules and injection point constraints. |
+| "Skip worktree isolation, just work on main" | Working on main risks breaking the build for everyone. Isolation is non-negotiable. |
+| "Skip self-healing, just retry 10 times" | Retrying without creating a Bug ticket wastes time. After 3 failures, escalate. |
+| "Skip PR creation, just push to main" | Pushing to main without a PR bypasses the review process. Every change needs review. |
+| "Skip worktree cleanup, leave it for later" | Orphaned worktrees consume disk space and create confusion. Clean up immediately. |
