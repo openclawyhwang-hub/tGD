@@ -67,27 +67,6 @@ Skills also activate automatically based on what you're doing — designing an A
 
 ## Quick Start
 
-### 5-Minute Quick Start
-
-```bash
-# 1. Clone the repo
-git clone https://github.com/openclawyhwang-hub/Agentic-PDLC-Workflow.git
-
-# 2. Install in Claude Code
-/plugin marketplace add addyosmani/agent-skills
-/plugin install agent-skills@addy-agent-skills
-
-# 3. Start your first workflow
-> /spec "I want to build a user login feature"
-> /plan
-> /build
-```
-
-> **SSH errors?** The marketplace clones repos via SSH. If you don't have SSH keys set up on GitHub, either [add your SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) or switch to HTTPS for fetches only:
-> ```bash
-> git config --global url."https://github.com/".insteadOf "git@github.com:"
-> ```
-
 <details>
 <summary><b>Claude Code (recommended)</b></summary>
 
@@ -230,7 +209,7 @@ Skills are plain Markdown - they work with any agent that accepts system prompts
 
 ## All 26 Skills
 
-The commands above are the entry points. Under the hood, they activate these 25 skills — each one a structured workflow with steps, verification gates, and anti-rationalization tables. You can also reference any skill directly.
+The commands above are the entry points. Under the hood, they activate these 26 skills — each one a structured workflow with steps, verification gates, and anti-rationalization tables. You can also reference any skill directly.
 
 ### Define - Clarify what to build
 
