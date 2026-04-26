@@ -7,7 +7,9 @@ description: Generates UI designs from specs with context-aware design system ad
 
 ## Overview
 
-Transform approved specifications into visual designs that respect existing company design systems. This skill ensures new UI designs are visually consistent with established brand guidelines, design tokens, and Figma libraries — not generic "AI aesthetic" output.
+Transform approved specifications into visual designs that respect existing company design systems. This skill ensures new UI designs are visually consistent with established brand guidelines, design tokens, and design libraries — not generic "AI aesthetic" output.
+
+**Supports multiple design tools:** Figma MCP, Stitch MCP, or HTML/CSS fallback.
 
 ## When to Use
 
@@ -207,22 +209,25 @@ After design context is collected, understand the full scope:
 
 Create visual designs for every screen identified in Phase 1.
 
-#### Design Principles
+**Choose one design tool based on your setup:**
 
-- **Follow existing design tokens** — Every color, font, spacing value must come from design-tokens.md
-- **Data-first hierarchy** — Most important information is visually dominant
-- **Tonal sectioning** — Use background color shifts, not lines, to separate sections
-- **Premium restraint** — No generic "AI aesthetic" (purple gradients, excessive rounded corners, stock card grids)
-- **Responsive by default** — Mobile-first, then expand to tablet and desktop
-- **Accessible** — WCAG 2.1 AA contrast, keyboard navigation, screen reader compatible
+| Tool | When to Use | Required | Output |
+|------|-------------|----------|--------|
+| **Figma MCP** (推薦) | 團隊專案、已有 Figma | `FIGMA_ACCESS_TOKEN` | Figma file + screenshots |
+| **Stitch** | 快速原型、個人開發 | `STITCH_API_KEY` | Stitch screens + screenshots |
+| **HTML/CSS** | 無設計工具 | 無 | HTML prototype + screenshots |
 
-#### Output Format
+#### Option A: Figma MCP (推薦)
 
-For each screen, produce:
-
-1. **Figma design** — The actual design file
-2. **Screenshot** — PNG preview for Jira attachment
-3. **Design notes** — Brief explanation of key decisions
+1. Read `skills/figma-generate-design/SKILL.md` for full workflow
+2. Follow Figma skill's required workflow:
+   - Step 1: Understand the deliverable
+   - Step 2: Collect component keys, variables, and styles
+   - Step 3: Create wrapper frame
+   - Step 4: Build each section incrementally
+   - Step 5: Validate with screenshots
+3. Use `design-tokens.md` for all color, spacing, and typography values
+4. Export screenshots for each screen (mobile + desktop)
 
 **Screenshot naming convention:**
 ```
@@ -232,6 +237,29 @@ screenshots/
   task-list-mobile.png
   task-list-desktop.png
 ```
+
+#### Option B: Stitch MCP
+
+1. Use Stitch MCP tool to generate screens from spec
+2. Reference `design-tokens.md` for all design values
+3. Generate both mobile and desktop variants
+4. Export screenshots for Jira attachment
+
+#### Option C: HTML/CSS Fallback
+
+1. Generate HTML/CSS prototype for each screen
+2. Use `design-tokens.md` for all colors, fonts, spacing
+3. Save as `screenshots/{screen-name}.html`
+4. Take screenshots for Jira attachment
+
+#### Design Principles (All Options)
+
+- **Follow existing design tokens** — Every color, font, spacing value must come from design-tokens.md
+- **Data-first hierarchy** — Most important information is visually dominant
+- **Tonal sectioning** — Use background color shifts, not lines, to separate sections
+- **Premium restraint** — No generic "AI aesthetic" (purple gradients, excessive rounded corners, stock card grids)
+- **Responsive by default** — Mobile-first, then expand to tablet and desktop
+- **Accessible** — WCAG 2.1 AA contrast, keyboard navigation, screen reader compatible
 
 #### Avoiding the AI Aesthetic
 
@@ -261,7 +289,8 @@ Execute the Python script:
 ```bash
 python scripts/create_design_review_ticket.py \
   --consolidated \
-  --figma "https://figma.com/file/ABC123" \
+  --design-tool "figma" \  # or "stitch" or "html"
+  --design-url "https://figma.com/file/ABC123" \  # or Stitch project URL or HTML path
   --screenshots-dir "screenshots/" \
   --tokens "design-tokens.md"
 ```
@@ -272,7 +301,8 @@ python scripts/create_design_review_ticket.py \
 # Design Review: All Screens
 
 ## Design File
-🔗 Figma: https://figma.com/file/ABC123
+🔗 Design Tool: Figma / Stitch / HTML
+🔗 Link: https://figma.com/file/ABC123 (or appropriate URL)
 
 ## Screenshots
 📎 homepage-desktop.png
@@ -317,7 +347,10 @@ python scripts/create_design_review_ticket.py \
 
 When human sets status to "Design Approved":
 
-1. **Extract DESIGN_SPEC.md** — Convert Figma designs into implementation-ready specifications
+1. **Extract DESIGN_SPEC.md** — Convert designs into implementation-ready specifications
+   - For Figma: Use `figma-implement-design` skill to extract component specs
+   - For Stitch: Export screen specs from Stitch project
+   - For HTML: Extract component structure from HTML prototype
 2. **Include in DESIGN_SPEC.md:**
    - Screen-by-screen layout descriptions
    - Component hierarchy (parent → children)
