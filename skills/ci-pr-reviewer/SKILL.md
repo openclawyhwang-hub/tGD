@@ -22,4 +22,19 @@ description: Automated PR Auditor that posts comments on PRs (GitHub/GitLab/Bitb
 
 ## Common Rationalizations
 
-- "I will fix the typo." -> Rebuttal: NO. You are an auditor in CI. Post a comment, do NOT edit files.
+| Rationalization | Reality |
+|---|---|
+| "I will fix the typo" | NO. You are an auditor in CI. Post a comment, do NOT edit files. |
+| "Skip the review, the code looks fine" | Every PR needs review, even if it looks fine. Subtle bugs hide in plain sight. |
+| "Post feedback in Slack instead of PR" | PR comments are traceable and linked to the code. Slack messages get lost. |
+
+## Verification
+
+After completing a PR review:
+
+- [ ] Git diff was analyzed
+- [ ] Feedback posted as PR comments (not Slack/email)
+- [ ] Each comment cites filename and line number
+- [ ] OWASP vulnerabilities checked
+- [ ] Test coverage cheating checked
+- [ ] If perfect, "LGTM" output recorded
