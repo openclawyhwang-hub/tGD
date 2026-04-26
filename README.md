@@ -441,6 +441,39 @@ See [docs/team-collaboration.md](docs/team-collaboration.md) for team sizes, con
 ### Where can I find all environment variables?
 See [docs/environment-variables.md](docs/environment-variables.md) for the complete list of Jira, Git, CI/CD, and optional integrations.
 
+### How do I add a new skill?
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the skill format specification. Each skill needs a `SKILL.md` file with Overview, When to Use, Process, Common Rationalizations, Red Flags, and Verification sections.
+
+### Can I use this without Jira?
+Yes. `/plan` still generates task breakdowns and `.planning/ROADMAP.md`, just without Jira ticket sync.
+
+### How do I handle merge conflicts between multiple agents?
+Each agent works in its own git worktree on a dedicated branch. If two PRs touch the same file, the second PR must rebase on main and resolve conflicts. See [docs/team-collaboration.md](docs/team-collaboration.md) for conflict prevention strategies.
+
+### What team size is this workflow designed for?
+The workflow scales from 1-person teams to 20+ person teams. See [docs/team-collaboration.md](docs/team-collaboration.md) for configuration recommendations by team size.
+
+### How do I debug a skill that's not triggering?
+1. Check that the skill file exists at `skills/<name>/SKILL.md`
+2. Verify the skill name in the frontmatter matches the directory name
+3. Check that the slash command in `.claude/commands/` references the correct skill
+4. Run `/spec` or `/build` to see if the skill loads
+
+### Can I customize the review policy?
+Yes. The review policy is configurable per project. See your project's `workflow.yaml` for review policy settings (human, agent, or auto).
+
+### How do I handle a task that fails 3 times?
+The agent automatically creates a Bug ticket in Jira and marks the original ticket as "Blocked." A human must investigate and fix the root cause before the agent can resume.
+
+### What's the recommended PR size?
+Keep PRs under 100 lines for faster review. Smaller PRs are easier to review, test, and rollback if needed.
+
+### How do I set up CI/CD?
+See the `ci-cd-and-automation` skill for GitHub Actions and GitLab CI examples. The skill covers quality gate pipelines, feature flags, and failure feedback loops.
+
+### Can I use this with other AI tools?
+Yes. Skills are plain Markdown and work with any agent that accepts system prompts. See the setup guides for Cursor, Gemini CLI, Windsurf, OpenCode, Copilot, and Kiro.
+
 ---
 
 ## Contributing
