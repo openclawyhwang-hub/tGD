@@ -3,6 +3,5 @@
 
 jira:
   url: "https://<your-domain>.atlassian.net"
-  email: ""
-  api_token: ""  # Store in env var: JIRA_API_TOKEN
+  token: ""  # Store in env var: JIRA_TOKEN
   project_key: ""
