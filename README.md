@@ -9,23 +9,6 @@
 
 > 🚀 28 skills • 8 commands • 7 development phases • Multi-agent support
 
-## Table of Contents
-
-- [What This Is](#what-this-is)
-- [Workflow Overview](#workflow-overview)
-  - [Phase Flow](#phase-flow)
-  - [Phase Details](#phase-details)
-- [Commands](#commands)
-- [Quick Start](#quick-start)
-- [All 28 Skills](#all-28-skills)
-- [Agent Personas](#agent-personas)
-- [Reference Checklists](#reference-checklists)
-- [Project Structure](#project-structure)
-- [Why Agent Skills?](#why-agent-skills)
-- [How Skills Work](#how-skills-work)
-- [FAQ](#faq)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## What This Is
 
