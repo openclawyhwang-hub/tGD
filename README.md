@@ -18,6 +18,7 @@
 - [Workflow Overview](#workflow-overview)
   - [Phase Flow](#phase-flow)
   - [Phase Details](#phase-details)
+  - [Phase Details (Expanded)](#phase-details-expanded)
 - [All 26 Skills](#all-26-skills)
 - [Agent Personas](#agent-personas)
 - [Reference Checklists](#reference-checklists)
@@ -129,6 +130,20 @@ Discovery    PRD+Design Jira     Feature   Proof     Review    Release
 ```
 
 ### Phase Details
+
+| Phase | Trigger | Who | Skills | Input | Output | Gate |
+|-------|---------|-----|--------|-------|--------|------|
+| **📍 CONTEXT**<br><small>Existing Projects Only</small> | `/map` | 👤 Human runs `/map` → 🤖 Agent analyzes | `context-mapping` | Existing codebase | `.planning/CONTEXT.md` — Architecture summary, key entities, constraints | Context file must exist before DEFINE |
+| **🎯 DEFINE** | `/spec` | 👤 Human provides idea → 🤖 Agent writes spec | `idea-refine`, `spec-driven-development`, `rapid-prototyping` | Vague idea or feature request | `SPEC.md` — Product requirements, objectives, commands, structure, code style, testing, boundaries | 👤 Human reviews and approves. If UI needed → `design-system` triggers: Figma → Jira review → DESIGN_SPEC.md |
+| **📋 PLAN** | `/plan` | 🤖 Agent breaks down → 👤 Human approves | `planning-and-task-breakdown`, `jira-auto-worker` | `SPEC.md` + `DESIGN_SPEC.md` (if UI) + `design-tokens.md` (if UI) + `.planning/CONTEXT.md` (if exists) | Jira tickets with acceptance criteria, dependency ordering, story points | 👤 Human approves task breakdown |
+| **🔨 BUILD** | `/build` | 🤖 Agent implements (fully automated) | `incremental-implementation`, `test-driven-development`, `context-engineering`, `source-driven-development`, `frontend-ui-engineering`, `api-and-interface-design` | Jira ticket + context map | Feature branch with implementation, unit tests, and commit | Tests pass, code compiles, feature works |
+| **✅ VERIFY** | `/test` | 🤖 Agent tests (fully automated) | `browser-testing-with-devtools`, `debugging-and-error-recovery` | Feature branch | Test results, browser runtime data, debugging logs | All tests pass, no runtime errors |
+| **🔍 REVIEW** | `/review` | 🤖 CI auto-review → 🤖 AI five-axis review → 👤 Human approves | `code-review-and-quality`, `code-simplification`, `security-and-hardening`, `performance-optimization`, `ci-pr-reviewer` | Pull request | Review comments, security scan, performance analysis | Five-axis review passes → 👤 Human approves PR |
+| **🚀 SHIP** | `/ship` | 🤖 Agent deploys → 👤 Human monitors | `git-workflow-and-versioning`, `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs`, `shipping-and-launch` | Approved PR | Production deployment, ADRs, monitoring setup, rollback plan | Pre-launch checklist complete, feature flags configured, 👤 Human confirms deployment |
+
+---
+
+### Phase Details (Expanded)
 
 #### 📍 CONTEXT (Existing Projects Only)
 | Item | Details |
