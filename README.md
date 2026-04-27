@@ -39,17 +39,17 @@ A complete development workflow that guides AI agents through every phase — fr
 
 ```
 📍 CONTEXT ──▶ 🎯 DEFINE ──▶ 📋 PLAN ──▶ 🔨 BUILD ──▶ ✅ VERIFY ──▶ 🔍 REVIEW ──▶ 🚀 SHIP
-   │              │              │            │            │              │              │
-   ▼              ▼              ▼            ▼            ▼              ▼              ▼
-Brownfield    Spec         Tasks        Code         Tests        PR           Deploy
-Discovery     PRD+Design   Jira         Feature      Proof        Review       Release
+   │              │             │           │            │             │              │
+   ▼              ▼             ▼           ▼            ▼             ▼              ▼
+   Brownfield     Spec          Tasks       Code         Tests         PR             Deploy
+   Discovery      PRD+Design    Jira        Feature      Proof         Review         Release
 ```
 
 ### Phase Details
 
 | Phase | Trigger | Who | Skills | Input | Output | Gate |
 |-------|---------|-----|--------|-------|--------|------|
-| CONTEXT (Existing Projects Only) | `/map` | 👤 Human runs `/map` → 🤖 Agent analyzes | `context-mapping` | Existing codebase | `.planning/CONTEXT.md` — Architecture summary, key entities, constraints | Context file must exist before DEFINE |
+| CONTEXT | `/map` | 👤 Human runs `/map` → 🤖 Agent analyzes | `context-mapping` | Existing codebase | `.planning/CONTEXT.md` — Architecture summary, key entities, constraints | Context file must exist before DEFINE |
 | DEFINE | `/spec` | 👤 Human provides idea → 🤖 Agent writes spec | `idea-refine`, `spec-driven-development`, `rapid-prototyping` | Vague idea or feature request | `SPEC.md` — Product requirements, objectives, commands, structure, code style, testing, boundaries | 👤 Human reviews and approves. If UI needed → `design-system` triggers: Figma → Jira review → DESIGN_SPEC.md |
 | PLAN | `/plan` | 🤖 Agent breaks down → 👤 Human approves | `planning-and-task-breakdown`, `jira-auto-worker` | `SPEC.md` + `DESIGN_SPEC.md` (if UI) + `design-tokens.md` (if UI) + `.planning/CONTEXT.md` (if exists) | Jira tickets with acceptance criteria, dependency ordering, story points | 👤 Human approves task breakdown |
 | BUILD | `/build` | 🤖 Agent implements (fully automated) | `incremental-implementation`, `test-driven-development`, `context-engineering`, `source-driven-development`, `frontend-ui-engineering`, `api-and-interface-design` | Jira ticket + context map | Feature branch with implementation, unit tests, and commit | Tests pass, code compiles, feature works |
