@@ -1,24 +1,23 @@
 # Agentic PDLC Workflow
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Skills](https://img.shields.io/badge/Skills-26-orange.svg)](#all-26-skills)
+[![Skills](https://img.shields.io/badge/Skills-28-orange.svg)](#all-28-skills)
 [![Commands](https://img.shields.io/badge/Commands-8-blue.svg)](#commands)
 [![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)]()
 
 **Production-grade engineering skills with Jira integration for AI coding agents.**
 
-> 🚀 26 skills • 8 commands • 7 development phases • Multi-agent support
+> 🚀 28 skills • 8 commands • 7 development phases • Multi-agent support
 
 ## Table of Contents
 
 - [What This Is](#what-this-is)
-- [Human vs Agent Roles](#human-vs-agent-roles)
 - [Commands](#commands)
 - [Quick Start](#quick-start)
 - [Workflow Overview](#workflow-overview)
   - [Phase Flow](#phase-flow)
   - [Phase Details](#phase-details)
-- [All 26 Skills](#all-26-skills)
+- [All 28 Skills](#all-28-skills)
 - [Agent Personas](#agent-personas)
 - [Reference Checklists](#reference-checklists)
 - [How Skills Work](#how-skills-work)
@@ -58,23 +57,11 @@ Skills also activate automatically based on what you're doing — designing an A
 <details>
 <summary><b>Claude Code (recommended)</b></summary>
 
-**Marketplace install:**
-
-```
-/plugin marketplace add addyosmani/agent-skills
-/plugin install agent-skills@addy-agent-skills
-```
-
-> **SSH errors?** The marketplace clones repos via SSH. If you don't have SSH keys set up on GitHub, either [add your SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) or switch to HTTPS for fetches only:
-> ```bash
-> git config --global url."https://github.com/".insteadOf "git@github.com:"
-> ```
-
 **Local / development:**
 
 ```bash
 git clone https://github.com/openclawyhwang-hub/Agentic-PDLC-Workflow.git
-claude --plugin-dir /path/to/agent-skills
+claude --plugin-dir /path/to/Agentic-PDLC-Workflow
 ```
 
 </details>
@@ -158,7 +145,9 @@ The commands above are the entry points. Under the hood, they activate these 26 
 
 | Skill | What It Does | Use When |
 |-------|-------------|----------|
-| [design-system](skills/design-system/SKILL.md) | Generates Figma designs from specs, manages human review workflow via Jira tickets | You have an approved spec and need visual designs before implementation |
+| [design-system](skills/design-system/SKILL.md) | Generates UI designs from specs, manages human review workflow via Jira tickets | You have an approved spec and need visual designs before implementation |
+| [figma-generate-design](skills/figma-generate-design/SKILL.md) | Build/update screens in Figma using design system components, variables, and styles | You have Figma MCP connected and need Figma designs |
+| [figma-use](skills/figma-use/SKILL.md) | Core Figma MCP operations, component patterns, variable bindings | You need to write to Figma files (dependency for figma-generate-design) |
 
 ### Plan - Break it down
 
@@ -275,11 +264,13 @@ Every skill follows a consistent anatomy:
 
 ```
 Agentic-PDLC-Workflow/
-├── skills/                            # 26 skills (SKILL.md per directory)
+├── skills/                            # 28 skills (SKILL.md per directory)
 │   ├── idea-refine/                   #   Define
 │   ├── spec-driven-development/       #   Define
 │   ├── rapid-prototyping/             #   Define - Quick prototyping
-│   ├── design-system/                 #   Design - Figma + human review
+│   ├── design-system/                 #   Design - Figma/Stitch/HTML + human review
+│   ├── figma-generate-design/         #   Design - Figma MCP screen generation
+│   ├── figma-use/                     #   Design - Figma MCP core operations
 │   ├── planning-and-task-breakdown/   #   Plan
 │   ├── jira-auto-worker/              #   Plan - Background worker
 │   ├── context-mapping/               #   Context - Brownfield analysis
@@ -292,7 +283,7 @@ Agentic-PDLC-Workflow/
 │   ├── browser-testing-with-devtools/ #   Verify
 │   ├── debugging-and-error-recovery/  #   Verify
 │   ├── code-review-and-quality/       #   Review
-│   ├── code-simplification/          #   Review
+│   ├── code-simplification/           #   Review
 │   ├── security-and-hardening/        #   Review
 │   ├── performance-optimization/      #   Review
 │   ├── ci-pr-reviewer/                #   Review - Automated PR audit
@@ -378,9 +369,6 @@ See [docs/environment-variables.md](docs/environment-variables.md) for the compl
 
 ### How do I add a new skill?
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the skill format specification. Each skill needs a `SKILL.md` file with Overview, When to Use, Process, Common Rationalizations, Red Flags, and Verification sections.
-
-### Can I use this without Jira?
-Yes. `/plan` still generates task breakdowns and `.planning/ROADMAP.md`, just without Jira ticket sync.
 
 ### How do I handle merge conflicts between multiple agents?
 Each agent works in its own git worktree on a dedicated branch. If two PRs touch the same file, the second PR must rebase on main and resolve conflicts. See [docs/team-collaboration.md](docs/team-collaboration.md) for conflict prevention strategies.
