@@ -124,8 +124,8 @@ Skills are plain Markdown - they work with any agent that accepts system prompts
 [CONTEXT] ──▶ DEFINE ──▶ PLAN ──▶ BUILD ──▶ VERIFY ──▶ REVIEW ──▶ SHIP
    │            │          │        │         │          │         │
    ▼            ▼          ▼        ▼         ▼          ▼         ▼
- Brownfield   Spec     Tasks    Code      Tests     PR       Deploy
- Discovery    PRD+Design   Jira     Feature   Proof     Review   Release
+Brownfield   Spec       Tasks    Code      Tests     PR        Deploy
+Discovery    PRD+Design Jira     Feature   Proof     Review    Release
 ```
 
 ### Phase Details
