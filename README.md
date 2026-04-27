@@ -247,6 +247,16 @@ Every skill follows a consistent anatomy:
 
 ```
 Agentic-PDLC-Workflow/
+├── external/                          # External environment (GitHub synced)
+│   ├── README.md
+│   ├── jira/config.yaml               # Jira Cloud config
+│   ├── wiki/config.yaml               # Public wiki config
+│   └── github/config.yaml             # GitHub PR config
+├── internal/                          # Internal environment (GitLab internal branch only)
+│   ├── README.md
+│   ├── jira/config.yaml               # Internal Jira Server config
+│   ├── wiki/config.yaml               # Internal PRD Wiki config
+│   └── gitlab/config.yaml             # Internal GitLab PR config
 ├── skills/                            # 28 skills (SKILL.md per directory)
 │   ├── idea-refine/                   #   Define
 │   ├── spec-driven-development/       #   Define
