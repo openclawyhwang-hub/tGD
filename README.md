@@ -286,13 +286,14 @@ Agentic-PDLC-Workflow/
 │   ├── documentation-and-adrs/        #   Ship
 │   ├── shipping-and-launch/           #   Ship
 │   └── using-agent-skills/            #   Meta: how to use this pack
-├── scripts/                           # 6 Jira bridge scripts (Python)
-│   ├── create_jira_ticket.py
-│   ├── create_design_review_ticket.py
-│   ├── create_pr.py
-│   ├── fetch_todo_ticket.py
-│   ├── transition_ticket.py
-│   └── create_bug_ticket.py
+├── scripts/                           # Jira integration scripts (Python)
+│   ├── jira_client.py                 #   Unified Jira client (Bearer Token)
+│   ├── detect_env.py                  #   Environment detection
+│   ├── load_config.py                 #   Config loader
+│   ├── create_ticket.py               #   Create task
+│   ├── create_bug.py                  #   Create bug
+│   ├── fetch_todo.py                  #   Fetch To Do ticket
+│   └── transition.py                  #   Transition ticket status
 ├── agents/                            # 3 specialist personas
 ├── references/                        # 5 supplementary checklists
 ├── hooks/                             # Session lifecycle hooks
@@ -330,11 +331,11 @@ Run `/plan` to break the spec into atomic tasks and create Jira tickets. After h
 See the Python scripts in `scripts/` directory. Set these environment variables:
 ```bash
 export JIRA_URL="https://your-domain.atlassian.net"
-export JIRA_USER="your-email@domain.com"
-export JIRA_API_TOKEN="your-api-token"
+export JIRA_TOKEN="your-bearer-token"
 export JIRA_PROJECT_KEY="PROJ"
-export JIRA_AI_ACCOUNT_ID="jira-ai-user-id"
 ```
+
+Or fill in `external/jira/config.yaml` (for GitHub) or `internal/jira/config.yaml` (for GitLab).
 
 ### Can I use this without Jira?
 Yes. `/plan` still generates task breakdowns and `.planning/ROADMAP.md`, just without Jira ticket sync.
