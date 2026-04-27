@@ -12,17 +12,17 @@
 ## Table of Contents
 
 - [What This Is](#what-this-is)
-- [Commands](#commands)
-- [Quick Start](#quick-start)
 - [Workflow Overview](#workflow-overview)
   - [Phase Flow](#phase-flow)
   - [Phase Details](#phase-details)
+- [Commands](#commands)
+- [Quick Start](#quick-start)
 - [All 28 Skills](#all-28-skills)
 - [Agent Personas](#agent-personas)
 - [Reference Checklists](#reference-checklists)
-- [How Skills Work](#how-skills-work)
 - [Project Structure](#project-structure)
 - [Why Agent Skills?](#why-agent-skills)
+- [How Skills Work](#how-skills-work)
 - [FAQ](#faq)
 - [Contributing](#contributing)
 - [License](#license)
@@ -30,6 +30,32 @@
 ## What This Is
 
 A complete development workflow that guides AI agents through every phase — from understanding requirements to deploying to production. Each phase has clear inputs, outputs, and quality gates so agents don't skip critical steps.
+
+---
+
+## Workflow Overview
+
+### Phase Flow
+
+```
+📍 CONTEXT ──▶ 🎯 DEFINE ──▶ 📋 PLAN ──▶ 🔨 BUILD ──▶ ✅ VERIFY ──▶ 🔍 REVIEW ──▶ 🚀 SHIP
+   │              │              │            │            │              │              │
+   ▼              ▼              ▼            ▼            ▼              ▼              ▼
+Brownfield    Spec         Tasks        Code         Tests        PR           Deploy
+Discovery     PRD+Design   Jira         Feature      Proof        Review       Release
+```
+
+### Phase Details
+
+| Phase | Trigger | Who | Skills | Input | Output | Gate |
+|-------|---------|-----|--------|-------|--------|------|
+| **📍 CONTEXT**<br><small>Existing Projects Only</small> | `/map` | 👤 Human runs `/map` → 🤖 Agent analyzes | `context-mapping` | Existing codebase | `.planning/CONTEXT.md` — Architecture summary, key entities, constraints | Context file must exist before DEFINE |
+| **🎯 DEFINE** | `/spec` | 👤 Human provides idea → 🤖 Agent writes spec | `idea-refine`, `spec-driven-development`, `rapid-prototyping` | Vague idea or feature request | `SPEC.md` — Product requirements, objectives, commands, structure, code style, testing, boundaries | 👤 Human reviews and approves. If UI needed → `design-system` triggers: Figma → Jira review → DESIGN_SPEC.md |
+| **📋 PLAN** | `/plan` | 🤖 Agent breaks down → 👤 Human approves | `planning-and-task-breakdown`, `jira-auto-worker` | `SPEC.md` + `DESIGN_SPEC.md` (if UI) + `design-tokens.md` (if UI) + `.planning/CONTEXT.md` (if exists) | Jira tickets with acceptance criteria, dependency ordering, story points | 👤 Human approves task breakdown |
+| **🔨 BUILD** | `/build` | 🤖 Agent implements (fully automated) | `incremental-implementation`, `test-driven-development`, `context-engineering`, `source-driven-development`, `frontend-ui-engineering`, `api-and-interface-design` | Jira ticket + context map | Feature branch with implementation, unit tests, and commit | Tests pass, code compiles, feature works |
+| **✅ VERIFY** | `/test` | 🤖 Agent tests (fully automated) | `browser-testing-with-devtools`, `debugging-and-error-recovery` | Feature branch | Test results, browser runtime data, debugging logs | All tests pass, no runtime errors |
+| **🔍 REVIEW** | `/review` | 🤖 CI auto-review → 🤖 AI five-axis review → 👤 Human approves | `code-review-and-quality`, `code-simplification`, `security-and-hardening`, `performance-optimization`, `ci-pr-reviewer` | Pull request | Review comments, security scan, performance analysis | Five-axis review passes → 👤 Human approves PR |
+| **🚀 SHIP** | `/ship` | 🤖 Agent deploys → 👤 Human monitors | `git-workflow-and-versioning`, `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs`, `shipping-and-launch` | Approved PR | Production deployment, ADRs, monitoring setup, rollback plan | Pre-launch checklist complete, feature flags configured, 👤 Human confirms deployment |
 
 ---
 
@@ -100,32 +126,6 @@ Use agent definitions from `agents/` as Copilot personas and skill content in `.
 <summary><b>Codex / Other Agents</b></summary>
 Skills are plain Markdown - they work with any agent that accepts system prompts or instruction files. See [docs/getting-started.md](docs/getting-started.md).
 </details>
-
----
-
-## Workflow Overview
-
-### Phase Flow
-
-```
-📍 CONTEXT ──▶ 🎯 DEFINE ──▶ 📋 PLAN ──▶ 🔨 BUILD ──▶ ✅ VERIFY ──▶ 🔍 REVIEW ──▶ 🚀 SHIP
-   │              │             │           │            │             │             │
-   ▼              ▼             ▼           ▼            ▼             ▼             ▼
-   Brownfield     Spec          Tasks       Code         Tests         PR            Deploy
-   Discovery      PRD+Design    Jira        Feature      Proof         Review        Release
-```
-
-### Phase Details
-
-| Phase | Trigger | Who | Skills | Input | Output | Gate |
-|-------|---------|-----|--------|-------|--------|------|
-| 📍 Context | `/map` | 👤 Human runs `/map` → 🤖 Agent analyzes | `context-mapping` | Existing codebase | `.planning/CONTEXT.md` — Architecture summary, key entities, constraints | Context file must exist before DEFINE |
-| 🎯 DEFINE | `/spec` | 👤 Human provides idea → 🤖 Agent writes spec | `idea-refine`, `spec-driven-development`, `rapid-prototyping` | Vague idea or feature request | `SPEC.md` — Product requirements, objectives, commands, structure, code style, testing, boundaries | 👤 Human reviews and approves. If UI needed → `design-system` triggers: Figma → Jira review → DESIGN_SPEC.md |
-| 📋 PLAN | `/plan` | 🤖 Agent breaks down → 👤 Human approves | `planning-and-task-breakdown`, `jira-auto-worker` | `SPEC.md` + `DESIGN_SPEC.md` (if UI) + `design-tokens.md` (if UI) + `.planning/CONTEXT.md` (if exists) | Jira tickets with acceptance criteria, dependency ordering, story points | 👤 Human approves task breakdown |
-| 🔨 BUILD | `/build` | 🤖 Agent implements (fully automated) | `incremental-implementation`, `test-driven-development`, `context-engineering`, `source-driven-development`, `frontend-ui-engineering`, `api-and-interface-design` | Jira ticket + context map | Feature branch with implementation, unit tests, and commit | Tests pass, code compiles, feature works |
-| ✅ VERIFY | `/test` | 🤖 Agent tests (fully automated) | `browser-testing-with-devtools`, `debugging-and-error-recovery` | Feature branch | Test results, browser runtime data, debugging logs | All tests pass, no runtime errors |
-| 🔍 REVIEW | `/review` | 🤖 CI auto-review → 🤖 AI five-axis review → 👤 Human approves | `code-review-and-quality`, `code-simplification`, `security-and-hardening`, `performance-optimization`, `ci-pr-reviewer` | Pull request | Review comments, security scan, performance analysis | Five-axis review passes → 👤 Human approves PR |
-| 🚀 SHIP | `/ship` | 🤖 Agent deploys → 👤 Human monitors | `git-workflow-and-versioning`, `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs`, `shipping-and-launch` | Approved PR | Production deployment, ADRs, monitoring setup, rollback plan | Pre-launch checklist complete, feature flags configured, 👤 Human confirms deployment |
 
 ---
 
