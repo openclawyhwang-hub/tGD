@@ -1,0 +1,8 @@
+# External Jira Configuration (Jira Cloud)
+# Copy to config.yaml and fill in your values
+
+jira:
+  url: "https://<your-domain>.atlassian.net"
+  email: ""
+  api_token: ""  # Store in env var: JIRA_API_TOKEN
+  project_key: ""

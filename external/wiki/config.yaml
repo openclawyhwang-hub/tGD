@@ -1,0 +1,7 @@
+# External Wiki Configuration
+# Copy to config.yaml and fill in your values
+
+wiki:
+  url: ""
+  token: ""  # Store in env var
+  space_key: ""

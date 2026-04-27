@@ -5,3 +5,10 @@ node_modules/
 *.log
 .claude/.simplify-ignore-cache/
 .claude/sdd-cache/
+
+# Internal environment (GitLab only — never push to GitHub)
+internal/
+
+# Python
+__pycache__/
+*.pyc

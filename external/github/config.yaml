@@ -1,0 +1,8 @@
+# External GitHub Configuration
+# Copy to config.yaml and fill in your values
+
+github:
+  owner: ""
+  repo: ""
+  token: ""  # Store in env var: GITHUB_TOKEN
+  base_branch: "main"
