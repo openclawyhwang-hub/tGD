@@ -124,7 +124,6 @@ Skills are plain Markdown - they work with any agent that accepts system prompts
 📍 CONTEXT ──▶ 🎯 DEFINE ──▶ 📋 PLAN ──▶ 🔨 BUILD ──▶ ✅ VERIFY ──▶ 🔍 REVIEW ──▶ 🚀 SHIP
    │              │              │            │            │              │              │
    ▼              ▼              ▼            ▼            ▼              ▼              ▼
-分析程式碼      寫規格        分解任務      實作程式碼    測試驗證      審查PR       部署上線
 Brownfield    Spec         Tasks        Code         Tests        PR           Deploy
 Discovery     PRD+Design   Jira         Feature      Proof        Review       Release
 ```
