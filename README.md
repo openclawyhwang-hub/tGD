@@ -129,9 +129,9 @@ Skills are plain Markdown - they work with any agent that accepts system prompts
 
 ---
 
-## All 26 Skills
+## All 28 Skills
 
-The commands above are the entry points. Under the hood, they activate these 26 skills — each one a structured workflow with steps, verification gates, and anti-rationalization tables. You can also reference any skill directly.
+The commands above are the entry points. Under the hood, they activate these 28 skills — each one a structured workflow with steps, verification gates, and anti-rationalization tables. You can also reference any skill directly.
 
 ### Define - Clarify what to build
 
