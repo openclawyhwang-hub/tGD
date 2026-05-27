@@ -5,12 +5,12 @@
 Skills encode the workflows, quality gates, and best practices that senior engineers use when building software. These ones are packaged so AI agents follow them consistently across every phase of development.
 
 ```
-  DEFINE          PLAN           BUILD          VERIFY         REVIEW          REVIEW          SHIP
- ┌──────┐      ┌──────┐      ┌──────┐      ┌──────┐      ┌──────┐      ┌──────┐      ┌──────┐
- │ Idea │ ───▶ │ Spec │ ───▶ │ Code │ ───▶ │ Test │ ───▶ │  QA  │ ───▶ │ Clean│ ───▶ │  Go  │
- │Refine│      │  PRD │      │ Impl │      │Debug │      │ Gate │      │ Code │      │ Live │
- └──────┘      └──────┘      └──────┘      └──────┘      └──────┘      └──────┘      └──────┘
-/tgd-define    /tgd-plan      /tgd-develop    /tgd-verify   /tgd-review    /tgd-simplify  /tgd-ship
+     MAP           DEFINE          PLAN           BUILD          VERIFY         REVIEW          REVIEW          SHIP
+ ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐
+ │ Existing │→ │ Spec     │→ │ Plan     │→ │ Code     │→ │ Test     │→ │ QA Gate  │→ │ Clean    │→ │ Go       │
+ │ Context  │  │ PRD      │  │ Tasks    │  │ Impl     │  │ Debug    │  │ Review   │  │ Code     │  │ Live     │
+ └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘
+/tgd-map      /tgd-define    /tgd-plan      /tgd-develop   /tgd-verify   /tgd-review    /tgd-simplify /tgd-ship
 ```
 
 ---
@@ -21,6 +21,7 @@ Skills encode the workflows, quality gates, and best practices that senior engin
 
 || What you're doing | Command | Key principle |
 ||-------------------|---------|---------------|
+|| Understand the project | `/tgd-map` | Context before changes |
 || Define what to build | `/tgd-define` | Spec before code |
 || Plan how to build it | `/tgd-plan` | Small, atomic tasks |
 || Build incrementally | `/tgd-develop` | One slice at a time |

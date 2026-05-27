@@ -31,17 +31,18 @@ The agent should automatically map user intent to skills:
 
 ### Lifecycle Commands
 
-This project supports 7 lifecycle commands that work across **OpenCode**, **Claude Code**, **Gemini CLI**, and **Codex CLI**:
+This project supports 8 lifecycle commands that work across **OpenCode**, **Claude Code**, **Gemini CLI**, and **Codex CLI**. Each command is a full pipeline — invoking it runs the phase's entry skill plus all relevant conditional skills:
 
-|| Command | Phase | What It Does |
-||---------|-------|-------------|
-|| `/tgd-define` | Define | Write PRD before code (`spec-driven-development`) |
-|| `/tgd-plan` | Plan | Decompose into verifiable tasks (`planning-and-task-breakdown`) |
-|| `/tgd-develop` | Build | Implement thin vertical slices (`incremental-implementation`) |
-|| `/tgd-verify` | Verify | Red-Green-Refactor, test pyramid (`test-driven-development`) |
-|| `/tgd-review` | Review | Five-axis code review (`code-review-and-quality`) |
-|| `/tgd-simplify` | Review | Reduce complexity (`code-simplification`) |
-|| `/tgd-ship` | Ship | Pre-launch checklist, staged rollout (`shipping-and-launch`) |
+|| Command | Phase | Pipeline |
+||---------|-------|----------|
+|| `/tgd-map` | Map | `context-engineering` — scan and understand the existing project |
+|| `/tgd-define` | Define | `interview-me` → `idea-refine` → `spec-driven-development` |
+|| `/tgd-plan` | Plan | `planning-and-task-breakdown` |
+|| `/tgd-develop` | Build | `context-engineering` → `source-driven-development` → `incremental-implementation` → `test-driven-development` (+ `frontend-ui-engineering`, `api-and-interface-design`, `doubt-driven-development` when relevant) |
+|| `/tgd-verify` | Verify | `debugging-and-error-recovery` → `test-driven-development` (+ `browser-testing-with-devtools` when relevant) |
+|| `/tgd-review` | Review | `code-review-and-quality` → `code-simplification` (+ `security-and-hardening`, `performance-optimization` when relevant) |
+|| `/tgd-simplify` | Review | `code-simplification` |
+|| `/tgd-ship` | Ship | `git-workflow-and-versioning` → `shipping-and-launch` (+ `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs` when relevant) |
 
 Each command invokes the corresponding skill. Commands are defined in `.claude/commands/`, `.gemini/commands/`, and `.opencode/commands/` for native support on each platform.
 

@@ -4,4 +4,4 @@ description: Plan — decompose specs into small, verifiable tasks with acceptan
 
 Run the `planning-and-task-breakdown` skill. Decompose the specification into small, verifiable tasks with acceptance criteria and dependency ordering.
 
-Each task should be implementable in isolation with clear success criteria.
+Each task should be implementable in isolation with clear success criteria. Order tasks by dependencies so they can be executed in the right sequence.

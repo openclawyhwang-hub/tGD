@@ -1,7 +1,14 @@
 ---
-description: Test — prove it works with Red-Green-Refactor and the test pyramid
+description: Verify — prove it works with debugging and test pyramid
 ---
 
-Run the `test-driven-development` skill. Write failing tests first, then make them pass. Follow the test pyramid (80% unit, 15% integration, 5% E2E). Use DAMP over DRY.
+Run the `debugging-and-error-recovery` skill. This is the VERIFY phase — the full pipeline is:
 
-If testing a browser-based feature, also run `browser-testing-with-devtools`.
+**Core flow:**
+1. `debugging-and-error-recovery` — five-step triage: reproduce → localize → reduce → fix → guard
+2. `test-driven-development` — verify with the test pyramid (80% unit, 15% integration, 5% E2E)
+
+**Conditional (apply when relevant):**
+- Browser-based? → `browser-testing-with-devtools`
+
+Verify that the feature works correctly before proceeding to review. Tests are proof — "seems right" is never sufficient.

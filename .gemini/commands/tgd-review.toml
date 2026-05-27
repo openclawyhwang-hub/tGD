@@ -1,16 +1,9 @@
-description = "Conduct a five-axis code review — correctness, readability, architecture, security, performance"
+description = "Review — five-axis code review before merging any change"
 
 prompt = """
-Invoke the code-review-and-quality skill.
+Run the code-review-and-quality skill. This is the REVIEW phase. Full pipeline:
+1. code-review-and-quality — five-axis review, severity labels, ~100 lines
+2. code-simplification — reduce complexity while preserving exact behavior
 
-Review the current changes (staged or recent commits) across all five axes:
-
-1. **Correctness** — Does it match the spec? Edge cases handled? Tests adequate?
-2. **Readability** — Clear names? Straightforward logic? Well-organized?
-3. **Architecture** — Follows existing patterns? Clean boundaries? Right abstraction level?
-4. **Security** — Input validated? Secrets safe? Auth checked? (Use security-and-hardening skill)
-5. **Performance** — No N+1 queries? No unbounded ops? (Use performance-optimization skill)
-
-Categorize findings as Critical, Important, or Suggestion.
-Output a structured review with specific file:line references and fix recommendations.
+Conditional: security-and-hardening, performance-optimization.
 """
