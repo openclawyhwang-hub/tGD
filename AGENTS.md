@@ -33,15 +33,15 @@ The agent should automatically map user intent to skills:
 
 This project supports 7 lifecycle commands that work across **OpenCode**, **Claude Code**, **Gemini CLI**, and **Codex CLI**:
 
-| Command | Phase | What It Does |
-|---------|-------|-------------|
-| `/spec` | Define | Write PRD before code (`spec-driven-development`) |
-| `/plan` | Plan | Decompose into verifiable tasks (`planning-and-task-breakdown`) |
-| `/build` | Build | Implement thin vertical slices (`incremental-implementation`) |
-| `/test` | Verify | Red-Green-Refactor, test pyramid (`test-driven-development`) |
-| `/review` | Review | Five-axis code review (`code-review-and-quality`) |
-| `/code-simplify` | Review | Reduce complexity (`code-simplification`) |
-| `/ship` | Ship | Pre-launch checklist, staged rollout (`shipping-and-launch`) |
+|| Command | Phase | What It Does |
+||---------|-------|-------------|
+|| `/tgd-spec` | Define | Write PRD before code (`spec-driven-development`) |
+|| `/tgd-plan` | Plan | Decompose into verifiable tasks (`planning-and-task-breakdown`) |
+|| `/tgd-build` | Build | Implement thin vertical slices (`incremental-implementation`) |
+|| `/tgd-test` | Verify | Red-Green-Refactor, test pyramid (`test-driven-development`) |
+|| `/tgd-review` | Review | Five-axis code review (`code-review-and-quality`) |
+|| `/tgd-code-simplify` | Review | Reduce complexity (`code-simplification`) |
+|| `/tgd-ship` | Ship | Pre-launch checklist, staged rollout (`shipping-and-launch`) |
 
 Each command invokes the corresponding skill. Commands are defined in `.claude/commands/`, `.gemini/commands/`, and `.opencode/commands/` for native support on each platform.
 

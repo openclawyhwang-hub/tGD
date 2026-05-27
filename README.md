@@ -10,7 +10,7 @@ Skills encode the workflows, quality gates, and best practices that senior engin
  │ Idea │ ───▶ │ Spec │ ───▶ │ Code │ ───▶ │ Test │ ───▶ │  QA  │ ───▶ │  Go  │
  │Refine│      │  PRD │      │ Impl │      │Debug │      │ Gate │      │ Live │
  └──────┘      └──────┘      └──────┘      └──────┘      └──────┘      └──────┘
-  /spec          /plan          /build        /test         /review       /ship
+/tgd-spec      /tgd-plan      /tgd-build      /tgd-test     /tgd-review    /tgd-ship
 ```
 
 ---
@@ -19,15 +19,15 @@ Skills encode the workflows, quality gates, and best practices that senior engin
 
 7 slash commands that map to the development lifecycle. Each one activates the right skills automatically.
 
-| What you're doing | Command | Key principle |
-|-------------------|---------|---------------|
-| Define what to build | `/spec` | Spec before code |
-| Plan how to build it | `/plan` | Small, atomic tasks |
-| Build incrementally | `/build` | One slice at a time |
-| Prove it works | `/test` | Tests are proof |
-| Review before merge | `/review` | Improve code health |
-| Simplify the code | `/code-simplify` | Clarity over cleverness |
-| Ship to production | `/ship` | Faster is safer |
+|| What you're doing | Command | Key principle |
+||-------------------|---------|---------------|
+|| Define what to build | `/tgd-spec` | Spec before code |
+|| Plan how to build it | `/tgd-plan` | Small, atomic tasks |
+|| Build incrementally | `/tgd-build` | One slice at a time |
+|| Prove it works | `/tgd-test` | Tests are proof |
+|| Review before merge | `/tgd-review` | Improve code health |
+|| Simplify the code | `/tgd-code-simplify` | Clarity over cleverness |
+|| Ship to production | `/tgd-ship` | Faster is safer |
 
 Skills also activate automatically based on what you're doing — designing an API triggers `api-and-interface-design`, building UI triggers `frontend-ui-engineering`, and so on.
 
