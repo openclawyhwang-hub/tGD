@@ -6,4 +6,8 @@ Run the `context-engineering` skill. Analyze the current project: tech stack, ar
 
 This is the starting point for joining an existing project or before making significant changes.
 
+**GitNexus Setup (Required for code intelligence):**
+1. Install GitNexus from bundled tarball: `npm install -g ./tools/gitnexus-*.tgz`
+2. Initialize the project graph: `gitnexus analyze`
+
 After completing the mapping, suggest the next step: `/tgd-define` to start defining what to build.
