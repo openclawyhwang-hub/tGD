@@ -35,12 +35,12 @@ This project supports 7 lifecycle commands that work across **OpenCode**, **Clau
 
 || Command | Phase | What It Does |
 ||---------|-------|-------------|
-|| `/tgd-spec` | Define | Write PRD before code (`spec-driven-development`) |
+|| `/tgd-define` | Define | Write PRD before code (`spec-driven-development`) |
 || `/tgd-plan` | Plan | Decompose into verifiable tasks (`planning-and-task-breakdown`) |
-|| `/tgd-build` | Build | Implement thin vertical slices (`incremental-implementation`) |
-|| `/tgd-test` | Verify | Red-Green-Refactor, test pyramid (`test-driven-development`) |
+|| `/tgd-develop` | Build | Implement thin vertical slices (`incremental-implementation`) |
+|| `/tgd-verify` | Verify | Red-Green-Refactor, test pyramid (`test-driven-development`) |
 || `/tgd-review` | Review | Five-axis code review (`code-review-and-quality`) |
-|| `/tgd-code-simplify` | Review | Reduce complexity (`code-simplification`) |
+|| `/tgd-simplify` | Review | Reduce complexity (`code-simplification`) |
 || `/tgd-ship` | Ship | Pre-launch checklist, staged rollout (`shipping-and-launch`) |
 
 Each command invokes the corresponding skill. Commands are defined in `.claude/commands/`, `.gemini/commands/`, and `.opencode/commands/` for native support on each platform.

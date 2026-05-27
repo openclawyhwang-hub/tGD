@@ -5,12 +5,12 @@
 Skills encode the workflows, quality gates, and best practices that senior engineers use when building software. These ones are packaged so AI agents follow them consistently across every phase of development.
 
 ```
-  DEFINE          PLAN           BUILD          VERIFY         REVIEW          SHIP
- ┌──────┐      ┌──────┐      ┌──────┐      ┌──────┐      ┌──────┐      ┌──────┐
- │ Idea │ ───▶ │ Spec │ ───▶ │ Code │ ───▶ │ Test │ ───▶ │  QA  │ ───▶ │  Go  │
- │Refine│      │  PRD │      │ Impl │      │Debug │      │ Gate │      │ Live │
- └──────┘      └──────┘      └──────┘      └──────┘      └──────┘      └──────┘
-/tgd-spec      /tgd-plan      /tgd-build      /tgd-test     /tgd-review    /tgd-ship
+  DEFINE          PLAN           BUILD          VERIFY         REVIEW          REVIEW          SHIP
+ ┌──────┐      ┌──────┐      ┌──────┐      ┌──────┐      ┌──────┐      ┌──────┐      ┌──────┐
+ │ Idea │ ───▶ │ Spec │ ───▶ │ Code │ ───▶ │ Test │ ───▶ │  QA  │ ───▶ │ Clean│ ───▶ │  Go  │
+ │Refine│      │  PRD │      │ Impl │      │Debug │      │ Gate │      │ Code │      │ Live │
+ └──────┘      └──────┘      └──────┘      └──────┘      └──────┘      └──────┘      └──────┘
+/tgd-define    /tgd-plan      /tgd-develop    /tgd-verify   /tgd-review    /tgd-simplify  /tgd-ship
 ```
 
 ---
@@ -21,12 +21,12 @@ Skills encode the workflows, quality gates, and best practices that senior engin
 
 || What you're doing | Command | Key principle |
 ||-------------------|---------|---------------|
-|| Define what to build | `/tgd-spec` | Spec before code |
+|| Define what to build | `/tgd-define` | Spec before code |
 || Plan how to build it | `/tgd-plan` | Small, atomic tasks |
-|| Build incrementally | `/tgd-build` | One slice at a time |
-|| Prove it works | `/tgd-test` | Tests are proof |
+|| Build incrementally | `/tgd-develop` | One slice at a time |
+|| Prove it works | `/tgd-verify` | Tests are proof |
 || Review before merge | `/tgd-review` | Improve code health |
-|| Simplify the code | `/tgd-code-simplify` | Clarity over cleverness |
+|| Simplify the code | `/tgd-simplify` | Clarity over cleverness |
 || Ship to production | `/tgd-ship` | Faster is safer |
 
 Skills also activate automatically based on what you're doing — designing an API triggers `api-and-interface-design`, building UI triggers `frontend-ui-engineering`, and so on.
