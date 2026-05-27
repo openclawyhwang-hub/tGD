@@ -5,9 +5,9 @@ Run the context-engineering skill. Analyze the current project: tech stack, arch
 
 This is the starting point for joining an existing project or before making significant changes.
 
-**GitNexus Setup (Required for code intelligence):**
-1. Install GitNexus from bundled tarball: `npm install -g ./tools/gitnexus-*.tgz`
-2. Initialize the project graph: `gitnexus analyze`
+**CodeGraph Setup (Zero-dependency, offline):**
+1. Extract bundled binary: `tar -xzf tools/codegraph-linux-x64.tar.gz -C tools/`
+2. Initialize the project graph: `./tools/codegraph-linux-x64/codegraph init -i`
 
 After completing the mapping, suggest the next step: `/tgd-define` to start defining what to build.
 """

@@ -8,7 +8,7 @@ Skills encode the workflows, quality gates, and best practices that senior engin
      MAP           DEFINE          PLAN           BUILD          VERIFY         REVIEW          REVIEW          SHIP
  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐
  │ Context  │→ │ Spec     │→ │ Plan     │→ │ Code     │→ │ Test     │→ │ QA Gate  │→ │ Clean    │→ │ Go       │
- │+GitNexus │  │ PRD      │  │ Tasks    │  │ Impl     │  │ Debug    │  │ Review   │  │ Code     │  │ Live     │
+ │+CodeGraph│  │ PRD      │  │ Tasks    │  │ Impl     │  │ Debug    │  │ Review   │  │ Code     │  │ Live     │
  └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘
 /tgd-map      /tgd-define    /tgd-plan      /tgd-develop   /tgd-verify   /tgd-review    /tgd-simplify /tgd-ship
 ```
