@@ -17,7 +17,7 @@ Skills encode the workflows, quality gates, and best practices that senior engin
 
 ## Commands
 
-7 slash commands that map to the development lifecycle. Each one activates the right skills automatically.
+8 slash commands that map to the development lifecycle. Each one activates the right skills automatically.
 
 || What you're doing | Command | Key principle |
 ||-------------------|---------|---------------|
@@ -247,8 +247,10 @@ Every skill follows a consistent anatomy:
 
 ## Project Structure
 
+### Repository Layout
+
 ```
-agent-skills/
+tGD/
 ├── skills/                            # 23 skills (22 lifecycle + 1 meta)
 │   ├── interview-me/                  #   Define
 │   ├── idea-refine/                   #   Define
@@ -276,11 +278,37 @@ agent-skills/
 ├── agents/                            # 3 specialist personas
 ├── references/                        # 4 supplementary checklists
 ├── hooks/                             # Session lifecycle hooks
-├── .claude/commands/                  # 7 slash commands (Claude Code)
-├── .gemini/commands/                  # 7 slash commands (Gemini CLI)
+├── .claude/commands/                  # 8 slash commands (Claude Code)
+├── .gemini/commands/                  # 8 slash commands (Gemini CLI)
+├── .opencode/commands/                # 8 slash commands (OpenCode)
 ├── .opencode/skills/                  # OpenCode skill mappings
 ├── scripts/                           # Validation scripts
+├── tools/                             # Offline tool bundles (CodeGraph)
 └── docs/                              # Setup guides per tool
+```
+
+### Target Project Output (after running the lifecycle)
+
+```
+my-project/
+├── .codegraph → tGD/map/.codegraph    # symlink (CodeGraph DB)
+├── AGENTS.md                          # Skill routing rules
+├── README.md                          # Project docs
+│
+├── tGD/                               # All tGD lifecycle artifacts
+│   ├── map/
+│   │   ├── CONTEXT.md                 # Project context & tech stack
+│   │   └── .codegraph/codegraph.db    # CodeGraph SQLite index
+│   ├── define/
+│   │   ├── specs/<feature>.md         # Feature specifications
+│   │   └── decisions/ADR-*.md         # Architecture Decision Records
+│   ├── plan/
+│   │   └── PLAN.md                    # Implementation plan
+│   └── ship/
+│       └── CHANGELOG.md               # Version changelog
+│
+├── src/                               # Application source code
+└── tests/                             # Test files
 ```
 
 ---
