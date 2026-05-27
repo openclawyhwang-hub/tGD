@@ -44,6 +44,8 @@ This project supports 8 lifecycle commands that work across **OpenCode**, **Clau
 || `/tgd-simplify` | Review | `code-simplification` |
 || `/tgd-ship` | Ship | `git-workflow-and-versioning` → `shipping-and-launch` (+ `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs` when relevant) |
 
+Each command runs its entry skill plus all relevant conditional skills, then suggests the next step in the pipeline.
+
 Each command invokes the corresponding skill. Commands are defined in `.claude/commands/`, `.gemini/commands/`, and `.opencode/commands/` for native support on each platform.
 
 If the user types a command, invoke it. If they use natural language instead, map their intent to the right skill automatically (implicit commands).

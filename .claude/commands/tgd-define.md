@@ -2,14 +2,13 @@
 description: Start spec-driven development — write a structured specification before writing code
 ---
 
-Invoke the agent-skills:spec-driven-development skill.
+Run the `spec-driven-development` skill. Write a PRD (product requirements document) covering objectives, commands, structure, code style, testing strategy, and boundaries before any code is written.
 
-Begin by understanding what the user wants to build. Ask clarifying questions about:
-1. The objective and target users
-2. Core features and acceptance criteria
-3. Tech stack preferences and constraints
-4. Known boundaries (what to always do, ask first about, and never do)
+This is the DEFINE phase. The full pipeline is:
+1. `interview-me` — if the ask is underspecified, extract what the user actually wants
+2. `idea-refine` — if the concept is vague, stress-test and expand options
+3. `spec-driven-development` — write the structured spec
 
-Then generate a structured spec covering all six core areas: objective, commands, project structure, code style, testing strategy, and boundaries.
+Use `interview-me` first if the ask is underspecified. Use `idea-refine` if you have a rough concept but it's not concrete yet.
 
-Save the spec as SPEC.md in the project root and confirm with the user before proceeding.
+After completing the spec, suggest the next step: `/tgd-plan` to decompose it into tasks.

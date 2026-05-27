@@ -6,4 +6,6 @@ Run the code-review-and-quality skill. This is the REVIEW phase. Full pipeline:
 2. code-simplification — reduce complexity while preserving exact behavior
 
 Conditional: security-and-hardening, performance-optimization.
+
+After completing the review, suggest the next step: `/tgd-ship` to deploy.
 """

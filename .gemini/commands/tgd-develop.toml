@@ -8,4 +8,6 @@ Run the incremental-implementation skill. This is the BUILD phase. Full pipeline
 4. test-driven-development — verify each slice with Red-Green-Refactor
 
 Conditional: frontend-ui-engineering (UI work), api-and-interface-design (API work), doubt-driven-development (high-stakes decisions).
+
+After completing the implementation, suggest the next step: `/tgd-verify` to prove it works.
 """

@@ -1,8 +1,8 @@
 ---
-description: Develop — implement one thin vertical slice at a time with feature flags
+description: Develop — implement one thin vertical slice at a time
 ---
 
-Run the `incremental-implementation` skill. This is the BUILD phase — the full pipeline is:
+Run the `incremental-implementation` skill. This is the BUILD phase. The full pipeline is:
 
 **Core flow:**
 1. `context-engineering` — load the right spec sections and source files for the current task
@@ -16,3 +16,5 @@ Run the `incremental-implementation` skill. This is the BUILD phase — the full
 - High-stakes decision? → `doubt-driven-development`
 
 Use feature flags for incomplete features, safe defaults, and rollback-friendly changes.
+
+After completing the implementation, suggest the next step: `/tgd-verify` to prove it works.

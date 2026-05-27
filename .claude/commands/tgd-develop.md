@@ -1,18 +1,20 @@
 ---
-description: Implement the next task incrementally — build, test, verify, commit
+description: Develop — implement one thin vertical slice at a time
 ---
 
-Invoke the agent-skills:incremental-implementation skill alongside agent-skills:test-driven-development.
+Run the `incremental-implementation` skill. This is the BUILD phase. The full pipeline is:
 
-Pick the next pending task from the plan. For each task:
+**Core flow:**
+1. `context-engineering` — load the right spec sections and source files for the current task
+2. `source-driven-development` — ground framework decisions in official docs, verify and cite
+3. `incremental-implementation` — build thin vertical slices: implement → test → verify → commit
+4. `test-driven-development` — Red-Green-Refactor, write tests alongside each slice
 
-1. Read the task's acceptance criteria
-2. Load relevant context (existing code, patterns, types)
-3. Write a failing test for the expected behavior (RED)
-4. Implement the minimum code to pass the test (GREEN)
-5. Run the full test suite to check for regressions
-6. Run the build to verify compilation
-7. Commit with a descriptive message
-8. Mark the task complete and move to the next one
+**Conditional (apply when relevant):**
+- Touching UI? → `frontend-ui-engineering`
+- Designing APIs? → `api-and-interface-design`
+- High-stakes decision? → `doubt-driven-development`
 
-If any step fails, follow the agent-skills:debugging-and-error-recovery skill.
+Use feature flags for incomplete features, safe defaults, and rollback-friendly changes.
+
+After completing the implementation, suggest the next step: `/tgd-verify` to prove it works.

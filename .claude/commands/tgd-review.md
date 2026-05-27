@@ -1,16 +1,17 @@
 ---
-description: Conduct a five-axis code review — correctness, readability, architecture, security, performance
+description: Review — five-axis code review before merging any change
 ---
 
-Invoke the agent-skills:code-review-and-quality skill.
+Run the `code-review-and-quality` skill. This is the REVIEW phase. The full pipeline is:
 
-Review the current changes (staged or recent commits) across all five axes:
+**Core flow:**
+1. `code-review-and-quality` — five-axis review with severity labels (Nit/Optional/FYI), ~100 lines per change
+2. `code-simplification` — apply Chesterton's Fence, reduce complexity while preserving exact behavior
 
-1. **Correctness** — Does it match the spec? Edge cases handled? Tests adequate?
-2. **Readability** — Clear names? Straightforward logic? Well-organized?
-3. **Architecture** — Follows existing patterns? Clean boundaries? Right abstraction level?
-4. **Security** — Input validated? Secrets safe? Auth checked? (Use security-and-hardening skill)
-5. **Performance** — No N+1 queries? No unbounded ops? (Use performance-optimization skill)
+**Conditional (apply when relevant):**
+- Security concerns? → `security-and-hardening`
+- Performance concerns? → `performance-optimization`
 
-Categorize findings as Critical, Important, or Suggestion.
-Output a structured review with specific file:line references and fix recommendations.
+Improve code health before merge. If the change is larger than ~100 lines, split it into smaller reviews.
+
+After completing the review, suggest the next step: `/tgd-ship` to deploy.

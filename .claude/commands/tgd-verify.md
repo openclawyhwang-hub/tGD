@@ -1,19 +1,16 @@
 ---
-description: Run TDD workflow — write failing tests, implement, verify. For bugs, use the Prove-It pattern.
+description: Verify — prove it works with debugging and test pyramid
 ---
 
-Invoke the agent-skills:test-driven-development skill.
+Run the `debugging-and-error-recovery` skill. This is the VERIFY phase. The full pipeline is:
 
-For new features:
-1. Write tests that describe the expected behavior (they should FAIL)
-2. Implement the code to make them pass
-3. Refactor while keeping tests green
+**Core flow:**
+1. `debugging-and-error-recovery` — five-step triage: reproduce → localize → reduce → fix → guard
+2. `test-driven-development` — verify with the test pyramid (80% unit, 15% integration, 5% E2E)
 
-For bug fixes (Prove-It pattern):
-1. Write a test that reproduces the bug (must FAIL)
-2. Confirm the test fails
-3. Implement the fix
-4. Confirm the test passes
-5. Run the full test suite for regressions
+**Conditional (apply when relevant):**
+- Browser-based? → `browser-testing-with-devtools`
 
-For browser-related issues, also invoke agent-skills:browser-testing-with-devtools to verify with Chrome DevTools MCP.
+Verify that the feature works correctly before proceeding to review. Tests are proof — "seems right" is never sufficient.
+
+After completing verification, suggest the next step: `/tgd-review` to review the code quality.

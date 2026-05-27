@@ -7,3 +7,5 @@ Run the `context-engineering` skill. Analyze the current project: tech stack, ar
 This is the starting point for joining an existing project or before making significant changes. Do not start defining or building until you understand the current context.
 
 Output a summary of the project structure and key findings.
+
+After completing the mapping, suggest the next step: `/tgd-define` to start defining what to build.

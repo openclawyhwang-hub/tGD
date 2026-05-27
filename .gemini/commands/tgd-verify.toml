@@ -6,4 +6,6 @@ Run the debugging-and-error-recovery skill. This is the VERIFY phase. Full pipel
 2. test-driven-development — verify with the test pyramid
 
 Conditional: browser-testing-with-devtools (browser-based features).
+
+After completing verification, suggest the next step: `/tgd-review` to review the code quality.
 """

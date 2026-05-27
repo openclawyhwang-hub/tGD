@@ -8,4 +8,6 @@ Run the shipping-and-launch skill. This is the SHIP phase. Full pipeline:
 Conditional: ci-cd-and-automation (pipeline work), deprecation-and-migration (removing old systems), documentation-and-adrs (new architecture or APIs).
 
 Faster is safer. Deploy in stages, confirm monitoring, have a rollback plan.
+
+After completing the ship process, confirm that monitoring is active and the rollback plan is documented.
 """

@@ -1,16 +1,9 @@
 ---
-description: Break work into small verifiable tasks with acceptance criteria and dependency ordering
+description: Plan — decompose specs into small, verifiable tasks with acceptance criteria
 ---
 
-Invoke the agent-skills:planning-and-task-breakdown skill.
+Run the `planning-and-task-breakdown` skill. Decompose the specification into small, verifiable tasks with acceptance criteria and dependency ordering.
 
-Read the existing spec (SPEC.md or equivalent) and the relevant codebase sections. Then:
+Each task should be implementable in isolation with clear success criteria. Order tasks by dependencies so they can be executed in the right sequence.
 
-1. Enter plan mode — read only, no code changes
-2. Identify the dependency graph between components
-3. Slice work vertically (one complete path per task, not horizontal layers)
-4. Write tasks with acceptance criteria and verification steps
-5. Add checkpoints between phases
-6. Present the plan for human review
-
-Save the plan to tasks/plan.md and task list to tasks/todo.md.
+After completing the plan, suggest the next step: `/tgd-develop` to start implementing the first slice.
