@@ -29,11 +29,25 @@ The agent should automatically map user intent to skills:
 - API or interface design → `api-and-interface-design`
 - UI work → `frontend-ui-engineering`
 
-### Lifecycle Mapping (Implicit Commands)
+### Lifecycle Commands
 
-OpenCode does not support slash commands like `/spec` or `/plan`.
+This project supports 7 lifecycle commands that work across **OpenCode**, **Claude Code**, **Gemini CLI**, and **Codex CLI**:
 
-Instead, the agent must internally follow this lifecycle:
+| Command | Phase | What It Does |
+|---------|-------|-------------|
+| `/spec` | Define | Write PRD before code (`spec-driven-development`) |
+| `/plan` | Plan | Decompose into verifiable tasks (`planning-and-task-breakdown`) |
+| `/build` | Build | Implement thin vertical slices (`incremental-implementation`) |
+| `/test` | Verify | Red-Green-Refactor, test pyramid (`test-driven-development`) |
+| `/review` | Review | Five-axis code review (`code-review-and-quality`) |
+| `/code-simplify` | Review | Reduce complexity (`code-simplification`) |
+| `/ship` | Ship | Pre-launch checklist, staged rollout (`shipping-and-launch`) |
+
+Each command invokes the corresponding skill. Commands are defined in `.claude/commands/`, `.gemini/commands/`, and `.opencode/commands/` for native support on each platform.
+
+If the user types a command, invoke it. If they use natural language instead, map their intent to the right skill automatically (implicit commands).
+
+### Implicit Lifecycle Mapping
 
 - DEFINE → `spec-driven-development`
 - PLAN → `planning-and-task-breakdown`
