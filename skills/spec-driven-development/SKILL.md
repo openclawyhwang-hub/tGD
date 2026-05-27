@@ -67,7 +67,7 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
    src/lib        → Shared utilities
    tests/         → Unit and integration tests
    e2e/           → End-to-end tests
-   docs/          → Documentation
+   tGD/define/specs/   → Feature specifications
    ```
 
 4. **Code Style** — One real code snippet showing your style beats three paragraphs describing it. Include naming conventions, formatting rules, and examples of good output.
@@ -197,4 +197,4 @@ Before proceeding to implementation, confirm:
 - [ ] The human has reviewed and approved the spec
 - [ ] Success criteria are specific and testable
 - [ ] Boundaries (Always/Ask First/Never) are defined
-- [ ] The spec is saved to a file in the repository
+- [ ] The spec is saved to `tGD/define/specs/<feature>.md`

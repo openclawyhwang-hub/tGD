@@ -9,9 +9,19 @@ This is the starting point for joining an existing project or before making sign
 **CodeGraph Setup (Zero-dependency, offline):**
 1. Extract bundled binary if not present:
    `test -d tools/codegraph-linux-x64 || tar -xzf tools/codegraph-linux-x64.tar.gz -C tools/`
-2. Initialize the project graph:
+2. Ensure output directory exists: `mkdir -p tGD/map`
+3. Create symlink so CodeGraph finds its DB at the expected root path:
+   ```bash
+   rm -rf .codegraph  # remove stale link if any
+   ln -s tGD/map/.codegraph .codegraph
+   ```
+4. Initialize the project graph:
    `./tools/codegraph-linux-x64/codegraph init -i`
-   - This indexes the codebase into a local SQLite graph.
-   - Creates `.codegraph/` directory (auto-synced, gitignored).
+   - This indexes the codebase into a local SQLite graph at `tGD/map/.codegraph/codegraph.db`.
+   - The root `.codegraph` symlink points to `tGD/map/.codegraph/`.
+
+**Outputs:**
+- `CONTEXT.md` — saved to `tGD/map/CONTEXT.md`
+- `.codegraph/codegraph.db` — stored at `tGD/map/.codegraph/codegraph.db` (via symlink)
 
 After completing the mapping, suggest the next step: `/tgd-define` to start defining what to build.
