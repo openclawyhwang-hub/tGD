@@ -21,6 +21,12 @@ Decompose work into small, verifiable tasks with explicit acceptance criteria. G
 
 ## The Planning Process
 
+### Step 0: Feature Name Resolution
+Before planning, determine and validate `<feature-name>`:
+1. **Derive**: Use kebab-case from the user's request (e.g., "User Login" → `user-login`).
+2. **Verify**: Ensure `tGD/<feature-name>/` exists (created by `/tgd-define`). If missing, halt and ask user.
+3. **Lock**: All planning artifacts go into `tGD/<feature-name>/`.
+
 ### Step 1: Enter Plan Mode
 
 Before writing any code, operate in read-only mode:

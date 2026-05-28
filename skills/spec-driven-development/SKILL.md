@@ -23,6 +23,13 @@ Write a structured specification before writing any code. The spec is the shared
 
 Spec-driven development has four phases. Do not advance to the next phase until the current one is validated.
 
+**Step 0: Feature Name Resolution**
+Before writing any content, determine the `<feature-name>`:
+1. Derive a kebab-case slug from the user's request (e.g., "User Login" → `user-login`, "Add Dashboard" → `add-dashboard`).
+2. **Create directory**: `mkdir -p tGD/<feature-name>/`.
+3. **Verify**: If `tGD/<feature-name>/` already exists, use it. If not, the previous step must have created it.
+4. **Lock**: Use this exact `<feature-name>` for all subsequent files (PRD.md, SPEC.md, TASKS.md, etc.).
+
 ```
 SPECIFY ──→ PLAN ──→ TASKS ──→ IMPLEMENT
    │          │        │          │

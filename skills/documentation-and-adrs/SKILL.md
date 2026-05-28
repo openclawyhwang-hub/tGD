@@ -24,6 +24,12 @@ Document decisions, not just code. The most valuable documentation captures the 
 
 ADRs capture the reasoning behind significant technical decisions. They're the highest-value documentation you can write.
 
+### Step 0: Feature Name Validation
+Before writing ADRs, determine `<feature-name>`:
+1. **Derive**: Use kebab-case from the feature (e.g., `user-login`).
+2. **Verify**: Ensure `tGD/<feature-name>/` exists.
+3. **Path**: All ADRs go in `tGD/<feature-name>/decisions/`. If it affects multiple features, use `tGD/shared/decisions/`.
+
 ### When to Write an ADR
 
 - Choosing a framework, library, or major dependency
