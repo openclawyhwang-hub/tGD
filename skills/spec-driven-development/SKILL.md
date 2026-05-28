@@ -30,6 +30,12 @@ Before writing any content, determine the `<feature-name>`:
 3. **Verify**: If `tGD/<feature-name>/` already exists, use it. If not, the previous step must have created it.
 4. **Lock**: Use this exact `<feature-name>` for all subsequent files (PRD.md, SPEC.md, TASKS.md, etc.).
 
+**🌿 Step 0.5: Git Branch Setup**
+1. Check current branch: `git branch --show-current`.
+2. If on `main` or `master`: **Create feature branch** → `git checkout -b feature/<feature-name>`.
+3. If already on a `feature/` branch: Verify it matches `<feature-name>`.
+4. **Rule:** All tGD artifacts and code for this feature MUST be committed to `feature/<feature-name>`.
+
 ```
 SPECIFY ──→ PLAN ──→ TASKS ──→ IMPLEMENT
    │          │        │          │
@@ -206,3 +212,4 @@ Before proceeding to implementation, confirm:
 - [ ] Success criteria are specific and testable
 - [ ] Boundaries (Always/Ask First/Never) are defined
 - [ ] The spec is saved to `tGD/<feature-name>/SPEC.md`
+- [ ] Working branch is `feature/<feature-name>` (not `main`/`master`)

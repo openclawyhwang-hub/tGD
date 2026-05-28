@@ -5,12 +5,12 @@ prompt = """
 - [ ] `tGD/map/CONTEXT.md` exists (or `.codegraph/` is present).
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
 
-
 Run the spec-driven-development skill. This is the DEFINE phase. Full pipeline:
 1. **Feature Name Resolution** — Derive a kebab-case `<feature-name>` from the user's request (e.g., "User Login" → `user-login`). Create `tGD/<feature-name>/` if it doesn't exist.
-2. interview-me — if the ask is underspecified, extract what the user actually wants
-3. idea-refine — if the concept is vague, stress-test and expand options
-4. spec-driven-development — write the structured spec
+2. **🌿 Git Branch Setup** — If on `main`/`master`, create and switch to `feature/<feature-name>` (`git checkout -b feature/user-login`).
+3. interview-me — if the ask is underspecified, extract what the user actually wants
+4. idea-refine — if the concept is vague, stress-test and expand options
+5. spec-driven-development — write the structured spec
 
 After completing the spec, verify the outputs.
 
@@ -18,6 +18,7 @@ After completing the spec, verify the outputs.
 - [ ] `tGD/<feature-name>/` directory exists
 - [ ] `tGD/<feature-name>/PRD.md` exists and is non-empty
 - [ ] `tGD/<feature-name>/SPEC.md` exists and is non-empty
+- [ ] Working branch is `feature/<feature-name>`
 
 If verification passes, suggest the next step: `/tgd-plan` to decompose it into tasks.
 """
