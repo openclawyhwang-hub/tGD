@@ -10,7 +10,8 @@ Run the spec-driven-development skill. This is the DEFINE phase. Full pipeline:
 2. **🌿 Git Branch Setup** — If on `main`/`master`, create and switch to `feature/<feature-name>` (`git checkout -b feature/user-login`).
 3. interview-me — if the ask is underspecified, extract what the user actually wants
 4. idea-refine — if the concept is vague, stress-test and expand options
-5. spec-driven-development — write the structured spec
+5. spec-driven-development — write the structured spec (PRD + SPEC)
+6. **UI Design Gate** — If SPEC has Frontend/Full-stack: fetch or generate design稿 → `DESIGN.md`
 
 After completing the spec, verify the outputs.
 
@@ -19,6 +20,7 @@ After completing the spec, verify the outputs.
 - [ ] `tGD/<feature-name>/PRD.md` exists and is non-empty
 - [ ] `tGD/<feature-name>/SPEC.md` exists and is non-empty
 - [ ] Working branch is `feature/<feature-name>`
+- [ ] If UI feature: `tGD/<feature-name>/DESIGN.md` exists with Component Tree
 
 If verification passes, suggest the next step: `/tgd-plan` to decompose it into tasks.
 """

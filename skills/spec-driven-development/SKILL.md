@@ -166,6 +166,64 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 - Never: [...]
 ```
 
+### Phase 1.5: UI Design Gate (if Frontend or Full-stack)
+
+After writing SPEC.md, check the **Feature Type** field.
+
+**If Frontend or Full-stack is checked:**
+
+1. **Check design稿來源** in SPEC.md:
+   - If `[Figma URL]` → Use `web_extract` to fetch design稿截圖 + 元件結構
+   - If `[截圖/PDF]` → Use `vision_analyze` to extract UI elements, colors, layout
+   - If `[None]` → **STOP. Ask user:** "有現成設計稿嗎？沒有我先產 wireframe。"
+
+2. **If no design exists → Generate wireframe:**
+   - Use `excalidraw` skill to create hand-drawn style wireframe
+   - Or use `sketch` skill to create HTML mockup
+   - Save to `tGD/<feature-name>/design/` directory
+
+3. **Extract from design:**
+   - **Component Tree**: List of UI components and their hierarchy
+   - **Design Tokens**: Colors, fonts, spacing, border-radius
+   - **Responsive Breakpoints**: Mobile / Tablet / Desktop layouts
+   - **Interaction Patterns**: Click handlers, state transitions, animations
+
+4. **Save design reference** to `tGD/<feature-name>/DESIGN.md`:
+   ```markdown
+   # DESIGN: [Feature Name]
+   
+   ## Source
+   - **Type**: [Figma / Wireframe / Mockup]
+   - **URL/Path**: [link or file path]
+   
+   ## Component Tree
+   - Page
+     - Header
+     - LoginForm
+       - InputField × 2
+       - SubmitButton
+     - Footer
+   
+   ## Design Tokens
+   | Token | Value |
+   |-------|-------|
+   | primary-color | #1a73e8 |
+   | border-radius | 8px |
+   | font-family | Inter |
+   
+   ## Responsive
+   | Breakpoint | Layout |
+   |------------|--------|
+   | mobile (<768px) | Stack vertically |
+   | desktop (≥768px) | Side by side |
+   
+   ## Interactions
+   - Submit button: idle → loading → success/error
+   - Error: show toast notification
+   ```
+
+**If Backend only:** Skip this step.
+
 **Reframe instructions as success criteria.** When receiving vague requirements, translate them into concrete conditions:
 
 ```
@@ -251,3 +309,4 @@ Before proceeding to implementation, confirm:
 - [ ] Boundaries (Always/Ask First/Never) are defined
 - [ ] The spec is saved to `tGD/<feature-name>/SPEC.md`
 - [ ] Working branch is `feature/<feature-name>` (not `main`/`master`)
+- [ ] If UI feature: `tGD/<feature-name>/DESIGN.md` exists with Component Tree

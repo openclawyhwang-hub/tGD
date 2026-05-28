@@ -1,4 +1,7 @@
 ---
+description: Plan — decompose specs into small, verifiable tasks with acceptance criteria
+---
+
 **🛑 Pre-flight: Environment Check**
 - [ ] `tGD/map/CONTEXT.md` exists (or `.codegraph/` is present).
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
@@ -14,19 +17,20 @@
 - [ ] `tGD/<feature-name>/PRD.md` exists and is non-empty.
 - [ ] `tGD/<feature-name>/SPEC.md` exists and is non-empty.
 - **If missing:** STOP. Tell user: "Specs are missing. Please run `/tgd-define` first."
-
-
-description: Plan — decompose specs into small, verifiable tasks with acceptance criteria
----
+- [ ] If SPEC has Frontend/Full-stack: `tGD/<feature-name>/DESIGN.md` exists.
+- **If missing:** STOP. Tell user: "Design is missing. Please run `/tgd-define` first."
 
 Run the `planning-and-task-breakdown` skill. Decompose the specification into small, verifiable tasks with acceptance criteria and dependency ordering.
 
 Each task should be implementable in isolation with clear success criteria. Order tasks by dependencies so they can be executed in the right sequence.
+
+**If UI feature:** Read `DESIGN.md` to understand Component Tree, Design Tokens, Responsive Breakpoints, and Interaction Patterns. Use these to inform task breakdown.
 
 After completing the plan, verify the outputs.
 
 **Verification Gate:**
 - [ ] `tGD/<feature-name>/TASKS.md` exists and is non-empty
 - [ ] TASKS.md contains at least one task with Acceptance Criteria
+- [ ] If UI feature: TASKS.md references DESIGN.md components
 
 If verification passes, suggest the next step: `/tgd-develop` to start implementing the first slice.
