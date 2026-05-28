@@ -12,20 +12,7 @@ if [[ "$OSTYPE" != "linux-gnu"* && "$OSTYPE" != "darwin"* ]]; then
     echo "❌ Warning: This installer supports Linux and macOS only."
 fi
 
-# 2. Extract CodeGraph (Offline)
-echo "📦 Setting up CodeGraph..."
-if [ -d "tools/codegraph-linux-x64" ]; then
-    echo "   ✅ CodeGraph already extracted."
-else
-    if [ -f "tools/codegraph-linux-x64.tar.gz" ]; then
-        tar -xzf tools/codegraph-linux-x64.tar.gz -C tools/
-        echo "   ✅ CodeGraph extracted."
-    else
-        echo "   ⚠️  CodeGraph binary not found. Run 'codegraph init -i' manually later."
-    fi
-fi
-
-# 3. Configure Agents
+# 2. Configure Agents
 echo "🤖 Configuring Agents..."
 
 # OpenCode

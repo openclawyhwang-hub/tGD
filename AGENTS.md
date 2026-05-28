@@ -35,7 +35,7 @@ This project supports 8 lifecycle commands that work across **OpenCode**, **Clau
 
 || Command | Phase | Pipeline |
 ||---------|-------|----------|
-|| `/tgd-map` | Map | `context-engineering` → `codegraph init` (bundled, offline) |
+|| `/tgd-map` | Map | `context-engineering` → `codegraph init` |
 || `/tgd-define` | Define | `interview-me` → `idea-refine` → `spec-driven-development` |
 || `/tgd-plan` | Plan | `planning-and-task-breakdown` |
 || `/tgd-develop` | Build | `context-engineering` → `source-driven-development` → `incremental-implementation` → `test-driven-development` (+ `frontend-ui-engineering`, `api-and-interface-design`, `doubt-driven-development` when relevant) |

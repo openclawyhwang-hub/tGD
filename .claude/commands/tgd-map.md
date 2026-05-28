@@ -7,14 +7,14 @@ Run the `context-engineering` skill. Analyze the current project: tech stack, ar
 This is the starting point for joining an existing project or before making significant changes.
 
 **CodeGraph Setup (Zero-dependency, offline):**
-1. Extract bundled binary: `tar -xzf tools/codegraph-linux-x64.tar.gz -C tools/`
-2. Ensure output directory exists: `mkdir -p tGD/map`
-3. Create symlink so CodeGraph finds its DB at the expected root path:
+1. Ensure output directory exists: `mkdir -p tGD/map`
+2. Create symlink so CodeGraph finds its DB at the expected root path:
    ```bash
    rm -rf .codegraph  # remove stale link if any
    ln -s tGD/map/.codegraph .codegraph
    ```
-4. Initialize the project graph: `./tools/codegraph-linux-x64/codegraph init -i`
+3. Initialize the project graph: `codegraph init -i`
+   - *Note: Assumes CodeGraph is installed on the system or available via `npx`.*
 
 **Outputs:**
 - `CONTEXT.md` — saved to `tGD/map/CONTEXT.md`
