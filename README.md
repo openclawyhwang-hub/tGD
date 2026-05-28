@@ -51,12 +51,15 @@ Skills also activate automatically based on what you're doing — designing an A
 > git config --global url."https://github.com/".insteadOf "git@github.com:"
 > ```
 
-**Local / development:**
+**Local / development (Recommended):**
 
 ```bash
 git clone https://github.com/openclawyhwang-hub/tGD.git
-claude --plugin-dir /path/to/tGD
+cd tGD
+bash setup.sh
 ```
+
+> **Manual:** Or use `claude --plugin-dir /path/to/tGD` for Claude Code only.
 
 </details>
 
