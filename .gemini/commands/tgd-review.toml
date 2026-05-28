@@ -1,6 +1,22 @@
 description = "Review — five-axis code review before merging any change"
 
 prompt = """
+**🛑 Pre-flight: Environment Check**
+- [ ] `tGD/map/CONTEXT.md` exists (or `.codegraph/` is present).
+- **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
+
+**🔑 Step 0: Feature Name Resolution**
+1. Scan `tGD/` for subdirectories (e.g., `tGD/user-login/`).
+2. If none found: 🛑 STOP. "No features defined. Run `/tgd-define` first."
+3. If exactly one found: Lock it as `<feature-name>`.
+4. If multiple found: List them and ask user to specify.
+5. **Verify**: Ensure all work targets `tGD/<feature-name>/`.
+
+**🔒 Pre-flight: Artifact Check**
+- [ ] Test files exist in `tests/`.
+- **If missing:** STOP. Tell user: "Tests are missing. Please run `/tgd-verify` first."
+
+
 Run the code-review-and-quality skill. This is the REVIEW phase. Full pipeline:
 1. code-review-and-quality — five-axis review, severity labels, ~100 lines
 2. code-simplification — reduce complexity while preserving exact behavior

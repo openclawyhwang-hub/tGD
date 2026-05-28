@@ -51,12 +51,18 @@ Skills also activate automatically based on what you're doing — designing an A
 > git config --global url."https://github.com/".insteadOf "git@github.com:"
 > ```
 
-**Local / development (Recommended):**
+## Setup
 
 ```bash
 git clone https://github.com/openclawyhwang-hub/tGD.git
 cd tGD
 bash setup.sh
+```
+
+`setup.sh` automatically:
+1. Copies skills to your agent's plugin directory
+2. Installs **CodeGraph** (if not already on your system)
+3. Verifies all 8 lifecycle commands are accessible
 ```
 
 > **Manual:** Or use `claude --plugin-dir /path/to/tGD` for Claude Code only.

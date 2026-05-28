@@ -1,4 +1,21 @@
 ---
+**🛑 Pre-flight: Environment Check**
+- [ ] `tGD/map/CONTEXT.md` exists (or `.codegraph/` is present).
+- **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
+
+**🔑 Step 0: Feature Name Resolution**
+1. Scan `tGD/` for subdirectories (e.g., `tGD/user-login/`).
+2. If none found: 🛑 STOP. "No features defined. Run `/tgd-define` first."
+3. If exactly one found: Lock it as `<feature-name>`.
+4. If multiple found: List them and ask user to specify.
+5. **Verify**: Ensure all work targets `tGD/<feature-name>/`.
+
+**🔒 Pre-flight: Artifact Check**
+- [ ] Review passed (no critical issues).
+- [ ] `tests/` exists and passes.
+- **If missing:** STOP. Tell user: "Review or tests incomplete. Please run `/tgd-review` first."
+
+
 description: Ship — pre-launch checklists, staged rollouts, rollback procedures
 ---
 

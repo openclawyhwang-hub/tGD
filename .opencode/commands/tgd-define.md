@@ -1,4 +1,9 @@
 ---
+**🛑 Pre-flight: Environment Check**
+- [ ] `tGD/map/CONTEXT.md` exists (or `.codegraph/` is present).
+- **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
+
+
 description: Start spec-driven development — write a structured specification before writing code
 ---
 

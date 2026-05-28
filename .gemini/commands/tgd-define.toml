@@ -1,6 +1,11 @@
 description = "Start spec-driven development — write a structured specification before writing code"
 
 prompt = """
+**🛑 Pre-flight: Environment Check**
+- [ ] `tGD/map/CONTEXT.md` exists (or `.codegraph/` is present).
+- **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
+
+
 Run the spec-driven-development skill. This is the DEFINE phase. Full pipeline:
 1. **Feature Name Resolution** — Derive a kebab-case `<feature-name>` from the user's request (e.g., "User Login" → `user-login`). Create `tGD/<feature-name>/` if it doesn't exist.
 2. interview-me — if the ask is underspecified, extract what the user actually wants

@@ -1,6 +1,22 @@
 description = "Verify — prove it works with debugging and test pyramid"
 
 prompt = """
+**🛑 Pre-flight: Environment Check**
+- [ ] `tGD/map/CONTEXT.md` exists (or `.codegraph/` is present).
+- **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
+
+**🔑 Step 0: Feature Name Resolution**
+1. Scan `tGD/` for subdirectories (e.g., `tGD/user-login/`).
+2. If none found: 🛑 STOP. "No features defined. Run `/tgd-define` first."
+3. If exactly one found: Lock it as `<feature-name>`.
+4. If multiple found: List them and ask user to specify.
+5. **Verify**: Ensure all work targets `tGD/<feature-name>/`.
+
+**🔒 Pre-flight: Artifact Check**
+- [ ] Source code files exist in `src/`.
+- **If missing:** STOP. Tell user: "No source code found. Please run `/tgd-develop` first."
+
+
 Run the debugging-and-error-recovery skill. This is the VERIFY phase. Full pipeline:
 1. debugging-and-error-recovery — reproduce → localize → reduce → fix → guard
 2. test-driven-development — verify with the test pyramid
