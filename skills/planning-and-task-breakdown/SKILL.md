@@ -32,28 +32,50 @@ Before writing any code, operate in read-only mode:
 
 **Do NOT write code during planning.** Write a plan document at `tGD/<feature-name>/TASKS.md` covering: dependency graph, ordered task list with acceptance criteria, verification checkpoints, and risks with mitigations.
 
-**TASKS.md template:**
+**TASKS.md template (save to `tGD/<feature-name>/TASKS.md`):**
 
 ```markdown
-# Tasks: [Feature Name]
+# TASKS.md: [Feature Name]
 
-## Dependency Graph
-[What depends on what — implementation order follows bottom-up]
+> **Corresponding PRD**: [PRD.md](PRD.md)
+> **Tech Stack**: [List from SPEC]
 
-## Task List
+---
 
-### Phase 1: Foundation
-- [ ] Task 1: ...
-  - Acceptance: [...]
-  - Verify: [...]
+## Task 1: [User Story Title] (Story ID: US-01)
 
-### Checkpoint: Foundation
-- [ ] Tests pass, builds clean
+### 1. Context & Goal
+[What is the goal of this task? Why is it important?]
+- **Priority**: [High/Medium/Low]
+- **Dependencies**: [None / Task N]
 
-## Risks and Mitigations
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| [Risk] | [High/Med/Low] | [Strategy] |
+### 2. Technical Design
+
+**Database Schema (if any):**
+```[Language]
+// Example: Prisma Schema or SQL
+```
+
+**API Contract:**
+- **Method** `/endpoint`
+- **Input**: `{ ... }`
+- **Output**: `Status Code { ... }`
+
+### 3. Acceptance Criteria (BDD)
+- **Given** [initial context]
+- **When** [event happens]
+- **Then** [expected outcome]
+
+### 4. Files Likely Touched
+- `path/to/file.ts`
+- `tests/path/to/test.ts`
+
+---
+
+## Checkpoint: Verification
+✅ All tests pass (`npm test`)
+✅ Build succeeds
+✅ Lint clean
 ```
 
 ### Step 2: Identify the Dependency Graph

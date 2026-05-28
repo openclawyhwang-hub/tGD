@@ -54,32 +54,42 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 2. **User Stories** — "As a [user], I want [goal], so that [benefit]."
 3. **Success Criteria** — Measurable metrics for completion.
 
-**PRD template (save to `tGD/<feature-name>/PRD.md`):**
+**PRD.md template (save to `tGD/<feature-name>/PRD.md`):**
 
 ```markdown
 # PRD: [Feature Name]
 
-## Objective
-[What we're building and why. User stories or acceptance criteria.]
+| Metadata       | Details                           |
+|----------------|-----------------------------------|
+| **Status**     | Draft / Ready for Dev             |
+| **Author**     | Product Manager                   |
+| **Date**       | YYYY-MM-DD                        |
 
-## User Stories
-- As a [user], I want [goal] so that [benefit].
+## 1. Executive Summary
+[Why are we doing this? Business value?]
 
-## Success Criteria
-- [Specific, testable condition 1]
-- [Specific, testable condition 2]
+## 2. Problem Statement
+- **Current state:** [What is happening now?]
+- **Pain point:** [What is the problem?]
+
+## 3. Target Audience
+- **Primary:** [Who is this for?]
+
+## 4. User Stories
+| ID | Story | Priority |
+|----|-------|----------|
+| US-01 | As a [role], I want [goal], so [benefit] | P0 |
+
+## 5. Success Metrics (KPIs)
+- [Metric 1, e.g., Conversion > 80%]
+- [Metric 2, e.g., API p95 < 200ms]
+
+## 6. Scope
+- **In Scope:** [Must haves for Phase 1]
+- **Out of Scope:** [Future phases]
 ```
 
-**Write a SPEC document covering these technical areas:**
-
-1. **Tech Stack** — Framework, language, key dependencies with versions.
-2. **Project Structure** — Where source code lives, where tests go, where docs belong.
-3. **Code Style** — One real code snippet showing your style beats three paragraphs describing it. Include naming conventions, formatting rules, and examples of good output.
-4. **API/Architecture** — Data models, API endpoints, key algorithms.
-5. **Testing Strategy** — What framework, where tests live, coverage expectations.
-6. **Boundaries** — Three-tier system (Always do / Ask first / Never do).
-
-**SPEC template (save to `tGD/<feature-name>/SPEC.md`):**
+**SPEC.md template (save to `tGD/<feature-name>/SPEC.md`):**
 
 ```markdown
 # SPEC: [Feature Name]
@@ -87,25 +97,22 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 ## Tech Stack
 [Framework, language, key dependencies with versions]
 
+## Architecture / Data Models
+[Data models, endpoints, key algorithms, schema definitions]
+
 ## Project Structure
 [Directory layout with descriptions]
 
-## Code Style
-[Example snippet + key conventions]
-
-## API/Architecture
-[Data models, endpoints, key algorithms]
+## API Contract
+[Input/Output definitions for key endpoints]
 
 ## Testing Strategy
-[Framework, test locations, coverage requirements, test levels]
+[Framework, test locations, coverage requirements]
 
 ## Boundaries
 - Always: [...]
 - Ask first: [...]
 - Never: [...]
-
-## Open Questions
-[Anything unresolved that needs human input]
 ```
 
 **Reframe instructions as success criteria.** When receiving vague requirements, translate them into concrete conditions:
