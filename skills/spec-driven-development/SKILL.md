@@ -107,6 +107,17 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 ```markdown
 # SPEC: [Feature Name]
 
+## Feature Type
+- [ ] **Backend** (API / CLI / Service)
+- [ ] **Frontend** (UI / Web / Mobile)
+- [ ] **Full-stack** (Both)
+
+### UI Requirements (if Frontend or Full-stack)
+- **Design稿來源**: [Figma URL / 截圖 / None]
+- **Pages/Screens**: [List of screens needed]
+- **Key Components**: [Component names]
+- **Responsive**: [Mobile-first / Desktop-first / Both]
+
 ## Tech Stack
 [Framework, language, key dependencies with versions]
 

@@ -38,6 +38,64 @@ Before writing any code, operate in read-only mode:
 
 **Do NOT write code during planning.** Write a plan document at `tGD/<feature-name>/TASKS.md` covering: dependency graph, ordered task list with acceptance criteria, verification checkpoints, and risks with mitigations.
 
+### Step 1.5: UI Design Gate (if Frontend or Full-stack)
+
+Read `tGD/<feature-name>/SPEC.md` and check the **Feature Type** field.
+
+**If Frontend or Full-stack is checked:**
+
+1. **Check design稿來源** in SPEC.md:
+   - If `[Figma URL]` → Use `web_extract` to fetch design稿截圖 + 元件結構
+   - If `[截圖/PDF]` → Use `vision_analyze` to extract UI elements, colors, layout
+   - If `[None]` → **STOP. Ask user:** "有現成設計稿嗎？沒有我先產 wireframe。"
+
+2. **If no design exists → Generate wireframe:**
+   - Use `excalidraw` skill to create hand-drawn style wireframe
+   - Or use `sketch` skill to create HTML mockup
+   - Save to `tGD/<feature-name>/design/` directory
+
+3. **Extract from design:**
+   - **Component Tree**: List of UI components and their hierarchy
+   - **Design Tokens**: Colors, fonts, spacing, border-radius
+   - **Responsive Breakpoints**: Mobile / Tablet / Desktop layouts
+   - **Interaction Patterns**: Click handlers, state transitions, animations
+
+4. **Save design reference** to `tGD/<feature-name>/DESIGN.md`:
+   ```markdown
+   # DESIGN: [Feature Name]
+   
+   ## Source
+   - **Type**: [Figma / Wireframe / Mockup]
+   - **URL/Path**: [link or file path]
+   
+   ## Component Tree
+   - Page
+     - Header
+     - LoginForm
+       - InputField × 2
+       - SubmitButton
+     - Footer
+   
+   ## Design Tokens
+   | Token | Value |
+   |-------|-------|
+   | primary-color | #1a73e8 |
+   | border-radius | 8px |
+   | font-family | Inter |
+   
+   ## Responsive
+   | Breakpoint | Layout |
+   |------------|--------|
+   | mobile (<768px) | Stack vertically |
+   | desktop (≥768px) | Side by side |
+   
+   ## Interactions
+   - Submit button: idle → loading → success/error
+   - Error: show toast notification
+   ```
+
+**If Backend only:** Skip this step, proceed to Step 2.
+
 **TASKS.md template (save to `tGD/<feature-name>/TASKS.md`):**
 
 ```markdown
@@ -273,3 +331,4 @@ Before starting implementation, confirm:
 - [ ] No task touches more than ~5 files
 - [ ] Checkpoints exist between major phases
 - [ ] The human has reviewed and approved the plan
+- [ ] If UI feature: `tGD/<feature-name>/DESIGN.md` exists with Component Tree
