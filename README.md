@@ -19,16 +19,16 @@ Skills encode the workflows, quality gates, and best practices that senior engin
 
 8 slash commands that map to the development lifecycle. Each one activates the right skills automatically.
 
-|| What you're doing | Command | Key principle |
-||-------------------|---------|---------------|
-|| Understand the project | `/tgd-map` | Context before changes |
-|| Define what to build | `/tgd-define` | Spec before code |
-|| Plan how to build it | `/tgd-plan` | Small, atomic tasks |
-|| Build incrementally | `/tgd-develop` | One slice at a time |
-|| Prove it works | `/tgd-verify` | Tests are proof |
-|| Review before merge | `/tgd-review` | Improve code health |
-|| Simplify the code | `/tgd-simplify` | Clarity over cleverness |
-|| Ship to production | `/tgd-ship` | Faster is safer |
+| What you're doing | Command | Key principle |
+|---|---|---|
+| Understand the project | `/tgd-map` | Context before changes |
+| Define what to build | `/tgd-define` | Product + Spec before code |
+| Plan how to build it | `/tgd-plan` | Small, atomic tasks |
+| Build incrementally | `/tgd-develop` | One slice at a time |
+| Prove it works | `/tgd-verify` | Tests are proof |
+| Review before merge | `/tgd-review` | Improve code health |
+| Simplify the code | `/tgd-simplify` | Clarity over cleverness |
+| Ship to production | `/tgd-ship` | Faster is safer |
 
 Skills also activate automatically based on what you're doing — designing an API triggers `api-and-interface-design`, building UI triggers `frontend-ui-engineering`, and so on.
 
