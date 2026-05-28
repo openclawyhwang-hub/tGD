@@ -11,4 +11,10 @@ This is the DEFINE phase. The full pipeline is:
 
 Use `interview-me` first if the ask is underspecified. Use `idea-refine` if you have a rough concept but it's not concrete yet.
 
-After completing the spec, suggest the next step: `/tgd-plan` to decompose it into tasks.
+After completing the spec, verify the outputs.
+
+**Verification Gate:**
+- [ ] `tGD/<feature-name>/PRD.md` exists and is non-empty
+- [ ] `tGD/<feature-name>/SPEC.md` exists and is non-empty
+
+If verification passes, suggest the next step: `/tgd-plan` to decompose it into tasks.

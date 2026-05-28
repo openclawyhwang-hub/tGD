@@ -5,5 +5,10 @@ Run the code-simplification skill. Apply Chesterton's Fence and Rule of 500. Red
 
 Clarity over cleverness.
 
-After simplifying, suggest the next step: `/tgd-review` to verify the review passes, or `/tgd-ship` if review is already done.
+After completing simplification, verify the outputs.
+
+**Verification Gate:**
+- [ ] Code complexity reduced (e.g. fewer lines, fewer nested ifs)
+
+If verification passes, suggest the next step: `/tgd-review` or `/tgd-ship`.
 """

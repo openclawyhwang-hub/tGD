@@ -13,4 +13,9 @@ Run the `debugging-and-error-recovery` skill. This is the VERIFY phase. The full
 
 Verify that the feature works correctly before proceeding to review. Tests are proof — "seems right" is never sufficient.
 
-After completing verification, suggest the next step: `/tgd-review` to review the code quality.
+After completing the verification, verify the outputs.
+
+**Verification Gate:**
+- [ ] Tests pass for the implemented feature
+
+If verification passes, suggest the next step: `/tgd-review` to review the code quality.

@@ -19,5 +19,11 @@ This is the starting point for joining an existing project or before making sign
 - `CONTEXT.md` — saved to `tGD/map/CONTEXT.md`
 - `.codegraph/codegraph.db` — stored at `tGD/map/.codegraph/codegraph.db` (via symlink)
 
-After completing the mapping, suggest the next step: `/tgd-define` to start defining what to build.
+After completing the mapping, verify the outputs.
+
+**Verification Gate:**
+- [ ] `tGD/map/CONTEXT.md` exists and is non-empty
+- [ ] `tGD/map/.codegraph` symlink exists
+
+If verification passes, suggest the next step: `/tgd-define` to start defining what to build.
 """

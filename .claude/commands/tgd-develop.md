@@ -17,4 +17,10 @@ Run the `incremental-implementation` skill. This is the BUILD phase. The full pi
 
 Use feature flags for incomplete features, safe defaults, and rollback-friendly changes.
 
-After completing the implementation, suggest the next step: `/tgd-verify` to prove it works.
+After completing the implementation, verify the outputs.
+
+**Verification Gate:**
+- [ ] Source code files created/modified in `src/`
+- [ ] Tests written for new logic in `tests/`
+
+If verification passes, suggest the next step: `/tgd-verify` to prove it works.

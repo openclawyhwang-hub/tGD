@@ -6,5 +6,11 @@ Run the spec-driven-development skill. This is the DEFINE phase. Full pipeline:
 2. idea-refine — if the concept is vague, stress-test and expand options
 3. spec-driven-development — write the structured spec
 
-After completing the spec, suggest the next step: `/tgd-plan` to decompose it into tasks.
+After completing the spec, verify the outputs.
+
+**Verification Gate:**
+- [ ] `tGD/<feature-name>/PRD.md` exists and is non-empty
+- [ ] `tGD/<feature-name>/SPEC.md` exists and is non-empty
+
+If verification passes, suggest the next step: `/tgd-plan` to decompose it into tasks.
 """

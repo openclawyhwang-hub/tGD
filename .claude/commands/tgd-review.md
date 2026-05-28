@@ -14,4 +14,10 @@ Run the `code-review-and-quality` skill. This is the REVIEW phase. The full pipe
 
 Improve code health before merge. If the change is larger than ~100 lines, split it into smaller reviews.
 
-After completing the review, suggest the next step: `/tgd-ship` to deploy.
+After completing the review, verify the outputs.
+
+**Verification Gate:**
+- [ ] Code review feedback addressed
+- [ ] No critical security or performance warnings remain
+
+If verification passes, suggest the next step: `/tgd-ship` to deploy.

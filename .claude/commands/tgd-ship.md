@@ -15,4 +15,10 @@ Run the `shipping-and-launch` skill. This is the SHIP phase. The full pipeline i
 
 Faster is safer. Deploy in stages, confirm monitoring, and have a rollback plan.
 
-After completing the ship process, confirm that monitoring is active and the rollback plan is documented.
+After completing the ship process, verify the outputs.
+
+**Verification Gate:**
+- [ ] Git commit created with clean history
+- [ ] CHANGELOG.md updated
+
+If verification passes, confirm that monitoring is active and the rollback plan is documented.

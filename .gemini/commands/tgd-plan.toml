@@ -3,5 +3,11 @@ description = "Plan — decompose specs into small, verifiable tasks with accept
 prompt = """
 Run the planning-and-task-breakdown skill. Decompose the specification into small, verifiable tasks with acceptance criteria and dependency ordering.
 
-After completing the plan, suggest the next step: `/tgd-develop` to start implementing the first slice.
+After completing the plan, verify the outputs.
+
+**Verification Gate:**
+- [ ] `tGD/<feature-name>/TASKS.md` exists and is non-empty
+- [ ] TASKS.md contains at least one task with Acceptance Criteria
+
+If verification passes, suggest the next step: `/tgd-develop` to start implementing the first slice.
 """

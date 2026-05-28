@@ -7,5 +7,10 @@ Run the debugging-and-error-recovery skill. This is the VERIFY phase. Full pipel
 
 Conditional: browser-testing-with-devtools (browser-based features).
 
-After completing verification, suggest the next step: `/tgd-review` to review the code quality.
+After completing verification, verify the outputs.
+
+**Verification Gate:**
+- [ ] Tests pass for the implemented feature
+
+If verification passes, suggest the next step: `/tgd-review` to review the code quality.
 """

@@ -7,5 +7,11 @@ Run the code-review-and-quality skill. This is the REVIEW phase. Full pipeline:
 
 Conditional: security-and-hardening, performance-optimization.
 
-After completing the review, suggest the next step: `/tgd-ship` to deploy.
+After completing the review, verify the outputs.
+
+**Verification Gate:**
+- [ ] Code review feedback addressed
+- [ ] No critical security or performance warnings remain
+
+If verification passes, suggest the next step: `/tgd-ship` to deploy.
 """
