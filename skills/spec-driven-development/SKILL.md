@@ -79,27 +79,54 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 | **Date**       | YYYY-MM-DD                        |
 
 ## 1. Executive Summary
-[Why are we doing this? Business value?]
+[Why are we doing this? Business value? Expected impact?]
 
 ## 2. Problem Statement
 - **Current state:** [What is happening now?]
 - **Pain point:** [What is the problem?]
+- **Impact:** [How does this affect users/business?]
 
 ## 3. Target Audience
 - **Primary:** [Who is this for?]
+- **Secondary:** [Who else benefits?]
+- **User scale:** [Expected MAU/DAU]
 
 ## 4. User Stories
-| ID | Story | Priority |
-|----|-------|----------|
-| US-01 | As a [role], I want [goal], so [benefit] | P0 |
+| ID | Story | Priority | Acceptance Criteria |
+|----|-------|----------|---------------------|
+| US-01 | As a [role], I want [goal], so [benefit] | P0 | [Specific criteria] |
 
 ## 5. Success Metrics (KPIs)
-- [Metric 1, e.g., Conversion > 80%]
-- [Metric 2, e.g., API p95 < 200ms]
+| Metric | Target | Measurement Method |
+|--------|--------|-------------------|
+| [Metric 1] | [Target] | [How to measure] |
 
 ## 6. Scope
-- **In Scope:** [Must haves for Phase 1]
-- **Out of Scope:** [Future phases]
+- **Phase 1:** [Must haves]
+- **Phase 2:** [Nice to haves]
+- **Phase 3:** [Future]
+- **Out of Scope:** [Explicitly not doing]
+
+## 7. Risks & Mitigations
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| [Risk] | High/Med/Low | [Strategy] |
+
+## 8. Competitive Analysis (if applicable)
+| Feature | Our Product | Competitor A | Competitor B |
+|---------|-------------|--------------|--------------|
+| [Feature] | ✅/❌/Phase N | ✅/❌ | ✅/❌ |
+
+## 9. Stakeholder Alignment
+- **PM:** [Sign-off on scope]
+- **Design:** [Sign-off on UX flow]
+- **Engineering:** [Sign-off on feasibility]
+- **Security:** [Sign-off on security requirements]
+
+## 10. Timeline
+| Phase | Duration | Milestone |
+|-------|----------|-----------|
+| Phase 1 | [X weeks] | [Milestone] |
 ```
 
 **SPEC.md template (save to `tGD/<feature-name>/SPEC.md`):**
