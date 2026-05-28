@@ -7,8 +7,8 @@ Skills encode the workflows, quality gates, and best practices that senior engin
 ```
      MAP           DEFINE          PLAN           BUILD          VERIFY         REVIEW          REVIEW          SHIP
  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐
- │ Context  │→ │ Spec     │→ │ Plan     │→ │ Code     │→ │ Test     │→ │ QA Gate  │→ │ Clean    │→ │ Go       │
- │+CodeGraph│  │ PRD      │  │ Tasks    │  │ Impl     │  │ Debug    │  │ Review   │  │ Code     │  │ Live     │
+ │ Context  │→ │ PRD      │→ │ Tasks    │→ │ Code     │→ │ Test     │→ │ QA Gate  │→ │ Clean    │→ │ Go       │
+ │+CodeGraph│  │ + Spec   │  │          │  │ Impl     │  │ Debug    │  │ Review   │  │ Code     │  │ Live     │
  └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘
 /tgd-map      /tgd-define    /tgd-plan      /tgd-develop   /tgd-verify   /tgd-review    /tgd-simplify /tgd-ship
 ```
@@ -141,13 +141,13 @@ The commands above are entry points. The pack includes 23 skills total — 22 li
 |-------|-------------|----------|
 | [interview-me](skills/interview-me/SKILL.md) | One-question-at-a-time interview that extracts what the user actually wants instead of what they think they should want, until ~95% confidence | The ask is underspecified, or the user invokes "interview me" / "grill me" |
 | [idea-refine](skills/idea-refine/SKILL.md) | Structured divergent/convergent thinking to turn vague ideas into concrete proposals | You have a rough concept that needs exploration |
-| [spec-driven-development](skills/spec-driven-development/SKILL.md) | Write a PRD covering objectives, commands, structure, code style, testing, and boundaries before any code | Starting a new project, feature, or significant change |
+| [spec-driven-development](skills/spec-driven-development/SKILL.md) | Write PRD + SPEC documents covering product goals, user stories, technical architecture, and boundaries before any code | Starting a new project, feature, or significant change |
 
 ### Plan - Break it down
 
 | Skill | What It Does | Use When |
 |-------|-------------|----------|
-| [planning-and-task-breakdown](skills/planning-and-task-breakdown/SKILL.md) | Decompose specs into small, verifiable tasks with acceptance criteria and dependency ordering | You have a spec and need implementable units |
+| [planning-and-task-breakdown](skills/planning-and-task-breakdown/SKILL.md) | Decompose specs into TASKS.md — small, verifiable tasks with acceptance criteria and dependency ordering | You have a spec and need implementable units |
 
 ### Build - Write the code
 
@@ -184,7 +184,7 @@ The commands above are entry points. The pack includes 23 skills total — 22 li
 | [git-workflow-and-versioning](skills/git-workflow-and-versioning/SKILL.md) | Trunk-based development, atomic commits, change sizing (~100 lines), the commit-as-save-point pattern | Making any code change (always) |
 | [ci-cd-and-automation](skills/ci-cd-and-automation/SKILL.md) | Shift Left, Faster is Safer, feature flags, quality gate pipelines, failure feedback loops | Setting up or modifying build and deploy pipelines |
 | [deprecation-and-migration](skills/deprecation-and-migration/SKILL.md) | Code-as-liability mindset, compulsory vs advisory deprecation, migration patterns, zombie code removal | Removing old systems, migrating users, or sunsetting features |
-| [documentation-and-adrs](skills/documentation-and-adrs/SKILL.md) | Architecture Decision Records, API docs, inline documentation standards - document the *why* | Making architectural decisions, changing APIs, or shipping features |
+| [documentation-and-adrs](skills/documentation-and-adrs/SKILL.md) | ADRs per feature in `tGD/<feature>/decisions/`, API docs, inline documentation standards - document the *why* | Making architectural decisions, changing APIs, or shipping features |
 | [shipping-and-launch](skills/shipping-and-launch/SKILL.md) | Pre-launch checklists, feature flag lifecycle, staged rollouts, rollback procedures, monitoring setup | Preparing to deploy to production |
 
 ---
