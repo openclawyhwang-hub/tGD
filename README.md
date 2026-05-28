@@ -292,21 +292,17 @@ tGD/
 ```
 my-project/
 ├── .codegraph → tGD/map/.codegraph    # symlink (CodeGraph DB)
-├── AGENTS.md                          # Skill routing rules
-├── README.md                          # Project docs
-│
 ├── tGD/                               # All tGD lifecycle artifacts
 │   ├── map/
 │   │   ├── CONTEXT.md                 # Project context & tech stack
-│   │   └── .codegraph/codegraph.db    # CodeGraph SQLite index
-│   ├── define/
-│   │   ├── specs/<feature>.md         # Feature specifications
-│   │   └── decisions/ADR-*.md         # Architecture Decision Records
-│   ├── plan/
-│   │   └── PLAN.md                    # Implementation plan
-│   └── ship/
-│       └── CHANGELOG.md               # Version changelog
-│
+│   │   └── .codegraph/                # CodeGraph SQLite index
+│   ├── <feature-name>/                # One folder per feature
+│   │   ├── PRD.md                     # Product requirements
+│   │   ├── SPEC.md                    # Technical specification
+│   │   ├── TASKS.md                   # Implementation task list
+│   │   └── decisions/                 # Architecture Decision Records
+│   │       └── ADR-*.md
+│   └── CHANGELOG.md                   # Version changelog
 ├── src/                               # Application source code
 └── tests/                             # Test files
 ```
