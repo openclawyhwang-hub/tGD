@@ -48,57 +48,53 @@ ASSUMPTIONS I'M MAKING:
 
 Don't silently fill in ambiguous requirements. The spec's entire purpose is to surface misunderstandings *before* code gets written — assumptions are the most dangerous form of misunderstanding.
 
-**Write a spec document covering these six core areas:**
+**Write a PRD document covering these product areas:**
 
 1. **Objective** — What are we building and why? Who is the user? What does success look like?
+2. **User Stories** — "As a [user], I want [goal], so that [benefit]."
+3. **Success Criteria** — Measurable metrics for completion.
 
-2. **Commands** — Full executable commands with flags, not just tool names.
-   ```
-   Build: npm run build
-   Test: npm test -- --coverage
-   Lint: npm run lint --fix
-   Dev: npm run dev
-   ```
-
-3. **Project Structure** — Where source code lives, where tests go, where docs belong.
-   ```
-   src/           → Application source code
-   src/components → React components
-   src/lib        → Shared utilities
-   tests/         → Unit and integration tests
-   e2e/           → End-to-end tests
-   tGD/<feature-name>/PRD.md   → Product requirements
-   tGD/<feature-name>/SPEC.md  → Technical specification
-   ```
-
-4. **Code Style** — One real code snippet showing your style beats three paragraphs describing it. Include naming conventions, formatting rules, and examples of good output.
-
-5. **Testing Strategy** — What framework, where tests live, coverage expectations, which test levels for which concerns.
-
-6. **Boundaries** — Three-tier system:
-   - **Always do:** Run tests before commits, follow naming conventions, validate inputs
-   - **Ask first:** Database schema changes, adding dependencies, changing CI config
-   - **Never do:** Commit secrets, edit vendor directories, remove failing tests without approval
-
-**Spec template:**
+**PRD template (save to `tGD/<feature-name>/PRD.md`):**
 
 ```markdown
-# Spec: [Project/Feature Name]
+# PRD: [Feature Name]
 
 ## Objective
 [What we're building and why. User stories or acceptance criteria.]
 
+## User Stories
+- As a [user], I want [goal] so that [benefit].
+
+## Success Criteria
+- [Specific, testable condition 1]
+- [Specific, testable condition 2]
+```
+
+**Write a SPEC document covering these technical areas:**
+
+1. **Tech Stack** — Framework, language, key dependencies with versions.
+2. **Project Structure** — Where source code lives, where tests go, where docs belong.
+3. **Code Style** — One real code snippet showing your style beats three paragraphs describing it. Include naming conventions, formatting rules, and examples of good output.
+4. **API/Architecture** — Data models, API endpoints, key algorithms.
+5. **Testing Strategy** — What framework, where tests live, coverage expectations.
+6. **Boundaries** — Three-tier system (Always do / Ask first / Never do).
+
+**SPEC template (save to `tGD/<feature-name>/SPEC.md`):**
+
+```markdown
+# SPEC: [Feature Name]
+
 ## Tech Stack
 [Framework, language, key dependencies with versions]
-
-## Commands
-[Build, test, lint, dev — full commands]
 
 ## Project Structure
 [Directory layout with descriptions]
 
 ## Code Style
 [Example snippet + key conventions]
+
+## API/Architecture
+[Data models, endpoints, key algorithms]
 
 ## Testing Strategy
 [Framework, test locations, coverage requirements, test levels]
@@ -107,9 +103,6 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 - Always: [...]
 - Ask first: [...]
 - Never: [...]
-
-## Success Criteria
-[How we'll know this is done — specific, testable conditions]
 
 ## Open Questions
 [Anything unresolved that needs human input]

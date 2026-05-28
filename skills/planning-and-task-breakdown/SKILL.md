@@ -32,6 +32,30 @@ Before writing any code, operate in read-only mode:
 
 **Do NOT write code during planning.** Write a plan document at `tGD/<feature-name>/TASKS.md` covering: dependency graph, ordered task list with acceptance criteria, verification checkpoints, and risks with mitigations.
 
+**TASKS.md template:**
+
+```markdown
+# Tasks: [Feature Name]
+
+## Dependency Graph
+[What depends on what — implementation order follows bottom-up]
+
+## Task List
+
+### Phase 1: Foundation
+- [ ] Task 1: ...
+  - Acceptance: [...]
+  - Verify: [...]
+
+### Checkpoint: Foundation
+- [ ] Tests pass, builds clean
+
+## Risks and Mitigations
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| [Risk] | [High/Med/Low] | [Strategy] |
+```
+
 ### Step 2: Identify the Dependency Graph
 
 Map what depends on what:
