@@ -1,4 +1,4 @@
-# Agent Skills
+# tGD
 
 **Production-grade engineering skills for AI coding agents.**
 
@@ -42,8 +42,8 @@ Skills also activate automatically based on what you're doing — designing an A
 **Marketplace install:**
 
 ```
-/plugin marketplace add addyosmani/agent-skills
-/plugin install agent-skills@addy-agent-skills
+/plugin marketplace add openclawyhwang-hub/tGD
+/plugin install tGD@openclawyhwang-hub-tGD
 ```
 
 > **SSH errors?** The marketplace clones repos via SSH. If you don't have SSH keys set up on GitHub, either [add your SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) or switch to HTTPS for fetches only:
@@ -54,8 +54,8 @@ Skills also activate automatically based on what you're doing — designing an A
 **Local / development:**
 
 ```bash
-git clone https://github.com/addyosmani/agent-skills.git
-claude --plugin-dir /path/to/agent-skills
+git clone https://github.com/openclawyhwang-hub/tGD.git
+claude --plugin-dir /path/to/tGD
 ```
 
 </details>
@@ -75,13 +75,13 @@ Install as native skills for auto-discovery, or add to `GEMINI.md` for persisten
 **Install from the repo:**
 
 ```bash
-gemini skills install https://github.com/addyosmani/agent-skills.git --path skills
+gemini skills install https://github.com/openclawyhwang-hub/tGD.git --path skills
 ```
 
 **Install from a local clone:**
 
 ```bash
-gemini skills install ./agent-skills/skills/
+gemini skills install ./tGD/skills/
 ```
 
 </details>
@@ -313,11 +313,13 @@ my-project/
 
 ---
 
-## Why Agent Skills?
+## What is tGD?
 
-AI coding agents default to the shortest path - which often means skipping specs, tests, security reviews, and the practices that make software reliable. Agent Skills gives agents structured workflows that enforce the same discipline senior engineers bring to production code.
+AI coding agents default to the shortest path - which often means skipping specs, tests, security reviews, and the practices that make software reliable. tGD gives agents structured workflows that enforce the same discipline senior engineers bring to production code.
 
 Each skill encodes hard-won engineering judgment: *when* to write a spec, *what* to test, *how* to review, and *when* to ship. These aren't generic prompts - they're the kind of opinionated, process-driven workflows that separate production-quality work from prototype-quality work.
+
+Each skill follows a consistent anatomy defined in the meta-skill `using-agent-skills`. The tGD pack includes 23 skills total — 22 lifecycle skills plus that meta-skill.
 
 Skills bake in best practices from Google's engineering culture — including concepts from [Software Engineering at Google](https://abseil.io/resources/swe-book) and Google's [engineering practices guide](https://google.github.io/eng-practices/). You'll find Hyrum's Law in API design, the Beyonce Rule and test pyramid in testing, change sizing and review speed norms in code review, Chesterton's Fence in simplification, trunk-based development in git workflow, Shift Left and feature flags in CI/CD, and a dedicated deprecation skill treating code as a liability. These aren't abstract principles — they're embedded directly into the step-by-step workflows agents follow.
 
