@@ -58,22 +58,26 @@ gemini skills install . --path skills
 ```
 
 #### Codex CLI
+Codex relies on **Skill auto-detection** rather than slash commands.
 ```bash
+# Link skills so Codex can auto-detect them:
 ln -s $(pwd)/skills ~/.codex/skills/tGD
 ```
+*Trigger:* Say "Plan this feature" or "Start tgd plan" — Codex will invoke `planning-and-task-breakdown` automatically.
 
 #### OpenCode
 OpenCode auto-detects the `skills/` folder in the workspace.
 
 #### Pi Coding Agent
-Pi auto-discovers skills from the `skills/` folder.
+Pi supports `/tgd-plan` natively via a **TypeScript Extension** (`tGD-clone/.pi/extensions/`).
 ```bash
-# Start Pi - skills are loaded automatically
+# The extension maps /tgd-plan -> planning-and-task-breakdown skill.
+# Start Pi:
 pi
 
-# Invoke a specific skill workflow via slash command:
-/skill:planning-and-task-breakdown
-/skill:spec-driven-development
+# Use the short slash command:
+/tgd-plan
+/tgd-define
 ```
 You can also use natural language (e.g. "Plan this feature") and Pi will auto-detect the matching skill.
 
