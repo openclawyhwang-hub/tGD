@@ -54,28 +54,21 @@ We provide **native support** for the major AI coding CLIs.
 
 #### Gemini CLI
 ```bash
-# Auto-discover and install skills from this directory
 gemini skills install . --path skills
 ```
 
 #### Codex CLI
 ```bash
-# Symlink skills to your local Codex configuration
 ln -s $(pwd)/skills ~/.codex/skills/tGD
 ```
 
 #### OpenCode
-```bash
-# OpenCode auto-detects the 'skills/' folder in the workspace.
-# Just ensure this repo is in your project or workspace root.
-```
+OpenCode auto-detects the `skills/` folder in the workspace.
 
 #### Pi Coding Agent
-```bash
-# Pi auto-detects skills in the current workspace.
-# Just run Pi in the directory:
-pi
-```
+Pi auto-detects the `skills/` folder. You can trigger workflows via:
+- **Slash Commands:** Type `/skill:skill-name` (e.g., `/skill:planning-and-task-breakdown`)
+- **Natural Language:** "Help me plan the feature" (Pi will auto-detect the skill)
 
 > **Note:** You can also run `bash setup.sh` to attempt an automated installation for all supported agents.
 
