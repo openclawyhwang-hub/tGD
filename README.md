@@ -42,6 +42,111 @@ flowchart LR
     class H indigo
 ```
 
+## Quick Start
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
+```
+
+### 2. Setup (Recommended)
+```bash
+bash setup.sh
+```
+`setup.sh` automatically:
+1. Copies skills to your agent's plugin directory
+2. Installs **CodeGraph** (if not already on your system)
+3. Verifies all 8 lifecycle commands are accessible
+
+> **Manual Setup:** If you prefer not to run the script, you can manually copy the `skills/` folder to your agent's plugin directory and install CodeGraph separately.
+
+### 3. Configure Your IDE
+
+<details>
+<summary><b>Claude Code (Recommended)</b></summary>
+
+**Marketplace Install:**
+```
+/plugin marketplace add openclawyhwang-hub/tGD
+/plugin install tGD@openclawyhwang-hub-tGD
+```
+
+> **SSH Errors?** The marketplace clones via SSH. If you don't have SSH keys set up:
+> ```bash
+> git config --global url."https://github.com/".insteadOf "git@github.com:"
+> ```
+
+</details>
+
+<details>
+<summary><b>Cursor</b></summary>
+
+Copy any `SKILL.md` into `.cursor/rules/`, or reference the full `skills/` directory.
+See [docs/cursor-setup.md](docs/cursor-setup.md).
+
+</details>
+
+<details>
+<summary><b>Gemini CLI</b></summary>
+
+Install as native skills for auto-discovery, or add to `GEMINI.md` for persistent context.
+
+**Install from the repo:**
+```bash
+gemini skills install https://github.com/openclawyhwang-hub/tGD.git --path skills
+```
+
+**Install from a local clone:**
+```bash
+gemini skills install ./tGD/skills/
+```
+
+See [docs/gemini-cli-setup.md](docs/gemini-cli-setup.md).
+
+</details>
+
+<details>
+<summary><b>Windsurf</b></summary>
+
+Add skill contents to your Windsurf rules configuration.
+See [docs/windsurf-setup.md](docs/windsurf-setup.md).
+
+</details>
+
+<details>
+<summary><b>OpenCode</b></summary>
+
+Uses agent-driven skill execution via `AGENTS.md` and the `skill` tool.
+See [docs/opencode-setup.md](docs/opencode-setup.md).
+
+</details>
+
+<details>
+<summary><b>GitHub Copilot</b></summary>
+
+Use agent definitions from `agents/` as Copilot personas and skill content in `.github/copilot-instructions.md`.
+See [docs/copilot-setup.md](docs/copilot-setup.md).
+
+</details>
+
+<details>
+<summary><b>Kiro IDE & CLI</b></summary>
+
+Skills for Kiro reside under `.kiro/skills/` and can be stored at Project or Global level. Kiro also supports `AGENTS.md`.
+See [Kiro Docs](https://kiro.dev/docs/skills/).
+
+</details>
+
+<details>
+<summary><b>Codex / Other Agents</b></summary>
+
+Skills are plain Markdown — they work with any agent that accepts system prompts or instruction files.
+See [docs/getting-started.md](docs/getting-started.md).
+
+</details>
+
+---
+
 ## Commands
 
 8 slash commands that map to the development lifecycle. Each one activates the right skills automatically.
@@ -78,106 +183,6 @@ When `/tgd-plan` generates `TASKS.md`, the optional **`jira-auto-sync`** skill c
 - Creates Jira issues via REST API v2 (curl, no binary needed)
 - Labels issues with `tgd` and `<feature-name>` for traceability
 - Reports created issue keys (e.g. `ENG-1234`)
-
----
-
-## Quick Start
-
-<details>
-<summary><b>Claude Code (recommended)</b></summary>
-
-**Marketplace install:**
-
-```
-/plugin marketplace add openclawyhwang-hub/tGD
-/plugin install tGD@openclawyhwang-hub-tGD
-```
-
-> **SSH errors?** The marketplace clones repos via SSH. If you don't have SSH keys set up on GitHub, either [add your SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) or switch to HTTPS for fetches only:
-> ```bash
-> git config --global url."https://github.com/".insteadOf "git@github.com:"
-> ```
-
-## Setup
-
-```bash
-git clone https://github.com/openclawyhwang-hub/tGD.git
-cd tGD
-bash setup.sh
-```
-
-`setup.sh` automatically:
-1. Copies skills to your agent's plugin directory
-2. Installs **CodeGraph** (if not already on your system)
-3. Verifies all 8 lifecycle commands are accessible
-```
-
-> **Manual:** Or use `claude --plugin-dir /path/to/tGD` for Claude Code only.
-
-</details>
-
-<details>
-<summary><b>Cursor</b></summary>
-
-Copy any `SKILL.md` into `.cursor/rules/`, or reference the full `skills/` directory. See [docs/cursor-setup.md](docs/cursor-setup.md).
-
-</details>
-
-<details>
-<summary><b>Gemini CLI</b></summary>
-
-Install as native skills for auto-discovery, or add to `GEMINI.md` for persistent context. See [docs/gemini-cli-setup.md](docs/gemini-cli-setup.md).
-
-**Install from the repo:**
-
-```bash
-gemini skills install https://github.com/openclawyhwang-hub/tGD.git --path skills
-```
-
-**Install from a local clone:**
-
-```bash
-gemini skills install ./tGD/skills/
-```
-
-</details>
-
-<details>
-<summary><b>Windsurf</b></summary>
-
-Add skill contents to your Windsurf rules configuration. See [docs/windsurf-setup.md](docs/windsurf-setup.md).
-
-</details>
-
-<details>
-<summary><b>OpenCode</b></summary>
-
-Uses agent-driven skill execution via AGENTS.md and the `skill` tool.
-
-See [docs/opencode-setup.md](docs/opencode-setup.md).
-
-</details>
-
-<details>
-<summary><b>GitHub Copilot</b></summary>
-
-Use agent definitions from `agents/` as Copilot personas and skill content in `.github/copilot-instructions.md`. See [docs/copilot-setup.md](docs/copilot-setup.md).
-
-</details>
-
-<details>
-  <summary><b>Kiro IDE & CLI </b></summary>
-  Skills for Kiro reside under ".kiro/skills/" and can be stored under Project or Global level. Kiro also supports Agents.md. See Kiro docs at https://kiro.dev/docs/skills/
-</details>
-
-<details>
-<summary><b>Codex / Other Agents</b></summary>
-
-Skills are plain Markdown - they work with any agent that accepts system prompts or instruction files. See [docs/getting-started.md](docs/getting-started.md).
-
-</details>
-
-
 
 ---
 
