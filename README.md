@@ -44,56 +44,20 @@ flowchart LR
 
 ## Quick Start
 
-### 1. Clone the Repository
+### 1. Clone
 ```bash
 git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
 ```
 
 ### 2. One-Click Setup
-We provide **native support** for the major AI coding CLIs.
 ```bash
 bash setup.sh
 ```
-*It auto-detects installed tools and configures everything (Claude, Gemini, OpenCode, Codex, Pi).*
-
-> **Manual Setup:** If `setup.sh` misses anything, see the sections below.
-
-#### Claude Code
-```bash
-claude skills install . --path skills
-```
-
-#### Codex CLI
-Codex relies on **Skill auto-detection** rather than slash commands.
-```bash
-# Link skills so Codex can auto-detect them:
-ln -s $(pwd)/skills ~/.codex/skills/tGD
-```
-*Trigger:* Say "Plan this feature" or "Start tgd plan" — Codex will invoke `planning-and-task-breakdown` automatically.
-
-#### OpenCode
-OpenCode auto-detects the `skills/` folder in the workspace.
-
-#### Pi Coding Agent
-Pi supports `/tgd-plan` natively via a **TypeScript Extension** (`tGD-clone/.pi/extensions/`).
-```bash
-# The extension maps /tgd-plan -> planning-and-task-breakdown skill.
-# Start Pi:
-pi
-
-# Use the short slash command:
-/tgd-plan
-/tgd-define
-```
-You can also use natural language (e.g. "Plan this feature") and Pi will auto-detect the matching skill.
-
-> **Note:** You can also run `bash setup.sh` to attempt an automated installation for all supported agents.
+Auto-detects your installed CLIs (Claude, Gemini, OpenCode, Codex, Pi) and configures everything.
 
 ### 3. Start Coding
 Run your agent and use the slash commands:
-- `/tgd-map` to understand the project
-- `/tgd-define` to plan features
-- `/tgd-plan` to break down tasks
+- `/tgd-map`, `/tgd-define`, `/tgd-plan`, etc.
 
 ---
 
@@ -119,24 +83,6 @@ When `/tgd-plan` generates `TASKS.md`, the **`jira-auto-sync`** skill can automa
 ```
 /tgd-plan → generates TASKS.md → user confirms → creates Jira issues
 ```
-
----
-
-## Other Platforms
-
-While optimized for CLIs, these skills work elsewhere:
-
-<details>
-<summary><b>Cursor / Windsurf / Kiro</b></summary>
-- **Cursor:** Copy `skills/` to `.cursor/rules/`
-- **Windsurf:** Add skill contents to rules config
-- **Kiro:** Place skills in `.kiro/skills/`
-</details>
-
-<details>
-<summary><b>GitHub Copilot</b></summary>
-Use `AGENTS.md` and `.github/copilot-instructions.md` to load these workflows.
-</details>
 
 ---
 
@@ -229,6 +175,7 @@ tGD/
 ├── .claude/commands/                  # Claude Code commands
 ├── .gemini/commands/                  # Gemini CLI commands
 ├── .opencode/commands/                # OpenCode commands
+├── .pi/extensions/                    # Pi Coding Agent commands
 ├── scripts/                           # Setup & validation
 └── docs/                              # Platform-specific guides
 ```
@@ -240,3 +187,54 @@ tGD gives AI agents structured workflows that enforce the same discipline senior
 ## License
 
 MIT - use these skills in your projects, teams, and tools.
+
+---
+
+## Appendix: Manual Configuration
+
+> **Note:** Only needed if `bash setup.sh` fails or you prefer manual linking.
+
+### Claude Code
+```bash
+claude skills install . --path skills
+```
+
+### Gemini CLI
+```bash
+gemini skills install . --path skills
+```
+
+### Codex CLI
+Codex relies on **Skill auto-detection** rather than slash commands.
+```bash
+ln -s $(pwd)/skills ~/.codex/skills/tGD
+```
+*Trigger:* Say "Plan this feature" or "Start tgd plan" — Codex will invoke `planning-and-task-breakdown` automatically.
+
+### OpenCode
+OpenCode auto-detects the `skills/` folder in the workspace.
+
+### Pi Coding Agent
+Pi supports `/tgd-plan` natively via a **TypeScript Extension** (`.pi/extensions/`).
+```bash
+# The extension maps /tgd-plan -> planning-and-task-breakdown skill.
+pi
+/tgd-plan
+```
+
+### Other Platforms
+<details>
+<summary><b>Cursor / Windsurf / Kiro</b></summary>
+
+- **Cursor:** Copy `skills/` to `.cursor/rules/`
+- **Windsurf:** Add skill contents to rules config
+- **Kiro:** Place skills in `.kiro/skills/`
+
+</details>
+
+<details>
+<summary><b>GitHub Copilot</b></summary>
+
+Use `AGENTS.md` and `.github/copilot-instructions.md` to load these workflows.
+
+</details>
