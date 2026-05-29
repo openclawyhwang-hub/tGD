@@ -16,7 +16,7 @@ The user MUST provide these before the skill runs:
 
 ```
 JIRA_URL      = https://jira.company.com          (Data Center base URL)
-JIRA_TOKEN=***
+JIRA_TOKEN=*** token (PAT)
 JIRA_PROJECT   = Project key (e.g. ENG, FE, BE) — 必填
 ```
 
@@ -25,7 +25,7 @@ JIRA_PROJECT   = Project key (e.g. ENG, FE, BE) — 必填
 **Setup (one-time):**
 ```bash
 # Test connection (Bearer auth)
-curl -s -H "Authorization: Bearer $JIRA_TOKEN" "$JIRA_URL/rest/api/2/myself" | python3 -m json.tool
+curl -s -H "Authorization: Bearer *** "$JIRA_URL/rest/api/2/myself" | python3 -m json.tool
 ```
 If it returns user info, auth works. If 401/403, check credentials or proxy settings.
 
@@ -91,7 +91,7 @@ For each parsed task, create a Jira issue:
 ```bash
 curl -s -X POST \
   "$JIRA_URL/rest/api/2/issue" \
-  -H "Authorization: Bearer $JIRA_TOKEN" \
+  -H "Authorization: Bearer *** \
   -H "Content-Type: application/json" \
   -d '{
   "fields": {
@@ -105,6 +105,14 @@ curl -s -X POST \
 ```
 
 **Output:** Print each created issue key (e.g. `ENG-1234`).
+
+### Step 4: Error Handling
+
+If an issue creation fails, the script should:
+- **401/403**: Token expired or invalid → Stop and ask user to re-provide `JIRA_TOKEN`
+- **400 (missing field)**: Print the error, identify missing required field via `createmeta`, skip this task
+- **500**: Retry once with `sleep 1`, if still fails skip and continue
+- Continue processing remaining tasks even if one fails
 
 ### Step 5: Report
 

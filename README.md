@@ -32,6 +32,26 @@ Skills encode the workflows, quality gates, and best practices that senior engin
 
 Skills also activate automatically based on what you're doing — designing an API triggers `api-and-interface-design`, building UI triggers `frontend-ui-engineering`, and so on.
 
+## Integrations
+
+### Jira Data Center
+
+When `/tgd-plan` generates `TASKS.md`, the optional **`jira-auto-sync`** skill can automatically create Jira issues:
+
+```
+/tgd-plan → generates TASKS.md → user confirms → creates Jira issues
+```
+
+**Requirements:**
+- Jira Data Center URL and Bearer token (PAT)
+- Project key (e.g. `ENG`, `FE`, `BE`)
+
+**What it does:**
+- Parses each task from `TASKS.md` (title, description, acceptance criteria)
+- Creates Jira issues via REST API v2 (curl, no binary needed)
+- Labels issues with `tgd` and `<feature-name>` for traceability
+- Reports created issue keys (e.g. `ENG-1234`)
+
 ---
 
 ## Quick Start
