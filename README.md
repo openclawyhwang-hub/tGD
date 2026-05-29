@@ -66,9 +66,16 @@ ln -s $(pwd)/skills ~/.codex/skills/tGD
 OpenCode auto-detects the `skills/` folder in the workspace.
 
 #### Pi Coding Agent
-Pi auto-detects the `skills/` folder. You can trigger workflows via:
-- **Slash Commands:** Type `/skill:skill-name` (e.g., `/skill:planning-and-task-breakdown`)
-- **Natural Language:** "Help me plan the feature" (Pi will auto-detect the skill)
+Pi auto-discovers skills from the `skills/` folder.
+```bash
+# Start Pi - skills are loaded automatically
+pi
+
+# Invoke a specific skill workflow via slash command:
+/skill:planning-and-task-breakdown
+/skill:spec-driven-development
+```
+You can also use natural language (e.g. "Plan this feature") and Pi will auto-detect the matching skill.
 
 > **Note:** You can also run `bash setup.sh` to attempt an automated installation for all supported agents.
 
