@@ -4,7 +4,7 @@
   <img src="https://img.shields.io/github/stars/openclawyhwang-hub/tGD?style=for-the-badge&logo=github&label=Stars&color=gold" alt="GitHub Stars">
   <img src="https://img.shields.io/github/license/openclawyhwang-hub/tGD?style=for-the-badge&color=blue" alt="License">
   <img src="https://img.shields.io/github/last-commit/openclawyhwang-hub/tGD?style=for-the-badge&logo=github&label=Last%20Commit&color=green" alt="Last Commit">
-  <img src="https://img.shields.io/badge/platforms-Claude%20Code%20%7C%20Codex%20%7C%20Gemini%20%7C%20OpenCode-8A2BE2?style=for-the-badge" alt="Platforms">
+  <img src="https://img.shields.io/badge/platforms-Claude%20Code%20%7C%20Codex%20%7C%20Gemini%20%7C%20OpenCode%20%7C%20Pi-8A2BE2?style=for-the-badge" alt="Platforms">
 </p>
 
 **Production-grade engineering skills for AI coding agents.**
@@ -68,6 +68,13 @@ ln -s $(pwd)/skills ~/.codex/skills/tGD
 ```bash
 # OpenCode auto-detects the 'skills/' folder in the workspace.
 # Just ensure this repo is in your project or workspace root.
+```
+
+#### Pi Coding Agent
+```bash
+# Pi auto-detects skills in the current workspace.
+# Just run Pi in the directory:
+pi
 ```
 
 > **Note:** You can also run `bash setup.sh` to attempt an automated installation for all supported agents.
@@ -218,7 +225,7 @@ tGD/
 
 ## What is tGD?
 
-tGD gives AI agents structured workflows that enforce the same discipline senior engineers bring to production code. It encodes hard-won engineering judgment — when to write a spec, what to test, how to review — into repeatable workflows that work across Claude Code, Codex CLI, Gemini CLI, and OpenCode.
+tGD gives AI agents structured workflows that enforce the same discipline senior engineers bring to production code. It encodes hard-won engineering judgment — when to write a spec, what to test, how to review — into repeatable workflows that work across Claude Code, Codex CLI, Gemini CLI, OpenCode, and Pi Coding Agent.
 
 ## License
 
