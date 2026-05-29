@@ -7,9 +7,29 @@
   <img src="https://img.shields.io/badge/platforms-Claude%20Code%20%7C%20Codex%20%7C%20Gemini%20%7C%20OpenCode%20%7C%20Pi-8A2BE2?style=for-the-badge" alt="Platforms">
 </p>
 
-**Production-grade engineering skills for AI coding agents.**
+**tGD is a skill pack that makes AI coding agents act like senior engineers.**
 
-Skills encode the workflows, quality gates, and best practices that senior engineers use when building software. These ones are packaged so AI agents follow them consistently across every phase of development.
+Instead of "just write code", tGD enforces a disciplined workflow: **Map → Define → Plan → Build → Verify → Review → Simplify → Ship**.
+
+Works with Claude Code, Codex CLI, Gemini CLI, OpenCode, and Pi Coding Agent.
+
+## Quick Start
+
+### 1. Clone
+```bash
+git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
+```
+
+### 2. One-Click Setup
+```bash
+bash setup.sh
+```
+Auto-detects your installed CLIs and configures everything.
+
+### 3. Start Coding
+Run your agent and type `/tgd-map` to begin.
+
+---
 
 ## Pipeline
 
@@ -42,39 +62,20 @@ flowchart LR
     class H indigo
 ```
 
-## Quick Start
-
-### 1. Clone
-```bash
-git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
-```
-
-### 2. One-Click Setup
-```bash
-bash setup.sh
-```
-Auto-detects your installed CLIs (Claude, Gemini, OpenCode, Codex, Pi) and configures everything.
-
-### 3. Start Coding
-Run your agent and use the slash commands:
-- `/tgd-map`, `/tgd-define`, `/tgd-plan`, etc.
-
----
-
 ## Commands
 
-8 slash commands that map to the development lifecycle.
+8 slash commands that map to the development lifecycle. Each command chains the relevant skills automatically.
 
-| What you're doing | Command | Key principle |
-|---|---|---|
-| Understand the project | `/tgd-map` | Context before changes |
-| Define what to build | `/tgd-define` | Product + Spec before code |
-| Plan how to build it | `/tgd-plan` | Small, atomic tasks |
-| Build incrementally | `/tgd-develop` | One slice at a time |
-| Prove it works | `/tgd-verify` | Tests are proof |
-| Review before merge | `/tgd-review` | Improve code health |
-| Simplify the code | `/tgd-simplify` | Clarity over cleverness |
-| Ship to production | `/tgd-ship` | Faster is safer |
+| What you're doing | Command | Key principle | Invokes |
+|---|---|---|---|
+| Understand the project | `/tgd-map` | Context before changes | `context-engineering` |
+| Define what to build | `/tgd-define` | Product + Spec before code | `interview-me` → `idea-refine` → `spec-driven-development` |
+| Plan how to build it | `/tgd-plan` | Small, atomic tasks | `planning-and-task-breakdown` → **Jira sync** |
+| Build incrementally | `/tgd-develop` | One slice at a time | `source-driven-development` → `incremental-implementation` → `test-driven-development` |
+| Prove it works | `/tgd-verify` | Tests are proof | `debugging-and-error-recovery` → `test-driven-development` |
+| Review before merge | `/tgd-review` | Improve code health | `code-review-and-quality` → `code-simplification` |
+| Simplify the code | `/tgd-simplify` | Clarity over cleverness | `code-simplification` |
+| Ship to production | `/tgd-ship` | Faster is safer | `git-workflow-and-versioning` → `shipping-and-launch` |
 
 ## Integrations
 
@@ -82,6 +83,43 @@ Run your agent and use the slash commands:
 When `/tgd-plan` generates `TASKS.md`, the **`jira-auto-sync`** skill can automatically create Jira issues:
 ```
 /tgd-plan → generates TASKS.md → user confirms → creates Jira issues
+```
+
+---
+
+## Agent Personas
+
+| Agent | Role | Perspective |
+|-------|------|-------------|
+| [code-reviewer](agents/code-reviewer.md) | Senior Staff Engineer | "Would a staff engineer approve this?" |
+| [test-engineer](agents/test-engineer.md) | QA Specialist | Test strategy & Prove-It pattern |
+| [security-auditor](agents/security-auditor.md) | Security Engineer | Vulnerability detection |
+
+Personas do not invoke other personas — the user (or a slash command) is the orchestrator.
+
+## How Skills Work
+
+Every skill follows a consistent anatomy:
+1. **Frontmatter**: Name, description, triggers.
+2. **Workflow**: Step-by-step instructions.
+3. **Verification**: Gates that must pass before moving on.
+4. **Anti-rationalization**: Counters to common "lazy agent" excuses.
+
+Skills use **progressive disclosure** — the agent only loads details when needed, keeping context usage low.
+
+## Project Structure
+
+```
+tGD/
+├── skills/                            # 23 skills
+├── agents/                            # 3 specialist personas
+├── references/                        # Checklists (Security, Testing, etc.)
+├── .claude/commands/                  # Claude Code commands
+├── .gemini/commands/                  # Gemini CLI commands
+├── .opencode/commands/                # OpenCode commands
+├── .pi/extensions/                    # Pi Coding Agent commands
+├── scripts/                           # Setup & validation
+└── docs/                              # Platform-specific guides
 ```
 
 ---
@@ -143,47 +181,6 @@ The commands above are entry points. The pack includes 23 skills total — 22 li
 
 ---
 
-## Agent Personas
-
-| Agent | Role | Perspective |
-|-------|------|-------------|
-| [code-reviewer](agents/code-reviewer.md) | Senior Staff Engineer | "Would a staff engineer approve this?" |
-| [test-engineer](agents/test-engineer.md) | QA Specialist | Test strategy & Prove-It pattern |
-| [security-auditor](agents/security-auditor.md) | Security Engineer | Vulnerability detection |
-
----
-
-## How Skills Work
-
-Every skill follows a consistent anatomy:
-1. **Frontmatter**: Name, description, triggers.
-2. **Workflow**: Step-by-step instructions.
-3. **Verification**: Gates that must pass before moving on.
-4. **Anti-rationalization**: Counters to common "lazy agent" excuses.
-
-Skills are designed for **progressive disclosure** — the agent only loads details when needed, keeping context usage low.
-
----
-
-## Project Structure
-
-```
-tGD/
-├── skills/                            # 23 skills
-├── agents/                            # 3 specialist personas
-├── references/                        # Checklists (Security, Testing, etc.)
-├── .claude/commands/                  # Claude Code commands
-├── .gemini/commands/                  # Gemini CLI commands
-├── .opencode/commands/                # OpenCode commands
-├── .pi/extensions/                    # Pi Coding Agent commands
-├── scripts/                           # Setup & validation
-└── docs/                              # Platform-specific guides
-```
-
-## What is tGD?
-
-tGD gives AI agents structured workflows that enforce the same discipline senior engineers bring to production code. It encodes hard-won engineering judgment — when to write a spec, what to test, how to review — into repeatable workflows that work across Claude Code, Codex CLI, Gemini CLI, OpenCode, and Pi Coding Agent.
-
 ## License
 
 MIT - use these skills in your projects, teams, and tools.
@@ -209,7 +206,7 @@ Codex relies on **Skill auto-detection** rather than slash commands.
 ```bash
 ln -s $(pwd)/skills ~/.codex/skills/tGD
 ```
-*Trigger:* Say "Plan this feature" or "Start tgd plan" — Codex will invoke `planning-and-task-breakdown` automatically.
+*Trigger:* Say "Plan this feature" or "Start tgd plan" — Codex will invoke the skill automatically.
 
 ### OpenCode
 OpenCode auto-detects the `skills/` folder in the workspace.
@@ -217,7 +214,6 @@ OpenCode auto-detects the `skills/` folder in the workspace.
 ### Pi Coding Agent
 Pi supports `/tgd-plan` natively via a **TypeScript Extension** (`.pi/extensions/`).
 ```bash
-# The extension maps /tgd-plan -> planning-and-task-breakdown skill.
 pi
 /tgd-plan
 ```
