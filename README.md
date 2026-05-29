@@ -49,12 +49,18 @@ flowchart LR
 git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
 ```
 
-### 2. Setup for your CLI
+### 2. One-Click Setup
 We provide **native support** for the major AI coding CLIs.
-
-#### Gemini CLI
 ```bash
-gemini skills install . --path skills
+bash setup.sh
+```
+*It auto-detects installed tools and configures everything (Claude, Gemini, OpenCode, Codex, Pi).*
+
+> **Manual Setup:** If `setup.sh` misses anything, see the sections below.
+
+#### Claude Code
+```bash
+claude skills install . --path skills
 ```
 
 #### Codex CLI

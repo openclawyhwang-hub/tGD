@@ -50,6 +50,25 @@ if command -v gemini &> /dev/null; then
     fi
 fi
 
+# Codex CLI
+if command -v codex &> /dev/null; then
+    echo "   📂 Codex CLI detected."
+    mkdir -p ~/.codex
+    if [ -d "skills" ]; then
+        ln -sf "$(pwd)/skills" ~/.codex/skills/tGD 2>/dev/null || true
+        echo "   ✅ Skills linked for auto-detection."
+    fi
+fi
+
+# Pi Coding Agent
+if command -v pi &> /dev/null; then
+    echo "   📂 Pi Coding Agent detected."
+    mkdir -p .pi/extensions
+    if [ -d ".pi/extensions" ]; then
+        echo "   ✅ Pi directory structure ready."
+    fi
+fi
+
 echo ""
 echo "===================================="
 echo "✅ Setup Complete!"
