@@ -1,19 +1,46 @@
 # tGD
 
+<p align="center">
+  <img src="https://img.shields.io/github/stars/openclawyhwang-hub/tGD?style=for-the-badge&logo=github&label=Stars&color=gold" alt="GitHub Stars">
+  <img src="https://img.shields.io/github/license/openclawyhwang-hub/tGD?style=for-the-badge&color=blue" alt="License">
+  <img src="https://img.shields.io/github/last-commit/openclawyhwang-hub/tGD?style=for-the-badge&logo=github&label=Last%20Commit&color=green" alt="Last Commit">
+  <img src="https://img.shields.io/badge/platforms-Claude%20Code%20%7C%20Codex%20%7C%20Gemini%20%7C%20OpenCode-8A2BE2?style=for-the-badge" alt="Platforms">
+</p>
+
 **Production-grade engineering skills for AI coding agents.**
 
 Skills encode the workflows, quality gates, and best practices that senior engineers use when building software. These ones are packaged so AI agents follow them consistently across every phase of development.
 
-```
-     MAP           DEFINE          PLAN           BUILD          VERIFY         REVIEW          REVIEW          SHIP
- ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐
- │ Context  │→ │ PRD      │→ │ Tasks    │→ │ Code     │→ │ Test     │→ │ QA Gate  │→ │ Clean    │→ │ Go       │
- │+CodeGraph│  │ + Spec   │  │          │  │ Impl     │  │ Debug    │  │ Review   │  │ Code     │  │ Live     │
- └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘
-/tgd-map      /tgd-define    /tgd-plan      /tgd-develop   /tgd-verify   /tgd-review    /tgd-simplify /tgd-ship
-```
+## Pipeline
 
----
+```mermaid
+flowchart LR
+    A["🔍 MAP\n/tgd-map"] --> B["📋 DEFINE\n/tgd-define"]
+    B --> C["📐 PLAN\n/tgd-plan"]
+    C --> D["⚡ BUILD\n/tgd-develop"]
+    D --> E["🧪 VERIFY\n/tgd-verify"]
+    E --> F["🔎 REVIEW\n/tgd-review"]
+    F --> G["✨ SIMPLIFY\n/tgd-simplify"]
+    G --> H["🚀 SHIP\n/tgd-ship"]
+
+    classDef cyan fill:#0e7490,color:#ecfeff,stroke:#22d3ee
+    classDef green fill:#059669,color:#ecfdf5,stroke:#34d399
+    classDef blue fill:#2563eb,color:#eff6ff,stroke:#60a5fa
+    classDef purple fill:#7c3aed,color:#f5f3ff,stroke:#a78bfa
+    classDef amber fill:#d97706,color:#fffbeb,stroke:#fbbf24
+    classDef rose fill:#e11d48,color:#fff1f2,stroke:#fb7185
+    classDef teal fill:#0d9488,color:#f0fdfa,stroke:#5eead4
+    classDef indigo fill:#4f46e5,color:#eef2ff,stroke:#818cf8
+
+    class A cyan
+    class B green
+    class C blue
+    class D purple
+    class E amber
+    class F rose
+    class G teal
+    class H indigo
+```
 
 ## Commands
 
@@ -188,7 +215,7 @@ The commands above are entry points. The pack includes 23 skills total — 22 li
 | [source-driven-development](skills/source-driven-development/SKILL.md) | Ground every framework decision in official documentation - verify, cite sources, flag what's unverified | You want authoritative, source-cited code for any framework or library |
 | [doubt-driven-development](skills/doubt-driven-development/SKILL.md) | Adversarial fresh-context review of every non-trivial decision in-flight - CLAIM → EXTRACT → DOUBT → RECONCILE → STOP, with optional user-authorized cross-model escalation | Stakes are high (production, security, irreversible), working in unfamiliar code, or a confident output is cheaper to verify now than to debug later |
 | [frontend-ui-engineering](skills/frontend-ui-engineering/SKILL.md) | Component architecture, design systems, state management, responsive design, WCAG 2.1 AA accessibility | Building or modifying user-facing interfaces |
-| [api-and-interface-design](skills/api-and-interface-design/SKILL.md) | Contract-first design, Hyrum's Law, One-Version Rule, error semantics, boundary validation | Designing APIs, module boundaries, or public interfaces |
+| [api-and-interface-design](skills/api-and-interface-design/SKILL.md) | Contract-first design, Hyrum's Law, One Version Rule, error semantics, boundary validation | Designing APIs, module boundaries, or public interfaces |
 
 ### Verify - Prove it works
 
