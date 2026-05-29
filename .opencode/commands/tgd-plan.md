@@ -28,6 +28,11 @@ Each task should be implementable in isolation with clear success criteria. Orde
 
 After completing the plan, verify the outputs.
 
+**Conditional: User wants Jira integration?** → Run the `jira-auto-sync` skill.
+1. Ask for `JIRA_URL`, `JIRA_PROJECT` (key), and `JIRA_TOKEN` (Bearer/PAT).
+2. Parse `tGD/<feature>/TASKS.md` and create issues via Jira REST API v2.
+3. Report created issue keys (e.g., `ENG-1234`).
+
 **Verification Gate:**
 - [ ] `tGD/<feature-name>/TASKS.md` exists and is non-empty
 - [ ] TASKS.md contains at least one task with Acceptance Criteria
