@@ -366,7 +366,7 @@ When filing a Jira tech debt issue, include:
 ## Context
 - Feature: <feature-name>
 - File(s): [path/to/file]
-- Review Stage: /tgd-merge
+- Review Stage: /tgd-review
 
 ## Current State
 [What the code looks like now]

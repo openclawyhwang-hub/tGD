@@ -195,6 +195,25 @@ Data Center may throttle bulk creation. If creating 20+ issues:
 - Add `sleep 0.5` between API calls
 - Or batch via `/rest/batch/1.0/issue` (if available on DC 9.0+)
 
+## When to Use
+
+- When `/tgd-plan` generates `TASKS.md`
+- When user wants to sync tasks to Jira Data Center
+- When planning sprint backlog from task breakdown
+
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "I'll sync to Jira later" | Later never comes. Sync immediately after plan. |
+| "Manual Jira entry is fine" | Manual entry loses the link between TASKS.md and Jira. |
+
+## Red Flags
+
+- Tasks created in Jira without corresponding TASKS.md entries
+- Jira issues missing acceptance criteria from TASKS.md
+- Sync run without user confirmation
+
 ## Verification Gate
 
 After execution, verify:

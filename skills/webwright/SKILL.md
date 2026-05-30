@@ -159,3 +159,31 @@ Optional shortcuts under `commands/`:
 
 The slash commands are convenience templates; the skill also activates
 automatically from any prompt whose intent matches its description.
+
+## When to Use
+
+- Automating web tasks (search, filter, form-fill, multi-step flows)
+- E2E testing of web applications
+- Creating reusable browser automation scripts
+- When `browser-testing-with-devtools` is too manual
+
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "I'll just test manually" | Manual tests don't persist. Scripts do. |
+| "Unit tests are enough" | Unit tests don't catch CSS, layout, or browser bugs. |
+
+## Red Flags
+
+- Shipping UI changes without browser verification
+- E2E scripts that only test happy paths
+- Scripts with hardcoded waits instead of smart selectors
+- No screenshots captured during verification
+
+## Verification
+
+- [ ] `final_script.py` exists and runs cleanly
+- [ ] All Critical Points in `plan.md` are checked off
+- [ ] Screenshots captured for every key step
+- [ ] Final datum printed to `final_script_log.txt`
