@@ -39,7 +39,7 @@ This project supports 8 lifecycle commands that work across **OpenCode**, **Clau
 || `/tgd-define` | Define | `interview-me` → `idea-refine` → `spec-driven-development` |
 || `/tgd-plan` | Plan | `planning-and-task-breakdown` → **`jira-auto-sync` (conditional)** |
 || `/tgd-develop` | Build | `context-engineering` → `source-driven-development` → `incremental-implementation` → `test-driven-development` (+ `frontend-ui-engineering`, `api-and-interface-design`, `doubt-driven-development` when relevant) |
-|| `/tgd-verify` | Verify | `debugging-and-error-recovery` → `test-driven-development` (+ `browser-testing-with-devtools` when relevant) |
+|| `/tgd-verify` | Verify | `debugging-and-error-recovery` → `test-driven-development` (+ `webwright`, `browser-testing-with-devtools` when relevant) |
 || `/tgd-review` | Review | `code-review-and-quality` → `code-simplification` (+ `security-and-hardening`, `performance-optimization` when relevant) |
 || `/tgd-simplify` | Review | `code-simplification` |
 || `/tgd-ship` | Ship | `git-workflow-and-versioning` → `shipping-and-launch` (+ `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs` when relevant) |
@@ -54,10 +54,12 @@ If the user types a command, invoke it. If they use natural language instead, ma
 
 - DEFINE → `spec-driven-development`
 - PLAN → `planning-and-task-breakdown`
-- BUILD → `incremental-implementation` + `test-driven-development`
+- MAP → `context-engineering`
+- BUILD → `context-engineering` + `incremental-implementation` + `test-driven-development`
 - VERIFY → `debugging-and-error-recovery`
 - REVIEW → `code-review-and-quality`
 - SHIP → `shipping-and-launch`
+- SIMPLIFY → `code-simplification`
 
 ### Execution Model
 

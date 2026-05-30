@@ -161,7 +161,7 @@ Skills use **progressive disclosure** — the agent only loads details when need
 
 ```
 tGD/
-├── skills/                            # 23 skills
+├── skills/                            # 25 skills
 ├── agents/                            # 3 specialist personas
 ├── references/                        # Checklists (Security, Testing, etc.)
 ├── .claude/commands/                  # Claude Code commands
@@ -174,9 +174,9 @@ tGD/
 
 ---
 
-## All 23 Skills
+## All 25 Skills
 
-The commands above are entry points. The pack includes 23 skills total — 22 lifecycle skills plus the `using-agent-skills` meta-skill.
+The commands above are entry points. The pack includes 25 skills total — 24 lifecycle skills plus the `using-agent-skills` meta-skill.
 
 ### Meta
 | Skill | Purpose |
@@ -194,6 +194,7 @@ The commands above are entry points. The pack includes 23 skills total — 22 li
 | Skill | Purpose |
 |---|---|
 | [planning-and-task-breakdown](skills/planning-and-task-breakdown/SKILL.md) | Decompose specs into TASKS.md |
+| [jira-auto-sync](skills/jira-auto-sync/SKILL.md) | Auto-create Jira issues from TASKS.md |
 
 ### Build
 | Skill | Purpose |
