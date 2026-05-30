@@ -77,6 +77,52 @@ flowchart LR
 | Simplify the code | `/tgd-simplify` | Clarity over cleverness | `code-simplification` |
 | Ship to production | `/tgd-ship` | Faster is safer | `git-workflow-and-versioning` → `shipping-and-launch` |
 
+## Testing Strategy
+
+Testing in tGD isn't a single phase — it's a progressive discipline across three stages, each with a different purpose and role:
+
+### The Three Testing Roles
+
+| Stage | Role | Purpose | Test Types | What the Agent Does |
+|-------|------|---------|------------|---------------------|
+| **`/tgd-develop`** | 🔨 Builder | **Write tests** alongside code | Unit Tests (TDD) | Red-Green-Refactor cycle: write failing test → implement → pass |
+| **`/tgd-verify`** | 🔍 Inspector | **Run all tests** and fix failures | Integration + E2E | Debug pipeline: reproduce → localize → fix → guard |
+| **`/tgd-review`** | 🕵️ Auditor | **Check test quality** and coverage | Coverage + Strategy | Review test pyramid: 80% unit, 15% integration, 5% E2E |
+
+### Why Three Separate Stages?
+
+**Separation prevents "lazy agent" behavior.** If testing were a single stage, the agent would run unit tests, declare "done," and skip the harder integration/E2E tests. By separating stages:
+
+- **Develop** forces the agent to create proof (write tests)
+- **Verify** forces the agent to validate proof (run tests + debug)
+- **Review** forces the agent to challenge proof (audit test quality)
+
+### The Test Pyramid
+
+tGD enforces the test pyramid ratio:
+```
+          ╱╲
+         ╱  ╲         E2E Tests (~5%)      ← Verify stage
+        ╱    ╲        Full user flows, real browser
+       ╱──────╲
+      ╱        ╲      Integration Tests (~15%)  ← Verify stage
+     ╱          ╲     Component interactions, API boundaries
+    ╱────────────╲
+   ╱              ╲   Unit Tests (~80%)      ← Develop stage
+  ╱                ╲  Pure logic, isolated, milliseconds each
+ ╱──────────────────╲
+```
+
+### Example: Building a Login Feature
+
+| Stage | Agent Action | Test Type | Problem Found |
+|-------|--------------|-----------|---------------|
+| **Develop** | Write `verify_password()` function + test | Unit Test | Password hashing logic reversed → fix immediately |
+| **Verify** | Start server, run all tests, auto-click browser | Integration/E2E | Database connection fails (env var missing), login button hidden by cookie banner |
+| **Review** | Check test files for coverage gaps | Coverage Audit | Missing edge case tests: empty password, 1000-char password |
+
+---
+
 ## Integrations
 
 ### Jira Data Center
