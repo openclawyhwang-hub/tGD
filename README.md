@@ -102,7 +102,7 @@ Testing in tGD isn't a single phase — it's a progressive discipline across thr
 tGD enforces the test pyramid ratio:
 ```
           ╱╲
-         ╱  ╲         E2E Tests (~5%)      ← Verify stage
+         ╱  ╲         E2E Tests (~5%)      ← Verify stage (Webwright)
         ╱    ╲        Full user flows, real browser
        ╱──────╲
       ╱        ╲      Integration Tests (~15%)  ← Verify stage
@@ -112,6 +112,10 @@ tGD enforces the test pyramid ratio:
   ╱                ╲  Pure logic, isolated, milliseconds each
  ╱──────────────────╲
 ```
+
+**E2E Testing Tools:**
+- **`webwright`** (preferred): Writes reusable Playwright scripts, auto-verifies with screenshots
+- **`browser-testing-with-devtools`** (fallback): Real-time DOM inspection, console debugging
 
 ### Example: Building a Login Feature
 
@@ -206,6 +210,7 @@ The commands above are entry points. The pack includes 23 skills total — 22 li
 | Skill | Purpose |
 |---|---|
 | [browser-testing-with-devtools](skills/browser-testing-with-devtools/SKILL.md) | Live runtime data & DOM inspection |
+| [webwright](skills/webwright/SKILL.md) | E2E browser automation, reusable test scripts |
 | [debugging-and-error-recovery](skills/debugging-and-error-recovery/SKILL.md) | Triage, fix, guard |
 
 ### Review

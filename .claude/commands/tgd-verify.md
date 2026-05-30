@@ -25,7 +25,7 @@ Run the `debugging-and-error-recovery` skill. This is the VERIFY phase. The full
 2. `test-driven-development` — verify with the test pyramid (80% unit, 15% integration, 5% E2E)
 
 **Conditional (apply when relevant):**
-- Browser-based? → `browser-testing-with-devtools`
+- Browser-based? → `webwright` (preferred for E2E) or `browser-testing-with-devtools` (for debugging)
 
 Verify that the feature works correctly before proceeding to review. Tests are proof — "seems right" is never sufficient.
 
