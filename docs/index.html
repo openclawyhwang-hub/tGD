@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tGD — AI Coding Agent Skill Pack</title>
+    <meta name="description" content="tGD makes AI coding agents act like senior engineers. 8-stage pipeline enforces disciplined workflow.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-card: #111111;
+            --bg-code: #1a1a1a;
+            --text: #e5e5e5;
+            --text-muted: #737373;
+            --accent: #3b82f6;
+            --accent-dim: #1d4ed8;
+            --green: #22c55e;
+            --red: #ef4444;
+            --amber: #f59e0b;
+            --purple: #8b5cf6;
+            --cyan: #06b6d4;
+            --border: #262626;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 80px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 100px;
+            font-size: 14px;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        h1 span {
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(18px, 2.5vw, 24px);
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-dim);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-muted);
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 0;
+        }
+
+        h2 {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 18px;
+            max-width: 600px;
+            margin-bottom: 48px;
+        }
+
+        /* Before/After */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .comparison { grid-template-columns: 1fr; }
+        }
+
+        .comparison-card {
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .comparison-card.before {
+            background: rgba(239, 68, 68, 0.05);
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .comparison-card.after {
+            background: rgba(34, 197, 94, 0.05);
+            border-color: rgba(34, 197, 94, 0.2);
+        }
+
+        .comparison-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .comparison-card ul {
+            list-style: none;
+            margin-top: 16px;
+        }
+
+        .comparison-card li {
+            padding: 8px 0;
+            color: var(--text-muted);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .comparison-card.before li::before {
+            content: '✗';
+            color: var(--red);
+            font-weight: bold;
+        }
+
+        .comparison-card.after li::before {
+            content: '✓';
+            color: var(--green);
+            font-weight: bold;
+        }
+
+        /* Pipeline */
+        .pipeline {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 20px 0;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .pipeline-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            min-width: 120px;
+        }
+
+        .pipeline-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            position: relative;
+        }
+
+        .pipeline-step:nth-child(1) .pipeline-icon { background: rgba(6, 182, 212, 0.15); }
+        .pipeline-step:nth-child(2) .pipeline-icon { background: rgba(34, 197, 94, 0.15); }
+        .pipeline-step:nth-child(3) .pipeline-icon { background: rgba(59, 130, 246, 0.15); }
+        .pipeline-step:nth-child(4) .pipeline-icon { background: rgba(139, 92, 246, 0.15); }
+        .pipeline-step:nth-child(5) .pipeline-icon { background: rgba(245, 158, 11, 0.15); }
+        .pipeline-step:nth-child(6) .pipeline-icon { background: rgba(239, 68, 68, 0.15); }
+        .pipeline-step:nth-child(7) .pipeline-icon { background: rgba(20, 184, 166, 0.15); }
+        .pipeline-step:nth-child(8) .pipeline-icon { background: rgba(99, 102, 241, 0.15); }
+
+        .pipeline-arrow {
+            display: flex;
+            align-items: center;
+            color: var(--border);
+            font-size: 20px;
+            padding-top: 20px;
+        }
+
+        .pipeline-label {
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .pipeline-cmd {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* Commands Table */
+        .commands-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 32px;
+        }
+
+        .commands-table th {
+            text-align: left;
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .commands-table td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        .commands-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .cmd-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: var(--accent);
+            background: rgba(59, 130, 246, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .skill-tag {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+            background: var(--bg-code);
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin: 2px;
+        }
+
+        /* Testing */
+        .test-roles {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        @media (max-width: 768px) {
+            .test-roles { grid-template-columns: 1fr; }
+        }
+
+        .test-role {
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+        }
+
+        .test-role-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        .test-role h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .test-role p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* FAQ */
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+            padding: 24px 0;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question::after {
+            content: '+';
+            font-size: 24px;
+            color: var(--text-muted);
+            transition: transform 0.2s;
+        }
+
+        .faq-item.active .faq-question::after {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            display: none;
+            margin-top: 16px;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        /* Code block */
+        .code-block {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        .code-block .comment {
+            color: var(--text-muted);
+        }
+
+        .code-block .cmd {
+            color: var(--green);
+        }
+
+        .code-block .output {
+            color: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            padding: 48px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        footer a {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--accent);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin: 48px 0;
+        }
+
+        @media (max-width: 768px) {
+            .stats { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .stat {
+            text-align: center;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Who Section */
+        .who-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        @media (max-width: 768px) {
+            .who-grid { grid-template-columns: 1fr; }
+        }
+
+        .who-card {
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+        }
+
+        .who-card h3 {
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .who-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Divider */
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: var(--border);
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">✨ Open Source • MIT License • 25 Skills</div>
+            <h1>t<span>GD</span></h1>
+            <p class="hero-subtitle">
+                AI coding agents that act like senior engineers. 
+                Not "just write code" — disciplined workflow from spec to ship.
+            </p>
+            <div class="hero-cta">
+                <a href="#quick-start" class="btn btn-primary">Get Started →</a>
+                <a href="https://github.com/openclawyhwang-hub/tGD" class="btn btn-secondary" target="_blank">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <div class="container">
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number">25</div>
+                <div class="stat-label">Skills</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Pipeline Stages</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">5</div>
+                <div class="stat-label">Supported CLIs</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">30s</div>
+                <div class="stat-label">Setup Time</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Why tGD -->
+    <section id="why">
+        <div class="container">
+            <h2 class="fade-in">Why tGD?</h2>
+            <p class="section-subtitle fade-in">The difference between "AI wrote code" and "AI shipped a feature".</p>
+            
+            <div class="comparison fade-in">
+                <div class="comparison-card before">
+                    <h3>❌ Without tGD</h3>
+                    <ul>
+                        <li>AI writes 500 lines, tests fail, you don't know why</li>
+                        <li>"It works on my machine" → production breaks</li>
+                        <li>No specs, no plan, just vibes</li>
+                        <li>Ship fast, debug forever</li>
+                    </ul>
+                </div>
+                <div class="comparison-card after">
+                    <h3>✅ With tGD</h3>
+                    <ul>
+                        <li>Agent writes 50 lines, tests pass, moves on</li>
+                        <li>Every feature has PRD + SPEC before code</li>
+                        <li>8-stage pipeline catches bugs early</li>
+                        <li>Ship fast AND ship safe</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Who is this for -->
+    <section id="who">
+        <div class="container">
+            <h2 class="fade-in">Who is this for?</h2>
+            <p class="section-subtitle fade-in">tGD works for any team size, any project stage.</p>
+            
+            <div class="who-grid fade-in">
+                <div class="who-card">
+                    <h3>🧑‍💻 Solo Developer</h3>
+                    <p>Ship faster with AI-assisted workflow. Let the agent handle specs, tests, and reviews while you focus on building.</p>
+                </div>
+                <div class="who-card">
+                    <h3>👥 Team Lead</h3>
+                    <p>Enforce coding standards across AI-generated code. Every PR follows the same disciplined workflow.</p>
+                </div>
+                <div class="who-card">
+                    <h3>🚀 Startup</h3>
+                    <p>Move fast without breaking things. tGD's pipeline catches bugs before they reach production.</p>
+                </div>
+                <div class="who-card">
+                    <h3>🏢 Enterprise</h3>
+                    <p>Maintain quality gates for AI development. Security, performance, and compliance built-in.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Pipeline -->
+    <section id="pipeline">
+        <div class="container">
+            <h2 class="fade-in">The Pipeline</h2>
+            <p class="section-subtitle fade-in">8 stages from idea to production. Each stage gates the next.</p>
+            
+            <div class="pipeline fade-in">
+                <div class="pipeline-step">
+                    <div class="pipeline-icon">🔍</div>
+                    <div class="pipeline-label">MAP</div>
+                    <div class="pipeline-cmd">/tgd-map</div>
+                </div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">
+                    <div class="pipeline-icon">📋</div>
+                    <div class="pipeline-label">DEFINE</div>
+                    <div class="pipeline-cmd">/tgd-define</div>
+                </div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">
+                    <div class="pipeline-icon">📐</div>
+                    <div class="pipeline-label">PLAN</div>
+                    <div class="pipeline-cmd">/tgd-plan</div>
+                </div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">
+                    <div class="pipeline-icon">⚡</div>
+                    <div class="pipeline-label">BUILD</div>
+                    <div class="pipeline-cmd">/tgd-develop</div>
+                </div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">
+                    <div class="pipeline-icon">🧪</div>
+                    <div class="pipeline-label">VERIFY</div>
+                    <div class="pipeline-cmd">/tgd-verify</div>
+                </div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">
+                    <div class="pipeline-icon">🔎</div>
+                    <div class="pipeline-label">REVIEW</div>
+                    <div class="pipeline-cmd">/tgd-review</div>
+                </div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">
+                    <div class="pipeline-icon">✨</div>
+                    <div class="pipeline-label">SIMPLIFY</div>
+                    <div class="pipeline-cmd">/tgd-simplify</div>
+                </div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-step">
+                    <div class="pipeline-icon">🚀</div>
+                    <div class="pipeline-label">SHIP</div>
+                    <div class="pipeline-cmd">/tgd-ship</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Commands -->
+    <section id="commands">
+        <div class="container">
+            <h2 class="fade-in">Commands</h2>
+            <p class="section-subtitle fade-in">8 slash commands that map to the development lifecycle.</p>
+            
+            <div class="fade-in" style="overflow-x: auto;">
+                <table class="commands-table">
+                    <thead>
+                        <tr>
+                            <th>🎯 What</th>
+                            <th>⌨️ Command</th>
+                            <th>💡 Principle</th>
+                            <th>🔧 Skills</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Understand</td>
+                            <td><span class="cmd-name">/tgd-map</span></td>
+                            <td>Context first</td>
+                            <td><span class="skill-tag">context-engineering</span></td>
+                        </tr>
+                        <tr>
+                            <td>Define</td>
+                            <td><span class="cmd-name">/tgd-define</span></td>
+                            <td>Spec before code</td>
+                            <td><span class="skill-tag">interview-me</span> <span class="skill-tag">spec-driven</span></td>
+                        </tr>
+                        <tr>
+                            <td>Plan</td>
+                            <td><span class="cmd-name">/tgd-plan</span></td>
+                            <td>Atomic tasks</td>
+                            <td><span class="skill-tag">planning</span> <span class="skill-tag">jira-sync</span></td>
+                        </tr>
+                        <tr>
+                            <td>Build</td>
+                            <td><span class="cmd-name">/tgd-develop</span></td>
+                            <td>One slice at a time</td>
+                            <td><span class="skill-tag">incremental</span> <span class="skill-tag">tdd</span></td>
+                        </tr>
+                        <tr>
+                            <td>Verify</td>
+                            <td><span class="cmd-name">/tgd-verify</span></td>
+                            <td>Tests are proof</td>
+                            <td><span class="skill-tag">debugging</span> <span class="skill-tag">webwright</span></td>
+                        </tr>
+                        <tr>
+                            <td>Review</td>
+                            <td><span class="cmd-name">/tgd-review</span></td>
+                            <td>Code health</td>
+                            <td><span class="skill-tag">code-review</span> <span class="skill-tag">simplify</span></td>
+                        </tr>
+                        <tr>
+                            <td>Simplify</td>
+                            <td><span class="cmd-name">/tgd-simplify</span></td>
+                            <td>Clarity > cleverness</td>
+                            <td><span class="skill-tag">code-simplification</span></td>
+                        </tr>
+                        <tr>
+                            <td>Ship</td>
+                            <td><span class="cmd-name">/tgd-ship</span></td>
+                            <td>Faster is safer</td>
+                            <td><span class="skill-tag">git-workflow</span> <span class="skill-tag">shipping</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Testing -->
+    <section id="testing">
+        <div class="container">
+            <h2 class="fade-in">Testing Strategy</h2>
+            <p class="section-subtitle fade-in">Three stages, three roles. No lazy agent behavior.</p>
+            
+            <div class="test-roles fade-in">
+                <div class="test-role">
+                    <div class="test-role-icon">🔨</div>
+                    <h3>Builder</h3>
+                    <p><strong>/tgd-develop</strong></p>
+                    <p>Write tests alongside code. Red-Green-Refactor cycle. Unit tests only.</p>
+                </div>
+                <div class="test-role">
+                    <div class="test-role-icon">🔍</div>
+                    <h3>Inspector</h3>
+                    <p><strong>/tgd-verify</strong></p>
+                    <p>Run all tests, fix failures. Integration + E2E. Debug pipeline.</p>
+                </div>
+                <div class="test-role">
+                    <div class="test-role-icon">🕵️</div>
+                    <h3>Auditor</h3>
+                    <p><strong>/tgd-review</strong></p>
+                    <p>Check test quality, coverage gaps. 80% unit, 15% integration, 5% E2E.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Quick Start -->
+    <section id="quick-start">
+        <div class="container">
+            <h2 class="fade-in">Quick Start</h2>
+            <p class="section-subtitle fade-in">Get up and running in 30 seconds.</p>
+            
+            <div class="fade-in">
+                <div class="code-block">
+                    <span class="comment"># 1. Clone & Setup</span><br>
+                    <span class="cmd">$ git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD</span><br>
+                    <span class="cmd">$ bash setup.sh</span><br>
+                    <span class="output">🚀 tGD Setup Complete!</span><br>
+                    <br>
+                    <span class="comment"># 2. Start Your Agent</span><br>
+                    <span class="cmd">$ claude</span>  <span class="comment"># or opencode, gemini</span><br>
+                    <br>
+                    <span class="comment"># 3. Initialize Your Project</span><br>
+                    <span class="cmd">> /tgd-map</span><br>
+                    <span class="output">✅ CONTEXT.md created with project overview</span><br>
+                    <br>
+                    <span class="comment"># 4. Build Your First Feature</span><br>
+                    <span class="cmd">> /tgd-define I want to add user authentication</span><br>
+                    <span class="output">✅ PRD.md + SPEC.md created</span><br>
+                    <span class="output">→ Ready for /tgd-plan</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- FAQ -->
+    <section id="faq">
+        <div class="container">
+            <h2 class="fade-in">FAQ</h2>
+            <p class="section-subtitle fade-in">Common questions about tGD.</p>
+            
+            <div class="fade-in" style="max-width: 800px;">
+                <div class="faq-item">
+                    <div class="faq-question">Do I need to install anything besides the agent?</div>
+                    <div class="faq-answer">Just <code>bash setup.sh</code>. It auto-detects your CLI and configures everything. Webwright dependencies installed automatically.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">What if my agent doesn't support slash commands?</div>
+                    <div class="faq-answer">Say "Plan this feature" in natural language — tGD maps intent to skills automatically.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Can I skip stages?</div>
+                    <div class="faq-answer">Each stage has pre-flight checks. If you skip, the next stage will block you.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Does this work with existing projects?</div>
+                    <div class="faq-answer">Yes! <code>/tgd-map</code> scans your existing codebase first.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">How is this different from just using Cursor/Copilot?</div>
+                    <div class="faq-answer">Those tools write code. tGD enforces a workflow — specs, plans, tests, reviews — before code ships.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Can I customize the pipeline?</div>
+                    <div class="faq-answer">Yes! Edit the skill files in <code>skills/</code> to match your team's workflow.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://github.com/openclawyhwang-hub/tGD" target="_blank">GitHub</a>
+                <a href="#quick-start">Quick Start</a>
+                <a href="#commands">Commands</a>
+                <a href="#faq">FAQ</a>
+            </div>
+            <p>MIT License • Built with ❤️ by the tGD community</p>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Toggle
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                item.classList.toggle('active');
+            });
+        });
+
+        // Fade in on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
