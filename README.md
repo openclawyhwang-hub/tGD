@@ -13,21 +13,107 @@ Instead of "just write code", tGD enforces a disciplined workflow: **Map → Def
 
 Works with Claude Code, Codex CLI, Gemini CLI, OpenCode, and Pi Coding Agent.
 
+---
+
+## Why tGD?
+
+**Without tGD:**
+- AI agent writes 500 lines of code, tests fail, you don't know why
+- "It works on my machine" → production breaks
+- No specs, no plan, just vibes
+
+**With tGD:**
+- Agent writes 50 lines, tests pass, moves to next task
+- Every feature has PRD + SPEC + DESIGN before code ships
+- 8-stage pipeline catches bugs before they reach production
+
+---
+
+## Who is this for?
+
+| If you are... | tGD helps you... |
+|---------------|------------------|
+| **Solo developer** | Ship faster with AI-assisted workflow |
+| **Team lead** | Enforce coding standards across AI-generated code |
+| **Startup** | Move fast without breaking things |
+| **Enterprise** | Maintain quality gates for AI development |
+
+---
+
 ## Quick Start
 
-### 1. Clone
+### 1. Clone & Setup
 ```bash
 git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
-```
-
-### 2. One-Click Setup
-```bash
 bash setup.sh
 ```
-Auto-detects your installed CLIs and configures everything.
+> Auto-detects your installed CLIs (Claude, Codex, Gemini, OpenCode, Pi) and configures everything. Webwright dependencies installed automatically.
 
-### 3. Start Coding
-Run your agent and type `/tgd-map` to begin.
+### 2. Start Your Agent
+```bash
+# Claude Code
+claude
+
+# OpenCode
+opencode
+
+# Gemini CLI
+gemini
+```
+
+### 3. Initialize Your Project
+```
+/tgd-map
+```
+> Agent scans your codebase and creates `CONTEXT.md` with project overview.
+
+### 4. Build Your First Feature
+```
+/tgd-define I want to add user authentication
+```
+> Agent interviews you, creates PRD + SPEC, then you're ready to build.
+
+---
+
+## Real-world Examples
+
+### Example 1: Add User Auth
+```
+User: /tgd-define I want to add JWT authentication
+
+Agent: What endpoints need auth?
+User: /api/profile and /api/settings
+
+Agent: Creating PRD + SPEC...
+→ tGD/auth-feature/PRD.md
+→ tGD/auth-feature/SPEC.md
+→ Ready for /tgd-plan
+```
+
+### Example 2: Fix a Bug
+```
+User: /tgd-verify
+
+Agent: Running all tests...
+→ 47 passed, 1 failed
+→ test_login_empty_password: Expected error, got success
+
+Agent: Fixing...
+→ Added validation in auth.py
+→ All 48 tests pass
+→ Ready for /tgd-review
+```
+
+### Example 3: Ship with Confidence
+```
+User: /tgd-ship
+
+Agent: Running final checks...
+→ Code review: ✅ Passed (5-axis)
+→ Security audit: ✅ No vulnerabilities
+→ Test coverage: ✅ 87%
+→ Ready to merge
+```
 
 ---
 
@@ -50,7 +136,7 @@ flowchart LR
     classDef amber fill:#d97706,color:#fffbeb,stroke:#fbbf24
     classDef rose fill:#e11d48,color:#fff1f2,stroke:#fb7185
     classDef teal fill:#0d9488,color:#f0fdfa,stroke:#5eead4
-    classDef indigo fill:#4f46e5,color:#eef2ff,stroke:#818cf8
+    classDef indigo fill:#4f46e5,color:#eef2ff,stroke:#81cf8
 
     class A cyan
     class B green
@@ -62,11 +148,13 @@ flowchart LR
     class H indigo
 ```
 
+---
+
 ## Commands
 
 8 slash commands that map to the development lifecycle. Each command chains the relevant skills automatically.
 
-| What you're doing | Command | Key principle | Invokes |
+| 🎯 What you're doing | ⌨️ Command | 💡 Key principle | 🔧 Invokes |
 |---|---|---|---|
 | Understand the project | `/tgd-map` | Context before changes | `context-engineering` + `codegraph init` (external tool, optional) |
 | Define what to build | `/tgd-define` | Product + Spec before code | `interview-me` → `idea-refine` → `spec-driven-development` |
@@ -76,6 +164,8 @@ flowchart LR
 | Review before merge | `/tgd-review` | Improve code health | `code-review-and-quality` → `code-simplification` |
 | Simplify the code | `/tgd-simplify` | Clarity over cleverness | `code-simplification` |
 | Ship to production | `/tgd-ship` | Faster is safer | `git-workflow-and-versioning` → `shipping-and-launch` |
+
+---
 
 ## Testing Strategy
 
@@ -147,6 +237,8 @@ When `/tgd-plan` generates `TASKS.md`, the **`jira-auto-sync`** skill can automa
 
 Personas do not invoke other personas — the user (or a slash command) is the orchestrator.
 
+---
+
 ## How Skills Work
 
 Every skill follows a consistent anatomy:
@@ -156,6 +248,41 @@ Every skill follows a consistent anatomy:
 4. **Anti-rationalization**: Counters to common "lazy agent" excuses.
 
 Skills use **progressive disclosure** — the agent only loads details when needed, keeping context usage low.
+
+---
+
+## Performance
+
+| Metric | Value |
+|--------|-------|
+| **Skills loaded** | 25 (on-demand, not all at once) |
+| **Context usage** | ~5% per skill (progressive disclosure) |
+| **Setup time** | < 30 seconds |
+| **First feature** | ~15 minutes (from `/tgd-define` to `/tgd-ship`) |
+
+---
+
+## FAQ
+
+**Q: Do I need to install anything besides the agent?**
+A: Just `bash setup.sh`. It auto-detects your CLI and configures everything. Webwright dependencies installed automatically.
+
+**Q: What if my agent doesn't support slash commands?**
+A: Say "Plan this feature" in natural language — tGD maps intent to skills automatically.
+
+**Q: Can I skip stages?**
+A: Each stage has pre-flight checks. If you skip, the next stage will block you.
+
+**Q: Does this work with existing projects?**
+A: Yes! `/tgd-map` scans your existing codebase first.
+
+**Q: How is this different from just using Cursor/Copilot?**
+A: Those tools write code. tGD enforces a workflow — specs, plans, tests, reviews — before code ships.
+
+**Q: Can I customize the pipeline?**
+A: Yes! Edit the skill files in `skills/` to match your team's workflow.
+
+---
 
 ## Project Structure
 
@@ -230,6 +357,30 @@ The commands above are entry points. The pack includes 25 skills total — 24 li
 | [deprecation-and-migration](skills/deprecation-and-migration/SKILL.md) | Migration patterns |
 | [documentation-and-adrs](skills/documentation-and-adrs/SKILL.md) | ADRs & API docs |
 | [shipping-and-launch](skills/shipping-and-launch/SKILL.md) | Rollouts & monitoring |
+
+---
+
+## What's Next?
+
+After you've built your first feature:
+
+1. 📖 Read the [Testing Strategy](#testing-strategy) to understand the 3-stage testing
+2. 🔧 Explore [All 25 Skills](#all-25-skills) to see what's available
+3. 🤖 Try [Agent Personas](#agent-personas) for specialized review
+4. 🔗 Set up [Jira Integration](#jira-data-center) for task tracking
+5. 🌐 Enable [Webwright](skills/webwright/SKILL.md) for E2E browser testing
+
+---
+
+## Contributing
+
+Want to add a skill or improve tGD? See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+### Quick contribution guide:
+1. Fork the repo
+2. Create a skill in `skills/your-skill/`
+3. Run `bash scripts/validate-skills.js`
+4. Submit a PR
 
 ---
 
