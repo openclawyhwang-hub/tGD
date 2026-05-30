@@ -1,4 +1,7 @@
 ---
+description: Simplify the code — clarity over cleverness
+---
+
 **🛑 Pre-flight: Environment Check**
 - [ ] `tGD/map/CONTEXT.md` exists (or `.codegraph/` is present).
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
@@ -14,12 +17,13 @@
 - [ ] Source code files exist in `src/`.
 - **If missing:** STOP. Tell user: "No source code to simplify. Please run `/tgd-develop` first."
 
-
-description: Simplify — reduce complexity while preserving exact behavior
----
-
 Run the `code-simplification` skill. Apply Chesterton's Fence and Rule of 500. Reduce complexity, eliminate dead code, and improve readability while preserving exact behavior.
 
 Clarity over cleverness. Prefer the boring, obvious solution.
+
+**Verification Gate:**
+- [ ] Code complexity reduced (fewer lines, simpler logic)
+- [ ] All existing tests still pass
+- [ ] No behavior changes introduced
 
 After simplifying, suggest the next step: `/tgd-review` to verify the review passes, or `/tgd-ship` if review is already done.

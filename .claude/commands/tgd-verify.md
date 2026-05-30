@@ -1,4 +1,7 @@
 ---
+description: Verify — prove it works with debugging and test pyramid
+---
+
 **🛑 Pre-flight: Environment Check**
 - [ ] `tGD/map/CONTEXT.md` exists (or `.codegraph/` is present).
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
@@ -12,11 +15,8 @@
 
 **🔒 Pre-flight: Artifact Check**
 - [ ] Source code files exist in `src/`.
-- **If missing:** STOP. Tell user: "No source code found. Please run `/tgd-develop` first."
-
-
-description: Verify — prove it works with debugging and test pyramid
----
+- [ ] Test files exist in `tests/`.
+- **If missing:** STOP. Tell user: "No source code or tests found. Please run `/tgd-develop` first."
 
 Run the `debugging-and-error-recovery` skill. This is the VERIFY phase. The full pipeline is:
 

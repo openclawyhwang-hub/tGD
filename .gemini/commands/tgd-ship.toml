@@ -1,4 +1,4 @@
-description = "Ship — pre-launch checklists, staged rollouts, rollback procedures"
+description = "Ship to production — faster is safer"
 
 prompt = """
 **🛑 Pre-flight: Environment Check**
@@ -14,9 +14,9 @@ prompt = """
 
 **🔒 Pre-flight: Artifact Check**
 - [ ] Review passed (no critical issues).
+- [ ] `tGD/<feature-name>/REVIEW.md` exists.
 - [ ] `tests/` exists and passes.
 - **If missing:** STOP. Tell user: "Review or tests incomplete. Please run `/tgd-review` first."
-
 
 Run the shipping-and-launch skill. This is the SHIP phase. Full pipeline:
 1. git-workflow-and-versioning — clean commit history

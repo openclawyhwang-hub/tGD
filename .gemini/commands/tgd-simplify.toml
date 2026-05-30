@@ -1,4 +1,4 @@
-description = "Simplify — reduce complexity while preserving exact behavior"
+description = "Simplify the code — clarity over cleverness"
 
 prompt = """
 **🛑 Pre-flight: Environment Check**
@@ -16,7 +16,6 @@ prompt = """
 - [ ] Source code files exist in `src/`.
 - **If missing:** STOP. Tell user: "No source code to simplify. Please run `/tgd-develop` first."
 
-
 Run the code-simplification skill. Apply Chesterton's Fence and Rule of 500. Reduce complexity, eliminate dead code, and improve readability while preserving exact behavior.
 
 Clarity over cleverness.
@@ -24,7 +23,9 @@ Clarity over cleverness.
 After completing simplification, verify the outputs.
 
 **Verification Gate:**
-- [ ] Code complexity reduced (e.g. fewer lines, fewer nested ifs)
+- [ ] Code complexity reduced (fewer lines, simpler logic)
+- [ ] All existing tests still pass
+- [ ] No behavior changes introduced
 
 If verification passes, suggest the next step: `/tgd-review` or `/tgd-ship`.
 """

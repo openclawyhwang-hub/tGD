@@ -14,8 +14,9 @@ prompt = """
 
 **🔒 Pre-flight: Artifact Check**
 - [ ] `tGD/<feature-name>/TASKS.md` exists and is non-empty.
-- **If missing:** STOP. Tell user: "Tasks are missing. Please run `/tgd-plan` first."
-
+- [ ] `tGD/<feature-name>/PRD.md` exists and is non-empty.
+- [ ] `tGD/<feature-name>/SPEC.md` exists and is non-empty.
+- **If missing:** STOP. Tell user: "Specs are missing. Please run `/tgd-define` first."
 
 Run the incremental-implementation skill. This is the BUILD phase. Full pipeline:
 1. context-engineering — load the right context for the current task
@@ -29,7 +30,7 @@ After completing the implementation, verify the outputs.
 
 **Verification Gate:**
 - [ ] Source code files created/modified in `src/`
-- [ ] Tests written for new logic in `tests/`
+- [ ] Tests written AND passing for new logic in `tests/`
 
 If verification passes, suggest the next step: `/tgd-verify` to prove it works.
 """

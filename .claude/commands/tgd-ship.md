@@ -1,4 +1,7 @@
 ---
+description: Ship to production — faster is safer
+---
+
 **🛑 Pre-flight: Environment Check**
 - [ ] `tGD/map/CONTEXT.md` exists (or `.codegraph/` is present).
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
@@ -12,12 +15,9 @@
 
 **🔒 Pre-flight: Artifact Check**
 - [ ] Review passed (no critical issues).
+- [ ] `tGD/<feature-name>/REVIEW.md` exists.
 - [ ] `tests/` exists and passes.
 - **If missing:** STOP. Tell user: "Review or tests incomplete. Please run `/tgd-review` first."
-
-
-description: Ship — pre-launch checklists, staged rollouts, rollback procedures
----
 
 Run the `shipping-and-launch` skill. This is the SHIP phase. The full pipeline is:
 

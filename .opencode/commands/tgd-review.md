@@ -1,4 +1,7 @@
 ---
+description: Review before merge — improve code health
+---
+
 **🛑 Pre-flight: Environment Check**
 - [ ] `tGD/map/CONTEXT.md` exists (or `.codegraph/` is present).
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
@@ -13,10 +16,6 @@
 **🔒 Pre-flight: Artifact Check**
 - [ ] Test files exist in `tests/`.
 - **If missing:** STOP. Tell user: "Tests are missing. Please run `/tgd-verify` first."
-
-
-description: Review — five-axis code review before merging any change
----
 
 Run the `code-review-and-quality` skill. This is the REVIEW phase. The full pipeline is:
 

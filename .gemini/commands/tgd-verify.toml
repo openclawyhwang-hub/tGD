@@ -14,14 +14,14 @@ prompt = """
 
 **🔒 Pre-flight: Artifact Check**
 - [ ] Source code files exist in `src/`.
-- **If missing:** STOP. Tell user: "No source code found. Please run `/tgd-develop` first."
-
+- [ ] Test files exist in `tests/`.
+- **If missing:** STOP. Tell user: "No source code or tests found. Please run `/tgd-develop` first."
 
 Run the debugging-and-error-recovery skill. This is the VERIFY phase. Full pipeline:
 1. debugging-and-error-recovery — reproduce → localize → reduce → fix → guard
 2. test-driven-development — verify with the test pyramid
 
-Conditional: browser-testing-with-devtools (browser-based features).
+Conditional: webwright (preferred for E2E), browser-testing-with-devtools (for debugging).
 
 After completing verification, verify the outputs.
 

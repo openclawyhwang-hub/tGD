@@ -1,4 +1,7 @@
 ---
+description: Develop — implement one thin vertical slice at a time
+---
+
 **🛑 Pre-flight: Environment Check**
 - [ ] `tGD/map/CONTEXT.md` exists (or `.codegraph/` is present).
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
@@ -12,11 +15,9 @@
 
 **🔒 Pre-flight: Artifact Check**
 - [ ] `tGD/<feature-name>/TASKS.md` exists and is non-empty.
-- **If missing:** STOP. Tell user: "Tasks are missing. Please run `/tgd-plan` first."
-
-
-description: Develop — implement one thin vertical slice at a time
----
+- [ ] `tGD/<feature-name>/PRD.md` exists and is non-empty.
+- [ ] `tGD/<feature-name>/SPEC.md` exists and is non-empty.
+- **If missing:** STOP. Tell user: "Specs are missing. Please run `/tgd-define` first."
 
 Run the `incremental-implementation` skill. This is the BUILD phase. The full pipeline is:
 
@@ -37,6 +38,6 @@ After completing the implementation, verify the outputs.
 
 **Verification Gate:**
 - [ ] Source code files created/modified in `src/`
-- [ ] Tests written for new logic in `tests/`
+- [ ] Tests written AND passing for new logic in `tests/`
 
 If verification passes, suggest the next step: `/tgd-verify` to prove it works.
