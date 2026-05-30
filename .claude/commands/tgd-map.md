@@ -14,7 +14,7 @@ This is the starting point for joining an existing project or before making sign
    ln -s tGD/map/.codegraph .codegraph
    ```
 3. Initialize the project graph: `codegraph init -i`
-   - *Note: Assumes CodeGraph is installed on the system or available via `npx`.*
+   - *Requires CodeGraph installed (`pip install codegraph-cli`). Setup handles this automatically.*
 
 **Outputs:**
 - `CONTEXT.md` — saved to `tGD/map/CONTEXT.md`

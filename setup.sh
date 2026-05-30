@@ -75,6 +75,20 @@ if command -v pi &> /dev/null; then
     fi
 fi
 
+# CodeGraph (required for /tgd-map)
+echo "📊 Checking CodeGraph..."
+if command -v codegraph &> /dev/null; then
+    echo "   ✅ CodeGraph already installed."
+else
+    if command -v pip3 &> /dev/null || command -v pip &> /dev/null; then
+        PIP_CMD=$(command -v pip3 || command -v pip)
+        echo "   📥 Installing CodeGraph..."
+        $PIP_CMD install codegraph-cli 2>/dev/null && echo "   ✅ CodeGraph installed." || echo "   ⚠️  Install manually: pip install codegraph-cli"
+    else
+        echo "   ⚠️  pip not found. Install Python first, then: pip install codegraph-cli"
+    fi
+fi
+
 # 3. Install Optional Dependencies (Webwright)
 echo "📦 Checking optional dependencies..."
 
