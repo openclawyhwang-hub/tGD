@@ -68,7 +68,7 @@ flowchart LR
 
 | What you're doing | Command | Key principle | Invokes |
 |---|---|---|---|
-| Understand the project | `/tgd-map` | Context before changes | `context-engineering` |
+| Understand the project | `/tgd-map` | Context before changes | `context-engineering` + `codegraph init` (external tool, optional) |
 | Define what to build | `/tgd-define` | Product + Spec before code | `interview-me` → `idea-refine` → `spec-driven-development` |
 | Plan how to build it | `/tgd-plan` | Small, atomic tasks | `planning-and-task-breakdown` → **Jira sync** |
 | Build incrementally | `/tgd-develop` | One slice at a time | `source-driven-development` → `incremental-implementation` → `test-driven-development` |
