@@ -58,14 +58,20 @@ if command -v codex &> /dev/null; then
         ln -sf "$(pwd)/skills" ~/.codex/skills/tGD 2>/dev/null || true
         echo "   ✅ Skills linked for auto-detection."
     fi
+    if [ -d ".codex/prompts" ]; then
+        mkdir -p ~/.codex/prompts
+        ln -sf "$(pwd)/.codex/prompts"/* ~/.codex/prompts/ 2>/dev/null || true
+        echo "   ✅ Prompts linked (8 tgd-* commands)."
+    fi
 fi
 
 # Pi Coding Agent
 if command -v pi &> /dev/null; then
     echo "   📂 Pi Coding Agent detected."
     mkdir -p .pi/extensions
-    if [ -d ".pi/extensions" ]; then
-        echo "   ✅ Pi directory structure ready."
+    if [ -f ".pi/extensions/tgd-commands.ts" ]; then
+        echo "   ✅ Pi extension ready (8 tgd-* commands)."
+        echo "   ℹ️  Commands available via /tgd-map, /tgd-define, etc."
     fi
 fi
 
