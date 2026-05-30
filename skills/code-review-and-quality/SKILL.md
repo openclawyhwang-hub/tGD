@@ -315,6 +315,97 @@ Part of code review is dependency review:
 - For detailed security review guidance, see `references/security-checklist.md`
 - For performance review checks, see `references/performance-checklist.md`
 
+## Embedded Tech Debt Filing (Jira Integration)
+
+When code review identifies issues that are **known but intentionally not fixed** in the current cycle, automatically create a Jira issue to track the technical debt.
+
+### Tech Debt Filing Rules
+
+| Category | Action | Jira Issue Type | Label |
+|----------|--------|-----------------|-------|
+| **Architecture** | Design debt, needs refactor | Improvement | `tech-debt` |
+| **Performance** | Known bottleneck, not critical now | Improvement | `tech-debt` |
+| **Security** | Low-risk vulnerability, hardening needed | Improvement | `security-hardening` |
+| **Code Quality** | Readability/maintainability issues | Improvement | `tech-debt` |
+| **Test Coverage** | Missing tests for edge cases | Improvement | `test-coverage` |
+
+### When to File Tech Debt
+
+```
+Issue discovered during Review
+        │
+        ▼
+Is this a blocker for merge?
+├── YES → Request changes, do NOT merge
+└── NO
+    ├── Should it be fixed in this sprint?
+    │   ├── YES → Fix now (no Jira needed)
+    │   └── NO → File Jira Improvement
+    │
+    ├── Is it a known limitation?
+    │   └── YES → File Jira Improvement + document in code
+    │
+    └── Is it a future risk?
+        └── YES → File Jira Improvement + set priority
+```
+
+### Tech Debt Ticket Template
+
+When filing a Jira tech debt issue, include:
+
+```markdown
+## Tech Debt Summary
+[One-line description]
+
+## Category
+[Architecture / Performance / Security / Code Quality / Test Coverage]
+
+## Priority
+[High / Medium / Low]
+
+## Context
+- Feature: <feature-name>
+- File(s): [path/to/file]
+- Review Stage: /tgd-merge
+
+## Current State
+[What the code looks like now]
+
+## Desired State
+[What the code should look like]
+
+## Impact if Not Addressed
+[Consequences of leaving this debt]
+
+## Suggested Approach
+[How to fix it - if known]
+
+## Acceptance Criteria
+- [ ] [Criterion 1]
+- [ ] [Criterion 2]
+```
+
+### Debt Tracking in TASKS.md
+
+When tech debt is identified:
+
+1. Add a comment in `TASKS.md` next to the relevant task:
+   ```
+   - [x] Implement login API  <!-- TECH-DEBT: JIRA-456 - Password hashing should use bcrypt -->
+   ```
+
+2. Create a `tGD/<feature-name>/DEBT.md` file to track all tech debt:
+   ```markdown
+   # Tech Debt: <feature-name>
+
+   | Issue | Category | Priority | Jira Key |
+   |-------|----------|----------|----------|
+   | Password hashing | Security | High | JIRA-456 |
+   | Missing pagination | Performance | Medium | JIRA-457 |
+   ```
+
+---
+
 ## Common Rationalizations
 
 | Rationalization | Reality |
