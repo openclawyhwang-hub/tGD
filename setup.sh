@@ -69,6 +69,44 @@ if command -v pi &> /dev/null; then
     fi
 fi
 
+# 3. Install Optional Dependencies (Webwright)
+echo "📦 Checking optional dependencies..."
+
+# Webwright (E2E browser testing)
+if [ -d "skills/webwright" ]; then
+    echo "   🌐 Webwright skill detected."
+    if command -v pip3 &> /dev/null || command -v pip &> /dev/null; then
+        PIP_CMD=$(command -v pip3 || command -v pip)
+        
+        # Check if webwright is already installed
+        if ! python3 -c "import playwright" 2>/dev/null; then
+            echo "   📥 Installing Webwright dependencies..."
+            $PIP_CMD install playwright httpx pydantic pyyaml rich typer python-dotenv platformdirs jinja2 2>/dev/null || echo "   ⚠️  pip install failed (network issue?). Install manually: pip install playwright"
+            
+            # Install browser (Firefox is preferred for Webwright)
+            if command -v playwright &> /dev/null; then
+                echo "   📥 Installing Playwright Firefox browser..."
+                playwright install firefox 2>/dev/null || echo "   ⚠️  Browser install failed. Run manually: playwright install firefox"
+                echo "   ✅ Webwright ready!"
+            else
+                echo "   ⚠️  playwright command not found. Run: pip install playwright && playwright install firefox"
+            fi
+        else
+            echo "   ✅ Webwright already installed."
+        fi
+    else
+        echo "   ⚠️  pip not found. Install Python first."
+    fi
+fi
+
+# Chrome DevTools MCP (alternative browser testing)
+if [ -d "skills/browser-testing-with-devtools" ]; then
+    echo "   🔍 Browser Testing skill detected."
+    if command -v npx &> /dev/null; then
+        echo "   ℹ️  To enable: npx @anthropic/chrome-devtools-mcp@latest"
+    fi
+fi
+
 echo ""
 echo "===================================="
 echo "✅ Setup Complete!"
