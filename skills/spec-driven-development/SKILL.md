@@ -183,18 +183,34 @@ After writing SPEC.md, check the **Feature Type** field.
    - Save to `tGD/<feature-name>/design/` directory
 
 3. **Extract from design:**
+   - **Visual Direction**: Reference product, vibe, anti-patterns
    - **Component Tree**: List of UI components and their hierarchy
    - **Design Tokens**: Colors, fonts, spacing, border-radius
+   - **Typography Scale**: Font sizes, weights, letter-spacing per heading level
+   - **Spacing System**: Base unit and scale
    - **Responsive Breakpoints**: Mobile / Tablet / Desktop layouts
    - **Interaction Patterns**: Click handlers, state transitions, animations
+   - **States**: Loading, empty, error handling
+   - **Accessibility**: Contrast, keyboard nav, reduced-motion
 
 4. **Save design reference** to `tGD/<feature-name>/DESIGN.md`:
    ```markdown
    # DESIGN: [Feature Name]
    
    ## Source
-   - **Type**: [Figma / Wireframe / Mockup]
+   - **Type**: [Figma / Wireframe / Mockup / None]
    - **URL/Path**: [link or file path]
+   
+   ## Visual Direction
+   - **Reference**: [Product name, e.g. Linear / Stripe / Vercel]
+   - **Vibe**: [e.g. "ultra-minimal dark, precise, purple accent"]
+   - **Anti-patterns** (MUST NOT):
+     - Fonts: Inter, Roboto, Arial, Open Sans, system defaults
+     - Colors: pure black (#000), pure white (#fff), cyan-on-dark, purple-to-blue gradients, neon accents
+     - Layout: everything in cards, cards inside cards, identical card grids, center everything
+     - Visual: glassmorphism, gradient text, rounded rectangles with thick colored border on one side
+     - Motion: bounce/elastic easing, animate layout properties (width/height/padding)
+     - Content: lorem ipsum, fake metrics, placeholder testimonials, decorative SVG illustrations
    
    ## Component Tree
    - Page
@@ -205,21 +221,73 @@ After writing SPEC.md, check the **Feature Type** field.
      - Footer
    
    ## Design Tokens
-   | Token | Value |
-   |-------|-------|
-   | primary-color | #1a73e8 |
-   | border-radius | 8px |
-   | font-family | Inter |
+   | Token | Value | Notes |
+   |-------|-------|-------|
+   | color-bg | #0a0a0a | tinted, not pure black |
+   | color-surface | #111111 | |
+   | color-text | #e5e5e5 | |
+   | color-text-muted | #737373 | |
+   | color-accent | #3b82f6 | one primary accent only |
+   | color-success | #22c55e | |
+   | color-danger | #ef4444 | |
+   | color-border | #262626 | |
+   | font-heading | [Choose: Space Grotesk / DM Sans / Geist / etc.] | NOT Inter/Roboto |
+   | font-body | [Choose: DM Sans / Source Sans 3 / Geist / etc.] | NOT Inter/Roboto |
+   | font-mono | JetBrains Mono | code only, not everywhere |
+   | radius-sm | 4px | |
+   | radius-md | 8px | |
+   | radius-lg | 12px | |
+   
+   ## Typography Scale
+   | Level | Size | Weight | Letter-spacing | Usage |
+   |-------|------|--------|----------------|-------|
+   | h1 | clamp(36px, 5vw, 64px) | 800 | -0.03em | Page title (one per page) |
+   | h2 | clamp(24px, 3vw, 40px) | 700 | -0.02em | Section title |
+   | h3 | 20px | 600 | -0.01em | Subsection |
+   | body | 16px | 400 | 0 | Default text |
+   | small | 13px | 400 | 0 | Helper / secondary |
+   | code | 14px | 400 | 0 | Monospace, inline |
+   
+   ## Spacing System
+   | Token | Value | Usage |
+   |-------|-------|-------|
+   | space-xs | 4px | Tight gaps |
+   | space-sm | 8px | Inner padding |
+   | space-md | 16px | Card padding, gaps |
+   | space-lg | 24px | Section gaps |
+   | space-xl | 32px | Section padding |
+   | space-2xl | 48px | Major sections |
+   | space-3xl | 64px | Hero / page margins |
    
    ## Responsive
-   | Breakpoint | Layout |
-   |------------|--------|
-   | mobile (<768px) | Stack vertically |
-   | desktop (≥768px) | Side by side |
+   | Breakpoint | Layout | Notes |
+   |------------|--------|-------|
+   | mobile (<768px) | Stack vertically | Touch targets ≥ 44px |
+   | tablet (768-1024px) | 2-column where appropriate | |
+   | desktop (≥1024px) | Full layout | |
    
    ## Interactions
    - Submit button: idle → loading → success/error
-   - Error: show toast notification
+   - Hover: subtle lift + shadow (use transform, not layout properties)
+   - Focus: visible focus ring (2px accent, 2px offset)
+   - Transitions: 0.2s ease for micro-interactions, 0.3s ease for state changes
+   
+   ## States
+   | State | Treatment |
+   |-------|-----------|
+   | Loading | Skeleton placeholders, NOT spinners for content |
+   | Empty | Icon + message + CTA button |
+   | Error | Message + retry button, NOT just red text |
+   | Success | Brief confirmation, auto-dismiss |
+   
+   ## Accessibility
+   - Contrast ratio ≥ 4.5:1 for normal text, ≥ 3:1 for large text
+   - All interactive elements keyboard navigable (Tab/Enter/Space)
+   - Visible focus indicators on all focusable elements
+   - `prefers-reduced-motion` disables non-essential animations
+   - `aria-label` on icon-only buttons
+   - Semantic HTML: `<button>` not `<div onClick>`, `<nav>`, `<main>`, `<section>`
+   - Color is NOT the sole indicator of state (always pair with text/icon)
    ```
 
 **If Backend only:** Skip this step.
@@ -309,4 +377,4 @@ Before proceeding to implementation, confirm:
 - [ ] Boundaries (Always/Ask First/Never) are defined
 - [ ] The spec is saved to `tGD/<feature-name>/SPEC.md`
 - [ ] Working branch is `feature/<feature-name>` (not `main`/`master`)
-- [ ] If UI feature: `tGD/<feature-name>/DESIGN.md` exists with Component Tree
+- [ ] If UI feature: `tGD/<feature-name>/DESIGN.md` exists with Visual Direction, Component Tree, Design Tokens, Typography Scale, Spacing System, States, and Accessibility sections
