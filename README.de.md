@@ -24,7 +24,7 @@ Funktioniert mit Claude Code, Codex CLI, Gemini CLI, OpenCode und Pi Coding Agen
 **Ohne tGD:**
 - KI-Agent schreibt 500 Zeilen Code, Tests schlagen fehl, Sie wissen nicht warum
 - "Auf meinem Rechner funktioniert es" → Produktion bricht
-- Keine Spezifikation, kein Plan, nur Bauchgefühl
+- Keine Spezifikation, kein Plan, nur Gefühl
 
 **Mit tGD:**
 - Agent schreibt 50 Zeilen, Tests bestehen, weiter zum nächsten Task
@@ -103,7 +103,7 @@ Agent: Behebung...
 → Bereit für /tgd-review
 ```
 
-### Beispiel 3: Selbstbewusst deployen
+### Beispiel 3: Sicher deployen
 ```
 Benutzer: /tgd-ship
 
@@ -125,9 +125,9 @@ Agent: Finale Prüfungen...
 | Projekt verstehen | `/tgd-map` | Kontext vor Änderungen | `context-engineering` + `codegraph init` |
 | Definition | `/tgd-define` | Spezifikation vor Code | `interview-me` → `idea-refine` → `spec-driven-development` |
 | Planung | `/tgd-plan` | Kleine atomare Tasks | `planning-and-task-breakdown` → **Jira-Sync** |
-| Inkrementell bauen | `/tgd-develop` | Eine Scheibe nach der anderen | `source-driven-development` → `incremental-implementation` → `test-driven-development` |
+| Schrittweise bauen | `/tgd-develop` | Ein Schritt nach dem anderen | `source-driven-development` → `incremental-implementation` → `test-driven-development` |
 | Beweis erbringen | `/tgd-verify` | Tests sind der Beweis | `debugging-and-error-recovery` → `test-driven-development` |
-| Review vor Merge | `/tgd-review` | Code-Gesundheit verbessern | `code-review-and-quality` → `code-simplification` |
+| Review vor Merge | `/tgd-review` | Code-Qualität verbessern | `code-review-and-quality` → `code-simplification` |
 | Code vereinfachen | `/tgd-simplify` | Klarheit vor Cleverness | `code-simplification` |
 | Produktion | `/tgd-ship` | Schneller ist sicherer | `git-workflow-and-versioning` → `shipping-and-launch` |
 
@@ -234,11 +234,11 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 
 | Skill | Zweck |
 |-------|-------|
-| incremental-implementation | Dünne vertikale Scheiben |
+| incremental-implementation | Schrittweise inkrementell |
 | test-driven-development | Red-Green-Refactor |
 | context-engineering | Richtige Infos an Agent liefern |
 | source-driven-development | Entscheidungen auf offizielle Docs stützen |
-| doubt-driven-development | Adversariale Überprüfung |
+| doubt-driven-development | Gegnerische Überprüfung |
 | frontend-ui-engineering | UI-Architektur & Design-Systeme |
 | api-and-interface-design | Contract-First-API-Design |
 </details>
@@ -273,7 +273,7 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 | ci-cd-and-automation | Shift Left & Feature-Flags |
 | deprecation-and-migration | Migrations-Pattern |
 | documentation-and-adrs | ADRs & API-Dokumentation |
-| shipping-and-launch | Stufenweise Rollouts & Monitoring |
+| shipping-and-launch | Stufen-Rollouts & Monitoring |
 </details>
 
 ---
