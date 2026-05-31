@@ -91,9 +91,46 @@ To enable these, ensure you have the relevant MCP extensions installed in your G
 
 ### Session Hooks
 
-Gemini CLI supports session lifecycle hooks. You can use these to automatically inject context or run validation scripts at the start of a session.
+Gemini CLI supports session lifecycle hooks. tGD ships a complete hook configuration in `.gemini/settings.json` with five hooks:
 
-To replicate the `agent-skills` experience from other tools, you can configure a `SessionStart` hook that reminds you of the available skills or loads a meta-skill.
+| Hook | Event | Purpose |
+|------|-------|---------|
+| `session-start.sh` | `SessionStart` | Injects `using-agent-skills` meta-skill |
+| `simplify-pre.sh` | `BeforeTool` (Read) | Filters simplify-ignore blocks before read |
+| `simplify-post.sh` | `AfterTool` (Edit/Write) | Re-filters after edits |
+| `simplify-cleanup.sh` | `SessionEnd` | Restores protected files |
+| `sdd-cache-pre/post.sh` | `BeforeTool/AfterTool` (WebFetch) | HTTP cache for doc fetching |
+
+#### Installation
+
+```bash
+bash setup.sh
+```
+
+Setup auto-detects Gemini CLI and symlinks `settings.json` to `~/.gemini/settings.json`.
+
+#### Manual Installation
+
+```bash
+mkdir -p ~/.gemini
+ln -sf "$(pwd)/.gemini/settings.json" ~/.gemini/settings.json
+```
+
+#### How It Works
+
+**simplify-ignore** — Mark code blocks that should not be simplified:
+
+```typescript
+// simplify-ignore-start: security-critical validation
+if (!validateToken(token)) {
+  throw new AuthError("Invalid token")
+}
+// simplify-ignore-end
+```
+
+The hooks replace these blocks with `BLOCK_<hash>` placeholders before the agent reads them, then restore the real content after edits. Protected files are fully restored on session end.
+
+**sdd-cache** — Caches WebFetch responses with HTTP `ETag`/`Last-Modified` revalidation. Only serves from cache when the origin responds `304 Not Modified`.
 
 ### Explicit Context Loading
 

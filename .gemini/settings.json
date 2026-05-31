@@ -1,0 +1,60 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "name": "tgd-session-start",
+        "description": "Inject using-agent-skills meta-skill at session start",
+        "type": "command",
+        "command": "bash hooks/gemini/session-start.sh"
+      }
+    ],
+    "SessionEnd": [
+      {
+        "name": "tgd-simplify-cleanup",
+        "description": "Restore files protected by simplify-ignore",
+        "type": "command",
+        "command": "bash hooks/gemini/simplify-cleanup.sh"
+      }
+    ],
+    "BeforeTool": [
+      {
+        "name": "tgd-simplify-pre-read",
+        "description": "Filter simplify-ignore blocks before Read",
+        "type": "command",
+        "command": "bash hooks/gemini/simplify-pre.sh",
+        "matcher": {
+          "tool": "Read"
+        }
+      },
+      {
+        "name": "tgd-sdd-cache-pre",
+        "description": "Check HTTP cache before WebFetch",
+        "type": "command",
+        "command": "bash hooks/gemini/sdd-cache-pre.sh",
+        "matcher": {
+          "tool": "WebFetch"
+        }
+      }
+    ],
+    "AfterTool": [
+      {
+        "name": "tgd-simplify-post-edit",
+        "description": "Re-filter simplify-ignore blocks after Edit/Write",
+        "type": "command",
+        "command": "bash hooks/gemini/simplify-post.sh",
+        "matcher": {
+          "tool": "Edit|Write"
+        }
+      },
+      {
+        "name": "tgd-sdd-cache-post",
+        "description": "Store WebFetch response in HTTP cache",
+        "type": "command",
+        "command": "bash hooks/gemini/sdd-cache-post.sh",
+        "matcher": {
+          "tool": "WebFetch"
+        }
+      }
+    ]
+  }
+}

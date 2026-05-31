@@ -24,6 +24,12 @@ if command -v opencode &> /dev/null; then
         ln -sf "$(pwd)/.opencode/commands" ~/.config/opencode/commands/tgd 2>/dev/null || true
         echo "   ✅ Commands symlinked to global config."
     fi
+    # Install plugins (hooks)
+    if [ -d ".opencode/plugins" ]; then
+        mkdir -p ~/.config/opencode/plugins
+        ln -sf "$(pwd)/.opencode/plugins"/* ~/.config/opencode/plugins/ 2>/dev/null || true
+        echo "   ✅ Plugins installed (session-start, simplify-ignore, sdd-cache)."
+    fi
 fi
 
 # Claude Code
@@ -47,6 +53,17 @@ if command -v gemini &> /dev/null; then
         mkdir -p ~/.gemini/commands
         ln -sf "$(pwd)/.gemini/commands"/* ~/.gemini/commands/ 2>/dev/null || true
         echo "   ✅ Commands linked."
+    fi
+    # Install hooks (settings.json with lifecycle hooks)
+    if [ -f .gemini/settings.json ]; then
+        mkdir -p ~/.gemini
+        # Merge hooks into existing settings if present
+        if [ -f ~/.gemini/settings.json ]; then
+            echo "   ⚠️  ~/.gemini/settings.json exists. Hooks are in .gemini/settings.json — merge manually."
+        else
+            ln -sf "$(pwd)/.gemini/settings.json" ~/.gemini/settings.json 2>/dev/null || true
+            echo "   ✅ Hooks installed (session-start, simplify-ignore, sdd-cache)."
+        fi
     fi
 fi
 

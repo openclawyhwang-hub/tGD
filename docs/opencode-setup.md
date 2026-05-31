@@ -146,10 +146,52 @@ These rules are enforced via `AGENTS.md`.
 ## Limitations
 
 - No native slash commands (handled via intent mapping instead)
-- No plugin system (handled via prompt + structure)
 - Skill invocation depends on model compliance
 
 Despite these, the workflow closely matches Claude Code in practice.
+
+---
+
+## Plugins (Hooks)
+
+OpenCode supports lifecycle hooks via TypeScript plugins. tGD ships three plugins in `.opencode/plugins/`:
+
+| Plugin | Hook | Purpose |
+|--------|------|---------|
+| `session-start.ts` | `session.created` | Injects `using-agent-skills` meta-skill at session start |
+| `simplify-ignore.ts` | `tool.execute.before/after` | Protects marked code blocks from `/tgd-simplify` |
+| `sdd-cache.ts` | `tool.execute.before/after` | HTTP cache for `source-driven-development` doc fetching |
+
+### Installation
+
+```bash
+bash setup.sh
+```
+
+Setup auto-detects OpenCode and symlinks plugins to `~/.config/opencode/plugins/`.
+
+### Manual Installation
+
+```bash
+mkdir -p ~/.config/opencode/plugins
+ln -sf "$(pwd)/.opencode/plugins"/* ~/.config/opencode/plugins/
+```
+
+### How It Works
+
+**simplify-ignore** — Mark code blocks that should not be simplified:
+
+```typescript
+// simplify-ignore-start: security-critical validation
+if (!validateToken(token)) {
+  throw new AuthError("Invalid token")
+}
+// simplify-ignore-end
+```
+
+The plugin replaces these blocks with `BLOCK_<hash>` placeholders before the agent reads them, then restores the real content after edits. The agent never sees the protected code.
+
+**sdd-cache** — Caches WebFetch responses with HTTP validator revalidation. Same behavior as the Claude Code hook: only serves from cache when the origin responds `304 Not Modified`.
 
 ---
 
