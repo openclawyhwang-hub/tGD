@@ -140,7 +140,7 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 - [ ] **Full-stack** (Both)
 
 ### UI Requirements (if Frontend or Full-stack)
-- **Design稿來源**: [Figma URL / 截圖 / None]
+- **Design Source**: [Figma URL / Screenshot / PDF / None]
 - **Pages/Screens**: [List of screens needed]
 - **Key Components**: [Component names]
 - **Responsive**: [Mobile-first / Desktop-first / Both]
@@ -173,8 +173,8 @@ After writing SPEC.md, check the **Feature Type** field.
 **If Frontend or Full-stack is checked:**
 
 1. **Check existing design** in SPEC.md:
-   - If `[Figma URL]` → Use `web_extract` to fetch design截圖 + 元件結構 → skip to step 3
-   - If `[截圖/PDF]` → Use `vision_analyze` to extract UI elements → skip to step 3
+   - If `[Figma URL]` → Use `web_extract` to fetch design screenshot + component structure → skip to step 3
+   - If `[Screenshot/PDF]` → Use `vision_analyze` to extract UI elements → skip to step 3
    - If `[None]` → proceed to step 2
 
 2. **Generate design mockups** using `claude-design` skill:
@@ -194,7 +194,7 @@ After writing SPEC.md, check the **Feature Type** field.
 
 4. **Confirm with user:**
    - Present DESIGN.md summary: Visual Direction, Font choices, Color palette, Spacing
-   - **STOP. Ask user:** "DESIGN.md 確認了嗎？可以進 PLAN 了嗎？"
+   - **STOP. Ask user:** "DESIGN.md confirmed? Ready to proceed to PLAN?"
    - If not satisfied → modify DESIGN.md → re-confirm
 
 5. **DESIGN.md template:**
