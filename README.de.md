@@ -19,21 +19,21 @@ Funktioniert mit Claude Code, Codex CLI, Gemini CLI, OpenCode und Pi Coding Agen
 
 ---
 
-## Warum tGD?
+## 🤔 Warum tGD?
 
-**Ohne tGD:**
+**❌ Ohne tGD:**
 - KI-Agent schreibt 500 Zeilen Code, Tests schlagen fehl, Sie wissen nicht warum
 - "Auf meinem Rechner funktioniert es" → Produktion bricht
 - Keine Spezifikation, kein Plan, nur Gefühl
 
-**Mit tGD:**
+**✅ Mit tGD:**
 - Agent schreibt 50 Zeilen, Tests bestehen, weiter zum nächsten Task
 - Jedes Feature hat PRD + SPEC + DESIGN bevor Code geliefert wird
 - 8-Stufen-Pipeline fängt Bugs ab bevor sie die Produktion erreichen
 
 ---
 
-## Für wen?
+## 🎯 Für wen?
 
 | Ihre Rolle | Wie tGD hilft |
 |------------|---------------|
@@ -44,7 +44,7 @@ Funktioniert mit Claude Code, Codex CLI, Gemini CLI, OpenCode und Pi Coding Agen
 
 ---
 
-## Schnellstart
+## 🚀 Schnellstart
 
 ### 1. Clone & Setup
 ```bash
@@ -74,7 +74,7 @@ gemini   # Gemini CLI
 
 ---
 
-## Praxisbeispiele
+## 💡 Praxisbeispiele
 
 ### Beispiel 1: Authentifizierung hinzufügen
 ```
@@ -116,7 +116,7 @@ Agent: Finale Prüfungen...
 
 ---
 
-## Pipeline
+## ⚙️ Pipeline
 
 8 Stufen von der Idee bis zur Produktion. Jede Stufe gatekept die nächste.
 
@@ -133,7 +133,7 @@ Agent: Finale Prüfungen...
 
 ---
 
-## Test-Strategie
+## 🧪 Test-Strategie
 
 Testing in tGD ist eine progressive Disziplin über drei Stufen:
 
@@ -143,7 +143,7 @@ Testing in tGD ist eine progressive Disziplin über drei Stufen:
 | **`/tgd-verify`** | 🔍 Inspector | **Alle Tests ausführen** und Fehler beheben | Integration + E2E |
 | **`/tgd-review`** | 🕵️ Auditor | **Test-Qualität** prüfen | Coverage + Strategie |
 
-### Test-Pyramide
+### 🔺 Test-Pyramide
 ```
           ╱╲
          ╱  ╲         E2E (~5%)      ← Verify-Stufe
@@ -159,7 +159,7 @@ Testing in tGD ist eine progressive Disziplin über drei Stufen:
 
 ---
 
-## Agent Personas
+## 🤖 Agent Personas
 
 | Agent | Rolle | Perspektive |
 |-------|-------|-------------|
@@ -169,7 +169,7 @@ Testing in tGD ist eine progressive Disziplin über drei Stufen:
 
 ---
 
-## So funktionieren Skills
+## 🧩 So funktionieren Skills
 
 Jeder Skill folgt einer konsistenten Anatomie:
 1. **Frontmatter**: Name, Beschreibung, Trigger
@@ -181,7 +181,7 @@ Jeder Skill folgt einer konsistenten Anatomie:
 
 ---
 
-## FAQ
+## ❓ FAQ
 
 **Q: Muss ich etwas außer dem Agent installieren?**
 A: Nur `bash setup.sh`. Erkennt Ihren CLI automatisch.
@@ -200,10 +200,10 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 
 ---
 
-## Alle 25 Skills
+## 📦 Alle 25 Skills
 
 <details>
-<summary><b>Meta (1)</b></summary>
+<summary><b>🧭 Meta (1)</b></summary>
 
 | Skill | Zweck |
 |-------|-------|
@@ -211,7 +211,7 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 </details>
 
 <details>
-<summary><b>Define (3)</b></summary>
+<summary><b>📋 Define (3)</b></summary>
 
 | Skill | Zweck |
 |-------|-------|
@@ -221,7 +221,7 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 </details>
 
 <details>
-<summary><b>Plan (2)</b></summary>
+<summary><b>📐 Plan (2)</b></summary>
 
 | Skill | Zweck |
 |-------|-------|
@@ -230,7 +230,7 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 </details>
 
 <details>
-<summary><b>Build (7)</b></summary>
+<summary><b>⚡ Build (7)</b></summary>
 
 | Skill | Zweck |
 |-------|-------|
@@ -244,7 +244,7 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 </details>
 
 <details>
-<summary><b>Verify (3)</b></summary>
+<summary><b>🧪 Verify (3)</b></summary>
 
 | Skill | Zweck |
 |-------|-------|
@@ -254,7 +254,7 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 </details>
 
 <details>
-<summary><b>Review (4)</b></summary>
+<summary><b>🔎 Review (4)</b></summary>
 
 | Skill | Zweck |
 |-------|-------|
@@ -265,7 +265,7 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 </details>
 
 <details>
-<summary><b>Ship (5)</b></summary>
+<summary><b>🚀 Ship (5)</b></summary>
 
 | Skill | Zweck |
 |-------|-------|
@@ -278,6 +278,6 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 
 ---
 
-## Lizenz
+## 📄 Lizenz
 
 MIT – Nutzen Sie diese Skills in Ihren Projekten, Teams und Tools.

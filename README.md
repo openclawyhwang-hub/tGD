@@ -18,14 +18,14 @@ Works with Claude Code, Codex CLI, Gemini CLI, OpenCode, and Pi Coding Agent.
 
 ---
 
-## Why tGD?
+## 🤔 Why tGD?
 
-**Without tGD:**
+**❌ Without tGD:**
 - AI agent writes 500 lines of code, tests fail, you don't know why
 - "It works on my machine" → production breaks
 - No specs, no plan, just vibes
 
-**With tGD:**
+**✅ With tGD:**
 - Agent writes 50 lines, tests pass, moves to next task
 - Every feature has PRD + SPEC + DESIGN before code ships
 - 8-stage pipeline catches bugs before they reach production
@@ -43,7 +43,7 @@ Works with Claude Code, Codex CLI, Gemini CLI, OpenCode, and Pi Coding Agent.
 
 ---
 
-## Quick Start
+## 🚀 Quick Start
 
 ### 1. Clone & Setup
 ```bash
@@ -78,7 +78,7 @@ gemini
 
 ---
 
-## Real-world Examples
+## 💡 Real-world Examples
 
 ### Example 1: Add User Auth
 ```
@@ -120,7 +120,7 @@ Agent: Running final checks...
 
 ---
 
-## Pipeline
+## ⚙️ Pipeline
 
 ```mermaid
 flowchart LR
@@ -153,7 +153,7 @@ flowchart LR
 
 ---
 
-## Commands
+## ⌨️ Commands
 
 8 slash commands that map to the development lifecycle. Each command chains the relevant skills automatically.
 
@@ -170,11 +170,11 @@ flowchart LR
 
 ---
 
-## Testing Strategy
+## 🧪 Testing Strategy
 
 Testing in tGD isn't a single phase — it's a progressive discipline across three stages, each with a different purpose and role:
 
-### The Three Testing Roles
+### 🎭 The Three Testing Roles
 
 | Stage | Role | Purpose | Test Types | What the Agent Does |
 |-------|------|---------|------------|---------------------|
@@ -182,7 +182,7 @@ Testing in tGD isn't a single phase — it's a progressive discipline across thr
 | **`/tgd-verify`** | 🔍 Inspector | **Run all tests** and fix failures | Integration + E2E | Debug pipeline: reproduce → localize → fix → guard |
 | **`/tgd-review`** | 🕵️ Auditor | **Check test quality** and coverage | Coverage + Strategy | Review test pyramid: 80% unit, 15% integration, 5% E2E |
 
-### Why Three Separate Stages?
+### 🔐 Why Three Separate Stages?
 
 **Separation prevents "lazy agent" behavior.** If testing were a single stage, the agent would run unit tests, declare "done," and skip the harder integration/E2E tests. By separating stages:
 
@@ -190,7 +190,7 @@ Testing in tGD isn't a single phase — it's a progressive discipline across thr
 - **Verify** forces the agent to validate proof (run tests + debug)
 - **Review** forces the agent to challenge proof (audit test quality)
 
-### The Test Pyramid
+### 🔺 The Test Pyramid
 
 tGD enforces the test pyramid ratio:
 ```
@@ -220,7 +220,7 @@ tGD enforces the test pyramid ratio:
 
 ---
 
-## Integrations
+## 🔗 Integrations
 
 ### Jira Data Center
 When `/tgd-plan` generates `TASKS.md`, the **`jira-auto-sync`** skill can automatically create Jira issues:
@@ -230,7 +230,7 @@ When `/tgd-plan` generates `TASKS.md`, the **`jira-auto-sync`** skill can automa
 
 ---
 
-## Agent Personas
+## 🤖 Agent Personas
 
 | Agent | Role | Perspective |
 |-------|------|-------------|
@@ -242,7 +242,7 @@ Personas do not invoke other personas — the user (or a slash command) is the o
 
 ---
 
-## How Skills Work
+## 🧩 How Skills Work
 
 Every skill follows a consistent anatomy:
 1. **Frontmatter**: Name, description, triggers.
@@ -254,7 +254,7 @@ Skills use **progressive disclosure** — the agent only loads details when need
 
 ---
 
-## Performance
+## 📊 Performance
 
 | Metric | Value |
 |--------|-------|
@@ -265,7 +265,7 @@ Skills use **progressive disclosure** — the agent only loads details when need
 
 ---
 
-## FAQ
+## ❓ FAQ
 
 **Q: Do I need to install anything besides the agent?**
 A: Just `bash setup.sh`. It auto-detects your CLI and configures everything. Webwright dependencies installed automatically.
@@ -287,7 +287,7 @@ A: Yes! Edit the skill files in `skills/` to match your team's workflow.
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 tGD/
@@ -304,29 +304,29 @@ tGD/
 
 ---
 
-## All 25 Skills
+## 📦 All 25 Skills
 
 The commands above are entry points. The pack includes 25 skills total — 24 lifecycle skills plus the `using-agent-skills` meta-skill.
 
-### Meta
+### 🧭 Meta
 | Skill | Purpose |
 |---|---|
 | [using-agent-skills](skills/using-agent-skills/SKILL.md) | Maps work to the right skill |
 
-### Define
+### 📋 Define
 | Skill | Purpose |
 |---|---|
 | [interview-me](skills/interview-me/SKILL.md) | Extract user intent via Q&A |
 | [idea-refine](skills/idea-refine/SKILL.md) | Divergent/convergent thinking |
 | [spec-driven-development](skills/spec-driven-development/SKILL.md) | Write PRD + SPEC before code |
 
-### Plan
+### 📐 Plan
 | Skill | Purpose |
 |---|---|
 | [planning-and-task-breakdown](skills/planning-and-task-breakdown/SKILL.md) | Decompose specs into TASKS.md |
 | [jira-auto-sync](skills/jira-auto-sync/SKILL.md) | Auto-create Jira issues from TASKS.md |
 
-### Build
+### ⚡ Build
 | Skill | Purpose |
 |---|---|
 | [incremental-implementation](skills/incremental-implementation/SKILL.md) | Thin vertical slices |
@@ -337,14 +337,14 @@ The commands above are entry points. The pack includes 25 skills total — 24 li
 | [frontend-ui-engineering](skills/frontend-ui-engineering/SKILL.md) | UI architecture & design systems |
 | [api-and-interface-design](skills/api-and-interface-design/SKILL.md) | Contract-first API design |
 
-### Verify
+### 🧪 Verify
 | Skill | Purpose |
 |---|---|
 | [browser-testing-with-devtools](skills/browser-testing-with-devtools/SKILL.md) | Live runtime data & DOM inspection |
 | [webwright](skills/webwright/SKILL.md) | E2E browser automation, reusable test scripts |
 | [debugging-and-error-recovery](skills/debugging-and-error-recovery/SKILL.md) | Triage, fix, guard |
 
-### Review
+### 🔎 Review
 | Skill | Purpose |
 |---|---|
 | [code-review-and-quality](skills/code-review-and-quality/SKILL.md) | Five-axis review |
@@ -352,7 +352,7 @@ The commands above are entry points. The pack includes 25 skills total — 24 li
 | [security-and-hardening](skills/security-and-hardening/SKILL.md) | OWASP & secrets management |
 | [performance-optimization](skills/performance-optimization/SKILL.md) | Profiling & anti-patterns |
 
-### Ship
+### 🚀 Ship
 | Skill | Purpose |
 |---|---|
 | [git-workflow-and-versioning](skills/git-workflow-and-versioning/SKILL.md) | Atomic commits & trunk-based dev |
@@ -363,7 +363,7 @@ The commands above are entry points. The pack includes 25 skills total — 24 li
 
 ---
 
-## What's Next?
+## 🗺️ What's Next?
 
 After you've built your first feature:
 
@@ -375,11 +375,11 @@ After you've built your first feature:
 
 ---
 
-## Contributing
+## 🤝 Contributing
 
 Want to add a skill or improve tGD? See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-### Quick contribution guide:
+### ⚡ Quick contribution guide:
 1. Fork the repo
 2. Create a skill in `skills/your-skill/`
 3. Run `bash scripts/validate-skills.js`
@@ -387,13 +387,13 @@ Want to add a skill or improve tGD? See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
-## License
+## 📄 License
 
 MIT - use these skills in your projects, teams, and tools.
 
 ---
 
-## Appendix: Manual Configuration
+## 📎 Appendix: Manual Configuration
 
 > **Note:** Only needed if `bash setup.sh` fails or you prefer manual linking.
 
