@@ -314,9 +314,9 @@ tGD/
 
 ---
 
-## 📦 All 25 Skills
+## 📦 All 26 Skills
 
-The commands above are entry points. The pack includes 25 skills total — 24 lifecycle skills plus the `using-agent-skills` meta-skill.
+The commands above are entry points. The pack includes 26 skills total — 24 lifecycle skills plus `using-agent-skills` meta-skill and `tgd-rules` core rules.
 
 ### 🧭 Meta
 | Skill | Purpose |
@@ -339,8 +339,10 @@ The commands above are entry points. The pack includes 25 skills total — 24 li
 ### ⚡ Build
 | Skill | Purpose |
 |---|---|
+| [subagent-driven-development](skills/subagent-driven-development/SKILL.md) | Parallel tasks via fresh subagents |
 | [incremental-implementation](skills/incremental-implementation/SKILL.md) | Thin vertical slices |
 | [test-driven-development](skills/test-driven-development/SKILL.md) | Red-Green-Refactor |
+| [verification-before-completion](skills/verification-before-completion/SKILL.md) | Evidence before claims |
 | [context-engineering](skills/context-engineering/SKILL.md) | Feed agents the right info |
 | [source-driven-development](skills/source-driven-development/SKILL.md) | Ground decisions in official docs |
 | [doubt-driven-development](skills/doubt-driven-development/SKILL.md) | Adversarial review |
@@ -378,7 +380,7 @@ The commands above are entry points. The pack includes 25 skills total — 24 li
 After you've built your first feature:
 
 1. 📖 Read the [Testing Strategy](#testing-strategy) to understand the 3-stage testing
-2. 🔧 Explore [All 25 Skills](#all-25-skills) to see what's available
+2. 🔧 Explore [All 26 Skills](#all-26-skills) to see what's available
 3. 🤖 Try [Agent Personas](#agent-personas) for specialized review
 4. 🔗 Set up [Jira Integration](#jira-data-center) for task tracking
 5. 🌐 Enable [Webwright](skills/webwright/SKILL.md) for E2E browser testing
