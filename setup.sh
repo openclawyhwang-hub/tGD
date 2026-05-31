@@ -132,42 +132,30 @@ echo "===================================="
 echo "✅ Setup Complete!"
 echo ""
 
-# Inject tGD rules into GLOBAL agent config (all projects)
+# Install tGD rules as SEPARATE files (no pollution)
 TGD_DIR="$(cd "$(dirname "$0")" && pwd)"
-RULES_HEADER="<!-- tGD rules — https://github.com/openclawyhwang-hub/tGD -->"
 
-inject_global() {
-    local target="$1"
-    local source="$2"
-    local platform="$3"
-    mkdir -p "$(dirname "$target")"
-    if [ -f "$target" ] && grep -q "tGD rules" "$target" 2>/dev/null; then
-        echo "   ⏭️  $platform: already configured"
-    else
-        echo "" >> "$target"
-        echo "$RULES_HEADER" >> "$target"
-        cat "$source" >> "$target"
-        echo "   ✅ $platform: rules injected globally"
-    fi
-}
-
-echo "📋 Injecting tGD rules into global agent config..."
+echo "📋 Installing tGD rules (standalone files, no config pollution)..."
 echo ""
 
-# Claude Code: ~/.claude/CLAUDE.md
-inject_global "$HOME/.claude/CLAUDE.md" "$TGD_DIR/.claude/CLAUDE.md" "Claude Code"
+# Claude Code: ~/.claude/rules/tgd.md (auto-loaded by Claude Code)
+mkdir -p "$HOME/.claude/rules"
+ln -sf "$TGD_DIR/skills/tgd-rules/SKILL.md" "$HOME/.claude/rules/tgd.md" 2>/dev/null && echo "   ✅ Claude Code: ~/.claude/rules/tgd.md → symlink"
 
-# Codex CLI: ~/.codex/AGENTS.md
-inject_global "$HOME/.codex/AGENTS.md" "$TGD_DIR/AGENTS.md" "Codex CLI"
+# Codex CLI: ~/.codex/skills/tgd-rules (auto-discovered)
+mkdir -p "$HOME/.codex/skills"
+ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.codex/skills/tgd-rules" 2>/dev/null && echo "   ✅ Codex CLI: ~/.codex/skills/tgd-rules → symlink"
 
-# OpenCode: ~/.config/opencode/AGENTS.md
-inject_global "$HOME/.config/opencode/AGENTS.md" "$TGD_DIR/AGENTS.md" "OpenCode"
+# OpenCode: skill auto-discovered from workspace
+echo "   ✅ OpenCode: auto-discovers skills/ in workspace"
 
-# Gemini CLI: ~/.gemini/GEMINI.md
-inject_global "$HOME/.gemini/GEMINI.md" "$TGD_DIR/.gemini/GEMINI.md" "Gemini CLI"
+# Gemini CLI: ~/.gemini/skills/tgd-rules
+mkdir -p "$HOME/.gemini/skills"
+ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.gemini/skills/tgd-rules" 2>/dev/null && echo "   ✅ Gemini CLI: ~/.gemini/skills/tgd-rules → symlink"
 
-# Pi: ~/.pi/agent/instructions.md
-inject_global "$HOME/.pi/agent/instructions.md" "$TGD_DIR/.pi/instructions.md" "Pi"
+# Pi: ~/.pi/agent/skills/tgd-rules
+mkdir -p "$HOME/.pi/agent/skills"
+ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.pi/agent/skills/tgd-rules" 2>/dev/null && echo "   ✅ Pi: ~/.pi/agent/skills/tgd-rules → symlink"
 
 echo ""
 echo "===================================="
