@@ -1,5 +1,5 @@
 ---
-description: Develop — implement one thin vertical slice at a time
+description: Develop — implement with fresh subagents per task and two-stage review
 ---
 
 **🛑 Pre-flight: Environment Check**
@@ -19,13 +19,18 @@ description: Develop — implement one thin vertical slice at a time
 - [ ] `tGD/<feature-name>/SPEC.md` exists and is non-empty.
 - **If missing:** STOP. Tell user: "Specs are missing. Please run `/tgd-define` first."
 
-Run the `incremental-implementation` skill. This is the BUILD phase. The full pipeline is:
+This is the BUILD phase. Choose execution mode based on task count:
 
-**Core flow:**
+**🔀 Execution Mode Selection:**
+- **3+ independent tasks** → `subagent-driven-development` (recommended): Fresh subagent per task + two-stage review (spec compliance → code quality)
+- **1-2 tasks or tightly coupled** → `incremental-implementation`: Single session, thin vertical slices
+
+**Core flow (both modes):**
 1. `context-engineering` — load the right spec sections and source files for the current task
 2. `source-driven-development` — ground framework decisions in official docs, verify and cite
-3. `incremental-implementation` — build thin vertical slices: implement → test → verify → commit
-4. `test-driven-development` — Red-Green-Refactor, write tests alongside each slice
+3. `subagent-driven-development` OR `incremental-implementation` — execute tasks
+4. `test-driven-development` — Red-Green-Refactor, write tests alongside each task
+5. `verification-before-completion` — evidence before claims, no exceptions
 
 **Conditional (apply when relevant):**
 - Touching UI? → `frontend-ui-engineering`
@@ -34,10 +39,13 @@ Run the `incremental-implementation` skill. This is the BUILD phase. The full pi
 
 Use feature flags for incomplete features, safe defaults, and rollback-friendly changes.
 
+**Do not pause between tasks.** Execute all tasks from the plan without stopping unless BLOCKED.
+
 After completing the implementation, verify the outputs.
 
 **Verification Gate:**
 - [ ] Source code files created/modified in `src/`
 - [ ] Tests written AND passing for new logic in `tests/`
+- [ ] Verification commands run and output confirmed (no "should work")
 
 If verification passes, suggest the next step: `/tgd-verify` to prove it works.

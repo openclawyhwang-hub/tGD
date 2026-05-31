@@ -19,6 +19,26 @@ Decompose work into small, verifiable tasks with explicit acceptance criteria. G
 
 **When NOT to use:** Single-file changes with obvious scope, or when the spec already contains well-defined tasks.
 
+## The Zero-Context Rule
+
+**Plans must assume the executor has:**
+- **Zero context** about the codebase
+- **Limited knowledge** of the problem domain
+- **Questionable taste** in design decisions
+- **Weak test design skills**
+
+This means every task must contain:
+- **Exact file paths** (not "the config file")
+- **Exact commands** to run (not "run the tests")
+- **Code blocks** with actual implementation hints (not "implement the function")
+- **Expected outputs** (not "verify it works")
+
+**Never write:**
+- "Similar to Task N" (tasks may be read out of order)
+- "TBD" or "TODO" or "fill in details"
+- "Add appropriate error handling" (specify which errors, which handling)
+- Steps that describe *what* without showing *how*
+
 ## The Planning Process
 
 ### Step 0: Feature Name Resolution
