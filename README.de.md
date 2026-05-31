@@ -56,8 +56,10 @@ bash setup.sh
 ### 2. Agent starten
 ```bash
 claude   # Claude Code
+codex    # Codex CLI
 opencode # OpenCode
 gemini   # Gemini CLI
+pi       # Pi Coding Agent
 ```
 
 ### 3. Projekt initialisieren

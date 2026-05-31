@@ -57,11 +57,17 @@ bash setup.sh
 # Claude Code
 claude
 
+# Codex CLI
+codex
+
 # OpenCode
 opencode
 
 # Gemini CLI
 gemini
+
+# Pi Coding Agent
+pi
 ```
 
 ### 3. Initialize Your Project

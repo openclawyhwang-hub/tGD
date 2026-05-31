@@ -56,8 +56,10 @@ bash setup.sh
 ### 2. エージェントを起動
 ```bash
 claude   # Claude Code
+codex    # Codex CLI
 opencode # OpenCode
 gemini   # Gemini CLI
+pi       # Pi Coding Agent
 ```
 
 ### 3. プロジェクトを初期化
