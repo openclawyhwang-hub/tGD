@@ -172,34 +172,39 @@ After writing SPEC.md, check the **Feature Type** field.
 
 **If Frontend or Full-stack is checked:**
 
-1. **Check design稿來源** in SPEC.md:
-   - If `[Figma URL]` → Use `web_extract` to fetch design稿截圖 + 元件結構
-   - If `[截圖/PDF]` → Use `vision_analyze` to extract UI elements, colors, layout
-   - If `[None]` → **STOP. Ask user:** "有現成設計稿嗎？沒有我先產 wireframe。"
+1. **Check existing design** in SPEC.md:
+   - If `[Figma URL]` → Use `web_extract` to fetch design截圖 + 元件結構 → skip to step 3
+   - If `[截圖/PDF]` → Use `vision_analyze` to extract UI elements → skip to step 3
+   - If `[None]` → proceed to step 2
 
-2. **If no design exists → Generate wireframe:**
-   - Use `excalidraw` skill to create hand-drawn style wireframe
-   - Or use `sketch` skill to create HTML mockup
-   - Save to `tGD/<feature-name>/design/` directory
+2. **Generate design mockups** using `claude-design` skill:
+   - Read the SPEC.md for feature requirements
+   - Generate 3 variants following claude-design workflow:
+     - **Conservative** — closest to existing patterns, lowest risk
+     - **Strong-fit** — best interpretation of the feature requirements
+     - **Divergent** — more novel, explores design boundaries
+   - Each variant is a self-contained HTML file saved to `tGD/<feature-name>/design/`
+   - Present the 3 variants to the user with a comparison table
+   - **STOP. Ask user to pick a direction** (or request a hybrid)
 
-3. **Extract from design:**
-   - **Visual Direction**: Reference product, vibe, anti-patterns
-   - **Component Tree**: List of UI components and their hierarchy
-   - **Design Tokens**: Colors, fonts, spacing, border-radius
-   - **Typography Scale**: Font sizes, weights, letter-spacing per heading level
-   - **Spacing System**: Base unit and scale
-   - **Responsive Breakpoints**: Mobile / Tablet / Desktop layouts
-   - **Interaction Patterns**: Click handlers, state transitions, animations
-   - **States**: Loading, empty, error handling
-   - **Accessibility**: Contrast, keyboard nav, reduced-motion
+3. **Write DESIGN.md** based on chosen design:
+   - Extract from chosen variant (or existing design if step 1 was used)
+   - Apply anti-slop rules from the template below
+   - Save to `tGD/<feature-name>/DESIGN.md`
 
-4. **Save design reference** to `tGD/<feature-name>/DESIGN.md`:
+4. **Confirm with user:**
+   - Present DESIGN.md summary: Visual Direction, Font choices, Color palette, Spacing
+   - **STOP. Ask user:** "DESIGN.md 確認了嗎？可以進 PLAN 了嗎？"
+   - If not satisfied → modify DESIGN.md → re-confirm
+
+5. **DESIGN.md template:**
    ```markdown
    # DESIGN: [Feature Name]
    
    ## Source
-   - **Type**: [Figma / Wireframe / Mockup / None]
+   - **Type**: [Figma / Mockup / Screenshot]
    - **URL/Path**: [link or file path]
+   - **Variant**: [Conservative / Strong-fit / Divergent]
    
    ## Visual Direction
    - **Reference**: [Product name, e.g. Linear / Stripe / Vercel]
@@ -377,4 +382,6 @@ Before proceeding to implementation, confirm:
 - [ ] Boundaries (Always/Ask First/Never) are defined
 - [ ] The spec is saved to `tGD/<feature-name>/SPEC.md`
 - [ ] Working branch is `feature/<feature-name>` (not `main`/`master`)
-- [ ] If UI feature: `tGD/<feature-name>/DESIGN.md` exists with Visual Direction, Component Tree, Design Tokens, Typography Scale, Spacing System, States, and Accessibility sections
+- [ ] If UI feature: 3 design variants generated via `claude-design`, user picked a direction
+- [ ] If UI feature: `tGD/<feature-name>/DESIGN.md` exists with all required sections
+- [ ] If UI feature: user confirmed DESIGN.md before proceeding to PLAN
