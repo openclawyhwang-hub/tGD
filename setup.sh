@@ -132,26 +132,49 @@ echo "===================================="
 echo "✅ Setup Complete!"
 echo ""
 
-# Inject agent instructions into user's project
+# Inject tGD rules into GLOBAL agent config (all projects)
 TGD_DIR="$(cd "$(dirname "$0")" && pwd)"
-CURRENT_DIR="$(pwd)"
+RULES_HEADER="<!-- tGD rules — https://github.com/openclawyhwang-hub/tGD -->"
 
-if [ "$CURRENT_DIR" != "$TGD_DIR" ] && [ -d ".git" ]; then
-    echo "📂 Injecting tGD rules into project: $CURRENT_DIR"
-    # Copy instruction files for each platform
-    cp "$TGD_DIR/AGENTS.md" "$CURRENT_DIR/AGENTS.md" 2>/dev/null && echo "   ✅ AGENTS.md (Codex/OpenCode)"
-    mkdir -p "$CURRENT_DIR/.claude"
-    cp "$TGD_DIR/.claude/CLAUDE.md" "$CURRENT_DIR/.claude/CLAUDE.md" 2>/dev/null && echo "   ✅ .claude/CLAUDE.md (Claude Code)"
-    mkdir -p "$CURRENT_DIR/.gemini"
-    cp "$TGD_DIR/.gemini/GEMINI.md" "$CURRENT_DIR/.gemini/GEMINI.md" 2>/dev/null && echo "   ✅ .gemini/GEMINI.md (Gemini CLI)"
-    mkdir -p "$CURRENT_DIR/.pi"
-    cp "$TGD_DIR/.pi/instructions.md" "$CURRENT_DIR/.pi/instructions.md" 2>/dev/null && echo "   ✅ .pi/instructions.md (Pi)"
-    echo ""
-fi
+inject_global() {
+    local target="$1"
+    local source="$2"
+    local platform="$3"
+    mkdir -p "$(dirname "$target")"
+    if [ -f "$target" ] && grep -q "tGD rules" "$target" 2>/dev/null; then
+        echo "   ⏭️  $platform: already configured"
+    else
+        echo "" >> "$target"
+        echo "$RULES_HEADER" >> "$target"
+        cat "$source" >> "$target"
+        echo "   ✅ $platform: rules injected globally"
+    fi
+}
 
-echo "To start:"
-echo "1. cd into your project"
-echo "2. Run 'bash /path/to/tGD/setup.sh' (from your project dir)"
-echo "3. Start your agent: 'claude', 'codex', 'opencode', 'gemini', or 'pi'"
-echo "4. Type '/tgd-map' to initialize."
+echo "📋 Injecting tGD rules into global agent config..."
+echo ""
+
+# Claude Code: ~/.claude/CLAUDE.md
+inject_global "$HOME/.claude/CLAUDE.md" "$TGD_DIR/.claude/CLAUDE.md" "Claude Code"
+
+# Codex CLI: ~/.codex/AGENTS.md
+inject_global "$HOME/.codex/AGENTS.md" "$TGD_DIR/AGENTS.md" "Codex CLI"
+
+# OpenCode: ~/.config/opencode/AGENTS.md
+inject_global "$HOME/.config/opencode/AGENTS.md" "$TGD_DIR/AGENTS.md" "OpenCode"
+
+# Gemini CLI: ~/.gemini/GEMINI.md
+inject_global "$HOME/.gemini/GEMINI.md" "$TGD_DIR/.gemini/GEMINI.md" "Gemini CLI"
+
+# Pi: ~/.pi/agent/instructions.md
+inject_global "$HOME/.pi/agent/instructions.md" "$TGD_DIR/.pi/instructions.md" "Pi"
+
+echo ""
+echo "===================================="
+echo "✅ Setup Complete!"
+echo ""
+echo "tGD is now active in ALL projects."
+echo "Just start your agent in any project:"
+echo "  claude | codex | opencode | gemini | pi"
+echo "Then type '/tgd-map' to initialize."
 echo ""
