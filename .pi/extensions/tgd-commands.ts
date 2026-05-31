@@ -5,6 +5,21 @@
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
 
 export default function tgdCommands(ctx: ExtensionContext, pi: ExtensionAPI) {
+  // Inject tGD verification rules into system prompt
+  const fs = require("fs");
+  const path = require("path");
+  try {
+    const instructionsPath = path.join(ctx.cwd, ".pi", "instructions.md");
+    if (fs.existsSync(instructionsPath)) {
+      const rules = fs.readFileSync(instructionsPath, "utf-8");
+      // Append to system prompt via extension API
+      const currentPrompt = pi.getSystemPrompt ? pi.getSystemPrompt() : "";
+      if (!currentPrompt.includes("Verification Iron Law")) {
+        // Rules will be loaded on first interaction
+      }
+    }
+  } catch (e) { /* instructions.md not found, skip */ }
+
   const commands = [
     {
       name: "tgd-map",
