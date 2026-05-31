@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tGD — AI Coding Agent Skill Pack</title>
-    <meta name="description" content="tGD makes AI coding agents act like senior engineers. 8-stage pipeline enforces disciplined workflow.">
+    <title>tGD — The Agentic PDLC Harness</title>
+    <meta name="description" content="Your AI agents can code. tGD makes them ship. 8-stage pipeline that constrains, guides, and verifies every agent decision — from spec to production.">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -113,6 +113,14 @@
             font-size: 14px;
             color: var(--accent);
             margin-bottom: 24px;
+        }
+        .hero-tagline {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(12px, 1.5vw, 15px);
+            color: var(--accent);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
         }
 
         h1 {
@@ -934,16 +942,17 @@
     <section class="hero">
         <div class="hero-content">
             <div class="hero-badge">✨ Open Source • MIT License • 25 Skills</div>
+            <p class="hero-tagline">The Agentic PDLC Harness</p>
             <h1>t<span>GD</span></h1>
             <p class="hero-subtitle">
-                <span data-lang="en">AI coding agents that act like senior engineers. 
-                Not "just write code" — disciplined workflow from spec to ship.</span>
-                <span data-lang="zh">讓 AI coding agent 像資深工程師一樣工作。
-                不是「幫我寫 code」——而是從規格到出貨的紀律化工作流。</span>
-                <span data-lang="ja">AI コーディングエージェントをシニアエンジニアのように働かせる。
-                「コード書いて」ではなく、仕様からデリバリーまでの規律正しいワークフロー。</span>
-                <span data-lang="de">KI-Coding-Agents arbeiten wie Senior Engineers.
-                Nicht "schreib Code" – sondern disziplinierter Workflow von der Spezifikation bis zum Deployment.</span>
+                <span data-lang="en">Your AI agents can code. tGD makes them ship.
+                8-stage pipeline that constrains, guides, and verifies every agent decision — from spec to production, no shortcuts.</span>
+                <span data-lang="zh">你的 AI agent 會寫 code。tGD 讓它穩定出貨。
+                8 階段 pipeline 約束、引導、驗證 agent 的每個決策——從規格到上線，沒有捷徑。</span>
+                <span data-lang="ja">AIエージェントはコードを書ける。tGDはそれを確実にデリリーする。
+                8段階のパイプラインが意思決定を制約・指導・検証——仕様から本番まで、近道なし。</span>
+                <span data-lang="de">Ihre KI-Agenten können Code schreiben. tGD lässt sie liefern.
+                8-Stufen-Pipeline, die jede Agentenentscheidung einschränkt, leitet und verifiziert.</span>
             </p>
             <div class="hero-cta">
                 <a href="#quick-start" class="btn btn-primary">Get Started →</a>
@@ -987,20 +996,20 @@
             <h2 class="fade-in"><span data-lang="en">Why tGD?</span><span data-lang="zh">為什麼需要 tGD？</span>
                 <span data-lang="ja">なぜ tGD なのか？</span>
                 <span data-lang="de">Warum tGD?</span></h2>
-            <p class="section-subtitle fade-in"><span data-lang="en">The difference between "AI wrote code" and "AI shipped a feature".</span><span data-lang="zh">「AI 寫了 code」和「AI 出貨了一個功能」的差別。</span>
-                <span data-lang="ja">「AI がコードを書いた」と「AI が機能を出荷した」の違い。</span>
-                <span data-lang="de">Der Unterschied zwischen "KI hat Code geschrieben" und "KI hat ein Feature geliefert".</span></p>
+            <p class="section-subtitle fade-in"><span data-lang="en">The problem isn't that agents can't code. It's that nobody holds them accountable.</span><span data-lang="zh">問題不是 agent 不會寫 code，而是沒有人管得住它。</span>
+                <span data-lang="ja">問題はエージェントがコードを書けないことではない。誰も責任を持たないことだ。</span>
+                <span data-lang="de">Das Problem ist nicht, dass Agenten nicht coden können. Es ist, dass niemand sie zur Rechenschaft zieht.</span></p>
             
             <div class="comparison fade-in">
                 <div class="comparison-card before">
-                    <h3>❌ <span data-lang="en">Without tGD</span><span data-lang="zh">沒有 tGD</span>
-                <span data-lang="ja">tGD なし</span>
-                <span data-lang="de">Ohne tGD</span></h3>
+                    <h3>❌ <span data-lang="en">Without a harness</span><span data-lang="zh">沒有 harness</span>
+                <span data-lang="ja">ハーネスなし</span>
+                <span data-lang="de">Ohne Harness</span></h3>
                     <ul>
-                        <li>AI writes 500 lines, tests fail, you don't know why</li>
-                        <li>"It works on my machine" → production breaks</li>
-                        <li>No specs, no plan, just vibes</li>
-                        <li>Ship fast, debug forever</li>
+                        <li>Agent says "should work" — tests never ran</li>
+                        <li>Writes 500 lines before reading your codebase</li>
+                        <li>Skips spec, ships broken PR, disappears</li>
+                        <li>You debug what the agent shipped</li>
                     </ul>
                 </div>
                 <div class="comparison-card after">
@@ -1008,10 +1017,10 @@
                 <span data-lang="ja">tGD あり</span>
                 <span data-lang="de">Mit tGD</span></h3>
                     <ul>
-                        <li>Agent writes 50 lines, tests pass, moves on</li>
-                        <li>Every feature has PRD + SPEC before code</li>
-                        <li>8-stage pipeline catches bugs early</li>
-                        <li>Ship fast AND ship safe</li>
+                        <li>Agent says "34/34 pass" — shows the output</li>
+                        <li>Reads codebase first, writes 50 lines that pass</li>
+                        <li>Spec → Plan → Code → Verify — no stage skipped</li>
+                        <li>You review what the agent proved</li>
                     </ul>
                 </div>
             </div>
@@ -1030,20 +1039,20 @@
             
             <div class="who-grid fade-stagger">
                 <div class="who-card">
-                    <h3>🧑‍💻 Solo Developer</h3>
-                    <p>Ship faster with AI-assisted workflow. Let the agent handle specs, tests, and reviews while you focus on building.</p>
+                    <h3>🧑‍💻 Solo Dev</h3>
+                    <p>One agent, disciplined workflow. Ship features while the agent handles specs, tests, and code review.</p>
                 </div>
                 <div class="who-card">
                     <h3>👥 Team Lead</h3>
-                    <p>Enforce coding standards across AI-generated code. Every PR follows the same disciplined workflow.</p>
+                    <p>Enforce standards across AI-generated code. Every PR follows the same 8-stage pipeline — no exceptions.</p>
                 </div>
                 <div class="who-card">
                     <h3>🚀 Startup</h3>
-                    <p>Move fast without breaking things. tGD's pipeline catches bugs before they reach production.</p>
+                    <p>Move fast without breaking things. The harness catches agent mistakes before they reach production.</p>
                 </div>
                 <div class="who-card">
                     <h3>🏢 Enterprise</h3>
-                    <p>Maintain quality gates for AI development. Security, performance, and compliance built-in.</p>
+                    <p>Quality gates for AI development. Security, performance, and compliance enforced by the pipeline.</p>
                 </div>
             </div>
         </div>
