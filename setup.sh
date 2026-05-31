@@ -146,8 +146,8 @@ ln -sf "$TGD_DIR/skills/tgd-rules/SKILL.md" "$HOME/.claude/rules/tgd.md" 2>/dev/
 mkdir -p "$HOME/.codex/skills"
 ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.codex/skills/tgd-rules" 2>/dev/null && echo "   ✅ Codex CLI: ~/.codex/skills/tgd-rules → symlink"
 
-# OpenCode: skill auto-discovered from workspace
-echo "   ✅ OpenCode: auto-discovers skills/ in workspace"
+mkdir -p "$HOME/.config/opencode/skills"
+ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.config/opencode/skills/tgd-rules" 2>/dev/null && echo "   ✅ OpenCode: ~/.config/opencode/skills/tgd-rules → symlink"
 
 # Gemini CLI: ~/.gemini/skills/tgd-rules
 mkdir -p "$HOME/.gemini/skills"
