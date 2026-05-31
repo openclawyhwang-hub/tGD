@@ -673,6 +673,7 @@
         .navbar-links { display: flex; gap: 24px; }
         .navbar-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
         .navbar-links a:hover { color: var(--text); }
+        .navbar-right { display: flex; align-items: center; gap: 16px; }
         @media (max-width: 768px) { .navbar-links { display: none; } }
 
         /* Pipeline descriptions */
@@ -734,19 +735,21 @@
     <nav class="navbar" id="navbar">
         <div class="container">
             <a href="#" class="navbar-brand">t<span>GD</span></a>
-            <div class="navbar-links">
+            <div class="navbar-right">
                 <select class="lang-select" onchange="setLang(this.value)">
                     <option value="en">EN</option>
                     <option value="zh">繁中</option>
                     <option value="ja">日本語</option>
                     <option value="de">DE</option>
                 </select>
-                <a href="#why">Why</a>
-                <a href="#pipeline">Pipeline</a>
-                <a href="#commands">Commands</a>
-                <a href="#skills">Skills</a>
-                <a href="#examples">Examples</a>
-                <a href="#faq">FAQ</a>
+                <div class="navbar-links">
+                    <a href="#why">Why</a>
+                    <a href="#pipeline">Pipeline</a>
+                    <a href="#commands">Commands</a>
+                    <a href="#skills">Skills</a>
+                    <a href="#examples">Examples</a>
+                    <a href="#faq">FAQ</a>
+                </div>
             </div>
         </div>
     </nav>
