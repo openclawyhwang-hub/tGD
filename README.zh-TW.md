@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <a href="README.md">English</a> | <a href="README.zh-TW.md">繁體中文</a>
+  <a href="README.md">English</a> | <a href="README.zh-TW.md">繁體中文</a> | <a href="README.ja.md">日本語</a> | <a href="README.de.md">Deutsch</a>
 </p>
 
 **tGD 是一套 Skill Pack，讓 AI coding agent 像資深工程師一樣工作。**

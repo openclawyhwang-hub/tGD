@@ -7,7 +7,7 @@
   <img src="https://img.shields.io/badge/platforms-Claude%20Code%20%7C%20Codex%20%7C%20Gemini%20%7C%20OpenCode%20%7C%20Pi-8A2BE2?style=for-the-badge" alt="Platforms">
 </p>
 <p align="center">
-  <a href="README.md">English</a> | <a href="README.zh-TW.md">繁體中文</a>
+  <a href="README.md">English</a> | <a href="README.zh-TW.md">繁體中文</a> | <a href="README.ja.md">日本語</a> | <a href="README.de.md">Deutsch</a>
 </p>
 
 **tGD is a skill pack that makes AI coding agents act like senior engineers.**

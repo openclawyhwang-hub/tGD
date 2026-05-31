@@ -552,26 +552,42 @@
         }
 
 
-        /* Language toggle */
-        [data-lang="zh"] { display: none; }
-        body.lang-zh [data-lang="en"] { display: none; }
-        body.lang-zh [data-lang="zh"] { display: block; }
-        body.lang-zh span[data-lang="zh"],
-        body.lang-zh a[data-lang="zh"] { display: inline; }
+        /* Language switcher */
+        [data-lang] { display: none; }
+        [data-lang="en"] { display: block; }
+        span[data-lang="en"], a[data-lang="en"] { display: inline; }
+        body.lang-zh [data-lang="en"],
+        body.lang-ja [data-lang="en"],
+        body.lang-de [data-lang="en"] { display: none; }
         body.lang-zh span[data-lang="en"],
-        body.lang-zh a[data-lang="en"] { display: none; }
-        .lang-toggle {
-            background: transparent;
+        body.lang-ja span[data-lang="en"],
+        body.lang-de span[data-lang="en"],
+        body.lang-zh a[data-lang="en"],
+        body.lang-ja a[data-lang="en"],
+        body.lang-de a[data-lang="en"] { display: none; }
+        body.lang-zh [data-lang="zh"],
+        body.lang-ja [data-lang="ja"],
+        body.lang-de [data-lang="de"] { display: block; }
+        body.lang-zh span[data-lang="zh"],
+        body.lang-ja span[data-lang="ja"],
+        body.lang-de span[data-lang="de"],
+        body.lang-zh a[data-lang="zh"],
+        body.lang-ja a[data-lang="ja"],
+        body.lang-de a[data-lang="de"] { display: inline; }
+        .lang-select {
+            background: var(--bg);
             border: 1px solid var(--border);
             color: var(--text-muted);
-            padding: 4px 12px;
+            padding: 4px 8px;
             border-radius: 6px;
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
+            outline: none;
         }
-        .lang-toggle:hover { border-color: var(--text-muted); color: var(--text); }
+        .lang-select:hover { border-color: var(--text-muted); color: var(--text); }
+        .lang-select option { background: var(--bg); color: var(--text); }
 
         /* Divider */
         .divider {
@@ -665,7 +681,12 @@
         <div class="container">
             <a href="#" class="navbar-brand">t<span>GD</span></a>
             <div class="navbar-links">
-                <button class="lang-toggle" onclick="toggleLang()">EN/繁中</button>
+                <select class="lang-select" onchange="setLang(this.value)">
+                    <option value="en">EN</option>
+                    <option value="zh">繁中</option>
+                    <option value="ja">日本語</option>
+                    <option value="de">DE</option>
+                </select>
                 <a href="#why">Why</a>
                 <a href="#pipeline">Pipeline</a>
                 <a href="#commands">Commands</a>
@@ -686,6 +707,10 @@
                 Not "just write code" — disciplined workflow from spec to ship.</span>
                 <span data-lang="zh">讓 AI coding agent 像資深工程師一樣工作。
                 不是「幫我寫 code」——而是從規格到出貨的紀律化工作流。</span>
+                <span data-lang="ja">AI コーディングエージェントをシニアエンジニアのように働かせる。
+                「コード書いて」ではなく、仕様からデリバリーまでの規律あるワークフロー。</span>
+                <span data-lang="de">KI-Coding-Agents arbeiten wie Senior Engineers.
+                Nicht "schreib Code" – sondern disziplinierter Workflow von der Spezifikation bis zum Deployment.</span>
             </p>
             <div class="hero-cta">
                 <a href="#quick-start" class="btn btn-primary">Get Started →</a>
@@ -726,12 +751,18 @@
     <!-- Why tGD -->
     <section id="why">
         <div class="container">
-            <h2 class="fade-in"><span data-lang="en">Why tGD?</span><span data-lang="zh">為什麼需要 tGD？</span></h2>
-            <p class="section-subtitle fade-in"><span data-lang="en">The difference between "AI wrote code" and "AI shipped a feature".</span><span data-lang="zh">「AI 寫了 code」和「AI 出貨了一個功能」的差別。</span></p>
+            <h2 class="fade-in"><span data-lang="en">Why tGD?</span><span data-lang="zh">為什麼需要 tGD？</span>
+                <span data-lang="ja">なぜ tGD なのか？</span>
+                <span data-lang="de">Warum tGD?</span></h2>
+            <p class="section-subtitle fade-in"><span data-lang="en">The difference between "AI wrote code" and "AI shipped a feature".</span><span data-lang="zh">「AI 寫了 code」和「AI 出貨了一個功能」的差別。</span>
+                <span data-lang="ja">「AI がコードを書いた」と「AI が機能を出荷した」の違い。</span>
+                <span data-lang="de">Der Unterschied zwischen "KI hat Code geschrieben" und "KI hat ein Feature geliefert".</span></p>
             
             <div class="comparison fade-in">
                 <div class="comparison-card before">
-                    <h3>❌ <span data-lang="en">Without tGD</span><span data-lang="zh">沒有 tGD</span></h3>
+                    <h3>❌ <span data-lang="en">Without tGD</span><span data-lang="zh">沒有 tGD</span>
+                <span data-lang="ja">tGD なし</span>
+                <span data-lang="de">Ohne tGD</span></h3>
                     <ul>
                         <li>AI writes 500 lines, tests fail, you don't know why</li>
                         <li>"It works on my machine" → production breaks</li>
@@ -740,7 +771,9 @@
                     </ul>
                 </div>
                 <div class="comparison-card after">
-                    <h3>✅ <span data-lang="en">With tGD</span><span data-lang="zh">有了 tGD</span></h3>
+                    <h3>✅ <span data-lang="en">With tGD</span><span data-lang="zh">有了 tGD</span>
+                <span data-lang="ja">tGD あり</span>
+                <span data-lang="de">Mit tGD</span></h3>
                     <ul>
                         <li>Agent writes 50 lines, tests pass, moves on</li>
                         <li>Every feature has PRD + SPEC before code</li>
@@ -757,7 +790,9 @@
     <!-- Who is this for -->
     <section id="who">
         <div class="container">
-            <h2 class="fade-in"><span data-lang="en">Who is this for?</span><span data-lang="zh">適合誰用？</span></h2>
+            <h2 class="fade-in"><span data-lang="en">Who is this for?</span><span data-lang="zh">適合誰用？</span>
+                <span data-lang="ja">誰のため？</span>
+                <span data-lang="de">Für wen?</span></h2>
             <p class="section-subtitle fade-in">tGD works for any team size, any project stage.</p>
             
             <div class="who-grid fade-in">
@@ -786,8 +821,12 @@
     <!-- Pipeline -->
     <section id="pipeline">
         <div class="container">
-            <h2 class="fade-in"><span data-lang="en">The Pipeline</span><span data-lang="zh">工作流程</span></h2>
-            <p class="section-subtitle fade-in"><span data-lang="en">8 stages from idea to production. Each stage gates the next.</span><span data-lang="zh">8 個階段，從想法到生產環境。每個階段關卡守護下一個。</span></p>
+            <h2 class="fade-in"><span data-lang="en">The Pipeline</span><span data-lang="zh">工作流程</span>
+                <span data-lang="ja">パイプライン</span>
+                <span data-lang="de">Pipeline</span></h2>
+            <p class="section-subtitle fade-in"><span data-lang="en">8 stages from idea to production. Each stage gates the next.</span><span data-lang="zh">8 個階段，從想法到生產環境。每個階段關卡守護下一個。</span>
+                <span data-lang="ja">アイデアから本番環境まで8つのステージ。各ステージが次のゲートを守る。</span>
+                <span data-lang="de">8 Stufen von der Idee bis zur Produktion. Jede Stufe gatekept die nächste.</span></p>
             
                         <div class="pipeline fade-in">
                 <div class="pipeline-step">
@@ -853,8 +892,12 @@
 
     <section id="examples">
         <div class="container">
-            <h2 class="fade-in"><span data-lang="en">Real-world Examples</span><span data-lang="zh">實際範例</span></h2>
-            <p class="section-subtitle fade-in"><span data-lang="en">See tGD in action across different scenarios.</span><span data-lang="zh">看 tGD 在不同場景的實際運作。</span></p>
+            <h2 class="fade-in"><span data-lang="en">Real-world Examples</span><span data-lang="zh">實際範例</span>
+                <span data-lang="ja">実例</span>
+                <span data-lang="de">Praxisbeispiele</span></h2>
+            <p class="section-subtitle fade-in"><span data-lang="en">See tGD in action across different scenarios.</span><span data-lang="zh">看 tGD 在不同場景的實際運作。</span>
+                <span data-lang="ja">異なるシナリオでの tGD の実際の動作。</span>
+                <span data-lang="de">Sehen Sie tGD in Aktion über verschiedene Szenarien.</span></p>
 
             <div class="examples-grid fade-in">
                 <div class="example-card">
@@ -903,8 +946,12 @@
     <!-- Commands -->
     <section id="commands">
         <div class="container">
-            <h2 class="fade-in"><span data-lang="en">Commands</span><span data-lang="zh">指令</span></h2>
-            <p class="section-subtitle fade-in"><span data-lang="en">8 slash commands that map to the development lifecycle.</span><span data-lang="zh">8 個 slash command 對應開發生命週期。</span></p>
+            <h2 class="fade-in"><span data-lang="en">Commands</span><span data-lang="zh">指令</span>
+                <span data-lang="ja">コマンド</span>
+                <span data-lang="de">Befehle</span></h2>
+            <p class="section-subtitle fade-in"><span data-lang="en">8 slash commands that map to the development lifecycle.</span><span data-lang="zh">8 個 slash command 對應開發生命週期。</span>
+                <span data-lang="ja">開発ライフサイクルに対応する8つのスラッシュコマンド。</span>
+                <span data-lang="de">8 Slash Commands für den Entwicklungs-Lebenszyklus.</span></p>
             
                         <div class="fade-in" style="overflow-x: auto;">
                 <table class="commands-table">
@@ -984,7 +1031,9 @@
 
     <section id="skills">
         <div class="container">
-            <h2 class="fade-in"><span data-lang="en">All 25 Skills</span><span data-lang="zh">全部 25 個 Skills</span></h2>
+            <h2 class="fade-in"><span data-lang="en">All 25 Skills</span><span data-lang="zh">全部 25 個 Skills</span>
+                <span data-lang="ja">全25スキル</span>
+                <span data-lang="de">Alle 25 Skills</span></h2>
             <p class="section-subtitle fade-in">Organized by lifecycle phase. Loaded on-demand — only what’s needed.</p>
 
             <div class="skills-grid fade-in">
@@ -1025,8 +1074,12 @@
     <!-- Testing -->
     <section id="testing">
         <div class="container">
-            <h2 class="fade-in"><span data-lang="en">Testing Strategy</span><span data-lang="zh">測試策略</span></h2>
-            <p class="section-subtitle fade-in"><span data-lang="en">Three stages, three roles. No lazy agent behavior.</span><span data-lang="zh">三個階段、三個角色。沒有懶 agent 行為。</span></p>
+            <h2 class="fade-in"><span data-lang="en">Testing Strategy</span><span data-lang="zh">測試策略</span>
+                <span data-lang="ja">テスト戦略</span>
+                <span data-lang="de">Test-Strategie</span></h2>
+            <p class="section-subtitle fade-in"><span data-lang="en">Three stages, three roles. No lazy agent behavior.</span><span data-lang="zh">三個階段、三個角色。沒有懶 agent 行為。</span>
+                <span data-lang="ja">3つの段階、3つの役割。怠けエージェントの行動なし。</span>
+                <span data-lang="de">Drei Stufen, drei Rollen. Kein faules Agent-Verhalten.</span></p>
             
             <div class="test-roles fade-in">
                 <div class="test-role">
@@ -1055,8 +1108,12 @@
 
     <section id="personas">
         <div class="container">
-            <h2 class="fade-in"><span data-lang="en">Agent Personas</span><span data-lang="zh">Agent 角色</span></h2>
-            <p class="section-subtitle fade-in"><span data-lang="en">Three specialized reviewers run in parallel during Ship. Each has a distinct lens.</span><span data-lang="zh">三個專門審查員在 Ship 階段並行執行。各有不同視角。</span></p>
+            <h2 class="fade-in"><span data-lang="en">Agent Personas</span><span data-lang="zh">Agent 角色</span>
+                <span data-lang="ja">エージェントペルソナ</span>
+                <span data-lang="de">Agent-Personas</span></h2>
+            <p class="section-subtitle fade-in"><span data-lang="en">Three specialized reviewers run in parallel during Ship. Each has a distinct lens.</span><span data-lang="zh">三個專門審查員在 Ship 階段並行執行。各有不同視角。</span>
+                <span data-lang="ja">Ship段階で3人の専門レビュアーが並列実行。それぞれ異なる視点。</span>
+                <span data-lang="de">Drei spezialisierte Reviewer laufen parallel in der Ship-Phase. Jeder mit anderer Perspektive.</span></p>
 
             <div class="personas-grid fade-in">
                 <div class="persona-card">
@@ -1087,8 +1144,12 @@
 
     <section id="how-skills">
         <div class="container">
-            <h2 class="fade-in"><span data-lang="en">How Skills Work</span><span data-lang="zh">Skills 如何運作</span></h2>
-            <p class="section-subtitle fade-in"><span data-lang="en">Each skill is a 4-part contract. Progressive disclosure — agents load details only when needed.</span><span data-lang="zh">每個 skill 都是四部分合約。漸進式揭露——agent 只在需要時載入細節。</span></p>
+            <h2 class="fade-in"><span data-lang="en">How Skills Work</span><span data-lang="zh">Skills 如何運作</span>
+                <span data-lang="ja">スキルの仕組み</span>
+                <span data-lang="de">So funktionieren Skills</span></h2>
+            <p class="section-subtitle fade-in"><span data-lang="en">Each skill is a 4-part contract. Progressive disclosure — agents load details only when needed.</span><span data-lang="zh">每個 skill 都是四部分合約。漸進式揭露——agent 只在需要時載入細節。</span>
+                <span data-lang="ja">各スキルは4部構成の契約。プログレッシブディスクロージャ——エージェントは必要な時だけ詳細をロード。</span>
+                <span data-lang="de">Jeder Skill ist ein 4-Teile-Vertrag. Progressive Disclosure – Agent lädt Details nur bei Bedarf.</span></p>
 
             <div class="skills-anatomy fade-in">
                 <div class="anatomy-step">
@@ -1119,8 +1180,12 @@
 
     <section id="structure">
         <div class="container">
-            <h2 class="fade-in"><span data-lang="en">Project Structure</span><span data-lang="zh">專案結構</span></h2>
-            <p class="section-subtitle fade-in"><span data-lang="en">Clean separation: skills, agents, commands, and references.</span><span data-lang="zh">清晰分離：skills、agents、commands 和 references。</span></p>
+            <h2 class="fade-in"><span data-lang="en">Project Structure</span><span data-lang="zh">專案結構</span>
+                <span data-lang="ja">プロジェクト構造</span>
+                <span data-lang="de">Projektstruktur</span></h2>
+            <p class="section-subtitle fade-in"><span data-lang="en">Clean separation: skills, agents, commands, and references.</span><span data-lang="zh">清晰分離：skills、agents、commands 和 references。</span>
+                <span data-lang="ja">明確な分離：スキル、エージェント、コマンド、リファレンス。</span>
+                <span data-lang="de">Sauber getrennt: Skills, Agents, Commands und References.</span></p>
 
             <div class="fade-in">
                 <div class="code-block tree-block">
@@ -1153,8 +1218,12 @@
     <!-- Quick Start -->
     <section id="quick-start">
         <div class="container">
-            <h2 class="fade-in"><span data-lang="en">Quick Start</span><span data-lang="zh">快速開始</span></h2>
-            <p class="section-subtitle fade-in"><span data-lang="en">Get up and running in 30 seconds.</span><span data-lang="zh">30 秒內開始使用。</span></p>
+            <h2 class="fade-in"><span data-lang="en">Quick Start</span><span data-lang="zh">快速開始</span>
+                <span data-lang="ja">クイックスタート</span>
+                <span data-lang="de">Schnellstart</span></h2>
+            <p class="section-subtitle fade-in"><span data-lang="en">Get up and running in 30 seconds.</span><span data-lang="zh">30 秒內開始使用。</span>
+                <span data-lang="ja">30秒でセットアップ完了。</span>
+                <span data-lang="de">In 30 Sekunden startklar.</span></p>
             
             <div class="fade-in">
                 <div class="code-block">
@@ -1184,8 +1253,12 @@
     <!-- FAQ -->
     <section id="faq">
         <div class="container">
-            <h2 class="fade-in"><span data-lang="en">FAQ</span><span data-lang="zh">常見問題</span></h2>
-            <p class="section-subtitle fade-in"><span data-lang="en">Common questions about tGD.</span><span data-lang="zh">關於 tGD 的常見問題。</span></p>
+            <h2 class="fade-in"><span data-lang="en">FAQ</span><span data-lang="zh">常見問題</span>
+                <span data-lang="ja">よくある質問</span>
+                <span data-lang="de">FAQ</span></h2>
+            <p class="section-subtitle fade-in"><span data-lang="en">Common questions about tGD.</span><span data-lang="zh">關於 tGD 的常見問題。</span>
+                <span data-lang="ja">tGDに関するよくある質問。</span>
+                <span data-lang="de">Häufig gestellte Fragen zu tGD.</span></p>
             
             <div class="fade-in" style="max-width: 800px;">
                 <div class="faq-item">
@@ -1233,8 +1306,12 @@
 
     <section id="whats-next">
         <div class="container">
-            <h2 class="fade-in"><span data-lang="en">What’s Next</span><span data-lang="zh">下一步</span></h2>
-            <p class="section-subtitle fade-in"><span data-lang="en">After your first feature is shipped, keep going.</span><span data-lang="zh">第一個功能出貨之後，繼續前進。</span></p>
+            <h2 class="fade-in"><span data-lang="en">What’s Next</span><span data-lang="zh">下一步</span>
+                <span data-lang="ja">次のステップ</span>
+                <span data-lang="de">Nächste Schritte</span></h2>
+            <p class="section-subtitle fade-in"><span data-lang="en">After your first feature is shipped, keep going.</span><span data-lang="zh">第一個功能出貨之後，繼續前進。</span>
+                <span data-lang="ja">最初の機能を出荷したら、さらに進もう。</span>
+                <span data-lang="de">Nach dem ersten Feature ist vor dem nächsten.</span></p>
 
             <div class="next-steps fade-in">
                 <div class="next-step">
@@ -1305,15 +1382,22 @@
 
         
         
-        // Language toggle
-        function toggleLang() {
-            document.body.classList.toggle('lang-zh');
-            localStorage.setItem('tgd-lang', document.body.classList.contains('lang-zh') ? 'zh' : 'en');
+        // Language switcher
+        function setLang(lang) {
+            document.body.classList.remove('lang-zh', 'lang-ja', 'lang-de');
+            if (lang !== 'en') document.body.classList.add('lang-' + lang);
+            localStorage.setItem('tgd-lang', lang);
+            document.querySelector('.lang-select').value = lang;
         }
         // Restore preference
-        if (localStorage.getItem('tgd-lang') === 'zh') {
-            document.body.classList.add('lang-zh');
+        const savedLang = localStorage.getItem('tgd-lang');
+        if (savedLang && savedLang !== 'en') {
+            document.body.classList.add('lang-' + savedLang);
         }
+        document.addEventListener('DOMContentLoaded', () => {
+            const sel = document.querySelector('.lang-select');
+            if (sel) sel.value = localStorage.getItem('tgd-lang') || 'en';
+        });
 
         // Sticky navbar
         let lastScroll = 0;
