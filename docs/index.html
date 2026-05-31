@@ -577,6 +577,135 @@
             transform: translateY(0);
         }
 
+        /* Hero title shimmer */
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        .hero h1 {
+            background: linear-gradient(
+                90deg,
+                var(--text) 0%,
+                var(--text) 40%,
+                var(--accent) 50%,
+                var(--text) 60%,
+                var(--text) 100%
+            );
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 6s linear infinite;
+        }
+
+        /* CTA button pulse glow */
+        @keyframes btn-glow {
+            0%, 100% { box-shadow: 0 0 8px rgba(59, 130, 246, 0.3); }
+            50% { box-shadow: 0 0 24px rgba(59, 130, 246, 0.5), 0 0 48px rgba(59, 130, 246, 0.15); }
+        }
+        .btn-primary {
+            animation: btn-glow 3s ease-in-out infinite;
+        }
+        .btn-primary:hover {
+            animation: none;
+            box-shadow: 0 0 32px rgba(59, 130, 246, 0.5), 0 4px 16px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Pipeline sequential dot reveal */
+        @keyframes dot-reveal {
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .pipeline-track.animate .pipeline-dot {
+            opacity: 0;
+            transform: scale(0);
+            animation: dot-reveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        .pipeline-track.animate .pipeline-step:nth-child(1) .pipeline-dot { animation-delay: 0.0s; }
+        .pipeline-track.animate .pipeline-step:nth-child(2) .pipeline-dot { animation-delay: 0.1s; }
+        .pipeline-track.animate .pipeline-step:nth-child(3) .pipeline-dot { animation-delay: 0.2s; }
+        .pipeline-track.animate .pipeline-step:nth-child(4) .pipeline-dot { animation-delay: 0.3s; }
+        .pipeline-track.animate .pipeline-step:nth-child(5) .pipeline-dot { animation-delay: 0.4s; }
+        .pipeline-track.animate .pipeline-step:nth-child(6) .pipeline-dot { animation-delay: 0.5s; }
+        .pipeline-track.animate .pipeline-step:nth-child(7) .pipeline-dot { animation-delay: 0.6s; }
+        .pipeline-track.animate .pipeline-step:nth-child(8) .pipeline-dot { animation-delay: 0.7s; }
+
+        /* Pipeline info stagger */
+        .pipeline-track.animate .pipeline-step-info {
+            opacity: 0;
+            animation: fade-up 0.4s ease-out forwards;
+        }
+        .pipeline-track.animate .pipeline-step:nth-child(1) .pipeline-step-info { animation-delay: 0.15s; }
+        .pipeline-track.animate .pipeline-step:nth-child(2) .pipeline-step-info { animation-delay: 0.25s; }
+        .pipeline-track.animate .pipeline-step:nth-child(3) .pipeline-step-info { animation-delay: 0.35s; }
+        .pipeline-track.animate .pipeline-step:nth-child(4) .pipeline-step-info { animation-delay: 0.45s; }
+        .pipeline-track.animate .pipeline-step:nth-child(5) .pipeline-step-info { animation-delay: 0.55s; }
+        .pipeline-track.animate .pipeline-step:nth-child(6) .pipeline-step-info { animation-delay: 0.65s; }
+        .pipeline-track.animate .pipeline-step:nth-child(7) .pipeline-step-info { animation-delay: 0.75s; }
+        .pipeline-track.animate .pipeline-step:nth-child(8) .pipeline-step-info { animation-delay: 0.85s; }
+
+        @keyframes fade-up {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Pipeline line draw */
+        @keyframes line-draw {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
+        .pipeline-track.animate::before {
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: line-draw 0.8s ease-out 0.1s forwards;
+        }
+
+        /* Pipeline step number fade */
+        .pipeline-track.animate .pipeline-step-num {
+            opacity: 0;
+            animation: fade-up 0.3s ease-out forwards;
+        }
+        .pipeline-track.animate .pipeline-step:nth-child(1) .pipeline-step-num { animation-delay: 0.05s; }
+        .pipeline-track.animate .pipeline-step:nth-child(2) .pipeline-step-num { animation-delay: 0.15s; }
+        .pipeline-track.animate .pipeline-step:nth-child(3) .pipeline-step-num { animation-delay: 0.25s; }
+        .pipeline-track.animate .pipeline-step:nth-child(4) .pipeline-step-num { animation-delay: 0.35s; }
+        .pipeline-track.animate .pipeline-step:nth-child(5) .pipeline-step-num { animation-delay: 0.45s; }
+        .pipeline-track.animate .pipeline-step:nth-child(6) .pipeline-step-num { animation-delay: 0.55s; }
+        .pipeline-track.animate .pipeline-step:nth-child(7) .pipeline-step-num { animation-delay: 0.65s; }
+        .pipeline-track.animate .pipeline-step:nth-child(8) .pipeline-step-num { animation-delay: 0.75s; }
+
+        /* Card hover lift */
+        .example-card, .skill-card, .who-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .example-card:hover, .skill-card:hover, .who-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Stagger grid children */
+        .fade-stagger > * {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: all 0.5s ease-out;
+        }
+        .fade-stagger.visible > *:nth-child(1) { transition-delay: 0.0s; opacity: 1; transform: none; }
+        .fade-stagger.visible > *:nth-child(2) { transition-delay: 0.08s; opacity: 1; transform: none; }
+        .fade-stagger.visible > *:nth-child(3) { transition-delay: 0.16s; opacity: 1; transform: none; }
+        .fade-stagger.visible > *:nth-child(4) { transition-delay: 0.24s; opacity: 1; transform: none; }
+        .fade-stagger.visible > *:nth-child(5) { transition-delay: 0.32s; opacity: 1; transform: none; }
+        .fade-stagger.visible > *:nth-child(6) { transition-delay: 0.40s; opacity: 1; transform: none; }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
         /* Who Section */
         .who-grid {
             display: grid;
@@ -852,7 +981,7 @@
                 <span data-lang="de">Für wen?</span></h2>
             <p class="section-subtitle fade-in">tGD works for any team size, any project stage.</p>
             
-            <div class="who-grid fade-in">
+            <div class="who-grid fade-stagger">
                 <div class="who-card">
                     <h3>🧑‍💻 Solo Developer</h3>
                     <p>Ship faster with AI-assisted workflow. Let the agent handle specs, tests, and reviews while you focus on building.</p>
@@ -975,7 +1104,7 @@
                 <span data-lang="ja">異なるシナリオでの tGD の実際の動作。</span>
                 <span data-lang="de">Sehen Sie tGD in Aktion über verschiedene Szenarien.</span></p>
 
-            <div class="examples-grid fade-in">
+            <div class="examples-grid fade-stagger">
                 <div class="example-card">
                     <h3>🔐 Add User Authentication</h3>
                     <div class="example-flow">
@@ -1112,7 +1241,7 @@
                 <span data-lang="de">Alle 25 Skills</span></h2>
             <p class="section-subtitle fade-in">Organized by lifecycle phase. Loaded on-demand — only what’s needed.</p>
 
-            <div class="skills-grid fade-in">
+            <div class="skills-grid fade-stagger">
                 <div class="skill-group">
                     <h3>🧭 Meta</h3>
                     <div class="skill-list"><span class="skill-tag">using-agent-skills</span></div>
@@ -1461,6 +1590,32 @@
 
         document.querySelectorAll('.fade-in').forEach(el => {
             observer.observe(el);
+        });
+
+        // Pipeline animation on scroll
+        const pipelineObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                    pipelineObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+        document.querySelectorAll('.pipeline-track').forEach(el => {
+            pipelineObserver.observe(el);
+        });
+
+        // Stagger grid animation
+        const staggerObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    staggerObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-stagger').forEach(el => {
+            staggerObserver.observe(el);
         });
 
         
