@@ -268,7 +268,7 @@ Skills use **progressive disclosure** — the agent only loads details when need
 
 | Metric | Value |
 |--------|-------|
-| **Skills loaded** | 25 (on-demand, not all at once) |
+| **Skills loaded** | 26 (on-demand, not all at once) |
 | **Context usage** | ~5% per skill (progressive disclosure) |
 | **Setup time** | < 30 seconds |
 | **First feature** | ~15 minutes (from `/tgd-define` to `/tgd-ship`) |
@@ -301,7 +301,7 @@ A: Yes! Edit the skill files in `skills/` to match your team's workflow.
 
 ```
 tGD/
-├── skills/                            # 25 skills
+├── skills/                            # 26 skills
 ├── agents/                            # 3 specialist personas
 ├── references/                        # Checklists (Security, Testing, etc.)
 ├── .claude/commands/                  # Claude Code commands
