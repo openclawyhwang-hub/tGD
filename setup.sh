@@ -131,8 +131,27 @@ echo ""
 echo "===================================="
 echo "✅ Setup Complete!"
 echo ""
+
+# Inject agent instructions into user's project
+TGD_DIR="$(cd "$(dirname "$0")" && pwd)"
+CURRENT_DIR="$(pwd)"
+
+if [ "$CURRENT_DIR" != "$TGD_DIR" ] && [ -d ".git" ]; then
+    echo "📂 Injecting tGD rules into project: $CURRENT_DIR"
+    # Copy instruction files for each platform
+    cp "$TGD_DIR/AGENTS.md" "$CURRENT_DIR/AGENTS.md" 2>/dev/null && echo "   ✅ AGENTS.md (Codex/OpenCode)"
+    mkdir -p "$CURRENT_DIR/.claude"
+    cp "$TGD_DIR/.claude/CLAUDE.md" "$CURRENT_DIR/.claude/CLAUDE.md" 2>/dev/null && echo "   ✅ .claude/CLAUDE.md (Claude Code)"
+    mkdir -p "$CURRENT_DIR/.gemini"
+    cp "$TGD_DIR/.gemini/GEMINI.md" "$CURRENT_DIR/.gemini/GEMINI.md" 2>/dev/null && echo "   ✅ .gemini/GEMINI.md (Gemini CLI)"
+    mkdir -p "$CURRENT_DIR/.pi"
+    cp "$TGD_DIR/.pi/instructions.md" "$CURRENT_DIR/.pi/instructions.md" 2>/dev/null && echo "   ✅ .pi/instructions.md (Pi)"
+    echo ""
+fi
+
 echo "To start:"
 echo "1. cd into your project"
-echo "2. Run 'opencode', 'claude', or 'gemini'"
-echo "3. Type '/tgd-map' to initialize."
+echo "2. Run 'bash /path/to/tGD/setup.sh' (from your project dir)"
+echo "3. Start your agent: 'claude', 'codex', 'opencode', 'gemini', or 'pi'"
+echo "4. Type '/tgd-map' to initialize."
 echo ""
