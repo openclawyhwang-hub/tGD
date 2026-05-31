@@ -11,9 +11,11 @@
   <a href="README.md">English</a> | <a href="README.zh-TW.md">繁體中文</a> | <a href="README.ja.md">日本語</a> | <a href="README.de.md">Deutsch</a>
 </p>
 
-**tGD 是一套 Skill Pack，讓 AI coding agent 像資深工程師一樣工作。**
+**tGD — The Agentic PDLC Harness。**
 
-不是「幫我寫 code」，而是強制執行紀律化的工作流：**Map → Define → Plan → Build → Verify → Review → Simplify → Ship**。
+你的 AI agent 會寫 code。tGD 讓它穩定出貨。
+
+8 階段 pipeline 約束、引導、驗證 agent 的每個決策——從規格到上線，沒有捷徑。
 
 支援 Claude Code、Codex CLI、Gemini CLI、OpenCode、Pi Coding Agent。
 
@@ -21,15 +23,17 @@
 
 ## 🤔 為什麼需要 tGD？
 
-**❌ 沒有 tGD：**
-- AI agent 寫了 500 行程式碼，測試失敗，你不知道為什麼
-- 「我機器上可以跑啊」→ 生產環境爆炸
-- 沒規格、沒計畫，全靠感覺
+**問題不是 agent 不會寫 code，而是沒有人管得住它。**
+
+**❌ 沒有 harness：**
+- Agent 說「應該可以了」——測試根本沒跑
+- 先寫 500 行才讀你的 codebase
+- 跳過規格，出 broken PR，然後消失
 
 **✅ 有了 tGD：**
-- Agent 寫 50 行，測試通過，繼續下一個任務
-- 每個功能都有 PRD + SPEC + DESIGN 才開始寫 code
-- 8 階段 pipeline 在 bug 進入生產環境前就攔住
+- Agent 說「34/34 pass」——附上輸出
+- 先讀 codebase，寫 50 行然後通過
+- 規格 → 規劃 → 程式碼 → 驗證——沒有階段可以跳過
 
 ---
 
@@ -326,7 +330,7 @@ tGD/
 |---|---|
 | [interview-me](skills/interview-me/SKILL.md) | 透過 Q&A 提取使用者意圖 |
 | [idea-refine](skills/idea-refine/SKILL.md) | 發散/收斂思考 |
-| [spec-driven-development](skills/spec-driven-development/SKILL.md) | 寫 code 前先寫 PRD + SPEC |
+| [spec-driven-development](skills/spec-driven-development/SKILL.md) | 寫 code 前先寫 PRD + SPEC + DESIGN.md（UI: claude-design 3 變體 + 用戶確認關卡） |
 
 ### 📐 Plan
 | Skill | 用途 |

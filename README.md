@@ -10,9 +10,11 @@
   <a href="README.md">English</a> | <a href="README.zh-TW.md">繁體中文</a> | <a href="README.ja.md">日本語</a> | <a href="README.de.md">Deutsch</a>
 </p>
 
-**tGD is a skill pack that makes AI coding agents act like senior engineers.**
+**tGD — The Agentic PDLC Harness.**
 
-Instead of "just write code", tGD enforces a disciplined workflow: **Map → Define → Plan → Build → Verify → Review → Simplify → Ship**.
+Your AI agents can code. tGD makes them ship.
+
+8-stage pipeline that constrains, guides, and verifies every agent decision — from spec to production, no shortcuts.
 
 Works with Claude Code, Codex CLI, Gemini CLI, OpenCode, and Pi Coding Agent.
 
@@ -20,15 +22,17 @@ Works with Claude Code, Codex CLI, Gemini CLI, OpenCode, and Pi Coding Agent.
 
 ## 🤔 Why tGD?
 
-**❌ Without tGD:**
-- AI agent writes 500 lines of code, tests fail, you don't know why
-- "It works on my machine" → production breaks
-- No specs, no plan, just vibes
+**The problem isn't that agents can't code. It's that nobody holds them accountable.**
+
+**❌ Without a harness:**
+- Agent says "should work" — tests never ran
+- Writes 500 lines before reading your codebase
+- Skips spec, ships broken PR, disappears
 
 **✅ With tGD:**
-- Agent writes 50 lines, tests pass, moves to next task
-- Every feature has PRD + SPEC + DESIGN before code ships
-- 8-stage pipeline catches bugs before they reach production
+- Agent says "34/34 pass" — shows the output
+- Reads codebase first, writes 50 lines that pass
+- Spec → Plan → Code → Verify — no stage skipped
 
 ---
 
@@ -324,7 +328,7 @@ The commands above are entry points. The pack includes 25 skills total — 24 li
 |---|---|
 | [interview-me](skills/interview-me/SKILL.md) | Extract user intent via Q&A |
 | [idea-refine](skills/idea-refine/SKILL.md) | Divergent/convergent thinking |
-| [spec-driven-development](skills/spec-driven-development/SKILL.md) | Write PRD + SPEC before code |
+| [spec-driven-development](skills/spec-driven-development/SKILL.md) | Write PRD + SPEC + DESIGN.md before code (UI: 3 variants via claude-design, user confirmation gate) |
 
 ### 📐 Plan
 | Skill | Purpose |

@@ -11,9 +11,11 @@
   <a href="README.md">English</a> | <a href="README.zh-TW.md">繁體中文</a> | <a href="README.ja.md">日本語</a> | <a href="README.de.md">Deutsch</a>
 </p>
 
-**tGD は、AI コーディングエージェントをシニアエンジニアのように動作させるスキルパックです。**
+**tGD — The Agentic PDLC Harness。**
 
-「コードを書いて」ではなく、規律あるワークフローを強制します：**Map → Define → Plan → Build → Verify → Review → Simplify → Ship**。
+AIエージェントはコードを書ける。tGDはそれを確実にデリリーする。
+
+8段階のパイプラインが意思決定を制約・指導・検証——仕様から本番まで、近道なし。
 
 Claude Code、Codex CLI、Gemini CLI、OpenCode、Pi Coding Agent に対応。
 
