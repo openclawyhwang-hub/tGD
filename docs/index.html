@@ -239,69 +239,118 @@
             font-weight: bold;
         }
 
-        /* Pipeline */
+        /* Pipeline — Connected Timeline */
+        .pipeline-track {
+            position: relative;
+            padding: 40px 0 20px;
+        }
+        .pipeline-track::before {
+            content: '';
+            position: absolute;
+            top: 70px;
+            left: 80px;
+            right: 80px;
+            height: 2px;
+            background: linear-gradient(90deg,
+                rgba(59,130,246,0.0) 0%,
+                rgba(59,130,246,0.2) 8%,
+                rgba(59,130,246,0.2) 92%,
+                rgba(59,130,246,0.0) 100%
+            );
+            z-index: 0;
+        }
         .pipeline {
             display: flex;
-            gap: 8px;
-            padding: 20px 0;
-            justify-content: center;
-            flex-wrap: wrap;
+            justify-content: space-between;
             align-items: flex-start;
+            position: relative;
+            z-index: 1;
+            gap: 4px;
         }
         @media (max-width: 768px) {
+            .pipeline-track { padding: 20px 0; }
+            .pipeline-track::before { display: none; }
             .pipeline {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                gap: 16px;
-                padding: 16px;
+                gap: 12px;
+                padding: 0 16px;
             }
-            .pipeline-arrow { display: none; }
-            .pipeline-step { min-width: auto; }
         }
 
         .pipeline-step {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
-            min-width: 100px;
-            max-width: 140px;
+            gap: 10px;
+            flex: 1;
+            max-width: 130px;
         }
 
-        .pipeline-icon {
-            background: rgba(59, 130, 246, 0.08);
-            border: 1px solid rgba(59, 130, 246, 0.15);
-            color: var(--accent);
-            width: 64px;
-            height: 64px;
-            border-radius: 16px;
+        .pipeline-step-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: rgba(59, 130, 246, 0.4);
+            letter-spacing: 0.5px;
+        }
+
+        .pipeline-dot {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            background: var(--bg);
+            border: 2px solid rgba(59, 130, 246, 0.25);
+            color: var(--accent);
             position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        .pipeline-step:hover .pipeline-dot {
+            border-color: var(--accent);
+            background: rgba(59, 130, 246, 0.08);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+            transform: scale(1.1);
+        }
+        .pipeline-dot svg {
+            width: 20px;
+            height: 20px;
         }
 
-
-        .pipeline-arrow {
-            display: flex;
-            align-items: center;
-            color: #404040;
-            padding-top: 24px;
+        .pipeline-step-info {
+            text-align: center;
+            max-width: 120px;
         }
 
         .pipeline-label {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            text-align: center;
+            color: var(--text);
+            letter-spacing: 0.5px;
         }
 
         .pipeline-cmd {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-muted);
-            text-align: center;
+            margin-top: 4px;
         }
+
+        .pipeline-output {
+            text-align: center;
+            margin-top: 4px;
+        }
+        .pipeline-output code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--green);
+            background: rgba(34, 197, 94, 0.08);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+        .pipeline-desc { display: none; }
 
         /* Commands Table */
         .commands-table {
@@ -628,19 +677,6 @@
 
         /* Pipeline descriptions */
 
-        .pipeline-output {
-            text-align: center;
-            margin-top: 4px;
-        }
-        .pipeline-output code {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            color: var(--green);
-            background: rgba(34, 197, 94, 0.08);
-            padding: 1px 6px;
-            border-radius: 4px;
-        }
-        .pipeline-desc { text-align: center; color: var(--text-muted); font-size: 11px; max-width: 130px; margin-top: 2px; line-height: 1.3; }
 
         /* Skills grid */
         .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-top: 32px; }
@@ -846,70 +882,81 @@
                 <span data-lang="ja">アイデアから本番環境まで8つのステージ。各ステージが次のステージをゲートキープする。</span>
                 <span data-lang="de">8 Stufen von der Idee bis zur Produktion. Jede Stufe kontrolliert den Übergang zur nächsten.</span></p>
             
-                        <div class="pipeline fade-in">
+            <div class="pipeline-track fade-in">
+            <div class="pipeline">
                 <div class="pipeline-step">
-                    <div class="pipeline-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div>
-                    <div class="pipeline-label">MAP</div>
-                    <div class="pipeline-cmd">/tgd-map</div>
-                    <div class="pipeline-desc">Scan codebase. Know before you code.</div>
-                    <div class="pipeline-output"><code>CONTEXT.md</code></div>
+                    <div class="pipeline-step-num">STEP 01</div>
+                    <div class="pipeline-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div>
+                    <div class="pipeline-step-info">
+                        <div class="pipeline-label">MAP</div>
+                        <div class="pipeline-cmd">/tgd-map</div>
+                        <div class="pipeline-output"><code>CONTEXT.md</code></div>
+                    </div>
                 </div>
-                <div class="pipeline-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
                 <div class="pipeline-step">
-                    <div class="pipeline-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
-                    <div class="pipeline-label">DEFINE</div>
-                    <div class="pipeline-cmd">/tgd-define</div>
-                    <div class="pipeline-desc">Interview. Spec before code.</div>
-                    <div class="pipeline-output"><code>PRD.md</code> <code>SPEC.md</code></div>
+                    <div class="pipeline-step-num">STEP 02</div>
+                    <div class="pipeline-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                    <div class="pipeline-step-info">
+                        <div class="pipeline-label">DEFINE</div>
+                        <div class="pipeline-cmd">/tgd-define</div>
+                        <div class="pipeline-output"><code>PRD.md</code> <code>SPEC.md</code></div>
+                    </div>
                 </div>
-                <div class="pipeline-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
                 <div class="pipeline-step">
-                    <div class="pipeline-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
-                    <div class="pipeline-label">PLAN</div>
-                    <div class="pipeline-cmd">/tgd-plan</div>
-                    <div class="pipeline-desc">Atomic tasks. No ambiguity.</div>
-                    <div class="pipeline-output"><code>TASKS.md</code></div>
+                    <div class="pipeline-step-num">STEP 03</div>
+                    <div class="pipeline-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+                    <div class="pipeline-step-info">
+                        <div class="pipeline-label">PLAN</div>
+                        <div class="pipeline-cmd">/tgd-plan</div>
+                        <div class="pipeline-output"><code>TASKS.md</code></div>
+                    </div>
                 </div>
-                <div class="pipeline-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
                 <div class="pipeline-step">
-                    <div class="pipeline-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
-                    <div class="pipeline-label">BUILD</div>
-                    <div class="pipeline-cmd">/tgd-develop</div>
-                    <div class="pipeline-desc">One slice at a time. TDD.</div>
-                    <div class="pipeline-output"><code>Code + Tests</code></div>
+                    <div class="pipeline-step-num">STEP 04</div>
+                    <div class="pipeline-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+                    <div class="pipeline-step-info">
+                        <div class="pipeline-label">BUILD</div>
+                        <div class="pipeline-cmd">/tgd-develop</div>
+                        <div class="pipeline-output"><code>Code</code> + <code>Tests</code></div>
+                    </div>
                 </div>
-                <div class="pipeline-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
                 <div class="pipeline-step">
-                    <div class="pipeline-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-                    <div class="pipeline-label">VERIFY</div>
-                    <div class="pipeline-cmd">/tgd-verify</div>
-                    <div class="pipeline-desc">All tests green. Debug failures.</div>
-                    <div class="pipeline-output"><code>All green ✅</code></div>
+                    <div class="pipeline-step-num">STEP 05</div>
+                    <div class="pipeline-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                    <div class="pipeline-step-info">
+                        <div class="pipeline-label">VERIFY</div>
+                        <div class="pipeline-cmd">/tgd-verify</div>
+                        <div class="pipeline-output"><code>All green ✓</code></div>
+                    </div>
                 </div>
-                <div class="pipeline-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
                 <div class="pipeline-step">
-                    <div class="pipeline-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
-                    <div class="pipeline-label">REVIEW</div>
-                    <div class="pipeline-cmd">/tgd-review</div>
-                    <div class="pipeline-desc">5-axis review. Simplify.</div>
-                    <div class="pipeline-output"><code>Review report</code></div>
+                    <div class="pipeline-step-num">STEP 06</div>
+                    <div class="pipeline-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+                    <div class="pipeline-step-info">
+                        <div class="pipeline-label">REVIEW</div>
+                        <div class="pipeline-cmd">/tgd-review</div>
+                        <div class="pipeline-output"><code>Review report</code></div>
+                    </div>
                 </div>
-                <div class="pipeline-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
                 <div class="pipeline-step">
-                    <div class="pipeline-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/></svg></div>
-                    <div class="pipeline-label">SIMPLIFY</div>
-                    <div class="pipeline-cmd">/tgd-simplify</div>
-                    <div class="pipeline-desc">Clarity over cleverness.</div>
-                    <div class="pipeline-output"><code>Clean code</code></div>
+                    <div class="pipeline-step-num">STEP 07</div>
+                    <div class="pipeline-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/></svg></div>
+                    <div class="pipeline-step-info">
+                        <div class="pipeline-label">SIMPLIFY</div>
+                        <div class="pipeline-cmd">/tgd-simplify</div>
+                        <div class="pipeline-output"><code>Clean code</code></div>
+                    </div>
                 </div>
-                <div class="pipeline-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
                 <div class="pipeline-step">
-                    <div class="pipeline-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></div>
-                    <div class="pipeline-label">SHIP</div>
-                    <div class="pipeline-cmd">/tgd-ship</div>
-                    <div class="pipeline-desc">Deploy with confidence.</div>
-                    <div class="pipeline-output"><code>PR + Deploy</code></div>
+                    <div class="pipeline-step-num">STEP 08</div>
+                    <div class="pipeline-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></div>
+                    <div class="pipeline-step-info">
+                        <div class="pipeline-label">SHIP</div>
+                        <div class="pipeline-cmd">/tgd-ship</div>
+                        <div class="pipeline-output"><code>PR</code> + <code>Deploy</code></div>
+                    </div>
                 </div>
+            </div>
             </div>
         </div>
     </section>
