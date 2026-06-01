@@ -1,18 +1,134 @@
 #!/bin/bash
 # tGD (Agentic PDLC Workflow) One-Click Installer
-# Usage: bash setup.sh [--upgrade]
+# Usage: bash setup.sh [--upgrade|--uninstall]
 #
-# --upgrade: 先掃描並清除舊版殘留的 stale symlink / hooks，再重新部署。
-#            適合 tGD-clone git pull 後執行，確保乾淨無殘留。
+# --upgrade:  先掃描並清除舊版殘留的 stale symlink / hooks，再重新部署。
+#             適合 tGD-clone git pull 後執行，確保乾淨無殘留。
+# --uninstall: 徹底移除所有 tGD 部署（symlinks、hooks、版本標記）。
+#             適合不想再用 tGD 或要乾淨重裝的使用者。
 
 set -e
 
 MODE="install"
 if [[ "$1" == "--upgrade" || "$1" == "-u" ]]; then
     MODE="upgrade"
+elif [[ "$1" == "--uninstall" || "$1" == "--remove" ]]; then
+    MODE="uninstall"
 fi
 
 TGD_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+# ─── Uninstall mode ──────────────────────────────────────────────────────────
+if [[ "$MODE" == "uninstall" ]]; then
+    echo "🗑️  tGD Uninstall — Removing all deployments..."
+    echo "====================================="
+    echo ""
+
+    # Helper: remove tGD-prefixed symlinks/files from a directory
+    remove_tgd_items() {
+        local dir="$1"
+        local label="$2"
+        local pattern="${3:-tgd}"
+        if [[ -d "$dir" ]]; then
+            for item in "$dir"/*; do
+                local base=$(basename "$item")
+                if [[ "$base" == *"$pattern"* ]] && [[ -L "$item" || -f "$item" ]]; then
+                    echo "   🗑️  Removing $label: $item"
+                    rm -f "$item"
+                fi
+            done
+        fi
+    }
+
+    # 1. Remove all tGD symlinks
+    echo "🧹 Removing tGD symlinks..."
+    remove_tgd_items "$HOME/.claude/skills" "Claude skill" "tgd"
+    remove_tgd_items "$HOME/.claude/commands" "Claude command" "tgd"
+    remove_tgd_items "$HOME/.gemini/commands" "Gemini command" "tgd"
+    remove_tgd_items "$HOME/.config/opencode/commands" "OpenCode command" "tgd"
+    remove_tgd_items "$HOME/.codex/prompts" "Codex prompt" "tgd"
+    remove_tgd_items "$HOME/.codex/skills" "Codex skill" "tgd"
+    remove_tgd_items "$HOME/.config/opencode/skills" "OpenCode skill" "tgd"
+    remove_tgd_items "$HOME/.gemini/skills" "Gemini skill" "tgd"
+    remove_tgd_items "$HOME/.pi/agent/skills" "Pi skill" "tgd"
+    remove_tgd_items "$HOME/.pi/agent/extensions" "Pi extension" "tgd"
+    remove_tgd_items "$HOME/.claude/rules" "Claude rule" "tgd"
+
+    # Remove Codex top-level skills/tGD symlink
+    if [[ -L "$HOME/.codex/skills/tGD" ]]; then
+        echo "   🗑️  Removing Codex skills/tGD: $HOME/.codex/skills/tGD"
+        rm -f "$HOME/.codex/skills/tGD"
+    fi
+
+    # Remove Pi instructions
+    if [[ -L "$HOME/.pi/agent/instructions.md" ]]; then
+        echo "   🗑️  Removing Pi instructions: $HOME/.pi/agent/instructions.md"
+        rm -f "$HOME/.pi/agent/instructions.md"
+    fi
+
+    # 2. Remove tGD hooks from settings files
+    echo ""
+    echo "🧹 Removing tGD hooks from config files..."
+
+    # Claude Code: ~/.claude/settings.json
+    if [[ -f "$HOME/.claude/settings.json" ]]; then
+        python3 -c "
+import json
+path = '$HOME/.claude/settings.json'
+with open(path) as f:
+    data = json.load(f)
+hooks = data.get('hooks', {})
+before = sum(len(v) for v in hooks.values())
+# Remove ALL hooks (tGD owns the entire hooks section since it was the only installer)
+if 'hooks' in data:
+    del data['hooks']
+    print(f'   ✅ Removed all hooks from ~/.claude/settings.json ({before} hooks removed)')
+with open(path, 'w') as f:
+    json.dump(data, f, indent=2)
+" 2>/dev/null || echo "   ⚠️  Failed to clean ~/.claude/settings.json"
+    fi
+
+    # Codex CLI: ~/.codex/hooks.json
+    if [[ -f "$HOME/.codex/hooks.json" ]]; then
+        echo "   🗑️  Removing ~/.codex/hooks.json"
+        rm -f "$HOME/.codex/hooks.json"
+    fi
+
+    # Gemini CLI: ~/.gemini/settings.json
+    if [[ -f "$HOME/.gemini/settings.json" ]]; then
+        python3 -c "
+import json
+path = '$HOME/.gemini/settings.json'
+with open(path) as f:
+    data = json.load(f)
+hooks = data.get('hooks', {})
+before = sum(len(v) for v in hooks.values())
+if 'hooks' in data:
+    del data['hooks']
+    print(f'   ✅ Removed all hooks from ~/.gemini/settings.json ({before} hooks removed)')
+with open(path, 'w') as f:
+    json.dump(data, f, indent=2)
+" 2>/dev/null || echo "   ⚠️  Failed to clean ~/.gemini/settings.json"
+    fi
+
+    # 3. Remove version marker
+    if [[ -f "$TGD_DIR/.tgd-version" ]]; then
+        echo "   🗑️  Removing version marker: $TGD_DIR/.tgd-version"
+        rm -f "$TGD_DIR/.tgd-version"
+    fi
+
+    echo ""
+    echo "===================================="
+    echo "✅ tGD Uninstalled!"
+    echo ""
+    echo "The following were removed:"
+    echo "  • All tGD symlinks (skills, commands, prompts, rules, extensions)"
+    echo "  • All tGD hooks from config files"
+    echo "  • Version marker (.tgd-version)"
+    echo ""
+    echo "Your ~/.claude/skills/ (and other dirs) are untouched — only tGD items were removed."
+    exit 0
+fi
 
 if [[ "$MODE" == "upgrade" ]]; then
     echo "🔄 tGD Upgrade — Cleaning stale deployments..."
