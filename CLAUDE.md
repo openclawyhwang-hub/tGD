@@ -1,6 +1,6 @@
-# agent-skills
+# tGD
 
-This is the agent-skills project — a collection of production-grade engineering skills for AI coding agents.
+This is the tGD project — a collection of production-grade engineering skills for AI coding agents.
 
 ## Project Structure
 

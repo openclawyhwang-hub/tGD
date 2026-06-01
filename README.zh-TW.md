@@ -318,12 +318,12 @@ tGD/
 
 ## 📦 全部 26 個 Skills
 
-上面的指令是入口點。這個 pack 包含 26 個 skills——24 個生命週期 skill 加上 `using-agent-skills` 元 skill 和 `tgd-rules` 核心規則。
+上面的指令是入口點。這個 pack 包含 26 個 skills——24 個生命週期 skill 加上 `using-tGD` 元 skill 和 `tgd-rules` 核心規則。
 
 ### 🧭 Meta
 | Skill | 用途 |
 |---|---|
-| [using-agent-skills](skills/using-agent-skills/SKILL.md) | 將工作映射到正確的 skill |
+| [using-tGD](skills/using-tGD/SKILL.md) | 將工作映射到正確的 skill |
 
 ### 📋 Define
 | Skill | 用途 |

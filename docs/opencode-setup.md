@@ -158,7 +158,7 @@ OpenCode supports lifecycle hooks via TypeScript plugins. tGD ships three plugin
 
 | Plugin | Hook | Purpose |
 |--------|------|---------|
-| `session-start.ts` | `session.created` | Injects `using-agent-skills` meta-skill at session start |
+| `session-start.ts` | `session.created` | Injects `using-tGD` meta-skill at session start |
 | `simplify-ignore.ts` | `tool.execute.before/after` | Protects marked code blocks from `/tgd-simplify` |
 | `sdd-cache.ts` | `tool.execute.before/after` | HTTP cache for `source-driven-development` doc fetching |
 

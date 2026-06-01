@@ -1,5 +1,5 @@
 #!/bin/bash
-# tGD (Agentic PDLC Workflow) One-Click Installer
+# tGD (tGD) One-Click Installer
 # Usage: bash setup.sh [--upgrade|--uninstall]
 #
 # --upgrade:  先掃描並清除舊版殘留的 stale symlink / hooks，再重新部署。
@@ -215,7 +215,7 @@ if [[ "$MODE" == "upgrade" ]]; then
     echo "====================================="
     echo ""
 else
-    echo "🚀 tGD (Agentic PDLC Workflow) Setup"
+    echo "🚀 tGD (tGD) Setup"
     echo "===================================="
 fi
 

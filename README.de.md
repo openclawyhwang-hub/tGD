@@ -211,7 +211,7 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 
 | Skill | Zweck |
 |-------|-------|
-| using-agent-skills | Arbeit dem richtigen Skill zuordnen |
+| using-tGD | Arbeit dem richtigen Skill zuordnen |
 </details>
 
 <details>

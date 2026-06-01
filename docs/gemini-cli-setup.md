@@ -1,4 +1,4 @@
-# Using agent-skills with Gemini CLI
+# Using tGD with Gemini CLI
 
 ## Setup
 
@@ -41,9 +41,9 @@ For skills you want always loaded as persistent project context (rather than on-
 
 ```bash
 # Create GEMINI.md with core skills as persistent context
-cat /path/to/agent-skills/skills/incremental-implementation/SKILL.md > GEMINI.md
+cat /path/to/tGD/skills/incremental-implementation/SKILL.md > GEMINI.md
 echo -e "\n---\n" >> GEMINI.md
-cat /path/to/agent-skills/skills/code-review-and-quality/SKILL.md >> GEMINI.md
+cat /path/to/tGD/skills/code-review-and-quality/SKILL.md >> GEMINI.md
 ```
 
 You can also modularize by importing from separate files:
@@ -95,7 +95,7 @@ Gemini CLI supports session lifecycle hooks. tGD ships a complete hook configura
 
 | Hook | Event | Purpose |
 |------|-------|---------|
-| `session-start.sh` | `SessionStart` | Injects `using-agent-skills` meta-skill |
+| `session-start.sh` | `SessionStart` | Injects `using-tGD` meta-skill |
 | `simplify-pre.sh` | `BeforeTool` (Read) | Filters simplify-ignore blocks before read |
 | `simplify-post.sh` | `AfterTool` (Edit/Write) | Re-filters after edits |
 | `simplify-cleanup.sh` | `SessionEnd` | Restores protected files |

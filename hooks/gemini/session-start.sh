@@ -1,5 +1,5 @@
 #!/bin/bash
-# Gemini CLI SessionStart hook — injects using-agent-skills meta-skill
+# Gemini CLI SessionStart hook — injects using-tGD meta-skill
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -13,7 +13,7 @@ fi
 if [ -f "$META_SKILL" ]; then
   CONTENT=$(cat "$META_SKILL")
   jq -cn \
-    --arg message "agent-skills loaded. Use the skill discovery flowchart to find the right skill for your task.
+    --arg message "tGD loaded. Use the skill discovery flowchart to find the right skill for your task.
 
 $CONTENT" \
     '{priority: "IMPORTANT", message: $message}'

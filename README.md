@@ -316,12 +316,12 @@ tGD/
 
 ## 📦 All 26 Skills
 
-The commands above are entry points. The pack includes 26 skills total — 24 lifecycle skills plus `using-agent-skills` meta-skill and `tgd-rules` core rules.
+The commands above are entry points. The pack includes 26 skills total — 24 lifecycle skills plus `using-tGD` meta-skill and `tgd-rules` core rules.
 
 ### 🧭 Meta
 | Skill | Purpose |
 |---|---|
-| [using-agent-skills](skills/using-agent-skills/SKILL.md) | Maps work to the right skill |
+| [using-tGD](skills/using-tGD/SKILL.md) | Maps work to the right skill |
 
 ### 📋 Define
 | Skill | Purpose |
