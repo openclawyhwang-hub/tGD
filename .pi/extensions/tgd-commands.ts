@@ -1,201 +1,117 @@
 // tGD Pi Extension — Registers 8 lifecycle slash commands
-// Each command triggers the corresponding tGD skill pipeline
-// Install: place in .pi/extensions/ or ~/.pi/agent/extensions/
+// Compatible with pi-coding-agent 0.75.x
 
-import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
-export default function tgdCommands(ctx: ExtensionContext, pi: ExtensionAPI) {
-  // Inject tGD verification rules into system prompt
-  const fs = require("fs");
-  const path = require("path");
-  try {
-    const instructionsPath = path.join(ctx.cwd, ".pi", "instructions.md");
-    if (fs.existsSync(instructionsPath)) {
-      const rules = fs.readFileSync(instructionsPath, "utf-8");
-      // Append to system prompt via extension API
-      const currentPrompt = pi.getSystemPrompt ? pi.getSystemPrompt() : "";
-      if (!currentPrompt.includes("Verification Iron Law")) {
-        // Rules will be loaded on first interaction
-      }
-    }
-  } catch (e) { /* instructions.md not found, skip */ }
+const tgdPrompts: Record<string, string> = {
+  "tgd-map":
+    "Run the context-engineering skill. Analyze the current project: tech stack, architecture, dependencies, code organization, and existing patterns.\n\n" +
+    "1. mkdir -p tGD/map\n" +
+    "2. rm -rf .codegraph && ln -s tGD/map/.codegraph .codegraph\n" +
+    "3. codegraph init -i\n\n" +
+    "Outputs: tGD/map/CONTEXT.md, tGD/map/.codegraph/codegraph.db\n" +
+    "Verification: tGD/map/CONTEXT.md exists and is non-empty.\n" +
+    "After completing, suggest: /tgd-define",
 
-  const commands = [
-    {
-      name: "tgd-map",
-      description: "Map — scan and understand the existing project context",
-      prompt: `Run the context-engineering skill. Analyze the current project: tech stack, architecture, dependencies, code organization, and existing patterns.
+  "tgd-define":
+    "Run the spec-driven-development skill. DEFINE phase.\n\n" +
+    "Pre-flight: Check tGD/map/CONTEXT.md exists. If missing, STOP and tell user to run /tgd-map first.\n\n" +
+    "Pipeline:\n" +
+    "1. Derive kebab-case feature name\n" +
+    "2. Create tGD/<feature>/ directory\n" +
+    "3. Run interview-me if underspecified\n" +
+    "4. Run idea-refine if vague\n" +
+    "5. Run spec-driven-development to write PRD.md + SPEC.md\n\n" +
+    "Verification: tGD/<feature>/PRD.md and SPEC.md exist.\n" +
+    "After completing, suggest: /tgd-plan",
 
-1. Ensure output directory exists: mkdir -p tGD/map
-2. Create symlink: rm -rf .codegraph && ln -s tGD/map/.codegraph .codegraph
-3. Initialize project graph: codegraph init -i
+  "tgd-plan":
+    "Run the planning-and-task-breakdown skill. PLAN phase.\n\n" +
+    "Pre-flight: Check tGD/<feature>/SPEC.md exists. If missing, suggest /tgd-define first.\n\n" +
+    "Pipeline:\n" +
+    "1. Read the existing SPEC.md\n" +
+    "2. Break into small, verifiable tasks\n" +
+    "3. Create TASKS.md with ordered checklist\n" +
+    "4. If Jira integration available, run jira-auto-sync\n\n" +
+    "Verification: TASKS.md exists with acceptance criteria per task.\n" +
+    "After completing, suggest: /tgd-develop",
 
-Outputs:
-- tGD/map/CONTEXT.md
-- tGD/map/.codegraph/codegraph.db
+  "tgd-develop":
+    "Run the incremental-implementation skill. BUILD phase.\n\n" +
+    "Pre-flight: Check TASKS.md exists. If missing, suggest /tgd-plan first.\n\n" +
+    "Pipeline:\n" +
+    "1. context-engineering\n" +
+    "2. source-driven-development\n" +
+    "3. incremental-implementation — thin vertical slices\n" +
+    "4. test-driven-development\n" +
+    "5. If touching UI: frontend-ui-engineering\n" +
+    "6. If designing APIs: api-and-interface-design\n\n" +
+    "Verification: All tasks in TASKS.md checked off.\n" +
+    "After completing, suggest: /tgd-verify",
 
-Verification: tGD/map/CONTEXT.md exists and is non-empty.
+  "tgd-verify":
+    "Run the debugging-and-error-recovery skill. VERIFY phase.\n\n" +
+    "Pipeline:\n" +
+    "1. debugging-and-error-recovery if anything fails\n" +
+    "2. test-driven-development to prove all tests pass\n" +
+    "3. If browser-based: browser-testing-with-devtools\n\n" +
+    "Verification: ALL tests pass, build succeeds.\n" +
+    "After completing, suggest: /tgd-review",
 
-After completing, suggest: /tgd-define to start defining what to build.`,
-    },
-    {
-      name: "tgd-define",
-      description: "Define — write PRD + SPEC before any code",
-      prompt: `Run the spec-driven-development skill. This is the DEFINE phase.
+  "tgd-review":
+    "Run the code-review-and-quality skill. REVIEW phase.\n\n" +
+    "Pipeline:\n" +
+    "1. code-review-and-quality (5-axis review)\n" +
+    "2. code-simplification\n" +
+    "3. If security concerns: security-and-hardening\n" +
+    "4. If performance concerns: performance-optimization\n\n" +
+    "Verification: Code review passes, no anti-patterns.\n" +
+    "After completing, suggest: /tgd-simplify or /tgd-ship",
 
-Pre-flight: Check tGD/map/CONTEXT.md exists. If missing, STOP and tell user to run /tgd-map first.
+  "tgd-simplify":
+    "Run the code-simplification skill.\n\n" +
+    "1. Identify over-engineered abstractions\n" +
+    "2. Reduce line count while preserving functionality\n" +
+    "3. Remove dead code and unnecessary complexity\n\n" +
+    "Verification: Fewer lines, same behavior, tests pass.\n" +
+    "After completing, suggest: /tgd-ship",
 
-Pipeline:
-1. Derive kebab-case <feature-name> from the user's request
-2. Create tGD/<feature-name>/ directory
-3. If on main/master, create branch: git checkout -b feature/<feature-name>
-4. Run interview-me if the ask is underspecified
-5. Run idea-refine if the concept is vague
-6. Run spec-driven-development to write PRD.md + SPEC.md
-7. If frontend: create DESIGN.md with Component Tree
+  "tgd-ship":
+    "Run the shipping-and-launch skill. SHIP phase.\n\n" +
+    "Pipeline:\n" +
+    "1. git-workflow-and-versioning\n" +
+    "2. shipping-and-launch\n" +
+    "3. If CI/CD exists: ci-cd-and-automation\n" +
+    "4. If writing docs: documentation-and-adrs\n\n" +
+    "Verification: Changes committed, tests pass, deployment successful.\n" +
+    "After completing, suggest: /tgd-map for the next feature",
+};
 
-Verification:
-- tGD/<feature-name>/PRD.md exists
-- tGD/<feature-name>/SPEC.md exists
-- Working branch is feature/<feature-name>
+export default function (pi: ExtensionAPI) {
+  // Inject tGD rules at session start
+  pi.on("session_start", async (_event, ctx) => {
+    ctx.ui.notify("tGD workflow loaded. Use /tgd-map to begin.", "info");
+  });
 
-After completing, suggest: /tgd-plan to decompose into tasks.`,
-    },
-    {
-      name: "tgd-plan",
-      description: "Plan — decompose specs into atomic tasks",
-      prompt: `Run the planning-and-task-breakdown skill. This is the PLAN phase.
-
-Pre-flight:
-- Check tGD/map/CONTEXT.md exists. If missing, /tgd-map first.
-- Scan tGD/ for feature subdirectories. If none, /tgd-define first.
-- Check tGD/<feature>/PRD.md and SPEC.md exist. If missing, /tgd-define first.
-
-1. Read PRD.md and SPEC.md
-2. Decompose into small, verifiable tasks with acceptance criteria
-3. Order by dependencies
-4. Write tGD/<feature>/TASKS.md
-5. If jira-auto-sync skill available, sync to Jira
-
-Verification:
-- tGD/<feature>/TASKS.md exists and is non-empty
-- Each task has acceptance criteria
-
-After completing, suggest: /tgd-develop to start building.`,
-    },
-    {
-      name: "tgd-develop",
-      description: "Build — implement one thin vertical slice at a time",
-      prompt: `Run the incremental-implementation skill. This is the BUILD phase.
-
-Pre-flight:
-- Check tGD/map/CONTEXT.md exists. If missing, /tgd-map first.
-- Check tGD/<feature>/TASKS.md exists. If missing, /tgd-plan first.
-
-Core flow:
-1. context-engineering — load right spec sections for current task
-2. source-driven-development — ground decisions in official docs
-3. incremental-implementation — build thin slices: implement → test → verify → commit
-4. test-driven-development — Red-Green-Refactor for each slice
-
-Conditional:
-- Frontend? → frontend-ui-engineering
-- API? → api-and-interface-design
-- High stakes? → doubt-driven-development
-
-One slice at a time. Never implement multiple tasks at once.
-
-After completing, suggest: /tgd-verify to prove it works.`,
-    },
-    {
-      name: "tgd-verify",
-      description: "Verify — prove it works with tests and debugging",
-      prompt: `Run the debugging-and-error-recovery skill. This is the VERIFY phase.
-
-Pre-flight:
-- Check source code exists in src/. If missing, /tgd-develop first.
-- Check test files exist in tests/. If missing, /tgd-develop first.
-
-Core flow:
-1. debugging-and-error-recovery — five-step triage: reproduce → localize → reduce → fix → guard
-2. test-driven-development — verify with test pyramid (80% unit, 15% integration, 5% E2E)
-
-Conditional:
-- Browser-based? → webwright or browser-testing-with-devtools
-
-Tests are proof. "seems right" is never sufficient.
-
-After completing, suggest: /tgd-review for code quality review.`,
-    },
-    {
-      name: "tgd-review",
-      description: "Review — improve code health before merge",
-      prompt: `Run the code-review-and-quality skill. This is the REVIEW phase.
-
-Pre-flight:
-- Check test files exist in tests/. If missing, /tgd-verify first.
-
-Core flow:
-1. code-review-and-quality — five-axis review with severity labels (Nit/Optional/FYI)
-2. code-simplification — Chesterton's Fence, reduce complexity
-
-Conditional:
-- Security concerns? → security-and-hardening
-- Performance concerns? → performance-optimization
-
-If change > ~100 lines, split into smaller reviews.
-
-After completing, suggest: /tgd-simplify or /tgd-ship.`,
-    },
-    {
-      name: "tgd-simplify",
-      description: "Simplify — clarity over cleverness",
-      prompt: `Run the code-simplification skill.
-
-Pre-flight:
-- Check source code exists in src/. If missing, /tgd-develop first.
-
-Apply Chesterton's Fence and Rule of 500. Reduce complexity, eliminate dead code, improve readability while preserving exact behavior.
-
-Verification:
-- Code complexity reduced
-- All existing tests still pass
-- No behavior changes introduced
-
-After completing, suggest: /tgd-review or /tgd-ship.`,
-    },
-    {
-      name: "tgd-ship",
-      description: "Ship — deploy with confidence",
-      prompt: `Run the shipping-and-launch skill. This is the SHIP phase.
-
-Pre-flight:
-- Check review passed (no critical issues).
-- Check tGD/<feature>/REVIEW.md exists.
-- Check tests/ exists and passes.
-If missing, /tgd-review first.
-
-Core flow:
-1. git-workflow-and-versioning — clean commit history, trunk-based development
-2. shipping-and-launch — pre-launch checklist, staged rollouts, monitoring
-
-Conditional:
-- CI/CD pipeline? → ci-cd-and-automation
-- Removing old systems? → deprecation-and-migration
-
-Faster is safer.`,
-    },
-  ];
-
-  for (const cmd of commands) {
-    pi.registerCommand(cmd.name, {
-      description: cmd.description,
-      handler: async (input: string) => {
-        // Send the command prompt as a user message to trigger the skill pipeline
-        const fullPrompt = input
-          ? `${cmd.prompt}\n\nUser request: ${input}`
-          : cmd.prompt;
-        await pi.sendUserMessage(fullPrompt);
+  // Register 8 lifecycle slash commands
+  for (const [name, description] of [
+    ["tgd-map", "Map — scan and understand the existing project context"],
+    ["tgd-define", "Define — write PRD + SPEC before any code"],
+    ["tgd-plan", "Plan — break spec into small verifiable tasks"],
+    ["tgd-develop", "Build — implement thin vertical slices with tests"],
+    ["tgd-verify", "Verify — debug, test, and prove it works"],
+    ["tgd-review", "Review — code review, quality gates, simplification"],
+    ["tgd-simplify", "Simplify — remove complexity, reduce line count"],
+    ["tgd-ship", "Ship — clean git history, deploy safely"],
+  ] as [string, string][]) {
+    pi.registerCommand(name, {
+      description,
+      handler: async (_args, ctx) => {
+        const prompt = tgdPrompts[name];
+        if (prompt) {
+          ctx.ui.notify(`Running ${name}...`, "info");
+          pi.sendUserMessage(prompt);
+        }
       },
     });
   }

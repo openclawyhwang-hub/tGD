@@ -18,12 +18,13 @@ echo "🤖 Configuring Agents..."
 # OpenCode
 if command -v opencode &> /dev/null; then
     echo "   📂 OpenCode detected."
-    # Create global commands link
+    # Create global commands link (individual files, not subdirectory)
     mkdir -p ~/.config/opencode/commands
-    if [ ! -d ~/.config/opencode/commands/tgd ]; then
-        ln -sf "$(pwd)/.opencode/commands" ~/.config/opencode/commands/tgd 2>/dev/null || true
-        echo "   ✅ Commands symlinked to global config."
-    fi
+    for cmd in .opencode/commands/*.md; do
+        cmd_name=$(basename "$cmd")
+        ln -sf "$(pwd)/$cmd" ~/.config/opencode/commands/$cmd_name 2>/dev/null || true
+    done
+    echo "   ✅ Commands linked (8 tgd-* commands)."
     # Install plugins (hooks)
     if [ -d ".opencode/plugins" ]; then
         mkdir -p ~/.config/opencode/plugins
@@ -43,6 +44,64 @@ if command -v claude &> /dev/null; then
             ln -sf "$(pwd)/$skill" ~/.claude/skills/$skill_name 2>/dev/null || true
         done
         echo "   ✅ Skills linked."
+
+        # Link commands (slash commands: /tgd-map, /tgd-develop, etc.)
+        if [ -d .claude/commands ]; then
+            mkdir -p ~/.claude/commands
+            ln -sf "$(pwd)/.claude/commands"/* ~/.claude/commands/ 2>/dev/null || true
+            echo "   ✅ Commands linked (8 tgd-* slash commands)."
+        fi
+
+        # Install hooks into settings.json (resolve paths to absolute)
+        if [ -d hooks ] && [ -f hooks/hooks.json ]; then
+            mkdir -p ~/.claude
+            TGD_ABS="$(pwd)"
+            SETTINGS="$HOME/.claude/settings.json"
+            # Create default settings.json if it doesn't exist
+            if [ ! -f "$SETTINGS" ]; then
+                echo '{}' > "$SETTINGS"
+            fi
+            python3 -c "
+import json
+TGD_ABS = '$TGD_ABS'
+SETTINGS = '$SETTINGS'
+# Load existing user settings
+with open(SETTINGS) as f:
+    user = json.load(f)
+# Load tGD hooks
+with open('hooks/hooks.json') as f:
+    tgd = json.load(f)
+# Resolve ${CLAUDE_PLUGIN_ROOT} to absolute path
+def resolve(obj, key='command'):
+    if isinstance(obj, dict):
+        for k, v in list(obj.items()):
+            if k == key and isinstance(v, str) and '$' + '{CLAUDE_PLUGIN_ROOT}' in v:
+                obj[k] = v.replace('$' + '{CLAUDE_PLUGIN_ROOT}', TGD_ABS)
+            else:
+                resolve(v, key)
+    elif isinstance(obj, list):
+        for item in obj:
+            resolve(item, key)
+resolve(tgd)
+# Merge hooks by event name (deduplicate by command string)
+user_hooks = user.setdefault('hooks', {})
+for event, hook_list in tgd.get('hooks', {}).items():
+    existing = user_hooks.get(event, [])
+    existing_cmds = set()
+    for h in existing:
+        for sub in h.get('hooks', []):
+            existing_cmds.add(sub.get('command', ''))
+    for entry in hook_list:
+        for sub in entry.get('hooks', []):
+            if sub.get('command', '') not in existing_cmds:
+                existing.append(entry)
+                break
+    user_hooks[event] = existing
+with open(SETTINGS, 'w') as f:
+    json.dump(user, f, indent=2)
+print('   ✅ Hooks merged into ~/.claude/settings.json.')
+" 2>/dev/null || echo "   ⚠️  Hooks install failed (python3 required)."
+        fi
     fi
 fi
 
@@ -54,15 +113,86 @@ if command -v gemini &> /dev/null; then
         ln -sf "$(pwd)/.gemini/commands"/* ~/.gemini/commands/ 2>/dev/null || true
         echo "   ✅ Commands linked."
     fi
-    # Install hooks (settings.json with lifecycle hooks)
+    # Install hooks (Gemini uses flat format, different from Claude Code/Codex nested format)
     if [ -f .gemini/settings.json ]; then
         mkdir -p ~/.gemini
-        # Merge hooks into existing settings if present
+        TGD_ABS="$(pwd)"
+        # Resolve relative paths in .gemini/settings.json to absolute
         if [ -f ~/.gemini/settings.json ]; then
-            echo "   ⚠️  ~/.gemini/settings.json exists. Hooks are in .gemini/settings.json — merge manually."
+            echo "   ⚠️  ~/.gemini/settings.json exists. Merging tGD hooks..."
+            python3 -c "
+import json
+TGD_ABS = '$TGD_ABS'
+with open('$HOME/.gemini/settings.json') as f:
+    user = json.load(f)
+with open('.gemini/settings.json') as f:
+    tgd = json.load(f)
+# Resolve relative paths, ensure type: "command",
+# and convert ALL hooks to nested format (matcher + hooks array)
+for event, hook_list in tgd.get('hooks', {}).items():
+    if event in ('BeforeTool', 'AfterTool'):
+        by_matcher = {}
+        for h in hook_list:
+            if 'type' not in h:
+                h['type'] = 'command'
+            cmd = h.get('command', '')
+            if cmd.startswith('bash hooks/'):
+                h['command'] = cmd.replace('bash hooks/', 'bash ' + TGD_ABS + '/hooks/', 1)
+            matcher = h.get('matcher', '*')
+            if matcher not in by_matcher:
+                by_matcher[matcher] = []
+            h.pop('matcher', None)
+            by_matcher[matcher].append(h)
+        tgd['hooks'][event] = [
+            {"matcher": m, "hooks": hooks}
+            for m, hooks in by_matcher.items()
+        ]
+    else:
+        # Lifecycle events (SessionStart, SessionEnd) also need nested format
+        for h in hook_list:
+            if 'type' not in h:
+                h['type'] = 'command'
+            cmd = h.get('command', '')
+            if cmd.startswith('bash hooks/'):
+                h['command'] = cmd.replace('bash hooks/', 'bash ' + TGD_ABS + '/hooks/', 1)
+        tgd['hooks'][event] = [
+            {"matcher": "*", "hooks": hook_list}
+        ]
+user_hooks = user.setdefault('hooks', {})
+for event, hook_list in tgd.get('hooks', {}).items():
+    existing = user_hooks.get(event, [])
+    # All events use nested format: [{matcher, hooks: [...]}]
+    existing_by_matcher = {}
+    for i, entry in enumerate(existing):
+        m = entry.get('matcher', '*')
+        existing_by_matcher[m] = i
+    for entry in hook_list:
+        matcher = entry.get('matcher', '*')
+        if matcher in existing_by_matcher:
+            # Replace existing entry
+            existing[existing_by_matcher[matcher]] = entry
+        else:
+            existing.append(entry)
+    user_hooks[event] = existing
+with open('$HOME/.gemini/settings.json', 'w') as f:
+    json.dump(user, f, indent=2)
+print('   ✅ tGD hooks merged into ~/.gemini/settings.json.')
+" 2>/dev/null || echo "   ⚠️  Merge failed — please manually merge hooks from .gemini/settings.json"
         else
-            ln -sf "$(pwd)/.gemini/settings.json" ~/.gemini/settings.json 2>/dev/null || true
-            echo "   ✅ Hooks installed (session-start, simplify-ignore, sdd-cache)."
+            python3 -c "
+import json
+TGD_ABS = '$TGD_ABS'
+with open('.gemini/settings.json') as f:
+    cfg = json.load(f)
+for event, hook_list in cfg.get('hooks', {}).items():
+    for h in hook_list:
+        cmd = h.get('command', '')
+        if cmd.startswith('bash hooks/'):
+            h['command'] = cmd.replace('bash hooks/', f'bash {TGD_ABS}/hooks/', 1)
+with open('$HOME/.gemini/settings.json', 'w') as f:
+    json.dump(cfg, f, indent=2)
+print('   ✅ Hooks installed to ~/.gemini/settings.json.')
+" 2>/dev/null || echo "   ⚠️  Hooks install failed (python3 required)."
         fi
     fi
 fi
@@ -80,16 +210,92 @@ if command -v codex &> /dev/null; then
         ln -sf "$(pwd)/.codex/prompts"/* ~/.codex/prompts/ 2>/dev/null || true
         echo "   ✅ Prompts linked (8 tgd-* commands)."
     fi
+    # Install hooks (Codex only reads ~/.codex/hooks.json — plugin-local hooks don't work)
+    # NOTE: Only SessionStart hook is cross-platform. simplify-ignore and sdd-cache
+    # scripts rely on CLAUDE_PROJECT_DIR env var, which Codex does not set.
+    if [ -f hooks/hooks.json ]; then
+        HOOKS_DST="$HOME/.codex/hooks.json"
+        TGD_ABS="$(pwd)"
+        if [ -f "$HOOKS_DST" ]; then
+            echo "   ⚠️  ~/.codex/hooks.json exists. Merging tGD hooks..."
+            python3 -c "
+import json
+TGD_ABS = '$TGD_ABS'
+HOOKS_DST = '$HOOKS_DST'
+with open(HOOKS_DST) as f:
+    user = json.load(f)
+with open('hooks/hooks.json') as f:
+    tgd = json.load(f)
+def resolve(obj, key='command'):
+    if isinstance(obj, dict):
+        for k, v in list(obj.items()):
+            if k == key and isinstance(v, str) and '$' + '{CLAUDE_PLUGIN_ROOT}' in v:
+                obj[k] = v.replace('$' + '{CLAUDE_PLUGIN_ROOT}', TGD_ABS)
+            else:
+                resolve(v, key)
+    elif isinstance(obj, list):
+        for item in obj:
+            resolve(item, key)
+resolve(tgd)
+user_hooks = user.setdefault('hooks', {})
+for event, hook_list in tgd.get('hooks', {}).items():
+    existing = user_hooks.get(event, [])
+    existing_cmds = set()
+    for h in existing:
+        for sub in h.get('hooks', []):
+            existing_cmds.add(sub.get('command', ''))
+    for entry in hook_list:
+        for sub in entry.get('hooks', []):
+            if sub.get('command', '') not in existing_cmds:
+                existing.append(entry)
+                break
+    user_hooks[event] = existing
+with open(HOOKS_DST, 'w') as f:
+    json.dump(user, f, indent=2)
+print('   ✅ tGD hooks merged into ~/.codex/hooks.json.')
+print('   ℹ️  Codex requires hook trust: run /hooks in Codex to trust new hooks.')
+" 2>/dev/null || echo "   ⚠️  Hooks merge failed (python3 required)."
+        else
+            python3 -c "
+import json
+TGD_ABS = '$TGD_ABS'
+with open('hooks/hooks.json') as f:
+    cfg = json.load(f)
+def resolve(obj, key='command'):
+    if isinstance(obj, dict):
+        for k, v in list(obj.items()):
+            if k == key and isinstance(v, str) and '$' + '{CLAUDE_PLUGIN_ROOT}' in v:
+                obj[k] = v.replace('$' + '{CLAUDE_PLUGIN_ROOT}', TGD_ABS)
+            else:
+                resolve(v, key)
+    elif isinstance(obj, list):
+        for item in obj:
+            resolve(item, key)
+resolve(cfg)
+with open('$HOOKS_DST', 'w') as f:
+    json.dump(cfg, f, indent=2)
+print('   ✅ Hooks installed to ~/.codex/hooks.json.')
+print('   ℹ️  Codex requires hook trust: run /hooks in Codex to trust new hooks.')
+" 2>/dev/null || echo "   ⚠️  Hooks install failed (python3 required)."
+        fi
+    fi
 fi
 
 # Pi Coding Agent
 if command -v pi &> /dev/null; then
     echo "   📂 Pi Coding Agent detected."
-    mkdir -p .pi/extensions
+    # Install extension and instructions to ~/.pi/agent/
+    mkdir -p "$HOME/.pi/agent/extensions"
     if [ -f ".pi/extensions/tgd-commands.ts" ]; then
-        echo "   ✅ Pi extension ready (8 tgd-* commands)."
-        echo "   ℹ️  Commands available via /tgd-map, /tgd-define, etc."
+        ln -sf "$(pwd)/.pi/extensions/tgd-commands.ts" "$HOME/.pi/agent/extensions/tgd-commands.ts" 2>/dev/null || true
+        echo "   ✅ Extension installed to ~/.pi/agent/extensions/tgd-commands.ts"
     fi
+    if [ -f ".pi/instructions.md" ]; then
+        ln -sf "$(pwd)/.pi/instructions.md" "$HOME/.pi/agent/instructions.md" 2>/dev/null || true
+        echo "   ✅ Instructions installed to ~/.pi/agent/instructions.md"
+    fi
+else
+    echo "   ℹ️  Pi Coding Agent not detected — skip extension install."
 fi
 
 # CodeGraph (required for /tgd-map)
