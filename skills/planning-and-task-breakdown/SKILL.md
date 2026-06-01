@@ -43,7 +43,7 @@ This means every task must contain:
 
 ### Step 0: Feature Name Resolution
 Before planning, determine and validate `<feature-name>`:
-1. **Derive**: Use kebab-case from the user's request (e.g., "User Login" → `user-login`).
+1. **Derive**: Use kebab-case from the user's request (e.g., "User Login" → "user-login").
 2. **Verify**: Ensure `tGD/<feature-name>/` exists (created by `/tgd-define`). If missing, halt and ask user.
 3. **Lock**: All planning artifacts go into `tGD/<feature-name>/`.
 
