@@ -72,23 +72,65 @@ if [[ "$MODE" == "uninstall" ]]; then
 
     # Claude Code: ~/.claude/settings.json
     if [[ -f "$HOME/.claude/settings.json" ]]; then
-        python3 -c "
-import json
-path = '$HOME/.claude/settings.json'
+        python3 << 'PYEOF'
+import json, os
+
+path = os.path.expanduser("~/.claude/settings.json")
 with open(path) as f:
     data = json.load(f)
-hooks = data.get('hooks', {})
-before = sum(len(v) for v in hooks.values())
-# Remove ALL hooks (tGD owns the entire hooks section since it was the only installer)
-if 'hooks' in data:
-    del data['hooks']
-    print(f'   ✅ Removed all hooks from ~/.claude/settings.json ({before} hooks removed)')
-with open(path, 'w') as f:
+
+def is_tgd_hook(obj):
+    """Check if a hook object is a tGD hook (contains /hooks/ or /tGD in command path)."""
+    cmd = obj.get("command", "")
+    return "/hooks/" in cmd or "/tGD" in cmd
+
+def filter_hooks_deep(items):
+    """Recursively filter hooks at any nesting depth. Returns (kept, removed_count)."""
+    kept = []
+    removed = 0
+    for item in items:
+        sub = item.get("hooks", [])
+        if sub and all(isinstance(s, dict) and "command" in s for s in sub):
+            # Flat hooks array (Claude format)
+            non_tgd = [s for s in sub if not is_tgd_hook(s)]
+            removed += len(sub) - len(non_tgd)
+            if non_tgd:
+                item["hooks"] = non_tgd
+                kept.append(item)
+        elif sub:
+            # Nested hooks (Gemini format) - recurse
+            kept_sub, r = filter_hooks_deep(sub)
+            removed += r
+            if kept_sub:
+                item["hooks"] = kept_sub
+                kept.append(item)
+        else:
+            # No hooks array, check this item itself
+            if not is_tgd_hook(item):
+                kept.append(item)
+            else:
+                removed += 1
+    return kept, removed
+
+hooks = data.get("hooks", {})
+total_removed = 0
+
+for event in list(hooks.keys()):
+    entries = hooks[event]
+    kept, r = filter_hooks_deep(entries)
+    total_removed += r
+    if kept:
+        hooks[event] = kept
+    else:
+        hooks.pop(event, None)
+
+with open(path, "w") as f:
     json.dump(data, f, indent=2)
-" 2>/dev/null || echo "   ⚠️  Failed to clean ~/.claude/settings.json"
+print(f"   ✅ Removed {total_removed} tGD hooks from ~/.claude/settings.json (user hooks preserved)")
+PYEOF
     fi
 
-    # Codex CLI: ~/.codex/hooks.json
+    # Codex CLI: ~/.codex/hooks.json (tGD owns this file entirely)
     if [[ -f "$HOME/.codex/hooks.json" ]]; then
         echo "   🗑️  Removing ~/.codex/hooks.json"
         rm -f "$HOME/.codex/hooks.json"
@@ -96,19 +138,57 @@ with open(path, 'w') as f:
 
     # Gemini CLI: ~/.gemini/settings.json
     if [[ -f "$HOME/.gemini/settings.json" ]]; then
-        python3 -c "
-import json
-path = '$HOME/.gemini/settings.json'
+        python3 << 'PYEOF'
+import json, os
+
+path = os.path.expanduser("~/.gemini/settings.json")
 with open(path) as f:
     data = json.load(f)
-hooks = data.get('hooks', {})
-before = sum(len(v) for v in hooks.values())
-if 'hooks' in data:
-    del data['hooks']
-    print(f'   ✅ Removed all hooks from ~/.gemini/settings.json ({before} hooks removed)')
-with open(path, 'w') as f:
+
+def is_tgd_hook(obj):
+    cmd = obj.get("command", "")
+    return "/hooks/" in cmd or "/tGD" in cmd
+
+def filter_hooks_deep(items):
+    kept = []
+    removed = 0
+    for item in items:
+        sub = item.get("hooks", [])
+        if sub and all(isinstance(s, dict) and "command" in s for s in sub):
+            non_tgd = [s for s in sub if not is_tgd_hook(s)]
+            removed += len(sub) - len(non_tgd)
+            if non_tgd:
+                item["hooks"] = non_tgd
+                kept.append(item)
+        elif sub:
+            kept_sub, r = filter_hooks_deep(sub)
+            removed += r
+            if kept_sub:
+                item["hooks"] = kept_sub
+                kept.append(item)
+        else:
+            if not is_tgd_hook(item):
+                kept.append(item)
+            else:
+                removed += 1
+    return kept, removed
+
+hooks = data.get("hooks", {})
+total_removed = 0
+
+for event in list(hooks.keys()):
+    entries = hooks[event]
+    kept, r = filter_hooks_deep(entries)
+    total_removed += r
+    if kept:
+        hooks[event] = kept
+    else:
+        hooks.pop(event, None)
+
+with open(path, "w") as f:
     json.dump(data, f, indent=2)
-" 2>/dev/null || echo "   ⚠️  Failed to clean ~/.gemini/settings.json"
+print(f"   ✅ Removed {total_removed} tGD hooks from ~/.gemini/settings.json (user hooks preserved)")
+PYEOF
     fi
 
     # 3. Remove version marker
@@ -229,7 +309,7 @@ if command -v opencode &> /dev/null; then
     if [ -d "$TGD_DIR/.opencode/plugins" ]; then
         mkdir -p ~/.config/opencode/plugins
         ln -sf "$TGD_DIR/.opencode/plugins"/* ~/.config/opencode/plugins/ 2>/dev/null || true
-        echo "   ✅ Plugins installed (session-start, simplify-ignore, sdd-cache)."
+        echo "   ✅ Plugins installed (session-start)."
     fi
 fi
 
@@ -411,8 +491,6 @@ if command -v codex &> /dev/null; then
         echo "   ✅ Prompts linked (8 tgd-* commands)."
     fi
     # Install hooks (Codex only reads ~/.codex/hooks.json — plugin-local hooks don't work)
-    # NOTE: Only SessionStart hook is cross-platform. simplify-ignore and sdd-cache
-    # scripts rely on CLAUDE_PROJECT_DIR env var, which Codex does not set.
     if [ -f "$TGD_DIR/hooks/hooks.json" ]; then
         HOOKS_DST="$HOME/.codex/hooks.json"
         TGD_ABS="$TGD_DIR"

@@ -11,62 +11,6 @@
           }
         ]
       }
-    ],
-    "SessionEnd": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "name": "tgd-simplify-cleanup",
-            "type": "command",
-            "command": "bash hooks/gemini/simplify-cleanup.sh"
-          }
-        ]
-      }
-    ],
-    "BeforeTool": [
-      {
-        "matcher": "Read",
-        "hooks": [
-          {
-            "name": "tgd-simplify-pre-read",
-            "type": "command",
-            "command": "bash hooks/gemini/simplify-pre.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "WebFetch",
-        "hooks": [
-          {
-            "name": "tgd-sdd-cache-pre",
-            "type": "command",
-            "command": "bash hooks/sdd-cache-pre.sh"
-          }
-        ]
-      }
-    ],
-    "AfterTool": [
-      {
-        "matcher": "Edit|Write|MultiEdit",
-        "hooks": [
-          {
-            "name": "tgd-simplify-post-edit",
-            "type": "command",
-            "command": "bash hooks/gemini/simplify-post.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "WebFetch",
-        "hooks": [
-          {
-            "name": "tgd-sdd-cache-post",
-            "type": "command",
-            "command": "bash hooks/sdd-cache-post.sh"
-          }
-        ]
-      }
     ]
   }
 }
