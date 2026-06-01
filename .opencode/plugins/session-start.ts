@@ -9,7 +9,7 @@ import { join, dirname } from "path"
 export const SessionStart: Plugin = async ({ directory, client }) => {
   // Find skills directory relative to the project
   const skillsDir = join(directory, "skills")
-  const metaSkillPath = join(skillsDir, "using-tGD", "SKILL.md")
+  const metaSkillPath = join(skillsDir, "using-tgd", "SKILL.md")
 
   return {
     event: async ({ event }) => {
