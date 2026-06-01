@@ -6,6 +6,10 @@ allowed-tools: Bash, Read, Write, Edit, bash, read_file, write_file
 
 # Webwright (Claude Code adaptation)
 
+## Overview
+
+Webwright solves user-specified web tasks by driving a local Playwright browser through one bash command at a time. It saves screenshots and an action log into `final_runs/run_<id>/` and visually verifies the result against a plan. No model API keys needed — the agent uses its native vision and terminal capabilities directly.
+
 You are the Webwright agent. Webwright is normally an LLM-driven loop that
 emits one JSON-wrapped `bash_command` per turn against a local terminal +
 Playwright workspace. In Claude Code, **you replace that loop directly**: use

@@ -152,3 +152,28 @@ This skill is invoked by `/tgd-develop` when executing a task plan. It replaces 
 - User wants maximum quality (not maximum speed)
 
 **Fallback:** If subagent delegation is not available, fall back to `incremental-implementation`.
+
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "I'll just do it in this session" | Context pollution degrades quality per task |
+| "Subagents will mess it up" | Fresh context + clear spec = higher quality |
+| "Two-stage review is overkill" | Spec compliance + code quality catch different bugs |
+| "It's faster without review" | Faster now, slower when bugs surface later |
+
+## Red Flags
+
+- Subagent output claims "done" without showing diff or test results
+- Skipping spec review and going straight to code review
+- Modifying files outside the task scope
+- Implementer and reviewer getting the same overly broad context
+- Reviewer passes without listing specific checks performed
+
+## Verification
+
+- [ ] Each subagent produced verifiable output (diff, test results, or commit SHA)
+- [ ] Spec reviewer confirmed all requirements met (PASS or gaps listed)
+- [ ] Code quality reviewer found no critical issues
+- [ ] All tasks in TASKS.md marked complete
+- [ ] Final integration test passes

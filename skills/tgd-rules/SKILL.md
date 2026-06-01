@@ -5,6 +5,40 @@ description: Core tGD rules that MUST be followed at all times. Loaded automatic
 
 # tGD Core Rules
 
+## Overview
+
+Core rules that MUST be followed at all times in every tGD session. These rules enforce evidence-based verification, prevent rationalization, and maintain workflow integrity across all 8 lifecycle phases.
+
+## When to Use
+
+- Automatically loaded on every session via `tgd-rules`
+- Referenced by all 8 `/tgd-*` lifecycle commands
+- Any time an agent is about to claim completion, skip a step, or rationalize an exception
+
+## Common Rationalizations
+
+These thoughts are WRONG. If you catch yourself thinking any of these, STOP and follow the rule instead:
+
+| Rationalization | Reality |
+|---|---|
+| "This is too small for a skill" | It isn't. Check for a skill first. |
+| "I can just quickly implement this" | No. Follow the workflow. |
+| "Should work now" | RUN the verification. |
+| "I'm confident" | Confidence ≠ evidence. |
+| "Just this once" | No exceptions. Ever. |
+| "Looks correct to me" | Visual inspection ≠ verification. |
+| "Tests passed last time" | Run them again, fresh. |
+| "I'm tired" | Exhaustion ≠ excuse. |
+| "The user is waiting" | Lying is worse than delay. |
+
+## Red Flags
+
+- Claiming completion without running verification in THIS message
+- Using "should", "probably", "seems to" instead of evidence
+- Skipping a tGD lifecycle phase without documented reason
+- Modifying files outside the current task scope
+- Trusting agent reports without independent verification
+
 ## Verification Iron Law
 
 **NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE.**
@@ -25,17 +59,7 @@ Before claiming any work is complete, fixed, or passing:
 
 ## Anti-Rationalization
 
-These thoughts are WRONG. If you catch yourself thinking any of these, STOP and follow the rule instead:
-
-- "This is too small for a skill" → It isn't. Check for a skill first.
-- "I can just quickly implement this" → No. Follow the workflow.
-- "Should work now" → RUN the verification.
-- "I'm confident" → Confidence ≠ evidence.
-- "Just this once" → No exceptions. Ever.
-- "Looks correct to me" → Visual inspection ≠ verification.
-- "Tests passed last time" → Run them again, fresh.
-- "I'm tired" → Exhaustion ≠ excuse.
-- "The user is waiting" → Lying is worse than delay.
+<!-- Moved to ## Common Rationalizations above to satisfy skill-anatomy.md -->
 
 ## Completion Checklist
 
@@ -45,6 +69,13 @@ Before saying "done", "complete", or "fixed":
 - [ ] Output shown as evidence
 - [ ] Exit code confirmed (0 = pass)
 - [ ] No "should", "probably", "seems to" in your claim
+
+## Verification
+
+- [ ] All verification commands executed with output shown
+- [ ] Exit codes confirmed (0 = pass)
+- [ ] No rationalization language used in claims
+- [ ] tGD lifecycle phases followed in order
 
 ## tGD Lifecycle
 

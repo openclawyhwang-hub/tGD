@@ -105,21 +105,38 @@ Using any of these without fresh verification evidence:
 ❌ Trust agent report
 ```
 
-## When To Apply
+## When to Use
 
-**ALWAYS before:**
-- ANY variation of success/completion claims
-- ANY expression of satisfaction
-- ANY positive statement about work state
-- Committing, PR creation, task completion
-- Moving to next task
-- Delegating to agents
+- ALWAYS before any success/completion claim
+- Before committing, creating PRs, or marking tasks complete
+- Before delegating to agents or moving to next phase
+- Any time you're about to express satisfaction ("Great!", "Done!", "Perfect!")
 
 **Rule applies to:**
 - Exact phrases
 - Paraphrases and synonyms
 - Implications of success
 - ANY communication suggesting completion/correctness
+
+## Common Rationalizations
+
+| Excuse | Reality |
+|---|---|
+| "Should work now" | RUN the verification |
+| "I'm confident" | Confidence ≠ evidence |
+| "Just this once" | No exceptions |
+| "Linter passed" | Linter ≠ compiler |
+| "Agent said success" | Verify independently |
+| "I'm tired" | Exhaustion ≠ excuse |
+| "Partial check is enough" | Partial proves nothing |
+| "Different words so rule doesn't apply" | Spirit over letter |
+
+## Verification
+
+- [ ] Verification command run FRESH in this message
+- [ ] Full output read and exit code confirmed
+- [ ] Evidence shown before making any success claim
+- [ ] No "should", "probably", "seems to" in final claim
 
 ## The Bottom Line
 
