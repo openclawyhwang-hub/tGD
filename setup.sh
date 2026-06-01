@@ -302,7 +302,7 @@ if command -v opencode &> /dev/null; then
     mkdir -p ~/.config/opencode/commands
     for cmd in "$TGD_DIR"/.opencode/commands/*.md; do
         cmd_name=$(basename "$cmd")
-        ln -sf "$TGD_DIR/$cmd" ~/.config/opencode/commands/$cmd_name 2>/dev/null || true
+        ln -sf "$cmd" ~/.config/opencode/commands/$cmd_name 2>/dev/null || true
     done
     echo "   ✅ Commands linked (8 tgd-* commands)."
     # Install plugins (hooks)
@@ -321,7 +321,7 @@ if command -v claude &> /dev/null; then
         mkdir -p ~/.claude/skills
         for skill in "$TGD_DIR"/skills/*/; do
             skill_name=$(basename "$skill")
-            ln -sf "$TGD_DIR/$skill" ~/.claude/skills/$skill_name 2>/dev/null || true
+            ln -sf "$skill" ~/.claude/skills/$skill_name 2>/dev/null || true
         done
         echo "   ✅ Skills linked."
 
