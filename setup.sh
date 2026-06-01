@@ -1,11 +1,95 @@
 #!/bin/bash
 # tGD (Agentic PDLC Workflow) One-Click Installer
-# Usage: bash setup.sh
+# Usage: bash setup.sh [--upgrade]
+#
+# --upgrade: 先掃描並清除舊版殘留的 stale symlink / hooks，再重新部署。
+#            適合 tGD-clone git pull 後執行，確保乾淨無殘留。
 
 set -e
 
-echo "🚀 tGD (Agentic PDLC Workflow) Setup"
-echo "===================================="
+MODE="install"
+if [[ "$1" == "--upgrade" || "$1" == "-u" ]]; then
+    MODE="upgrade"
+fi
+
+TGD_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+if [[ "$MODE" == "upgrade" ]]; then
+    echo "🔄 tGD Upgrade — Cleaning stale deployments..."
+    echo "====================================="
+    echo ""
+else
+    echo "🚀 tGD (Agentic PDLC Workflow) Setup"
+    echo "===================================="
+fi
+
+# ─── Version marker ──────────────────────────────────────────────────────────
+# Bump this when you want setup.sh to prompt users to re-run after updates.
+TGD_VERSION="2026-06-01"
+VERSION_FILE="$TGD_DIR/.tgd-version"
+
+if [[ "$MODE" == "install" ]] && [[ -f "$VERSION_FILE" ]]; then
+    INSTALLED_VERSION=$(cat "$VERSION_FILE" 2>/dev/null || echo "unknown")
+    if [[ "$INSTALLED_VERSION" == "$TGD_VERSION" ]]; then
+        echo "ℹ️  tGD is already up to date (v${TGD_VERSION})."
+        echo "   Run 'bash setup.sh --upgrade' to force refresh."
+        exit 0
+    else
+        echo "🔄 New version available: v${INSTALLED_VERSION} → v${TGD_VERSION}"
+        MODE="upgrade"
+    fi
+fi
+
+# Write current version marker
+echo "$TGD_VERSION" > "$VERSION_FILE"
+
+# ─── Upgrade mode: purge stale symlinks ──────────────────────────────────────
+purge_stale_symlinks() {
+    local dir="$1"
+    local prefix="$2"
+    echo "   🧹 Cleaning stale $prefix symlinks in $dir..."
+    if [[ -d "$dir" ]]; then
+        for link in "$dir"/*; do
+            if [[ -L "$link" ]] && [[ ! -e "$link" ]]; then
+                echo "      🗑️  Removing broken symlink: $link"
+                rm -f "$link"
+            fi
+        done
+    fi
+}
+
+purge_stale_skills() {
+    local target_dir="$1"
+    local label="$2"
+    if [[ -d "$target_dir" ]]; then
+        for link in "$target_dir"/*/; do
+            link="${link%/}"
+            if [[ -L "$link" ]]; then
+                local resolved=$(readlink -f "$link" 2>/dev/null || echo "")
+                if [[ -z "$resolved" ]] || [[ ! -e "$resolved" ]]; then
+                    echo "      🗑️  Removing stale skill: $link → $resolved"
+                    rm -f "$link"
+                fi
+            fi
+        done
+    fi
+}
+
+if [[ "$MODE" == "upgrade" ]]; then
+    echo "🧹 Purging stale symlinks from previous version..."
+    purge_stale_symlinks "$HOME/.claude/skills" "Claude Code skills"
+    purge_stale_symlinks "$HOME/.claude/commands" "Claude Code commands"
+    purge_stale_symlinks "$HOME/.gemini/commands" "Gemini CLI commands"
+    purge_stale_symlinks "$HOME/.config/opencode/commands" "OpenCode commands"
+    purge_stale_symlinks "$HOME/.codex/prompts" "Codex CLI prompts"
+    purge_stale_symlinks "$HOME/.codex/skills" "Codex CLI skills"
+    purge_stale_symlinks "$HOME/.config/opencode/skills" "OpenCode skills"
+    purge_stale_symlinks "$HOME/.gemini/skills" "Gemini CLI skills"
+    purge_stale_symlinks "$HOME/.pi/agent/skills" "Pi skills"
+    purge_stale_symlinks "$HOME/.pi/agent/extensions" "Pi extensions"
+    purge_stale_skills "$HOME/.claude/rules" "Claude Code rules"
+    echo ""
+fi
 
 # 1. Verify Environment
 if [[ "$OSTYPE" != "linux-gnu"* && "$OSTYPE" != "darwin"* ]]; then
@@ -20,15 +104,15 @@ if command -v opencode &> /dev/null; then
     echo "   📂 OpenCode detected."
     # Create global commands link (individual files, not subdirectory)
     mkdir -p ~/.config/opencode/commands
-    for cmd in .opencode/commands/*.md; do
+    for cmd in "$TGD_DIR"/.opencode/commands/*.md; do
         cmd_name=$(basename "$cmd")
-        ln -sf "$(pwd)/$cmd" ~/.config/opencode/commands/$cmd_name 2>/dev/null || true
+        ln -sf "$TGD_DIR/$cmd" ~/.config/opencode/commands/$cmd_name 2>/dev/null || true
     done
     echo "   ✅ Commands linked (8 tgd-* commands)."
     # Install plugins (hooks)
-    if [ -d ".opencode/plugins" ]; then
+    if [ -d "$TGD_DIR/.opencode/plugins" ]; then
         mkdir -p ~/.config/opencode/plugins
-        ln -sf "$(pwd)/.opencode/plugins"/* ~/.config/opencode/plugins/ 2>/dev/null || true
+        ln -sf "$TGD_DIR/.opencode/plugins"/* ~/.config/opencode/plugins/ 2>/dev/null || true
         echo "   ✅ Plugins installed (session-start, simplify-ignore, sdd-cache)."
     fi
 fi
@@ -39,23 +123,23 @@ if command -v claude &> /dev/null; then
     if [ -d .claude ]; then
         # Link skills
         mkdir -p ~/.claude/skills
-        for skill in skills/*/; do
+        for skill in "$TGD_DIR"/skills/*/; do
             skill_name=$(basename "$skill")
-            ln -sf "$(pwd)/$skill" ~/.claude/skills/$skill_name 2>/dev/null || true
+            ln -sf "$TGD_DIR/$skill" ~/.claude/skills/$skill_name 2>/dev/null || true
         done
         echo "   ✅ Skills linked."
 
         # Link commands (slash commands: /tgd-map, /tgd-develop, etc.)
-        if [ -d .claude/commands ]; then
+        if [ -d "$TGD_DIR/.claude/commands" ]; then
             mkdir -p ~/.claude/commands
-            ln -sf "$(pwd)/.claude/commands"/* ~/.claude/commands/ 2>/dev/null || true
+            ln -sf "$TGD_DIR/.claude/commands"/* ~/.claude/commands/ 2>/dev/null || true
             echo "   ✅ Commands linked (8 tgd-* slash commands)."
         fi
 
         # Install hooks into settings.json (resolve paths to absolute)
-        if [ -d hooks ] && [ -f hooks/hooks.json ]; then
+        if [ -d "$TGD_DIR/hooks" ] && [ -f "$TGD_DIR/hooks/hooks.json" ]; then
             mkdir -p ~/.claude
-            TGD_ABS="$(pwd)"
+            TGD_ABS="$TGD_DIR"
             SETTINGS="$HOME/.claude/settings.json"
             # Create default settings.json if it doesn't exist
             if [ ! -f "$SETTINGS" ]; then
@@ -108,15 +192,15 @@ fi
 # Gemini CLI
 if command -v gemini &> /dev/null; then
     echo "   📂 Gemini CLI detected."
-    if [ -d .gemini ]; then
+    if [ -d "$TGD_DIR/.gemini" ]; then
         mkdir -p ~/.gemini/commands
-        ln -sf "$(pwd)/.gemini/commands"/* ~/.gemini/commands/ 2>/dev/null || true
+        ln -sf "$TGD_DIR/.gemini/commands"/* ~/.gemini/commands/ 2>/dev/null || true
         echo "   ✅ Commands linked."
     fi
     # Install hooks (Gemini uses flat format, different from Claude Code/Codex nested format)
-    if [ -f .gemini/settings.json ]; then
+    if [ -f "$TGD_DIR/.gemini/settings.json" ]; then
         mkdir -p ~/.gemini
-        TGD_ABS="$(pwd)"
+        TGD_ABS="$TGD_DIR"
         # Resolve relative paths in .gemini/settings.json to absolute
         if [ -f ~/.gemini/settings.json ]; then
             echo "   ⚠️  ~/.gemini/settings.json exists. Merging tGD hooks..."
@@ -201,21 +285,21 @@ fi
 if command -v codex &> /dev/null; then
     echo "   📂 Codex CLI detected."
     mkdir -p ~/.codex
-    if [ -d "skills" ]; then
-        ln -sf "$(pwd)/skills" ~/.codex/skills/tGD 2>/dev/null || true
+    if [ -d "$TGD_DIR/skills" ]; then
+        ln -sf "$TGD_DIR/skills" ~/.codex/skills/tGD 2>/dev/null || true
         echo "   ✅ Skills linked for auto-detection."
     fi
-    if [ -d ".codex/prompts" ]; then
+    if [ -d "$TGD_DIR/.codex/prompts" ]; then
         mkdir -p ~/.codex/prompts
-        ln -sf "$(pwd)/.codex/prompts"/* ~/.codex/prompts/ 2>/dev/null || true
+        ln -sf "$TGD_DIR/.codex/prompts"/* ~/.codex/prompts/ 2>/dev/null || true
         echo "   ✅ Prompts linked (8 tgd-* commands)."
     fi
     # Install hooks (Codex only reads ~/.codex/hooks.json — plugin-local hooks don't work)
     # NOTE: Only SessionStart hook is cross-platform. simplify-ignore and sdd-cache
     # scripts rely on CLAUDE_PROJECT_DIR env var, which Codex does not set.
-    if [ -f hooks/hooks.json ]; then
+    if [ -f "$TGD_DIR/hooks/hooks.json" ]; then
         HOOKS_DST="$HOME/.codex/hooks.json"
-        TGD_ABS="$(pwd)"
+        TGD_ABS="$TGD_DIR"
         if [ -f "$HOOKS_DST" ]; then
             echo "   ⚠️  ~/.codex/hooks.json exists. Merging tGD hooks..."
             python3 -c "
@@ -286,12 +370,12 @@ if command -v pi &> /dev/null; then
     echo "   📂 Pi Coding Agent detected."
     # Install extension and instructions to ~/.pi/agent/
     mkdir -p "$HOME/.pi/agent/extensions"
-    if [ -f ".pi/extensions/tgd-commands.ts" ]; then
-        ln -sf "$(pwd)/.pi/extensions/tgd-commands.ts" "$HOME/.pi/agent/extensions/tgd-commands.ts" 2>/dev/null || true
+    if [ -f "$TGD_DIR/.pi/extensions/tgd-commands.ts" ]; then
+        ln -sf "$TGD_DIR/.pi/extensions/tgd-commands.ts" "$HOME/.pi/agent/extensions/tgd-commands.ts" 2>/dev/null || true
         echo "   ✅ Extension installed to ~/.pi/agent/extensions/tgd-commands.ts"
     fi
-    if [ -f ".pi/instructions.md" ]; then
-        ln -sf "$(pwd)/.pi/instructions.md" "$HOME/.pi/agent/instructions.md" 2>/dev/null || true
+    if [ -f "$TGD_DIR/.pi/instructions.md" ]; then
+        ln -sf "$TGD_DIR/.pi/instructions.md" "$HOME/.pi/agent/instructions.md" 2>/dev/null || true
         echo "   ✅ Instructions installed to ~/.pi/agent/instructions.md"
     fi
 else
@@ -351,13 +435,6 @@ if [ -d "skills/browser-testing-with-devtools" ]; then
 fi
 
 echo ""
-echo "===================================="
-echo "✅ Setup Complete!"
-echo ""
-
-# Install tGD rules as SEPARATE files (no pollution)
-TGD_DIR="$(cd "$(dirname "$0")" && pwd)"
-
 echo "📋 Installing tGD rules (standalone files, no config pollution)..."
 echo ""
 
