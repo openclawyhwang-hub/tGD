@@ -581,12 +581,15 @@ echo "📊 Checking CodeGraph..."
 if command -v codegraph &> /dev/null; then
     echo "   ✅ CodeGraph already installed."
 else
-    if command -v pip3 &> /dev/null || command -v pip &> /dev/null; then
-        PIP_CMD=$(command -v pip3 || command -v pip)
-        echo "   📥 Installing CodeGraph..."
-        $PIP_CMD install codegraph-cli 2>/dev/null && echo "   ✅ CodeGraph installed." || echo "   ⚠️  Install manually: pip install codegraph-cli"
+    if command -v curl &> /dev/null; then
+        echo "   📥 Installing CodeGraph via official installer..."
+        curl -fsSL https://raw.githubusercontent.com/colbymchenry/codegraph/main/install.sh | sh 2>/dev/null && echo "   ✅ CodeGraph installed." || echo "   ⚠️  Install manually: curl -fsSL https://raw.githubusercontent.com/colbymchenry/codegraph/main/install.sh | sh"
+    elif command -v npx &> /dev/null; then
+        echo "   📥 Installing CodeGraph via npx..."
+        npx -y @colbymchenry/codegraph 2>/dev/null && echo "   ✅ CodeGraph installed." || echo "   ⚠️  Install manually: npm i -g @colbymchenry/codegraph"
     else
-        echo "   ⚠️  pip not found. Install Python first, then: pip install codegraph-cli"
+        echo "   ⚠️  curl or npx required. Install CodeGraph manually:"
+        echo "      curl -fsSL https://raw.githubusercontent.com/colbymchenry/codegraph/main/install.sh | sh"
     fi
 fi
 
