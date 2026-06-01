@@ -38,7 +38,7 @@ This project supports 8 lifecycle commands that work across **OpenCode**, **Clau
 || `/tgd-map` | Map | `context-engineering` → `codegraph init` (external CLI tool, not a skill — skip if not installed) |
 || `/tgd-define` | Define | `interview-me` → `idea-refine` → `spec-driven-development` |
 || `/tgd-plan` | Plan | `planning-and-task-breakdown` → **`jira-auto-sync` (conditional)** |
-|| `/tgd-develop` | Build | `context-engineering` → `source-driven-development` → `incremental-implementation` → `test-driven-development` (+ `frontend-ui-engineering`, `api-and-interface-design`, `doubt-driven-development` when relevant) |
+|| `/tgd-develop` | Build | `context-engineering` → `source-driven-development` → (`subagent-driven-development` OR `incremental-implementation`) → `test-driven-development` → `verification-before-completion` (+ `frontend-ui-engineering`, `api-and-interface-design`, `doubt-driven-development` when relevant) |
 || `/tgd-verify` | Verify | `debugging-and-error-recovery` → `test-driven-development` (+ `webwright`, `browser-testing-with-devtools` when relevant) |
 || `/tgd-review` | Review | `code-review-and-quality` → `code-simplification` (+ `security-and-hardening`, `performance-optimization` when relevant) |
 || `/tgd-simplify` | Review | `code-simplification` |

@@ -177,13 +177,10 @@ After writing SPEC.md, check the **Feature Type** field.
    - If `[Screenshot/PDF]` → Use `vision_analyze` to extract UI elements → skip to step 3
    - If `[None]` → proceed to step 2
 
-2. **Generate design mockups** using `claude-design` skill:
+2. **Generate design mockups:**
    - Read the SPEC.md for feature requirements
-   - Generate 3 variants following claude-design workflow:
-     - **Conservative** — closest to existing patterns, lowest risk
-     - **Strong-fit** — best interpretation of the feature requirements
-     - **Divergent** — more novel, explores design boundaries
-   - Each variant is a self-contained HTML file saved to `tGD/<feature-name>/design/`
+   - Generate 3 variants (Conservative / Strong-fit / Divergent) as self-contained HTML files
+   - Save to `tGD/<feature-name>/design/`
    - Present the 3 variants to the user with a comparison table
    - **STOP. Ask user to pick a direction** (or request a hybrid)
 
@@ -382,6 +379,6 @@ Before proceeding to implementation, confirm:
 - [ ] Boundaries (Always/Ask First/Never) are defined
 - [ ] The spec is saved to `tGD/<feature-name>/SPEC.md`
 - [ ] Working branch is `feature/<feature-name>` (not `main`/`master`)
-- [ ] If UI feature: 3 design variants generated via `claude-design`, user picked a direction
+- [ ] If UI feature: 3 design variants generated, user picked a direction
 - [ ] If UI feature: `tGD/<feature-name>/DESIGN.md` exists with all required sections
 - [ ] If UI feature: user confirmed DESIGN.md before proceeding to PLAN

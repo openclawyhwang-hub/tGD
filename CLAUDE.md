@@ -8,7 +8,7 @@ This is the tGD project — a collection of production-grade engineering skills 
 skills/       → Core skills (SKILL.md per directory)
 agents/       → Reusable agent personas (code-reviewer, test-engineer, security-auditor)
 hooks/        → Session lifecycle hooks
-.claude/commands/ → Slash commands (/spec, /plan, /build, /test, /review, /code-simplify, /ship)
+.claude/commands/ → Slash commands (/tgd-map, /tgd-define, /tgd-plan, /tgd-develop, /tgd-verify, /tgd-review, /tgd-simplify, /tgd-ship)
 references/   → Supplementary checklists (testing, performance, security, accessibility)
 docs/         → Setup guides for different tools
 ```
