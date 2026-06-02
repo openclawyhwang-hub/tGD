@@ -25,19 +25,23 @@ JIRA_PROJECT   = Project key (e.g. ENG, FE, BE) — 必填
 **Setup (one-time):**
 ```bash
 # Test connection (Bearer auth)
-curl -s -H "Authorization: Bearer *** "$JIRA_URL/rest/api/2/myself" | python3 -m json.tool
+curl -x "" -s -H "Authorization: Bearer *** "$JIRA_URL/rest/api/2/myself" | python3 -m json.tool
 ```
 If it returns user info, auth works. If 401/403, check credentials or proxy settings.
 
 ## Proxy / Firewall Handling
 
-Company networks often intercept HTTPS. If curl fails with SSL errors:
+Company networks often intercept HTTPS. If curl fails with SSL errors or timeouts:
 
 ```bash
-# Option 1: Set proxy
+# Option 1: Set proxy (if Jira is external or proxy is required to reach it)
 export HTTPS_PROXY=http://proxy.company.com:8080
 
-# Option 2: Skip cert verification (last resort, NOT recommended for production)
+# Option 2: Bypass proxy for internal Jira Data Center (if proxy is globally set but Jira is on intranet)
+# Use curl -x "" to bypass the proxy
+curl -x "" -s -H "Authorization: Bearer $JIRA_TOKEN" ...
+
+# Option 3: Skip cert verification (last resort, NOT recommended for production)
 # Add -k flag to curl calls
 ```
 
@@ -76,9 +80,9 @@ Read `tGD/plan/<feature-name>/TASKS.md` and extract each task block:
 Data Center may have custom issue types. Fetch available types:
 
 ```bash
-curl -s \
+curl -x "" -s \
   "$JIRA_URL/rest/api/2/issue/createmeta?projectKeys=$JIRA_PROJECT&expand=projects.issuetypes" \
-  -H "Authorization: Bearer *** \
+  -H "Authorization: Bearer $JIRA_TOKEN" \
   -H "Content-Type: application/json" | python3 -m json.tool
 ```
 
@@ -89,9 +93,9 @@ Pick the issue type ID (typically "Task" = `10001` or `3`, "Story" = `10000` or 
 For each parsed task, create a Jira issue:
 
 ```bash
-curl -s -X POST \
+curl -x "" -s -X POST \
   "$JIRA_URL/rest/api/2/issue" \
-  -H "Authorization: Bearer *** \
+  -H "Authorization: Bearer $JIRA_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
   "fields": {
