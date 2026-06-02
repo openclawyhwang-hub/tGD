@@ -20,8 +20,6 @@ JIRA_TOKEN=*** token (PAT)
 JIRA_PROJECT   = Project key (e.g. ENG, FE, BE) — 必填
 ```
 
-**Sprint 分配：**自動跳過 Sprint 指派步驟。如需將 issue 放入特定 Sprint，使用者可手動在 Jira UI 批次操作，或在 `/tgd-plan` 後另行處理。
-
 **Setup (one-time):**
 ```bash
 # Test connection (Bearer auth)
@@ -221,9 +219,6 @@ Mandatory fields vary by company and project. When a field is required, inject i
 // Epic Link / Parent (String)
 "customfield_10011": "PROJ-1001",
 
-// Sprint (Integer - Sprint ID)
-"customfield_10020": 1234,
-
 // User Picker (Single User)
 "customfield_10300": { "name": "elon.wang" },
 
@@ -314,30 +309,6 @@ If the company Jira has **required custom fields** (e.g., Component, Fix Version
 ```
 
 **How to discover:** Run `createmeta` (Step 2) and check which fields have `"required": true`. Add them to the payload.
-
-### Sprint Assignment Without Agile Plugin
-
-If `/rest/agile/1.0/` is unavailable:
-
-```bash
-# Find the custom field ID for Sprint
-curl -s \
-  "$JIRA_URL/rest/api/2/field" \
-  -H "Authorization: Bearer $JIRA_TOKEN" | python3 -c "
-import sys, json
-fields = json.load(sys.stdin)
-for f in fields:
-  if f['name'] == 'Sprint':
-    print(f['id'], f['custom'])
-"
-
-# Then set it via issue update:
-curl -s -X PUT \
-  "$JIRA_URL/rest/api/2/issue/$ISSUE_KEY" \
-  -H "Authorization: Bearer $JIRA_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"update": {"customfield_XXXXX": [{"set": 142}]}}'
-```
 
 ### SSL / Proxy Interception
 
