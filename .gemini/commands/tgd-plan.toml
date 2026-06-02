@@ -27,12 +27,14 @@ Each task should be implementable in isolation with clear success criteria. Orde
 
 After completing the plan, verify the outputs.
 
-**Jira Integration Gate** → After TASKS.md is generated, **ALWAYS ask** the user:
+**Conditional: Jira Integration Gate** → After TASKS.md is generated, **ALWAYS ask** the user:
 "Do you want to sync these tasks to Jira?"
-If yes → Run the `jira-auto-sync` skill:
-1. Ask for JIRA_URL, JIRA_PROJECT (key), and JIRA_TOKEN (Bearer/PAT) if not provided.
-2. Parse tGD/plan/<feature-name>/TASKS.md and create issues via Jira REST API v2.
-3. Report created issue keys (e.g., ENG-1234).
+If yes → Run the `jira-auto-sync` skill.
+1. Ask for `JIRA_URL`, `JIRA_PROJECT` (key), and `JIRA_TOKEN` (Bearer/PAT) if not provided.
+2. Discover Issue Types & Required Fields. Let user select.
+3. **Check for Existing Issues**: Search for `tgd` + `<feature-name>` labels. If found, ask user to Reuse or Create New.
+4. Parse `tGD/plan/<feature-name>/TASKS.md` and create issues via Jira REST API v2.
+5. Report created issue keys (e.g., `ENG-1234`).
 If no → Skip silently and proceed to verification.
 
 **Verification Gate:**
