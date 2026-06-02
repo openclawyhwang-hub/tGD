@@ -202,6 +202,40 @@ Files:
 {noformat}
 ```
 
+#### 💉 Custom Field Injection Reference
+
+Mandatory fields vary by company and project. When a field is required, inject it into the JSON payload using the correct data type:
+
+```json
+// Dropdown / Select List (Single Choice)
+"customfield_10100": { "value": "High" },
+
+// Component/s (Multi-select)
+"components": [{ "name": "Backend" }, { "name": "Database" }],
+
+// Fix Version/s (Multi-select)
+"fixVersions": [{ "name": "v1.2.0" }],
+
+// Epic Link / Parent (String)
+"customfield_10011": "PROJ-1001",
+
+// Sprint (Integer - Sprint ID)
+"customfield_10020": 1234,
+
+// User Picker (Single User)
+"customfield_10300": { "name": "elon.wang" },
+
+// Text / Text Area (String)
+"customfield_10400": "Some internal notes here.",
+
+// Labels
+"labels": ["tgd", "jwt-auth", "urgent"]
+```
+> ⚠️ **Warning:** The `schema.type` returned by `createmeta` determines the structure. 
+> *   `option` → `{ "value": "..." }`
+> *   `array` → `[{ "name": "..." }]`
+> *   `string` → `"..."` directly.
+
 #### 🏆 Golden Example
 
 **Scenario:** `feature-name` = `jwt-auth`, Task = "Implement Login API"
