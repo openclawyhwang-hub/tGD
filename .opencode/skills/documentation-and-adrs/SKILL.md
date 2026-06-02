@@ -35,7 +35,7 @@ ADRs capture the reasoning behind significant technical decisions. They're the h
 
 ### ADR Template
 
-Store ADRs in `tGD/decisions/` with sequential numbering:
+Store ADRs in `tGD/<feature-name>/decisions/` with sequential numbering:
 
 **Cross-feature decisions** go in `tGD/shared/decisions/`:
 

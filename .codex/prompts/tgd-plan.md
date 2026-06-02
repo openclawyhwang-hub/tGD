@@ -7,19 +7,19 @@ Run the planning-and-task-breakdown skill. This is the PLAN phase.
 Pre-flight:
 - Check tGD/map/CONTEXT.md exists. If missing, /tgd-map first.
 - Scan tGD/ for feature subdirectories. If none, /tgd-define first.
-- Check tGD/define/PRD.md and SPEC.md exist. If missing, /tgd-define first.
+- Check tGD/<feature-name>/define/PRD.md and SPEC.md exist. If missing, /tgd-define first.
 
 Steps:
 1. Read PRD.md and SPEC.md
 2. Decompose into small, verifiable tasks with acceptance criteria
 3. Order by dependencies
-4. Write tGD/plan/TASKS.md
+4. Write tGD/<feature-name>/plan/TASKS.md
 5. **Jira Gate** → ALWAYS ask the user if they want to sync to Jira.
    If yes → run jira-auto-sync (need JIRA_URL, JIRA_PROJECT, JIRA_TOKEN)
    If no → skip and proceed to verification.
 
 Verification Gate:
-- [ ] tGD/plan/TASKS.md exists and is non-empty
+- [ ] tGD/<feature-name>/plan/TASKS.md exists and is non-empty
 - [ ] Each task has acceptance criteria
 
 After completing, suggest: /tgd-develop to start building.

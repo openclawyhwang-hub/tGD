@@ -22,9 +22,9 @@ After completing the spec, verify the outputs.
 
 **Verification Gate:**
 - [ ] `tGD/define/` directory exists
-- [ ] `tGD/define/PRD.md` exists and is non-empty
-- [ ] `tGD/define/SPEC.md` exists and is non-empty
+- [ ] `tGD/<feature-name>/define/PRD.md` exists and is non-empty
+- [ ] `tGD/<feature-name>/define/SPEC.md` exists and is non-empty
 - [ ] Working branch is `feature/<feature-name>`
-- [ ] If UI feature: `tGD/define/DESIGN.md` exists with Component Tree
+- [ ] If UI feature: `tGD/<feature-name>/define/DESIGN.md` exists with Component Tree
 
 If verification passes, suggest the next step: `/tgd-plan` to decompose it into tasks.

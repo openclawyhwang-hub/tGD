@@ -26,8 +26,8 @@ Spec-driven development has four phases. Do not advance to the next phase until 
 **Step 0: Feature Name Resolution**
 Before writing any content, determine the `<feature-name>`:
 1. Derive a kebab-case slug from the user's request (e.g., "User Login" → "user-login", "Add Dashboard" → "add-dashboard").
-2. **Create directory**: `mkdir -p tGD/define/`.
-3. **Verify**: If `tGD/define/` already exists, use it. If not, the previous step must have created it.
+2. **Create directory**: `mkdir -p tGD/<feature-name>/define/`.
+3. **Verify**: If `tGD/<feature-name>/define/` already exists, use it. If not, the previous step must have created it.
 4. **Lock**: Use this exact `<feature-name>` for all subsequent files (PRD.md, SPEC.md, TASKS.md, etc.).
 
 **🌿 Step 0.5: Git Branch Setup**
@@ -67,7 +67,7 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 2. **User Stories** — "As a [user], I want [goal], so that [benefit]."
 3. **Success Criteria** — Measurable metrics for completion.
 
-**PRD.md template (save to `tGD/define/PRD.md`):**
+**PRD.md template (save to `tGD/<feature-name>/define/PRD.md`):**
 
 ```markdown
 # PRD: [Feature Name]
@@ -129,7 +129,7 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 | Phase 1 | [X weeks] | [Milestone] |
 ```
 
-**SPEC.md template (save to `tGD/define/SPEC.md`):**
+**SPEC.md template (save to `tGD/<feature-name>/define/SPEC.md`):**
 
 ```markdown
 # SPEC: [Feature Name]
@@ -180,14 +180,14 @@ After writing SPEC.md, check the **Feature Type** field.
 2. **Generate design mockups:**
    - Read the SPEC.md for feature requirements
    - Generate 3 variants (Conservative / Strong-fit / Divergent) as self-contained HTML files
-   - Save to `tGD/define/design/`
+   - Save to `tGD/<feature-name>/define/design/`
    - Present the 3 variants to the user with a comparison table
    - **STOP. Ask user to pick a direction** (or request a hybrid)
 
 3. **Write DESIGN.md** based on chosen design:
    - Extract from chosen variant (or existing design if step 1 was used)
    - Apply anti-slop rules from the template below
-   - Save to `tGD/define/DESIGN.md`
+   - Save to `tGD/<feature-name>/define/DESIGN.md`
 
 4. **Confirm with user:**
    - Present DESIGN.md summary: Visual Direction, Font choices, Color palette, Spacing
@@ -377,8 +377,8 @@ Before proceeding to implementation, confirm:
 - [ ] The human has reviewed and approved the spec
 - [ ] Success criteria are specific and testable
 - [ ] Boundaries (Always/Ask First/Never) are defined
-- [ ] The spec is saved to `tGD/define/SPEC.md`
+- [ ] The spec is saved to `tGD/<feature-name>/define/SPEC.md`
 - [ ] Working branch is `feature/<feature-name>` (not `main`/`master`)
 - [ ] If UI feature: 3 design variants generated, user picked a direction
-- [ ] If UI feature: `tGD/define/DESIGN.md` exists with all required sections
+- [ ] If UI feature: `tGD/<feature-name>/define/DESIGN.md` exists with all required sections
 - [ ] If UI feature: user confirmed DESIGN.md before proceeding to PLAN

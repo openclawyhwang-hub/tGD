@@ -63,7 +63,7 @@ The skill expects `TASKS.md` in the standard tGD format:
 
 ### Step 1: Parse TASKS.md
 
-Read `tGD/plan/TASKS.md` and extract each task block:
+Read `tGD/<feature-name>/plan/TASKS.md` and extract each task block:
 - Task number/ID
 - Title (summary)
 - Description
@@ -134,7 +134,7 @@ In `/tgd-plan`, add as a conditional skill:
 **Conditional (apply when relevant):**
 - User wants Jira tickets? → `jira-auto-sync`
   1. Ask for JIRA_URL, JIRA_PROJECT (必填), JIRA_TOKEN (first time only)
-  2. Parse tGD/plan/TASKS.md
+  2. Parse tGD/<feature-name>/plan/TASKS.md
   3. Create issues via REST API v2
   4. Report created issue keys
 ```
