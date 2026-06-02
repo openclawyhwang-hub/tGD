@@ -1,18 +1,30 @@
 # /tgd-develop
 
-Build — implement one thin vertical slice at a time
-
-Run the incremental-implementation skill. This is the BUILD phase.
+Build — implement with isolated worktree and task-based execution mode.
 
 Pre-flight:
 - Check tGD/map/CONTEXT.md exists. If missing, /tgd-map first.
 - Check tGD/plan/<feature-name>/TASKS.md exists. If missing, /tgd-plan first.
 
+**🌳 Step 1: Worktree Isolation (Mandatory)**
+1. Create: `git worktree add ../project-<feature-name> feature/<feature-name>`
+2. Action: All coding/testing MUST happen inside `../project-<feature-name>/`.
+
+**⚡ Step 2: Execution Mode Routing**
+- **< 3 tasks**: `incremental-implementation` (Main agent implements directly in worktree).
+- **≥ 3 tasks**: `subagent-driven-development` (Subagents implement and review in worktree).
+
 Core flow:
-1. context-engineering — load right spec sections for current task
-2. source-driven-development — ground decisions in official docs
-3. incremental-implementation — thin slices: implement -> test -> verify -> commit
-4. test-driven-development — Red-Green-Refactor for each slice
+1. `context-engineering` — load spec/context
+2. `source-driven-development` — ground decisions in docs
+3. Implement tasks in worktree
+4. `test-driven-development` — write tests
+5. `verification-before-completion` — run tests, show output
+
+**🧹 Step 3: Cleanup**
+1. Return to main project directory.
+2. Merge `feature/<feature-name>` to `main`.
+3. Remove worktree: `git worktree remove ../project-<feature-name>`.
 
 Conditional:
 - Frontend? -> frontend-ui-engineering
