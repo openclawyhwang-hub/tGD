@@ -14,7 +14,9 @@ Steps:
 2. Decompose into small, verifiable tasks with acceptance criteria
 3. Order by dependencies
 4. Write tGD/<feature>/TASKS.md
-5. If jira-auto-sync available, sync to Jira
+5. **Jira Gate** → ALWAYS ask the user if they want to sync to Jira.
+   If yes → run jira-auto-sync (need JIRA_URL, JIRA_PROJECT, JIRA_TOKEN)
+   If no → skip and proceed to verification.
 
 Verification Gate:
 - [ ] tGD/<feature>/TASKS.md exists and is non-empty
