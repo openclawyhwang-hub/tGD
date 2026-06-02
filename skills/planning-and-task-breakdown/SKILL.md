@@ -47,14 +47,16 @@ Before planning, determine and validate `<feature-name>`:
 2. **Propose (if ambiguous)**: If multiple feature directories exist or none exist, propose 3 kebab-case `<feature-name>` options and wait for user selection.
 3. **Lock**: All planning artifacts go into `tGD/plan/<feature-name>/`.
 
-### Step 1: Enter Plan Mode
+### Step 1: Enter Plan Mode (Read-Only Analysis)
 
-Before writing any code, operate in read-only mode:
+Before writing any code, operate in read-only mode to gather context from all available tGD artifacts:
 
-- Read the spec and relevant codebase sections
-- Identify existing patterns and conventions
-- Map dependencies between components
-- Note risks and unknowns
+- **Read `tGD/map/CONTEXT.md`**: Understand existing project structure, tech stack, and conventions.
+- **Read `tGD/define/<feature-name>/PRD.md`**: Understand the business goals, user pain points, and scope boundaries.
+- **Read `tGD/define/<feature-name>/SPEC.md`**: Analyze technical requirements, API contracts, and database schemas.
+- **Read `tGD/define/<feature-name>/DESIGN.md` (if present)**: Review component trees and UI flows.
+
+**Synthesis:** Map dependencies between existing code and new requirements. Note risks and unknowns.
 
 **Do NOT write code during planning.** Write a plan document at `tGD/plan/<feature-name>/TASKS.md` covering: dependency graph, ordered task list with acceptance criteria, verification checkpoints, and risks with mitigations.
 

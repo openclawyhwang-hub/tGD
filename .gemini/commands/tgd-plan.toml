@@ -21,6 +21,14 @@ prompt = """
 
 Run the `planning-and-task-breakdown` skill. Decompose the specification into small, verifiable tasks with acceptance criteria and dependency ordering.
 
+**Mandatory Reading:**
+1. **Read `tGD/map/CONTEXT.md`**: Understand existing project structure and tech stack.
+2. **Read `tGD/define/<feature-name>/PRD.md`**: Understand business goals and user pain points.
+3. **Read `tGD/define/<feature-name>/SPEC.md`**: Analyze technical requirements and API contracts.
+4. **Read `tGD/define/<feature-name>/DESIGN.md` (if present)**: Review UI flows and components.
+
+**Output:** `tGD/plan/<feature-name>/TASKS.md`.
+
 Each task should be implementable in isolation with clear success criteria. Order tasks by dependencies so they can be executed in the right sequence.
 
 **If UI feature:** Read `DESIGN.md` to understand Component Tree, Design Tokens, Responsive Breakpoints, and Interaction Patterns. Use these to inform task breakdown.
