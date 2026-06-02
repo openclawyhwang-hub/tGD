@@ -55,6 +55,14 @@ bash setup.sh
 ```
 > Erkennt installierte CLIs automatisch. Webwright-Abhängigkeiten werden automatisch installiert.
 
+### Installationsoptionen
+
+| Befehl | Beschreibung |
+|--------|-------------|
+| `bash setup.sh` | Neuinstallation (oder Upgrade auf eine neue Version) |
+| `bash setup.sh --upgrade` | Erneuern: ungültige Symlinks bereinigen und alle Links/Hooks neu erstellen |
+| `bash setup.sh --uninstall` | Alle tGD-Installation entfernen, ohne andere Dateien zu beeinträchtigen |
+
 ### 2. Agent starten
 ```bash
 claude   # Claude Code

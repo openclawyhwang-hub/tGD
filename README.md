@@ -56,6 +56,14 @@ bash setup.sh
 ```
 > Auto-detects your installed CLIs (Claude, Codex, Gemini, OpenCode, Pi) and configures everything. Webwright dependencies installed automatically.
 
+### Setup Options
+
+| Command | What it does |
+|---------|-------------|
+| `bash setup.sh` | Fresh install (or update to a new version) |
+| `bash setup.sh --upgrade` | Force refresh: clean broken symlinks and rebuild all links/hooks |
+| `bash setup.sh --uninstall` | Remove all tGD symlinks and hooks without touching your other files |
+
 ### 2. Start Your Agent
 ```bash
 # Claude Code

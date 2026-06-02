@@ -55,6 +55,14 @@ bash setup.sh
 ```
 > インストール済みCLI（Claude、Codex、Gemini、OpenCode、Pi）を自動検出。Webwrightの依存関係も自動インストール。
 
+### インストールオプション
+
+| コマンド | 説明 |
+|--------|------|
+| `bash setup.sh` | 新規インストール（または新バージョンへの自動アップグレード） |
+| `bash setup.sh --upgrade` | 強制更新：無効なシンボリックリンクをクリーンアップし、すべてのリンク/フックを再構築 |
+| `bash setup.sh --uninstall` | すべてのtGD配備を削除（他のファイルには影響しない） |
+
 ### 2. エージェントを起動
 ```bash
 claude   # Claude Code

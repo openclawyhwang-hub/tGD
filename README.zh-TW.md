@@ -57,6 +57,14 @@ bash setup.sh
 ```
 > 自動偵測已安裝的 CLI（Claude、Codex、Gemini、OpenCode、Pi）並完成設定。Webwright 依賴自動安裝。
 
+### 安裝選項
+
+| 指令 | 說明 |
+|------|------|
+| `bash setup.sh` | 全新安裝（或自動升級到新版本） |
+| `bash setup.sh --upgrade` | 強制重建：清除無效 symlink 並重新建立所有連結和 hooks |
+| `bash setup.sh --uninstall` | 移除所有 tGD 部署，不影響其他設定 |
+
 ### 2. 啟動你的 Agent
 ```bash
 # Claude Code
