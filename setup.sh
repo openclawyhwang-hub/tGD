@@ -598,15 +598,12 @@ echo "📊 Checking CodeGraph..."
 if command -v codegraph &> /dev/null; then
     echo "   ✅ CodeGraph already installed."
 else
-    if command -v curl &> /dev/null; then
-        echo "   📥 Installing CodeGraph via official installer..."
-        curl -fsSL https://raw.githubusercontent.com/colbymchenry/codegraph/main/install.sh | sh 2>/dev/null && echo "   ✅ CodeGraph installed." || echo "   ⚠️  Install manually: curl -fsSL https://raw.githubusercontent.com/colbymchenry/codegraph/main/install.sh | sh"
-    elif command -v npx &> /dev/null; then
-        echo "   📥 Installing CodeGraph via npx..."
-        npx -y @colbymchenry/codegraph 2>/dev/null && echo "   ✅ CodeGraph installed." || echo "   ⚠️  Install manually: npm i -g @colbymchenry/codegraph"
+    if command -v npm &> /dev/null; then
+        echo "   📥 Installing CodeGraph via npm..."
+        npm install -g @colbymchenry/codegraph 2>/dev/null && echo "   ✅ CodeGraph installed." || echo "   ⚠️  Install manually: npm install -g @colbymchenry/codegraph"
     else
-        echo "   ⚠️  curl or npx required. Install CodeGraph manually:"
-        echo "      curl -fsSL https://raw.githubusercontent.com/colbymchenry/codegraph/main/install.sh | sh"
+        echo "   ⚠️  npm not found. Install CodeGraph manually:"
+        echo "      npm install -g @colbymchenry/codegraph"
     fi
 fi
 
