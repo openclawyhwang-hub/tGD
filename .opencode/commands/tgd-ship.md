@@ -11,11 +11,11 @@ description: Ship to production — faster is safer
 2. If none found: 🛑 STOP. "No features defined. Run `/tgd-define` first."
 3. If exactly one found: Lock it as `<feature-name>`.
 4. If multiple found: List them and ask user to specify.
-5. **Verify**: Ensure all work targets `tGD/<feature-name>/`.
+5. **Verify**: `tGD/define/SPEC.md` exists (defines scope).
 
 **🔒 Pre-flight: Artifact Check**
 - [ ] Review passed (no critical issues).
-- [ ] `tGD/<feature-name>/REVIEW.md` exists.
+- [ ] `tGD/review/REVIEW.md` exists.
 - [ ] `tests/` exists and passes.
 - **If missing:** STOP. Tell user: "Review or tests incomplete. Please run `/tgd-review` first."
 

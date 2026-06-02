@@ -106,8 +106,8 @@ Agent: What endpoints need auth?
 User: /api/profile and /api/settings
 
 Agent: Creating PRD + SPEC...
-→ tGD/auth-feature/PRD.md
-→ tGD/auth-feature/SPEC.md
+→ tGD/define/PRD.md
+→ tGD/define/SPEC.md
 → Ready for /tgd-plan
 ```
 
@@ -307,17 +307,29 @@ A: Yes! Edit the skill files in `skills/` to match your team's workflow.
 
 ## 📁 Project Structure
 
+### Runtime Output (generated during development)
+```
+<your-project>/
+├── tGD/
+│   ├── map/CONTEXT.md          # Project context (/tgd-map)
+│   ├── define/PRD.md           # Product requirements (/tgd-define)
+│   ├── define/SPEC.md          # Technical spec (/tgd-define)
+│   ├── define/DESIGN.md        # UI design (/tgd-define, if applicable)
+│   └── plan/TASKS.md           # Task breakdown (/tgd-plan)
+```
+
+### Repo Contents
 ```
 tGD/
-├── skills/                            # 26 skills
-├── agents/                            # 3 specialist personas
-├── references/                        # Checklists (Security, Testing, etc.)
-├── .claude/commands/                  # Claude Code commands
-├── .gemini/commands/                  # Gemini CLI commands
-├── .opencode/commands/                # OpenCode commands
-├── .pi/extensions/                    # Pi Coding Agent commands
-├── scripts/                           # Setup & validation
-└── docs/                              # Platform-specific guides
+├── skills/                     # 28 skills
+├── agents/                     # 3 specialist personas
+├── references/                 # Checklists (Security, Testing, etc.)
+├── .claude/commands/           # Claude Code slash commands
+├── .gemini/commands/           # Gemini CLI commands
+├── .opencode/commands/         # OpenCode commands
+├── .codex/prompts/             # Codex CLI prompts
+├── scripts/                    # Setup & validation
+└── docs/                       # Platform-specific guides
 ```
 
 ---

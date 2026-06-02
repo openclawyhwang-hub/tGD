@@ -11,7 +11,7 @@ description: Verify — prove it works with debugging and test pyramid
 2. If none found: 🛑 STOP. "No features defined. Run `/tgd-define` first."
 3. If exactly one found: Lock it as `<feature-name>`.
 4. If multiple found: List them and ask user to specify.
-5. **Verify**: Ensure all work targets `tGD/<feature-name>/`.
+5. **Verify**: `tGD/define/SPEC.md` exists (defines scope).
 
 **🔒 Pre-flight: Artifact Check**
 - [ ] Source code files exist in `src/`.
