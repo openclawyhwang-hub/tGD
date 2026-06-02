@@ -29,6 +29,12 @@ curl -x "" -s -H "Authorization: Bearer *** "$JIRA_URL/rest/api/2/myself" | pyth
 ```
 If it returns user info, auth works. If 401/403, check credentials or proxy settings.
 
+**Priority Mapping:**
+Map TASKS.md priority to Jira priority names (check your instance via `curl -x "" $JIRA_URL/rest/api/2/priority`):
+- High → "High" (or "Highest", "Critical")
+- Medium → "Medium" (or "Normal")
+- Low → "Low" (or "Lowest")
+
 ## Proxy / Firewall Handling
 
 Company networks often intercept HTTPS. If curl fails with SSL errors or timeouts:
@@ -75,18 +81,44 @@ Read `tGD/plan/<feature-name>/TASKS.md` and extract each task block:
 - Files Likely Touched
 - Estimate (if present)
 
-### Step 2: Get Issue Type ID
+### Step 2: Discover Issue Types and Custom Fields
 
-Data Center may have custom issue types. Fetch available types:
+Data Center instances vary widely. You MUST query metadata first and let the user choose.
 
+**1. Fetch Project Metadata**
 ```bash
 curl -x "" -s \
-  "$JIRA_URL/rest/api/2/issue/createmeta?projectKeys=$JIRA_PROJECT&expand=projects.issuetypes" \
+  "$JIRA_URL/rest/api/2/issue/createmeta?projectKeys=$JIRA_PROJECT&expand=projects.issuetypes.fields" \
   -H "Authorization: Bearer $JIRA_TOKEN" \
-  -H "Content-Type: application/json" | python3 -m json.tool
+  -H "Content-Type: application/json" > /tmp/jira_meta.json
 ```
 
-Pick the issue type ID (typically "Task" = `10001` or `3`, "Story" = `10000` or `7`). Store as `ISSUE_TYPE_ID`.
+**2. Show Issue Types**
+Run this to extract available types and ask the user to pick one:
+```bash
+python3 -c "
+import json, sys
+d = json.load(open('/tmp/jira_meta.json'))
+for p in d.get('projects', []):
+    for t in p.get('issuetypes', []):
+        print(f\"  [{t['id']}] {t['name']}\")"
+```
+> 🛑 **Action:** Present the list to the user. Default to **Story** if present. Store their choice as `ISSUE_TYPE_ID`.
+
+**3. Find Custom Field IDs**
+Company Jira often requires custom fields (Sprint, Epic Link, etc.). Find them via:
+```bash
+python3 -c "
+import json
+d = json.load(open('/tmp/jira_meta.json'))
+fields = d['projects'][0]['issuetypes'][0]['fields']
+for k, v in fields.items():
+    if v.get('required') or 'epic' in v.get('name','').lower() or 'sprint' in v.get('name','').lower():
+        print(f\"  {k}: {v['name']} (required: {v.get('required')})\")"
+```
+> 🛑 **Action:** If custom fields are required, present them to the user with possible values. For example:
+> *   **Sprint**: `customfield_10020` (Needs Sprint ID via `/rest/agile/1.0/sprint`)
+> *   **Epic Link**: `customfield_10011` (Needs an existing Epic Key)
 
 ### Step 3: Create Issues
 
@@ -99,14 +131,71 @@ curl -x "" -s -X POST \
   -H "Content-Type: application/json" \
   -d '{
   "fields": {
-    "project": { "key": "'"$JIRA_PROJECT"'" },
-    "summary": "[<feature-name>] <Task Title>",
-    "description": "<Task Description>\n\nh3. Acceptance Criteria\n{noformat}\n<AC lines>\n{noformat}\n\nh3. Files to Touch\n{noformat}\n<Files list>\n{noformat}",
+    "project":   { "key": "'"$JIRA_PROJECT"'" },
+    "summary":   "'"$SUMMARY"'",
     "issuetype": { "id": "'"$ISSUE_TYPE_ID"'" },
-    "labels": ["tgd", "<feature-name>"]
+    "priority":  { "name": "'"$PRIORITY"'" },
+    "labels":    ["tgd", "'"$FEATURE_NAME"'"],
+    "description": "'"$DESCRIPTION"'"
   }
 }' | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('key','ERROR: '+d.get('errorMessages',str(d))[0]))"
 ```
+
+#### 📝 Description Construction Guide
+
+The Agent MUST construct the `DESCRIPTION` variable using this Wiki Markup structure. Do NOT deviate from this format.
+
+**Template:**
+```
+h3. Background
+{noformat}
+<Why is this needed? What is the current pain point? Context from PRD/SPEC.>
+{noformat}
+
+h3. Goal
+{noformat}
+<What exactly are we building? What is the desired measurable outcome?>
+{noformat}
+
+h3. Acceptance Criteria
+{noformat}
+AC-1:
+Given <initial context>
+When <action occurs>
+Then <expected result>
+
+AC-2:
+Given <edge case or error condition>
+When <action occurs>
+Then <error handling / expected failure>
+{noformat}
+
+h3. Technical Notes
+{noformat}
+Files:
+- <path/to/file1>
+- <path/to/file2>
+{noformat}
+```
+
+#### 🏆 Golden Example
+
+**Scenario:** `feature-name` = `jwt-auth`, Task = "Implement Login API"
+
+```json
+{
+  "fields": {
+    "project": { "key": "ENG" },
+    "summary": "[jwt-auth] As a user, I want to login via email and password to access my dashboard",
+    "issuetype": { "id": "10000" },
+    "priority": { "name": "High" },
+    "labels": ["tgd", "jwt-auth"],
+    "description": "h3. Background\n{noformat}\nCurrently, the system has no authentication. All endpoints are public, causing data leakage risks.\n{noformat}\n\nh3. Goal\n{noformat}\nImplement a secure POST /login endpoint that validates credentials and returns a JWT token valid for 24 hours.\n{noformat}\n\nh3. Acceptance Criteria\n{noformat}\nAC-1:\nGiven a registered user with valid credentials\nWhen they POST to /api/login\nThen they receive a 200 OK with a JWT token in the body\n\nAC-2:\nGiven an unregistered user or wrong password\nWhen they POST to /api/login\nThen they receive 401 Unauthorized and no token\n{noformat}\n\nh3. Technical Notes\n{noformat}\nFiles:\n- src/auth/login.py\n- tests/test_login.py\n- config/settings.py (JWT_SECRET)\n{noformat}"
+  }
+}
+```
+
+> ⚠️ **Critical:** The `summary` must always start with `[<feature-name>]` and follow the "As a... I want... So that..." format where possible. Keep it under 255 characters.
 
 **Output:** Print each created issue key (e.g. `ENG-1234`).
 
@@ -114,7 +203,9 @@ curl -x "" -s -X POST \
 
 If an issue creation fails, the script should:
 - **401/403**: Token expired or invalid → Stop and ask user to re-provide `JIRA_TOKEN`
-- **400 (missing field)**: Print the error, identify missing required field via `createmeta`, skip this task
+- **400 (summary too long)**: Jira limit is 255 chars. Shorten the summary and retry.
+- **400 (missing field)**: Print the error, identify missing required field via `createmeta`, ask user for value.
+- **400 (invalid priority)**: Fetch valid priorities via `$JIRA_URL/rest/api/2/priority` and retry.
 - **500**: Retry once with `sleep 1`, if still fails skip and continue
 - Continue processing remaining tasks even if one fails
 
