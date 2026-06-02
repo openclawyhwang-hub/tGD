@@ -105,20 +105,44 @@ for p in d.get('projects', []):
 ```
 > 🛑 **Action:** Present the list to the user. Default to **Story** if present. Store their choice as `ISSUE_TYPE_ID`.
 
-**3. Find Custom Field IDs**
-Company Jira often requires custom fields (Sprint, Epic Link, etc.). Find them via:
+**3. Find Project & IssueType-specific Required Fields**
+Jira projects have different mandatory fields. To prevent API errors (400 Bad Request), run this script to filter out exactly which fields are marked `"required": true` for your selected Project Key and Issue Type ID:
+
 ```bash
 python3 -c "
-import json
-d = json.load(open('/tmp/jira_meta.json'))
-fields = d['projects'][0]['issuetypes'][0]['fields']
-for k, v in fields.items():
-    if v.get('required') or 'epic' in v.get('name','').lower() or 'sprint' in v.get('name','').lower():
-        print(f\"  {k}: {v['name']} (required: {v.get('required')})\")"
+import json, sys
+meta = json.load(open('/tmp/jira_meta.json'))
+proj_key = '$JIRA_PROJECT'
+issue_type_id = '$ISSUE_TYPE_ID'
+
+project = next((p for p in meta.get('projects', []) if p['key'] == proj_key), None)
+if not project:
+    print(f'Project {proj_key} not found in metadata.')
+    sys.exit(1)
+    
+issuetype = next((it for it in project.get('issuetypes', []) if it['id'] == issue_type_id), None)
+if not issuetype:
+    print(f'Issue type {issue_type_id} not found.')
+    sys.exit(1)
+
+fields = issuetype.get('fields', {})
+print('\n🚨 MANDATORY CUSTOM FIELDS DETECTED:')
+required_count = 0
+for fid, fval in fields.items():
+    if fid in ['project', 'summary', 'issuetype', 'description', 'reporter', 'priority']:
+        continue
+    if fval.get('required'):
+        required_count += 1
+        print(f\"  * {fid} ({fval.get('name')}): Type [{fval.get('schema', {}).get('type')}] (Required!)\")
+
+if required_count == 0:
+    print('  None (only standard fields are required).')
+"
 ```
-> 🛑 **Action:** If custom fields are required, present them to the user with possible values. For example:
-> *   **Sprint**: `customfield_10020` (Needs Sprint ID via `/rest/agile/1.0/sprint`)
-> *   **Epic Link**: `customfield_10011` (Needs an existing Epic Key)
+> 🛑 **Action:** For any detected mandatory field:
+> 1. Proactively present it to the user.
+> 2. Ask the user for the value or configuration mapping.
+> 3. Inject it into the payload in Step 3 (e.g., `"customfield_10100": { "value": "UserProvidedValue" }`). Do NOT try to guess or ignore required fields.
 
 ### Step 3: Create Issues
 
