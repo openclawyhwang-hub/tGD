@@ -43,8 +43,8 @@ This means every task must contain:
 
 ### Step 0: Feature Name Resolution
 Before planning, determine and validate `<feature-name>`:
-1. **Derive**: Use kebab-case from the user's request (e.g., "User Login" → "user-login").
-2. **Verify**: Ensure `tGD/plan/<feature-name>/` exists (created by `/tgd-define`). If missing, halt and ask user.
+1. **Verify**: Check if `tGD/define/` contains exactly one subdirectory (set by `/tgd-define`). If so, lock that name.
+2. **Propose (if ambiguous)**: If multiple feature directories exist or none exist, propose 3 kebab-case `<feature-name>` options and wait for user selection.
 3. **Lock**: All planning artifacts go into `tGD/plan/<feature-name>/`.
 
 ### Step 1: Enter Plan Mode

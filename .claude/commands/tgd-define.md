@@ -9,7 +9,7 @@ description: Start spec-driven development — write a structured specification 
 Run the `spec-driven-development` skill. Write a PRD (product requirements document) covering objectives, commands, structure, code style, testing strategy, and boundaries before any code is written.
 
 This is the DEFINE phase. The full pipeline is:
-1. **Feature Name Resolution** — Derive a kebab-case `<feature-name>` from the user's request (e.g., "User Login" → `user-login`). Create `tGD/define/` if it doesn't exist.
+1. **Feature Name Resolution** — Based on the user's request, propose 3 distinct kebab-case `<feature-name>` options with brief descriptions. **Wait for the user to select one or provide their own before proceeding.** Once locked, create `tGD/define/<feature-name>/`.
 2. **🌿 Git Branch Setup** — If on `main`/`master`, create and switch to `feature/<feature-name>` (`git checkout -b feature/user-login`).
 3. `interview-me` — if the ask is underspecified, extract what the user actually wants
 4. `idea-refine` — if the concept is vague, stress-test and expand options

@@ -7,9 +7,8 @@ Run the spec-driven-development skill. This is the DEFINE phase.
 Pre-flight: Check tGD/map/CONTEXT.md exists. If missing, STOP and tell user to run /tgd-map first.
 
 Pipeline:
-1. Derive kebab-case <feature-name> from user request
-2. Create tGD/define/<feature-name>/ directory
-3. If on main/master, create branch: git checkout -b feature/<feature-name>
+1. **Feature Name Resolution** — Based on the user's request, propose 3 distinct kebab-case `<feature-name>` options with brief descriptions. **Wait for the user to select one or provide their own before proceeding.** Once locked, create `tGD/define/<feature-name>/`.
+2. **Git Branch Setup** — If on `main`/`master`, create and switch to `feature/<feature-name>` (`git checkout -b feature/user-login`).
 4. interview-me — if ask is underspecified
 5. idea-refine — if concept is vague
 6. spec-driven-development — write PRD.md + SPEC.md

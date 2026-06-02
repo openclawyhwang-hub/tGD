@@ -25,10 +25,11 @@ Spec-driven development has four phases. Do not advance to the next phase until 
 
 **Step 0: Feature Name Resolution**
 Before writing any content, determine the `<feature-name>`:
-1. Derive a kebab-case slug from the user's request (e.g., "User Login" → "user-login", "Add Dashboard" → "add-dashboard").
-2. **Create directory**: `mkdir -p tGD/define/<feature-name>/`.
-3. **Verify**: If `tGD/define/<feature-name>/` already exists, use it. If not, the previous step must have created it.
-4. **Lock**: Use this exact `<feature-name>` for all subsequent files (PRD.md, SPEC.md, TASKS.md, etc.).
+1. **Propose**: Based on the user's request, propose 3 distinct kebab-case `<feature-name>` options with brief descriptions (e.g., "user-auth", "login-system", "access-control").
+2. **Wait**: Ask the user to pick one or provide their own. Do NOT proceed until the name is locked.
+3. **Create directory**: `mkdir -p tGD/define/<feature-name>/`.
+4. **Verify**: If `tGD/define/<feature-name>/` already exists, use it. If not, the previous step must have created it.
+5. **Lock**: Use this exact `<feature-name>` for all subsequent files (PRD.md, SPEC.md, TASKS.md, etc.).
 
 **🌿 Step 0.5: Git Branch Setup**
 1. Check current branch: `git branch --show-current`.
