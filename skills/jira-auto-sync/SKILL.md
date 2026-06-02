@@ -105,64 +105,61 @@ for p in d.get('projects', []):
 ```
 > 🛑 **Action:** Present the list to the user. Default to **Story** if present. Store their choice as `ISSUE_TYPE_ID`.
 
-**3. Find Project & IssueType-specific Required Fields**
-Jira projects have different mandatory fields. To prevent API errors (400 Bad Request), run this script to filter out exactly which fields are marked `"required": true` for your selected Project Key and Issue Type ID:
+**3. Scan Required Fields for THIS Project & Issue Type**
+Run this script to check exactly which fields are marked `"required": true` in the metadata. The agent MUST inspect this before attempting to create issues.
 
 ```bash
 python3 -c "
-import json, sys
+import json
 meta = json.load(open('/tmp/jira_meta.json'))
-proj_key = '$JIRA_PROJECT'
-issue_type_id = '$ISSUE_TYPE_ID'
+# Filter by the project key and selected issue type ID
+proj = [p for p in meta['projects'] if p['key'] == '$JIRA_PROJECT'][0]
+issuetype = [it for it in proj['issuetypes'] if it['id'] == '$ISSUE_TYPE_ID'][0]
 
-project = next((p for p in meta.get('projects', []) if p['key'] == proj_key), None)
-if not project:
-    print(f'Project {proj_key} not found in metadata.')
-    sys.exit(1)
-    
-issuetype = next((it for it in project.get('issuetypes', []) if it['id'] == issue_type_id), None)
-if not issuetype:
-    print(f'Issue type {issue_type_id} not found.')
-    sys.exit(1)
-
-fields = issuetype.get('fields', {})
-print('\n🚨 MANDATORY CUSTOM FIELDS DETECTED:')
-required_count = 0
-for fid, fval in fields.items():
-    if fid in ['project', 'summary', 'issuetype', 'description', 'reporter', 'priority']:
-        continue
-    if fval.get('required'):
-        required_count += 1
-        print(f\"  * {fid} ({fval.get('name')}): Type [{fval.get('schema', {}).get('type')}] (Required!)\")
-
-if required_count == 0:
-    print('  None (only standard fields are required).')
-"
+print('Required Custom Fields for $JIRA_PROJECT ($ISSUE_TYPE_ID):')
+for field_id, field_info in issuetype['fields'].items():
+    if field_info.get('required') and field_id not in ['summary', 'description', 'project', 'issuetype', 'priority', 'labels']:
+        print(f\"  🚨 {field_id}: {field_info['name']} (Type: {field_info['schema']['type']})\")"
 ```
-> 🛑 **Action:** For any detected mandatory field:
-> 1. Proactively present it to the user.
-> 2. Ask the user for the value or configuration mapping.
-> 3. Inject it into the payload in Step 3 (e.g., `"customfield_10100": { "value": "UserProvidedValue" }`). Do NOT try to guess or ignore required fields.
+
+> 🛑 **Action:**
+> 1. If the script outputs custom required fields, the Agent MUST ask the user for the values (e.g., "Component", "Fix Version").
+> 2. Construct the JSON payload dynamically to include these fields.
+> 3. **Do NOT guess.** If a field is required and the user hasn't provided it, ask before proceeding.
 
 ### Step 3: Create Issues
 
-For each parsed task, create a Jira issue:
+For each parsed task, construct a JSON payload and create a Jira issue:
 
 ```bash
+# 1. Construct the payload using a script to avoid bash escaping hell
+python3 << 'EOF' > /tmp/jira_payload.json
+import json, sys
+
+# ... (Agent logic to build payload based on Step 2 findings)
+payload = {
+    "fields": {
+        "project":   { "key": "$JIRA_PROJECT" },
+        "summary":   summary_text,
+        "issuetype": { "id": "$ISSUE_TYPE_ID" },
+        "priority":  { "name": priority_name },
+        "labels":    ["tgd", "$FEATURE_NAME"],
+        "description": description_text
+    }
+}
+
+# Add any custom required fields discovered in Step 2
+# payload['fields']['customfield_XXXX'] = { "value": user_provided_value }
+
+print(json.dumps(payload))
+EOF
+
+# 2. Execute the API call
 curl -x "" -s -X POST \
   "$JIRA_URL/rest/api/2/issue" \
-  -H "Authorization: Bearer $JIRA_TOKEN" \
+  -H "Authorization: Bearer *** \
   -H "Content-Type: application/json" \
-  -d '{
-  "fields": {
-    "project":   { "key": "'"$JIRA_PROJECT"'" },
-    "summary":   "'"$SUMMARY"'",
-    "issuetype": { "id": "'"$ISSUE_TYPE_ID"'" },
-    "priority":  { "name": "'"$PRIORITY"'" },
-    "labels":    ["tgd", "'"$FEATURE_NAME"'"],
-    "description": "'"$DESCRIPTION"'"
-  }
-}' | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('key','ERROR: '+d.get('errorMessages',str(d))[0]))"
+  -d @/tmp/jira_payload.json | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('key','ERROR: '+d.get('errorMessages',str(d))[0]))"
 ```
 
 #### 📝 Description Construction Guide
