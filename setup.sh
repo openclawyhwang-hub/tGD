@@ -429,15 +429,32 @@ for event, hook_list in tgd.get('hooks', {}).items():
         ]
     else:
         # Lifecycle events (SessionStart, SessionEnd) also need nested format
+        # Source may already be nested (has 'hooks' key in items) or flat
         for h in hook_list:
-            if 'type' not in h:
-                h['type'] = 'command'
-            cmd = h.get('command', '')
-            if cmd.startswith('bash hooks/'):
-                h['command'] = cmd.replace('bash hooks/', 'bash ' + TGD_ABS + '/hooks/', 1)
-        tgd['hooks'][event] = [
-            {"matcher": "*", "hooks": hook_list}
-        ]
+            if 'hooks' in h and isinstance(h['hooks'], list):
+                # Already nested — resolve paths in sub-hooks
+                for sub in h['hooks']:
+                    if 'type' not in sub:
+                        sub['type'] = 'command'
+                    cmd = sub.get('command', '')
+                    if cmd.startswith('bash hooks/'):
+                        sub['command'] = cmd.replace('bash hooks/', 'bash ' + TGD_ABS + '/hooks/', 1)
+            else:
+                # Flat format — wrap and resolve
+                if 'type' not in h:
+                    h['type'] = 'command'
+                cmd = h.get('command', '')
+                if cmd.startswith('bash hooks/'):
+                    h['command'] = cmd.replace('bash hooks/', 'bash ' + TGD_ABS + '/hooks/', 1)
+                h = {"matcher": "*", "hooks": [h]}
+        # Normalize: ensure top-level is list of {matcher, hooks} objects
+        normalized = []
+        for h in hook_list:
+            if 'hooks' in h and isinstance(h['hooks'], list):
+                normalized.append(h)
+            else:
+                normalized.append({"matcher": "*", "hooks": [h]})
+        tgd['hooks'][event] = normalized
 user_hooks = user.setdefault('hooks', {})
 for event, hook_list in tgd.get('hooks', {}).items():
     existing = user_hooks.get(event, [])
