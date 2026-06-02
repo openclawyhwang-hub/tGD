@@ -172,6 +172,41 @@ flowchart LR
 
 ---
 
+## 🔑 核心特色
+
+### 🏖️ 強制 Worktree 隔離
+執行 `/tgd-develop` 時，tGD **自動建立 Git Worktree 沙盒**（`../project-<feature>/`）才開始寫 code。這確保：
+- `tGD/` 規劃檔案（PRD, SPEC, TASKS）保持乾淨不受程式碼污染。
+- 實驗失敗直接移除 worktree——規劃檔安然無恙。
+- 驗證通過後沙盒自動合併並清理。
+
+### 🚦 智能執行路由
+`/tgd-develop` 依任務數量智能路由：
+| 任務數 | 模式 | 行為 |
+|---|---|---|
+| **< 3 個** | ⚡ 快速模式 | 主 Agent 直接在 worktree 實作。省 token、省時間。 |
+| **≥ 3 個** | 🔀 高品質模式 | 派發 Subagent 並執行雙重審查（規格合規 → 程式碼品質）。最高品質。 |
+
+### 🧠 三源規劃
+`/tgd-plan` 在拆解任務前會讀取**三份文件**：
+1. **`CONTEXT.md`** — 現有專案結構、技術堆疊、專案慣例。
+2. **`PRD.md`** — 商業目標、使用者痛點、範圍邊界。
+3. **`SPEC.md`** — 技術需求、API 合約、資料庫結構。
+
+確保產出的 `TASKS.md` 反映真實限制，不是紙上談兵。
+
+### 🎯 3 選 1 功能命名
+執行 `/tgd-define` 時，Agent 會提出 **3 個 kebab-case 名稱候選**，等老大挑選或自訂。不盲猜，名稱從第一天就由你掌控。
+
+### 🔄 智能 Jira 整合
+同步 Jira 時，tGD 不會無腦開單。它會：
+- **自動掃描** 你專案的必填欄位（`createmeta` API）。
+- **讓你選擇** Issue Type（Story, Task, Bug...）。
+- **統一格式** 每張單據都是 `As a...` 摘要 + `Given/When/Then` 驗收標準。
+- **自動繞過 Proxy** 加上 `curl -x ""`。
+
+---
+
 ## ⌨️ 指令
 
 8 個 slash command 對應開發生命週期。每個指令自動串聯相關的 skills。
@@ -179,9 +214,9 @@ flowchart LR
 | 🎯 做什麼 | ⌨️ 指令 | 💡 核心原則 | 🔧 呼叫的 Skills |
 |---|---|---|---|
 | 了解專案 | `/tgd-map` | 先有 context 再動手 | `context-engineering` + `codegraph init` |
-| 定義要做什麼 | `/tgd-define` | 先規格再寫 code | `interview-me` → `idea-refine` → `spec-driven-development` |
-| 規劃怎麼做 | `/tgd-plan` | 小而原子的任務 | `planning-and-task-breakdown` → **Jira 同步** |
-| 增量建造 | `/tgd-develop` | 一次一個切片 | `source-driven-development` → `incremental-implementation` → `test-driven-development` |
+| 定義要做什麼 | `/tgd-define` | 3 選 1 命名 + 產品 + 規格 | `interview-me` → `idea-refine` → `spec-driven-development` |
+| 規劃怎麼做 | `/tgd-plan` | 讀 CONTEXT + PRD + SPEC → 原子任務 | `planning-and-task-breakdown` → **Jira 同步** |
+| 沙盒建造 | `/tgd-develop` | **強制 Worktree** + 智能路由 | `source-driven-development` → (`subagent` OR `incremental`) → `test-driven-development` |
 | 證明它能跑 | `/tgd-verify` | 測試就是證明 | `debugging-and-error-recovery` → `test-driven-development` |
 | 合併前審查 | `/tgd-review` | 改善程式碼健康 | `code-review-and-quality` → `code-simplification` |
 | 簡化程式碼 | `/tgd-simplify` | 清晰勝過花巧 | `code-simplification` |

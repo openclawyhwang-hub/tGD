@@ -128,6 +128,16 @@ Agent: Finale Prüfungen...
 
 ---
 
+## 🔑 Hauptfunktionen
+
+- **🏖️ Pflicht-Worktree-Isolierung**: Alle Code-Implementierungen laufen in einer isolierten Git-Worktree-Sandbox. `tGD/`-Planungsdateien bleiben unberührt.
+- **🚦 Intelligentes Routing**: `/tgd-develop` routet je nach Task-Anzahl (<3 Tasks: Haupt-Agent, ≥3 Tasks: Subagent + Zwei-Stufen-Review).
+- **🧠 Drei-Quellen-Planung**: `/tgd-plan` integriert `CONTEXT.md` + `PRD.md` + `SPEC.md` bevor Tasks erstellt werden.
+- **🎯 3-Option Feature-Naming**: `/tgd-define` schlägt 3 Namen vor und wartet auf die Auswahl.
+- **🔄 Smarte Jira-Integration**: Erforderliche Felder werden automatisch erkannt. Issues werden mit strukturierter "As a... I want..." Formatierung erstellt.
+
+---
+
 ## ⚙️ Pipeline
 
 8 Stufen von der Idee bis zur Produktion. Jede Stufe gatekept die nächste.
@@ -135,9 +145,9 @@ Agent: Finale Prüfungen...
 | 🎯 Was | ⌨️ Command | 💡 Prinzip | 🔧 Skills |
 |---|---|---|---|
 | Projekt verstehen | `/tgd-map` | Kontext vor Änderungen | `context-engineering` + `codegraph init` |
-| Definition | `/tgd-define` | Spezifikation vor Code | `interview-me` → `idea-refine` → `spec-driven-development` |
-| Planung | `/tgd-plan` | Kleine atomare Tasks | `planning-and-task-breakdown` → **Jira-Sync** |
-| Schrittweise bauen | `/tgd-develop` | Ein Schritt nach dem anderen | `source-driven-development` → `incremental-implementation` → `test-driven-development` |
+| Definition | `/tgd-define` | 3-Option-Naming + Produkt + Spezifikation | `interview-me` → `idea-refine` → `spec-driven-development` |
+| Planung | `/tgd-plan` | CONTEXT + PRD + SPEC → Atomare Tasks | `planning-and-task-breakdown` → **Jira-Sync** |
+| Sandbox-Bau | `/tgd-develop` | **Pflicht-Worktree** + Intelligentes Routing | `source-driven-development` → (`subagent` OR `incremental`) → `test-driven-development` |
 | Beweis erbringen | `/tgd-verify` | Tests sind der Beweis | `debugging-and-error-recovery` → `test-driven-development` |
 | Review vor Merge | `/tgd-review` | Code-Qualität verbessern | `code-review-and-quality` → `code-simplification` |
 | Code vereinfachen | `/tgd-simplify` | Klarheit vor Cleverness | `code-simplification` |

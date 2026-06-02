@@ -128,6 +128,16 @@ pi       # Pi Coding Agent
 
 ---
 
+## 🔑 主な機能
+
+- **🏖️ 必須 Worktree 隔離**: 全てのコード実装は隔離された Git Worktree サンドボックスで実行。`tGD/` 計画ファイルがコードで汚染されることはありません。
+- **🚦 スマートルーティング**: `/tgd-develop` はタスク数に応じてルーティング（<3 タスク: メイン Agent、≥3 タスク: Subagent + 二段階レビュー）。
+- **🧠 三源計画**: `/tgd-plan` は `CONTEXT.md` + `PRD.md` + `SPEC.md` の3つのドキュメントを統合してからタスクを作成します。
+- **🎯 3択機能名**: `/tgd-define` は3つの候補名を提案し、ユーザーが選択するまで待ちます。
+- **🔄 スマート Jira 統合**: 必須フィールドを自動検出し、構造化された「As a... I want...」形式で課題を作成。
+
+---
+
 ## ⚙️ パイプライン
 
 8つのステージでアイデアから本番環境まで。各ステージが次のステージをゲートキープします。
@@ -135,9 +145,9 @@ pi       # Pi Coding Agent
 | 🎯 内容 | ⌨️ コマンド | 💡 原則 | 🔧 呼び出し |
 |---|---|---|---|
 | プロジェクト理解 | `/tgd-map` | 変更前にコンテキスト | `context-engineering` + `codegraph init` |
-| 何を構築するか定義 | `/tgd-define` | コードの前に仕様 | `interview-me` → `idea-refine` → `spec-driven-development` |
-| 構築方法を計画 | `/tgd-plan` | 小さくアトミックなタスク | `planning-and-task-breakdown` → **Jira同期** |
-| 増分構築 | `/tgd-develop` | 一度に1スライス | `source-driven-development` → `incremental-implementation` → `test-driven-development` |
+| 何を構築するか定義 | `/tgd-define` | 3択命名 + 製品 + 仕様 | `interview-me` → `idea-refine` → `spec-driven-development` |
+| 構築方法を計画 | `/tgd-plan` | CONTEXT + PRD + SPEC → アトミックタスク | `planning-and-task-breakdown` → **Jira同期** |
+| サンドボックス構築 | `/tgd-develop` | **必須 Worktree** + スマートルーティング | `source-driven-development` → (`subagent` OR `incremental`) → `test-driven-development` |
 | 動作を証明 | `/tgd-verify` | テストが証拠 | `debugging-and-error-recovery` → `test-driven-development` |
 | マージ前レビュー | `/tgd-review` | コードの健康改善 | `code-review-and-quality` → `code-simplification` |
 | コード簡素化 | `/tgd-simplify` | 賢さより明瞭さ | `code-simplification` |

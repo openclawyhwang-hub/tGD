@@ -171,6 +171,41 @@ flowchart LR
 
 ---
 
+## 🔑 Key Features
+
+### 🏖️ Mandatory Worktree Isolation
+When you run `/tgd-develop`, tGD **automatically creates a Git Worktree** sandbox (`../project-<feature>/`) before writing any code. This ensures:
+- Your `tGD/` planning files (PRD, SPEC, TASKS) stay clean and untouched.
+- If an experiment fails, the worktree is simply removed — your plans are safe.
+- The sandbox is automatically merged and cleaned up after verification passes.
+
+### 🚦 Smart Execution Routing
+During `/tgd-develop`, tGD routes the work intelligently based on task count:
+| Task Count | Mode | Behavior |
+|---|---|---|
+| **< 3 tasks** | ⚡ Fast Mode | Main agent implements directly in the worktree. Quick and token-efficient. |
+| **≥ 3 tasks** | 🔀 Quality Mode | Dispatches subagents with two-stage review (spec compliance → code quality). Highest quality. |
+
+### 🧠 Triple-Source Planning
+During `/tgd-plan`, the agent reads **three documents** before creating tasks:
+1. **`CONTEXT.md`** — Existing project structure, conventions, and tech stack.
+2. **`PRD.md`** — Business goals, user pain points, and scope boundaries.
+3. **`SPEC.md`** — Technical requirements, API contracts, and database schemas.
+
+This ensures `TASKS.md` reflects real-world constraints, not just theoretical specs.
+
+### 🎯 3-Option Feature Naming
+When running `/tgd-define`, the agent proposes **three distinct kebab-case names** for your feature and waits for you to pick one (or suggest your own). No more guessing — you control the naming from day one.
+
+### 🔄 Smart Jira Integration
+When syncing to Jira, tGD doesn't just blindly create issues. It:
+- **Discovers** your project's mandatory fields via `createmeta` API.
+- **Lets you choose** the Issue Type (Story, Task, Bug, etc.).
+- **Formats** every issue with a structured `As a... I want...` summary and `Given/When/Then` acceptance criteria.
+- **Bypasses proxies** automatically with `curl -x ""`.
+
+---
+
 ## ⌨️ Commands
 
 8 slash commands that map to the development lifecycle. Each command chains the relevant skills automatically.
@@ -178,9 +213,9 @@ flowchart LR
 | 🎯 What you're doing | ⌨️ Command | 💡 Key principle | 🔧 Invokes |
 |---|---|---|---|
 | Understand the project | `/tgd-map` | Context before changes | `context-engineering` + `codegraph init` |
-| Define what to build | `/tgd-define` | Product + Spec before code | `interview-me` → `idea-refine` → `spec-driven-development` |
-| Plan how to build it | `/tgd-plan` | Small, atomic tasks | `planning-and-task-breakdown` → **Jira sync** |
-| Build incrementally | `/tgd-develop` | One slice at a time | `source-driven-development` → `incremental-implementation` → `test-driven-development` |
+| Define what to build | `/tgd-define` | 3-option naming + Product + Spec | `interview-me` → `idea-refine` → `spec-driven-development` |
+| Plan how to build it | `/tgd-plan` | Read CONTEXT + PRD + SPEC → atomic tasks | `planning-and-task-breakdown` → **Jira sync** |
+| Build in sandbox | `/tgd-develop` | **Mandatory Worktree** + smart routing | `source-driven-development` → (`subagent` OR `incremental`) → `test-driven-development` |
 | Prove it works | `/tgd-verify` | Tests are proof | `debugging-and-error-recovery` → `test-driven-development` |
 | Review before merge | `/tgd-review` | Improve code health | `code-review-and-quality` → `code-simplification` |
 | Simplify the code | `/tgd-simplify` | Clarity over cleverness | `code-simplification` |
