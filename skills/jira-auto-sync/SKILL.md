@@ -25,7 +25,7 @@ JIRA_PROJECT   = Project key (e.g. ENG, FE, BE) — 必填
 **Setup (one-time):**
 ```bash
 # Test connection (Bearer auth)
-curl -x "" -s -H "Authorization: Bearer *** "$JIRA_URL/rest/api/2/myself" | python3 -m json.tool
+curl -x "" -s -H "Authorization: Bearer $JIRA_TOKEN "$JIRA_URL/rest/api/2/myself" | python3 -m json.tool
 ```
 If it returns user info, auth works. If 401/403, check credentials or proxy settings.
 
@@ -132,19 +132,24 @@ for field_id, field_info in issuetype['fields'].items():
 For each parsed task, construct a JSON payload and create a Jira issue:
 
 ```bash
-# 1. Construct the payload using a script to avoid bash escaping hell
-python3 << 'EOF' > /tmp/jira_payload.json
-import json, sys
+# 1. Export variables for the Python script (avoids bash escaping hell)
+export SUMMARY="[<feature-name>] As a..."
+export PRIORITY="High"
+export DESCRIPTION="h3. Background..."
+export FEATURE_NAME="<feature-name>"
 
-# ... (Agent logic to build payload based on Step 2 findings)
+# 2. Construct the payload via Python
+python3 << 'EOF' > /tmp/jira_payload.json
+import json, os
+
 payload = {
     "fields": {
-        "project":   { "key": "$JIRA_PROJECT" },
-        "summary":   summary_text,
-        "issuetype": { "id": "$ISSUE_TYPE_ID" },
-        "priority":  { "name": priority_name },
-        "labels":    ["tgd", "$FEATURE_NAME"],
-        "description": description_text
+        "project":   { "key": os.environ['JIRA_PROJECT'] },
+        "summary":   os.environ['SUMMARY'],
+        "issuetype": { "id": os.environ['ISSUE_TYPE_ID'] },
+        "priority":  { "name": os.environ['PRIORITY'] },
+        "labels":    ["tgd", os.environ['FEATURE_NAME']],
+        "description": os.environ['DESCRIPTION']
     }
 }
 
@@ -154,10 +159,10 @@ payload = {
 print(json.dumps(payload))
 EOF
 
-# 2. Execute the API call
+# 3. Execute the API call
 curl -x "" -s -X POST \
   "$JIRA_URL/rest/api/2/issue" \
-  -H "Authorization: Bearer *** \
+  -H "Authorization: Bearer $JIRA_TOKEN" \
   -H "Content-Type: application/json" \
   -d @/tmp/jira_payload.json | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('key','ERROR: '+d.get('errorMessages',str(d))[0]))"
 ```
@@ -283,10 +288,12 @@ In `/tgd-plan`, add as a conditional skill:
 ```markdown
 **Conditional (apply when relevant):**
 - User wants Jira tickets? → `jira-auto-sync`
-  1. Ask for JIRA_URL, JIRA_PROJECT (必填), JIRA_TOKEN (first time only)
-  2. Parse tGD/plan/<feature-name>/TASKS.md
-  3. Create issues via REST API v2
-  4. Report created issue keys
+  1. Ask for JIRA_URL, JIRA_PROJECT (必填), JIRA_TOKEN.
+  2. Discover Issue Types & Required Fields (via `createmeta`).
+  3. Let user select Issue Type and provide custom field values.
+  4. Parse tGD/plan/<feature-name>/TASKS.md.
+  5. Create issues via REST API v2.
+  6. Report created issue keys.
 ```
 
 ## Pitfalls
@@ -316,7 +323,7 @@ If `/rest/agile/1.0/` is unavailable:
 # Find the custom field ID for Sprint
 curl -s \
   "$JIRA_URL/rest/api/2/field" \
-  -H "Authorization: Bearer *** | python3 -c "
+  -H "Authorization: Bearer $JIRA_TOKEN" | python3 -c "
 import sys, json
 fields = json.load(sys.stdin)
 for f in fields:
@@ -327,7 +334,7 @@ for f in fields:
 # Then set it via issue update:
 curl -s -X PUT \
   "$JIRA_URL/rest/api/2/issue/$ISSUE_KEY" \
-  -H "Authorization: Bearer *** \
+  -H "Authorization: Bearer $JIRA_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"update": {"customfield_XXXXX": [{"set": 142}]}}'
 ```
