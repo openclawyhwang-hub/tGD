@@ -20,9 +20,8 @@ Steps:
    If yes → run `jira-auto-sync`.
      1. Ask for JIRA_URL, JIRA_PROJECT, JIRA_TOKEN.
      2. Discover Issue Types & Required Fields.
-     3. **Check for Existing Issues**: Search for `tgd` + `<feature-name>` labels. If found, ask user to Reuse or Create New.
-     4. Create issues via Jira REST API v2.
-     5. Report created issue keys.
+     3. Create issues via Jira REST API v2.
+     4. Report created issue keys.
    If no → skip and proceed to verification.
 
 Verification Gate:

@@ -127,26 +127,6 @@ for field_id, field_info in issuetype['fields'].items():
 
 ### Step 3: Create Issues
 
-**🛑 Check for Existing Issues (Deduplication)**
-Before creating new issues, search for existing ones with the `tgd` and `<feature-name>` labels to avoid duplicates.
-
-```bash
-# Search for existing issues with the feature label
-curl -x "" -s \
-  "$JIRA_URL/rest/api/2/search?jql=project=$JIRA_PROJECT+AND+labels='tgd'+AND+labels='$FEATURE_NAME'&maxResults=10" \
-  -H "Authorization: Bearer ***" | python3 -m json.tool
-```
-
-> 🛑 **Action:**
-> 1. If the API returns existing issues:
->    *   List them to the user (e.g., "Found 3 existing issues for this feature: ENG-101, ENG-102...").
->    *   Ask the user: "Found existing issues. **Reuse/Update** them, or create **New** ones?"
->    *   **If Reuse**: Skip creation for matching tasks.
->    *   **If New**: Proceed to create new issues (you may want to suggest adding a suffix like `-v2` to labels if strict separation is needed).
-> 2. If the API returns `0` issues:
->    *   Proceed directly to **Step 3.1**.
-
-**Step 3.1: Construct Payload**
 For each parsed task, construct a JSON payload and create a Jira issue:
 
 ```bash
@@ -304,12 +284,9 @@ In `/tgd-plan`, add as a conditional skill:
 **Conditional (apply when relevant):**
 - User wants Jira tickets? → `jira-auto-sync`
   1. Ask for JIRA_URL, JIRA_PROJECT (必填), JIRA_TOKEN.
-  2. Discover Issue Types & Required Fields (via `createmeta`).
-  3. Let user select Issue Type and provide custom field values.
-  4. **Check for Existing Issues**: Search for `tgd` + `<feature-name>` labels. If found, ask user to Reuse or Create New.
-  5. Parse tGD/plan/<feature-name>/TASKS.md.
-  6. Create issues via REST API v2.
-  7. Report created issue keys.
+  2. Discover Issue Types & Required Fields. Let user select.
+  3. Parse tGD/plan/<feature-name>/TASKS.md and create issues via REST API v2.
+  4. Report created issue keys.
 ```
 
 ## Pitfalls
