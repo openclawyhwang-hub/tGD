@@ -407,7 +407,7 @@ with open('$HOME/.gemini/settings.json') as f:
     user = json.load(f)
 with open('.gemini/settings.json') as f:
     tgd = json.load(f)
-# Resolve relative paths, ensure type: "command",
+# Resolve relative paths, ensure type: 'command',
 # and convert ALL hooks to nested format (matcher + hooks array)
 for event, hook_list in tgd.get('hooks', {}).items():
     if event in ('BeforeTool', 'AfterTool'):
@@ -424,7 +424,7 @@ for event, hook_list in tgd.get('hooks', {}).items():
             h.pop('matcher', None)
             by_matcher[matcher].append(h)
         tgd['hooks'][event] = [
-            {"matcher": m, "hooks": hooks}
+            {'matcher': m, 'hooks': hooks}
             for m, hooks in by_matcher.items()
         ]
     else:
@@ -446,14 +446,14 @@ for event, hook_list in tgd.get('hooks', {}).items():
                 cmd = h.get('command', '')
                 if cmd.startswith('bash hooks/'):
                     h['command'] = cmd.replace('bash hooks/', 'bash ' + TGD_ABS + '/hooks/', 1)
-                h = {"matcher": "*", "hooks": [h]}
+                h = {'matcher': '*', 'hooks': [h]}
         # Normalize: ensure top-level is list of {matcher, hooks} objects
         normalized = []
         for h in hook_list:
             if 'hooks' in h and isinstance(h['hooks'], list):
                 normalized.append(h)
             else:
-                normalized.append({"matcher": "*", "hooks": [h]})
+                normalized.append({'matcher': '*', 'hooks': [h]})
         tgd['hooks'][event] = normalized
 user_hooks = user.setdefault('hooks', {})
 for event, hook_list in tgd.get('hooks', {}).items():
@@ -474,7 +474,7 @@ for event, hook_list in tgd.get('hooks', {}).items():
 with open('$HOME/.gemini/settings.json', 'w') as f:
     json.dump(user, f, indent=2)
 print('   ✅ tGD hooks merged into ~/.gemini/settings.json.')
-" 2>/dev/null || echo "   ⚠️  Merge failed — please manually merge hooks from .gemini/settings.json"
+" 2>&1 || echo "   ⚠️  Merge failed — please manually merge hooks from .gemini/settings.json"
         else
             python3 -c "
 import json
