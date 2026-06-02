@@ -107,8 +107,8 @@ Agent：哪些端點需要認證？
 使用者：/api/profile 和 /api/settings
 
 Agent：建立 PRD + SPEC...
-→ tGD/auth-feature/PRD.md
-→ tGD/auth-feature/SPEC.md
+→ tGD/define/auth-feature/PRD.md
+→ tGD/define/auth-feature/SPEC.md
 → 準備執行 /tgd-plan
 ```
 

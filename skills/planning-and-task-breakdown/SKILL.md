@@ -44,8 +44,8 @@ This means every task must contain:
 ### Step 0: Feature Name Resolution
 Before planning, determine and validate `<feature-name>`:
 1. **Derive**: Use kebab-case from the user's request (e.g., "User Login" → "user-login").
-2. **Verify**: Ensure `tGD/<feature-name>/plan/` exists (created by `/tgd-define`). If missing, halt and ask user.
-3. **Lock**: All planning artifacts go into `tGD/<feature-name>/plan/`.
+2. **Verify**: Ensure `tGD/plan/<feature-name>/` exists (created by `/tgd-define`). If missing, halt and ask user.
+3. **Lock**: All planning artifacts go into `tGD/plan/<feature-name>/`.
 
 ### Step 1: Enter Plan Mode
 
@@ -56,9 +56,9 @@ Before writing any code, operate in read-only mode:
 - Map dependencies between components
 - Note risks and unknowns
 
-**Do NOT write code during planning.** Write a plan document at `tGD/<feature-name>/plan/TASKS.md` covering: dependency graph, ordered task list with acceptance criteria, verification checkpoints, and risks with mitigations.
+**Do NOT write code during planning.** Write a plan document at `tGD/plan/<feature-name>/TASKS.md` covering: dependency graph, ordered task list with acceptance criteria, verification checkpoints, and risks with mitigations.
 
-**TASKS.md template (save to `tGD/<feature-name>/plan/TASKS.md`):**
+**TASKS.md template (save to `tGD/plan/<feature-name>/TASKS.md`):**
 
 ```markdown
 # TASKS.md: [Feature Name]
@@ -293,4 +293,4 @@ Before starting implementation, confirm:
 - [ ] No task touches more than ~5 files
 - [ ] Checkpoints exist between major phases
 - [ ] The human has reviewed and approved the plan
-- [ ] If UI feature: `tGD/<feature-name>/define/DESIGN.md` exists (created in Define phase)
+- [ ] If UI feature: `tGD/define/<feature-name>/DESIGN.md` exists (created in Define phase)

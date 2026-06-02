@@ -14,10 +14,10 @@ description: Plan — decompose specs into small, verifiable tasks with acceptan
 5. **Verify**: Ensure all work targets `tGD/plan/`.
 
 **🔒 Pre-flight: Artifact Check**
-- [ ] `tGD/<feature-name>/define/PRD.md` exists and is non-empty.
-- [ ] `tGD/<feature-name>/define/SPEC.md` exists and is non-empty.
+- [ ] `tGD/define/<feature-name>/PRD.md` exists and is non-empty.
+- [ ] `tGD/define/<feature-name>/SPEC.md` exists and is non-empty.
 - **If missing:** STOP. Tell user: "Specs are missing. Please run `/tgd-define` first."
-- [ ] If SPEC has Frontend/Full-stack: `tGD/<feature-name>/define/DESIGN.md` exists.
+- [ ] If SPEC has Frontend/Full-stack: `tGD/define/<feature-name>/DESIGN.md` exists.
 - **If missing:** STOP. Tell user: "Design is missing. Please run `/tgd-define` first."
 
 Run the `planning-and-task-breakdown` skill. Decompose the specification into small, verifiable tasks with acceptance criteria and dependency ordering.
@@ -32,12 +32,12 @@ After completing the plan, verify the outputs.
 "Do you want to sync these tasks to Jira?"
 If yes → Run the `jira-auto-sync` skill.
 1. Ask for `JIRA_URL`, `JIRA_PROJECT` (key), and `JIRA_TOKEN` (Bearer/PAT) if not provided.
-2. Parse `tGD/<feature-name>/plan/TASKS.md` and create issues via Jira REST API v2.
+2. Parse `tGD/plan/<feature-name>/TASKS.md` and create issues via Jira REST API v2.
 3. Report created issue keys (e.g., `ENG-1234`).
 If no → Skip silently and proceed to verification.
 
 **Verification Gate:**
-- [ ] `tGD/<feature-name>/plan/TASKS.md` exists and is non-empty
+- [ ] `tGD/plan/<feature-name>/TASKS.md` exists and is non-empty
 - [ ] TASKS.md contains at least one task with Acceptance Criteria
 - [ ] If UI feature: TASKS.md references DESIGN.md components
 

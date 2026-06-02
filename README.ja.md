@@ -96,8 +96,8 @@ pi       # Pi Coding Agent
 ユーザー：/api/profile と /api/settings
 
 エージェント：PRD + SPEC を作成中...
-→ tGD/auth-feature/PRD.md
-→ tGD/auth-feature/SPEC.md
+→ tGD/define/auth-feature/PRD.md
+→ tGD/define/auth-feature/SPEC.md
 → /tgd-plan の準備完了
 ```
 

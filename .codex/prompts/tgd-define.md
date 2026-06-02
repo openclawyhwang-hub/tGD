@@ -8,7 +8,7 @@ Pre-flight: Check tGD/map/CONTEXT.md exists. If missing, STOP and tell user to r
 
 Pipeline:
 1. Derive kebab-case <feature-name> from user request
-2. Create tGD/<feature-name>/define/ directory
+2. Create tGD/define/<feature-name>/ directory
 3. If on main/master, create branch: git checkout -b feature/<feature-name>
 4. interview-me — if ask is underspecified
 5. idea-refine — if concept is vague
@@ -16,8 +16,8 @@ Pipeline:
 7. UI Design Gate — if frontend: create DESIGN.md
 
 Verification Gate:
-- [ ] tGD/<feature-name>/define/PRD.md exists
-- [ ] tGD/<feature-name>/define/SPEC.md exists
+- [ ] tGD/define/<feature-name>/PRD.md exists
+- [ ] tGD/define/<feature-name>/SPEC.md exists
 - [ ] Working branch is feature/<feature-name>
 
 After completing, suggest: /tgd-plan to decompose into tasks.

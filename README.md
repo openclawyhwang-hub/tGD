@@ -106,8 +106,8 @@ Agent: What endpoints need auth?
 User: /api/profile and /api/settings
 
 Agent: Creating PRD + SPEC...
-→ tGD/auth-feature/define/PRD.md
-→ tGD/auth-feature/define/SPEC.md
+→ tGD/define/auth-feature/PRD.md
+→ tGD/define/auth-feature/SPEC.md
 → Ready for /tgd-plan
 ```
 
@@ -313,13 +313,14 @@ A: Yes! Edit the skill files in `skills/` to match your team's workflow.
 ├── tGD/
 │   ├── map/
 │   │   └── CONTEXT.md              ← Project context (/tgd-map)
-│   └── <feature-name>/             ← e.g. auth-feature, user-profile
-│       ├── define/
-│       │   ├── PRD.md              ← Product requirements (/tgd-define)
-│       │   ├── SPEC.md             ← Technical spec (/tgd-define)
-│       │   └── DESIGN.md           ← UI design (/tgd-define, if applicable)
-│       └── plan/
-│           └── TASKS.md            ← Task breakdown (/tgd-plan)
+│   ├── define/                     ← PRD + SPEC + DESIGN per feature
+│   │   └── <feature-name>/         ← e.g. auth-feature, user-profile
+│   │       ├── PRD.md
+│   │       ├── SPEC.md
+│   │       └── DESIGN.md
+│   └── plan/                       ← Task breakdown per feature
+│       └── <feature-name>/
+│           └── TASKS.md
 ```
 
 ### Repo Contents

@@ -11,7 +11,7 @@ description: Simplify the code — clarity over cleverness
 2. If none found: 🛑 STOP. "No features defined. Run `/tgd-define` first."
 3. If exactly one found: Lock it as `<feature-name>`.
 4. If multiple found: List them and ask user to specify.
-5. **Verify**: `tGD/<feature-name>/define/SPEC.md` exists (defines scope).
+5. **Verify**: `tGD/define/<feature-name>/SPEC.md` exists (defines scope).
 
 **🔒 Pre-flight: Artifact Check**
 - [ ] Source code files exist in `src/`.

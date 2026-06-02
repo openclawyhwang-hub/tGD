@@ -6,7 +6,7 @@ Run the incremental-implementation skill. This is the BUILD phase.
 
 Pre-flight:
 - Check tGD/map/CONTEXT.md exists. If missing, /tgd-map first.
-- Check tGD/<feature-name>/plan/TASKS.md exists. If missing, /tgd-plan first.
+- Check tGD/plan/<feature-name>/TASKS.md exists. If missing, /tgd-plan first.
 
 Core flow:
 1. context-engineering — load right spec sections for current task

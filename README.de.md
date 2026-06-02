@@ -96,8 +96,8 @@ Agent: Welche Endpunkte brauchen Auth?
 Benutzer: /api/profile und /api/settings
 
 Agent: Erstelle PRD + SPEC...
-→ tGD/auth-feature/PRD.md
-→ tGD/auth-feature/SPEC.md
+→ tGD/define/auth-feature/PRD.md
+→ tGD/define/auth-feature/SPEC.md
 → Bereit für /tgd-plan
 ```
 

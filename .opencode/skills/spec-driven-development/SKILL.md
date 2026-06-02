@@ -54,7 +54,7 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 2. **User Stories** — "As a [user], I want [goal], so that [benefit]."
 3. **Success Criteria** — Measurable metrics for completion.
 
-**PRD.md template (save to `tGD/<feature-name>/define/PRD.md`):**
+**PRD.md template (save to `tGD/define/<feature-name>/PRD.md`):**
 
 ```markdown
 # PRD: [Feature Name]
@@ -89,7 +89,7 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 - **Out of Scope:** [Future phases]
 ```
 
-**SPEC.md template (save to `tGD/<feature-name>/define/SPEC.md`):**
+**SPEC.md template (save to `tGD/define/<feature-name>/SPEC.md`):**
 
 ```markdown
 # SPEC: [Feature Name]
@@ -198,4 +198,4 @@ Before proceeding to implementation, confirm:
 - [ ] The human has reviewed and approved the spec
 - [ ] Success criteria are specific and testable
 - [ ] Boundaries (Always/Ask First/Never) are defined
-- [ ] The spec is saved to `tGD/<feature-name>/define/SPEC.md`
+- [ ] The spec is saved to `tGD/define/<feature-name>/SPEC.md`
