@@ -23,6 +23,9 @@ Before deleting any code or functions, run `codegraph callers <symbol>` to confi
 
 Clarity over cleverness. Prefer the boring, obvious solution.
 
+**Conditional (apply when relevant):**
+- Need to understand a complex structure before simplifying it? → `/understand` for architectural guidance.
+
 **Verification Gate:**
 - [ ] Code complexity reduced (fewer lines, simpler logic)
 - [ ] All existing tests still pass

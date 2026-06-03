@@ -24,10 +24,10 @@ Run the `debugging-and-error-recovery` skill. This is the VERIFY phase. The full
 1. `debugging-and-error-recovery` — five-step triage: reproduce → localize → reduce → fix → guard
 2. `test-driven-development` — verify with the test pyramid (80% unit, 15% integration, 5% E2E)
    - Use `codegraph affected <changed-files>` to identify which tests to prioritize based on actual dependency paths.
-   - If available, run `/understand-diff` to visualize how recent changes affected the overall knowledge graph.
 
 **Conditional (apply when relevant):**
 - Browser-based? → `webwright` (preferred for E2E) or `browser-testing-with-devtools` (for debugging)
+- Need to see visual impact of changes? → `/understand-diff` to view the modified knowledge graph.
 
 Verify that the feature works correctly before proceeding to review. Tests are proof — "seems right" is never sufficient.
 
