@@ -316,7 +316,7 @@ fi
 # Claude Code
 if command -v claude &> /dev/null; then
     echo "   📂 Claude Code detected."
-    if [ -d .claude ]; then
+    if [ -d "$TGD_DIR/.claude" ]; then
         # Link skills
         mkdir -p ~/.claude/skills
         for skill in "$TGD_DIR"/skills/*/; do
