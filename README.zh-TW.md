@@ -53,7 +53,7 @@
 
 ### 1. Clone & 安装
 ```bash
-git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
+git clone --recursive https://github.com/openclawyhwang-hub/tGD.git && cd tGD
 tgd
 ```
 > 自動偵測已安裝的 CLI（Claude、Codex、Gemini、OpenCode、Pi）並完成設定。Webwright 依賴自動安裝。

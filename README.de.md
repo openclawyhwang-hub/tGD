@@ -51,7 +51,7 @@ Funktioniert mit Claude Code, Codex CLI, Gemini CLI, OpenCode und Pi Coding Agen
 
 ### 1. Clone & Setup
 ```bash
-git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
+git clone --recursive https://github.com/openclawyhwang-hub/tGD.git && cd tGD
 tgd
 ```
 > Erkennt installierte CLIs automatisch. Webwright-Abhängigkeiten werden automatisch installiert.

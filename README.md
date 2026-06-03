@@ -52,7 +52,7 @@ Works with Claude Code, Codex CLI, Gemini CLI, OpenCode, and Pi Coding Agent.
 
 ### 1. Clone & Setup
 ```bash
-git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
+git clone --recursive https://github.com/openclawyhwang-hub/tGD.git && cd tGD
 tgd
 ```
 > Auto-detects your installed CLIs (Claude, Codex, Gemini, OpenCode, Pi) and configures everything. Webwright dependencies installed automatically.

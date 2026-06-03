@@ -51,7 +51,7 @@ Claude Code、Codex CLI、Gemini CLI、OpenCode、Pi Coding Agent に対応。
 
 ### 1. Clone & セットアップ
 ```bash
-git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
+git clone --recursive https://github.com/openclawyhwang-hub/tGD.git && cd tGD
 tgd
 ```
 > インストール済みCLI（Claude、Codex、Gemini、OpenCode、Pi）を自動検出。Webwrightの依存関係も自動インストール。
