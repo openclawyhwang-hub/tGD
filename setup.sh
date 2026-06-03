@@ -227,9 +227,8 @@ VERSION_FILE="$TGD_DIR/.tgd-version"
 if [[ "$MODE" == "install" ]] && [[ -f "$VERSION_FILE" ]]; then
     INSTALLED_VERSION=$(cat "$VERSION_FILE" 2>/dev/null || echo "unknown")
     if [[ "$INSTALLED_VERSION" == "$TGD_VERSION" ]]; then
-        echo "ℹ️  tGD is already up to date (v${TGD_VERSION})."
-        echo "   Run 'bash setup.sh --upgrade' to force refresh."
-        exit 0
+        echo "ℹ️  tGD v${TGD_VERSION} already installed — refreshing..."
+        MODE="upgrade"
     else
         echo "🔄 New version available: v${INSTALLED_VERSION} → v${TGD_VERSION}"
         MODE="upgrade"
