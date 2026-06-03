@@ -1082,10 +1082,10 @@
                 <span data-lang="ja">ハーネスなし</span>
                 <span data-lang="de">Ohne Harness</span></h3>
                     <ul>
-                        <li>Agent says "should work" — tests never ran</li>
-                        <li>Writes 500 lines before reading your codebase</li>
-                        <li>Skips spec, ships broken PR, disappears</li>
-                        <li>You debug what the agent shipped</li>
+                        <li><span data-lang="en">Agent says "should work" — tests never ran</span><span data-lang="ja">「動くはず」と言ってテスト実行ゼロ</span><span data-lang="de">Agent sagt "sollte funktionieren" — nie getestet</span></li>
+                        <li><span data-lang="en">Writes 500 lines before reading your codebase</span><span data-lang="ja">コードベース読まずに500行書いちゃう</span><span data-lang="de">Schreibt 500 Zeilen bevor es den Codebase liest</span></li>
+                        <li><span data-lang="en">Skips spec, ships broken PR, disappears</span><span data-lang="ja">Spec 飛ばして壊れた PR 送って消える</span><span data-lang="de">Überspringt Spec, liefert kaputten PR, verschwindet</span></li>
+                        <li><span data-lang="en">You debug what the agent shipped</span><span data-lang="ja">君が agent のデバッグをやることになる</span><span data-lang="de">Du darfst debuggen was der Agent geliefert hat</span></li>
                     </ul>
                 </div>
                 <div class="comparison-card after">
@@ -1093,10 +1093,10 @@
                 <span data-lang="ja">tGD あり</span>
                 <span data-lang="de">Mit tGD</span></h3>
                     <ul>
-                        <li>Agent says "34/34 pass" — shows the output</li>
-                        <li>Reads codebase first, writes 50 lines that pass</li>
-                        <li>Spec → Plan → Code → Verify — no stage skipped</li>
-                        <li>You review what the agent proved</li>
+                        <li><span data-lang="en">Agent says "34/34 pass" — shows the output</span><span data-lang="ja">「34/34 pass」— 出力を見せてくれる</span><span data-lang="de">Agent sagt "34/34 bestanden" — zeigt den Output</span></li>
+                        <li><span data-lang="en">Reads codebase first, writes 50 lines that pass</span><span data-lang="ja">まずコードベース読んで、通る50行を書く</span><span data-lang="de">Liest erst den Codebase, schreibt 50 Zeilen die bestehen</span></li>
+                        <li><span data-lang="en">Spec → Plan → Code → Verify — no stage skipped</span><span data-lang="ja">Spec → Plan → Code → Verify — ステップ飛ばしなし</span><span data-lang="de">Spec → Plan → Code → Verify — keine Stufe übersprungen</span></li>
+                        <li><span data-lang="en">You review what the agent proved</span><span data-lang="ja">agent が証明したものをレビューするだけ</span><span data-lang="de">Du reviewst was der Agent bewiesen hat</span></li>
                     </ul>
                 </div>
             </div>
@@ -1111,24 +1111,24 @@
             <h2 class="fade-in"><span data-lang="en">Who is this for?</span><span data-lang="zh">適合誰用？</span>
                 <span data-lang="ja">誰のため？</span>
                 <span data-lang="de">Für wen?</span></h2>
-            <p class="section-subtitle fade-in">tGD works for any team size, any project stage.</p>
+            <p class="section-subtitle fade-in"><span data-lang="en">tGD works for any team size, any project stage.</span><span data-lang="ja">チームの大きさやプロジェクトの段階を問わない。</span><span data-lang="de">tGD funktioniert für jede Teamgröße und Projektphase.</span></p>
             
             <div class="who-grid fade-stagger">
                 <div class="who-card">
-                    <h3>🧑‍💻 Solo Dev</h3>
-                    <p>One agent, disciplined workflow. Ship features while the agent handles specs, tests, and code review.</p>
+                    <h3>🧑‍💻 <span data-lang="en">Solo Dev</span><span data-lang="ja">ソロ開発者</span><span data-lang="de">Solo-Entwickler</span></h3>
+                    <p><span data-lang="en">One agent, disciplined workflow. Ship features while the agent handles specs, tests, and code review.</span><span data-lang="ja">エージェント1体で規律あるワークフロー。Spec・テスト・レビューは agent に任せて、機能を出荷。</span><span data-lang="de">Ein Agent, disziplinierter Workflow. Features shippen während der Agent Specs, Tests und Review übernimmt.</span></p>
                 </div>
                 <div class="who-card">
-                    <h3>👥 Team Lead</h3>
-                    <p>Enforce standards across AI-generated code. Every PR follows the same 8-stage pipeline — no exceptions.</p>
+                    <h3>👥 <span data-lang="en">Team Lead</span><span data-lang="ja">チームリード</span><span data-lang="de">Team Lead</span></h3>
+                    <p><span data-lang="en">Enforce standards across AI-generated code. Every PR follows the same 8-stage pipeline — no exceptions.</span><span data-lang="ja">AI が生成したコード全体に基準を適用。すべての PR が同じ8ステージ pipeline を通る——例外なし。</span><span data-lang="de">Standards für AI-generierten Code durchsetzen. Jeder PR durchläuft dieselbe 8-Stufen-Pipeline — keine Ausnahmen.</span></p>
                 </div>
                 <div class="who-card">
-                    <h3>🚀 Startup</h3>
-                    <p>Move fast without breaking things. The harness catches agent mistakes before they reach production.</p>
+                    <h3>🚀 <span data-lang="en">Startup</span><span data-lang="ja">スタートアップ</span><span data-lang="de">Startup</span></h3>
+                    <p><span data-lang="en">Move fast without breaking things. The harness catches agent mistakes before they reach production.</span><span data-lang="ja">壊さずに速く動く。エージェントのミスを本番に届く前にキャッチ。</span><span data-lang="de">Schnell sein ohne etwas zu zerstören. Der Harness fängt Agent-Fehler bevor sie Produktion erreichen.</span></p>
                 </div>
                 <div class="who-card">
-                    <h3>🏢 Enterprise</h3>
-                    <p>Quality gates for AI development. Security, performance, and compliance enforced by the pipeline.</p>
+                    <h3>🏢 <span data-lang="en">Enterprise</span><span data-lang="ja">エンタープライズ</span><span data-lang="de">Enterprise</span></h3>
+                    <p><span data-lang="en">Quality gates for AI development. Security, performance, and compliance enforced by the pipeline.</span><span data-lang="ja">AI 開発の品質ゲート。セキュリティ・パフォーマンス・コンプライアンスを pipeline が強制。</span><span data-lang="de">Quality Gates für KI-Entwicklung. Sicherheit, Performance und Compliance durch die Pipeline erzwungen.</span></p>
                 </div>
             </div>
         </div>
@@ -1238,40 +1238,40 @@
 
             <div class="examples-grid fade-stagger">
                 <div class="example-card">
-                    <h3>🔐 Add User Authentication</h3>
+                    <h3>🔐 <span data-lang="en">Add User Authentication</span><span data-lang="ja">ユーザー認証を追加</span><span data-lang="de">User-Authentifizierung hinzufügen</span></h3>
                     <div class="example-flow">
-                        <span class="cmd">&gt; /tgd-define I want JWT auth</span><br>
-                        Agent interviews you:<br>
-                        "Session or token? OAuth provider?"<br>
-                        <span class="output">→ PRD.md + SPEC.md created</span><br>
+                        <span class="cmd">&gt; /tgd-define <span data-lang="en">I want JWT auth</span><span data-lang="ja">JWT 認証がほしい</span><span data-lang="de">Ich möchte JWT-Auth</span></span><br>
+                        <span data-lang="en">Agent interviews you:</span><span data-lang="ja">agent がヒアリング:</span><span data-lang="de">Agent interviewt dich:</span><br>
+                        <span data-lang="en">"Session or token? OAuth provider?"</span><span data-lang="ja">「セッション？トークン？OAuth プロバイダーは？」</span><span data-lang="de">"Session oder Token? OAuth-Provider?"</span><br>
+                        <span class="output">→ PRD.md + SPEC.md <span data-lang="en">created</span><span data-lang="ja">作成完了</span><span data-lang="de">erstellt</span></span><br>
                         <span class="cmd">&gt; /tgd-plan</span><br>
-                        <span class="output">→ 5 atomic tasks → Jira synced</span><br>
+                        <span class="output">→ <span data-lang="en">5 atomic tasks → Jira synced</span><span data-lang="ja">5つのアトミックタスク → Jira 同期</span><span data-lang="de">5 atomare Tasks → Jira synchronisiert</span></span><br>
                         <span class="cmd">&gt; /tgd-develop</span><br>
-                        <span class="output">→ TDD: 12 tests, all green ✅</span>
+                        <span class="output">→ TDD: <span data-lang="en">12 tests, all green ✅</span><span data-lang="ja">12テスト全部グリーン ✅</span><span data-lang="de">12 Tests, alle grün ✅</span></span>
                     </div>
                 </div>
                 <div class="example-card">
-                    <h3>🐛 Fix a Production Bug</h3>
+                    <h3>🐛 <span data-lang="en">Fix a Production Bug</span><span data-lang="ja">本番バグを修正</span><span data-lang="de">Production-Bug fixen</span></h3>
                     <div class="example-flow">
                         <span class="cmd">&gt; /tgd-verify</span><br>
-                        Found: failing test in auth middleware<br>
-                        Root cause: token expiry edge case<br>
-                        <span class="cmd">&gt; /tgd-develop fix token refresh</span><br>
-                        <span class="output">→ 3 new tests, all green ✅</span><br>
+                        <span data-lang="en">Found: failing test in auth middleware</span><span data-lang="ja">発見: auth ミドルウェアでテスト失敗</span><span data-lang="de">Gefunden: fehlgeschlagener Test im Auth-Middleware</span><br>
+                        <span data-lang="en">Root cause: token expiry edge case</span><span data-lang="ja">原因: トークン期限切れのエッジケース</span><span data-lang="de">Ursache: Token-Ablauf Edge Case</span><br>
+                        <span class="cmd">&gt; /tgd-develop <span data-lang="en">fix token refresh</span><span data-lang="ja">トークンリフレッシュ修正</span><span data-lang="de">Token-Refresh fixen</span></span><br>
+                        <span class="output">→ <span data-lang="en">3 new tests, all green ✅</span><span data-lang="ja">新しいテスト3つ、全部グリーン ✅</span><span data-lang="de">3 neue Tests, alle grün ✅</span></span><br>
                         <span class="cmd">&gt; /tgd-review</span><br>
-                        <span class="output">→ Code quality: PASS</span><br>
-                        <span class="output">→ Security audit: PASS</span>
+                        <span class="output">→ <span data-lang="en">Code quality: PASS</span><span data-lang="ja">コード品質: PASS</span><span data-lang="de">Code-Qualität: PASS</span></span><br>
+                        <span class="output">→ <span data-lang="en">Security audit: PASS</span><span data-lang="ja">セキュリティ監査: PASS</span><span data-lang="de">Security-Audit: PASS</span></span>
                     </div>
                 </div>
                 <div class="example-card">
-                    <h3>🚀 Ship with Confidence</h3>
+                    <h3>🚀 <span data-lang="en">Ship with Confidence</span><span data-lang="ja">自信を持ってシップ</span><span data-lang="de">Selbstbewusst shippen</span></h3>
                     <div class="example-flow">
                         <span class="cmd">&gt; /tgd-ship</span><br>
-                        Running 3 parallel reviews...<br>
-                        <span class="output">🧑‍💻 code-reviewer: ✅ Approved</span><br>
-                        <span class="output">🧪 test-engineer: ✅ 87% coverage</span><br>
-                        <span class="output">🔒 security-auditor: ✅ No vulns</span><br>
-                        <span class="output">→ PR created, CI passing, deployed 🎉</span>
+                        <span data-lang="en">Running 3 parallel reviews...</span><span data-lang="ja">3つのレビューを並列実行中...</span><span data-lang="de">3 parallele Reviews laufen...</span><br>
+                        <span class="output">🧑‍💻 code-reviewer: ✅ <span data-lang="en">Approved</span><span data-lang="ja">承認</span><span data-lang="de">Genehmigt</span></span><br>
+                        <span class="output">🧪 test-engineer: ✅ <span data-lang="en">87% coverage</span><span data-lang="ja">カバレッジ87%</span><span data-lang="de">87% Coverage</span></span><br>
+                        <span class="output">🔒 security-auditor: ✅ <span data-lang="en">No vulns</span><span data-lang="ja">脆弱性なし</span><span data-lang="de">Keine Schwachstellen</span></span><br>
+                        <span class="output">→ <span data-lang="en">PR created, CI passing, deployed 🎉</span><span data-lang="ja">PR 作成、CI パス、デプロイ完了 🎉</span><span data-lang="de">PR erstellt, CI grün, deployed 🎉</span></span>
                     </div>
                 </div>
             </div>
@@ -1371,7 +1371,7 @@
             <h2 class="fade-in"><span data-lang="en">All 28 Skills</span><span data-lang="zh">全部 28 個 Skills</span>
                 <span data-lang="ja">全28スキル</span>
                 <span data-lang="de">Alle 28 Skills</span></h2>
-            <p class="section-subtitle fade-in">Organized by lifecycle phase. Loaded on-demand — only what’s needed.</p>
+            <p class="section-subtitle fade-in"><span data-lang="en">Organized by lifecycle phase. Loaded on-demand — only what's needed.</span><span data-lang="ja">ライフサイクル別に整理。オンデマンドで必要なものだけロード。</span><span data-lang="de">Nach Lebenszyklus-Phase organisiert. On-Demand geladen — nur was gebraucht wird.</span></p>
 
             <div class="skills-grid fade-stagger">
                 <div class="skill-group">
@@ -1421,21 +1421,21 @@
             <div class="test-roles fade-in">
                 <div class="test-role">
                     <div class="test-role-icon">🔨</div>
-                    <h3>Builder</h3>
+                    <h3><span data-lang="en">Builder</span><span data-lang="ja">ビルダー</span><span data-lang="de">Builder</span></h3>
                     <p><strong>/tgd-develop</strong></p>
-                    <p>Write tests alongside code. Red-Green-Refactor cycle. Unit tests only.</p>
+                    <p><span data-lang="en">Write tests alongside code. Red-Green-Refactor cycle. Unit tests only.</span><span data-lang="ja">コードと同時にテストを書く。Red-Green-Refactor サイクル。ユニットテストのみ。</span><span data-lang="de">Tests zusammen mit Code schreiben. Red-Green-Refactor Zyklus. Nur Unit-Tests.</span></p>
                 </div>
                 <div class="test-role">
                     <div class="test-role-icon">🔍</div>
-                    <h3>Inspector</h3>
+                    <h3><span data-lang="en">Inspector</span><span data-lang="ja">インスペクター</span><span data-lang="de">Inspektor</span></h3>
                     <p><strong>/tgd-verify</strong></p>
-                    <p>Run all tests, fix failures. Integration + E2E. Debug pipeline.</p>
+                    <p><span data-lang="en">Run all tests, fix failures. Integration + E2E. Debug pipeline.</span><span data-lang="ja">全部のテスト実行、失敗を修正。結合テスト + E2E。デバッグ pipeline。</span><span data-lang="de">Alle Tests laufen lassen, Fehler fixen. Integration + E2E. Debug-Pipeline.</span></p>
                 </div>
                 <div class="test-role">
                     <div class="test-role-icon">🕵️</div>
-                    <h3>Auditor</h3>
+                    <h3><span data-lang="en">Auditor</span><span data-lang="ja">監査担当</span><span data-lang="de">Auditor</span></h3>
                     <p><strong>/tgd-review</strong></p>
-                    <p>Check test quality, coverage gaps. 80% unit, 15% integration, 5% E2E.</p>
+                    <p><span data-lang="en">Check test quality, coverage gaps. 80% unit, 15% integration, 5% E2E.</span><span data-lang="ja">テスト品質とカバレッジの穴をチェック。ユニット80%、結合15%、E2E 5%。</span><span data-lang="de">Test-Qualität und Coverage-Lücken prüfen. 80% Unit, 15% Integration, 5% E2E.</span></p>
                 </div>
             </div>
         </div>
@@ -1456,20 +1456,20 @@
                 <div class="persona-card">
                     <div class="persona-icon">🧑‍💻</div>
                     <h3>code-reviewer</h3>
-                    <div class="persona-tagline">"Would a staff engineer approve this?"</div>
-                    <p>Reviews code quality, architecture decisions, naming conventions, and design patterns. Ensures the code reads like it was written by a senior engineer.</p>
+                    <div class="persona-tagline"><span data-lang="en">"Would a staff engineer approve this?"</span><span data-lang="ja">「スタッフエンジニアがこれ承認するかな？」</span><span data-lang="de">"Würde ein Staff Engineer das absegnen?"</span></div>
+                    <p><span data-lang="en">Reviews code quality, architecture decisions, naming conventions, and design patterns. Ensures the code reads like it was written by a senior engineer.</span><span data-lang="ja">コード品質・アーキテクチャ・命名規則・デザインパターンをレビュー。シニアエンジニアが書いたかのようにコードが読めるようにする。</span><span data-lang="de">Prüft Code-Qualität, Architektur-Entscheidungen, Namenskonventionen und Design-Patterns. Stellt sicher dass der Code liest wie von einem Senior-Engineer geschrieben.</span></p>
                 </div>
                 <div class="persona-card">
                     <div class="persona-icon">🧪</div>
                     <h3>test-engineer</h3>
-                    <div class="persona-tagline">"Prove it works."</div>
-                    <p>QA specialist focused on test strategy, coverage gaps, edge cases, and the Prove-It pattern. Ensures 80% unit / 15% integration / 5% E2E ratio.</p>
+                    <div class="persona-tagline"><span data-lang="en">"Prove it works."</span><span data-lang="ja">「動くことを見せろ」</span><span data-lang="de">"Beweis dass es funktioniert."</span></div>
+                    <p><span data-lang="en">QA specialist focused on test strategy, coverage gaps, edge cases, and the Prove-It pattern. Ensures 80% unit / 15% integration / 5% E2E ratio.</span><span data-lang="ja">テスト戦略・カバレッジの穴・エッジケース・Prove-It パターンに特化した QA スペシャリスト。ユニット80%/結合15%/E2E 5% の比率を担保。</span><span data-lang="de">QA-Spezialist für Test-Strategie, Coverage-Lücken, Edge Cases und das Prove-It-Pattern. Sorgt für 80% Unit / 15% Integration / 5% E2E Verhältnis.</span></p>
                 </div>
                 <div class="persona-card">
                     <div class="persona-icon">🔒</div>
                     <h3>security-auditor</h3>
-                    <div class="persona-tagline">"What could go wrong?"</div>
-                    <p>Vulnerability detection, OWASP compliance, dependency scanning, and threat modeling. Catches security issues before they reach production.</p>
+                    <div class="persona-tagline"><span data-lang="en">"What could go wrong?"</span><span data-lang="ja">「何が壊れる可能性がある？」</span><span data-lang="de">"Was könnte schiefgehen?"</span></div>
+                    <p><span data-lang="en">Vulnerability detection, OWASP compliance, dependency scanning, and threat modeling. Catches security issues before they reach production.</span><span data-lang="ja">脆弱性検出・OWASP 準拠・依存関係スキャン・脅威モデリング。セキュリティ問題を本番に届く前にキャッチ。</span><span data-lang="de">Schwachstellen-Erkennung, OWASP-Konformität, Dependency-Scanning und Threat-Modeling. Fängt Security-Probleme bevor sie Produktion erreichen.</span></p>
                 </div>
             </div>
         </div>
@@ -1490,22 +1490,22 @@
                 <div class="anatomy-step">
                     <div class="step-num">01</div>
                     <h4>Frontmatter</h4>
-                    <p>Name, description, triggers. Agent decides relevance in milliseconds.</p>
+                    <p><span data-lang="en">Name, description, triggers. Agent decides relevance in milliseconds.</span><span data-lang="ja">名前・説明・トリガー。エージェントがミリ秒で関連性を判断。</span><span data-lang="de">Name, Beschreibung, Trigger. Agent entscheidet Relevanz in Millisekunden.</span></p>
                 </div>
                 <div class="anatomy-step">
                     <div class="step-num">02</div>
                     <h4>Workflow</h4>
-                    <p>Numbered steps with exact commands. No ambiguity, no guessing.</p>
+                    <p><span data-lang="en">Numbered steps with exact commands. No ambiguity, no guessing.</span><span data-lang="ja">番号付きステップと正確なコマンド。曖昧さなし、推測なし。</span><span data-lang="de">Nummerierte Schritte mit exakten Commands. Keine Mehrdeutigkeit, kein Raten.</span></p>
                 </div>
                 <div class="anatomy-step">
                     <div class="step-num">03</div>
                     <h4>Verification</h4>
-                    <p>Exit criteria. The agent must prove it worked before moving on.</p>
+                    <p><span data-lang="en">Exit criteria. The agent must prove it worked before moving on.</span><span data-lang="ja">終了条件。エージェントは動いたことを証明してから次に進む。</span><span data-lang="de">Exit-Kriterien. Der Agent muss beweisen dass es funktioniert bevor es weitergeht.</span></p>
                 </div>
                 <div class="anatomy-step">
                     <div class="step-num">04</div>
                     <h4>Anti-rationalization</h4>
-                    <p>Blocks lazy shortcuts. "I'll just quickly implement this" → denied.</p>
+                    <p><span data-lang="en">Blocks lazy shortcuts. "I'll just quickly implement this" → denied.</span><span data-lang="ja">手抜きショートカットをブロック。「ちょっとサクッと実装するね」→ 却下。</span><span data-lang="de">Blockt faule Abkürzungen. "Ich implementier das schnell" → verweigert.</span></p>
                 </div>
             </div>
         </div>
@@ -1603,41 +1603,41 @@
             
             <div class="fade-in" style="max-width: 800px;">
                 <div class="faq-item">
-                    <div class="faq-question">Do I need to install anything besides the agent?</div>
-                    <div class="faq-answer">Just <code>bash setup.sh</code>. It auto-detects your CLI and configures everything. Webwright dependencies installed automatically.</div>
+                    <div class="faq-question"><span data-lang="en">Do I need to install anything besides the agent?</span><span data-lang="ja">agent 以外に何かインストールする必要ある？</span><span data-lang="de">Muss ich noch etwas installieren außer dem Agent?</span></div>
+                    <div class="faq-answer"><span data-lang="en">Just <code>bash setup.sh</code>. It auto-detects your CLI and configures everything. Webwright dependencies installed automatically.</span><span data-lang="ja"><code>bash setup.sh</code> だけで OK。CLI を自動検出して全部設定してくれる。Webwright の依存関係も自動インストール。</span><span data-lang="de">Einfach <code>bash setup.sh</code>. Erkennt deine CLI automatisch und konfiguriert alles. Webwright-Abhängigkeiten werden automatisch installiert.</span></div>
                 </div>
                 <div class="faq-item">
-                    <div class="faq-question">What if my agent doesn't support slash commands?</div>
-                    <div class="faq-answer">Say "Plan this feature" in natural language — tGD maps intent to skills automatically.</div>
+                    <div class="faq-question"><span data-lang="en">What if my agent doesn't support slash commands?</span><span data-lang="ja">agent がスラッシュコマンドに対応してない場合は？</span><span data-lang="de">Was wenn mein Agent keine Slash-Commands unterstützt?</span></div>
+                    <div class="faq-answer"><span data-lang="en">Say "Plan this feature" in natural language — tGD maps intent to skills automatically.</span><span data-lang="ja">「この機能を計画して」と自然言葉で言えば OK——tGD が自動的にスキルにマッピング。</span><span data-lang="de">Sag einfach "Plane dieses Feature" in natürlicher Sprache — tGD mappt Intent automatisch zu Skills.</span></div>
                 </div>
                 <div class="faq-item">
-                    <div class="faq-question">Can I skip stages?</div>
-                    <div class="faq-answer">Each stage has pre-flight checks. If you skip, the next stage will block you.</div>
+                    <div class="faq-question"><span data-lang="en">Can I skip stages?</span><span data-lang="ja">ステップ飛ばせる？</span><span data-lang="de">Kann ich Stufen überspringen?</span></div>
+                    <div class="faq-answer"><span data-lang="en">Each stage has pre-flight checks. If you skip, the next stage will block you.</span><span data-lang="ja">各ステージにプリフライトチェックがある。飛ばすと次のステージでブロックされる。</span><span data-lang="de">Jede Stufe hat Pre-Flight-Checks. Wenn du überspringst, blockiert dich die nächste Stufe.</span></div>
                 </div>
                 <div class="faq-item">
-                    <div class="faq-question">Does this work with existing projects?</div>
-                    <div class="faq-answer">Yes! <code>/tgd-map</code> scans your existing codebase first.</div>
+                    <div class="faq-question"><span data-lang="en">Does this work with existing projects?</span><span data-lang="ja">既存プロジェクトでも使える？</span><span data-lang="de">Funktioniert das mit bestehenden Projekten?</span></div>
+                    <div class="faq-answer"><span data-lang="en">Yes! <code>/tgd-map</code> scans your existing codebase first.</span><span data-lang="ja">もちろん！<code>/tgd-map</code> がまず既存のコードベースをスキャンしてくれる。</span><span data-lang="de">Ja! <code>/tgd-map</code> scannt zuerst deinen bestehenden Codebase.</span></div>
                 </div>
                 <div class="faq-item">
-                    <div class="faq-question">How is this different from just using Cursor/Copilot?</div>
-                    <div class="faq-answer">Those tools write code. tGD enforces a workflow — specs, plans, tests, reviews — before code ships.</div>
+                    <div class="faq-question"><span data-lang="en">How is this different from just using Cursor/Copilot?</span><span data-lang="ja">Cursor/Copilot だけ使うのと何が違うの？</span><span data-lang="de">Wie unterscheidet sich das von Cursor/Copilot?</span></div>
+                    <div class="faq-answer"><span data-lang="en">Those tools write code. tGD enforces a workflow — specs, plans, tests, reviews — before code ships.</span><span data-lang="ja">あちらはコードを書くツール。tGD はワークフローを強制する——Spec・計画・テスト・レビューをコード出荷前に通す。</span><span data-lang="de">Diese Tools schreiben Code. tGD erzwingt einen Workflow — Specs, Pläne, Tests, Reviews — bevor Code shipped wird.</span></div>
                 </div>
                 <div class="faq-item">
-                    <div class="faq-question">Can I customize the pipeline?</div>
-                    <div class="faq-answer">Yes! Edit the skill files in <code>skills/</code> to match your team's workflow.</div>
+                    <div class="faq-question"><span data-lang="en">Can I customize the pipeline?</span><span data-lang="ja">pipeline をカスタマイズできる？</span><span data-lang="de">Kann ich die Pipeline anpassen?</span></div>
+                    <div class="faq-answer"><span data-lang="en">Yes! Edit the skill files in <code>skills/</code> to match your team's workflow.</span><span data-lang="ja">もちろん！<code>skills/</code> のスキルファイルをチームのワークフローに合わせて編集しよう。</span><span data-lang="de">Ja! Bearbeite die Skill-Dateien in <code>skills/</code> um sie an deinen Workflow anzupassen.</span></div>
                 </div>
 
                 <div class="faq-item">
-                    <div class="faq-question">Will this slow down my agent?</div>
-                    <div class="faq-answer">No. Skills load on-demand — only the relevant skill enters context. ~5% overhead per skill. Most of the time, your agent works at full speed.</div>
+                    <div class="faq-question"><span data-lang="en">Will this slow down my agent?</span><span data-lang="ja">agent が遅くなる？</span><span data-lang="de">Wird mein Agent dadurch langsamer?</span></div>
+                    <div class="faq-answer"><span data-lang="en">No. Skills load on-demand — only the relevant skill enters context. ~5% overhead per skill. Most of the time, your agent works at full speed.</span><span data-lang="ja">ならない。スキルはオンデマンドでロード——関連スキルだけがコンテキストに入る。スキルあたり約5%のオーバーヘッド。基本的にフルスピードで動く。</span><span data-lang="de">Nein. Skills werden on-demand geladen — nur der relevante Skill kommt in den Kontext. ~5% Overhead pro Skill. Die meiste Zeit arbeitet dein Agent in voller Geschwindigkeit.</span></div>
                 </div>
                 <div class="faq-item">
-                    <div class="faq-question">Does it work offline?</div>
-                    <div class="faq-answer">Core skills work without internet. E2E testing with Webwright needs a browser, but spec writing, planning, code review, and TDD are all offline-capable.</div>
+                    <div class="faq-question"><span data-lang="en">Does it work offline?</span><span data-lang="ja">オフラインでも使える？</span><span data-lang="de">Funktioniert es offline?</span></div>
+                    <div class="faq-answer"><span data-lang="en">Core skills work without internet. E2E testing with Webwright needs a browser, but spec writing, planning, code review, and TDD are all offline-capable.</span><span data-lang="ja">コアスキルはネットなしで動く。Webwright の E2E テストにはブラウザが必要だけど、Spec 書き・計画・コードレビュー・TDD は全部オフライン対応。</span><span data-lang="de">Kern-Skills funktionieren ohne Internet. E2E-Testing mit Webwright braucht einen Browser, aber Spec-Writing, Planning, Code-Review und TDD sind alle offline-fähig.</span></div>
                 </div>
                 <div class="faq-item">
-                    <div class="faq-question">Can I use multiple CLIs?</div>
-                    <div class="faq-answer">Yes. The same 28 skills work across Claude Code, Codex, Gemini CLI, OpenCode, and Pi. Commands auto-detect your platform.</div>
+                    <div class="faq-question"><span data-lang="en">Can I use multiple CLIs?</span><span data-lang="ja">複数の CLI を使える？</span><span data-lang="de">Kann ich mehrere CLIs verwenden?</span></div>
+                    <div class="faq-answer"><span data-lang="en">Yes. The same 28 skills work across Claude Code, Codex, Gemini CLI, OpenCode, and Pi. Commands auto-detect your platform.</span><span data-lang="ja">使える。同じ28スキルが Claude Code・Codex・Gemini CLI・OpenCode・Pi で全部動く。コマンドがプラットフォームを自動検出。</span><span data-lang="de">Ja. Dieselben 28 Skills funktionieren mit Claude Code, Codex, Gemini CLI, OpenCode und Pi. Commands erkennen deine Plattform automatisch.</span></div>
                 </div>
             </div>
         </div>
@@ -1657,28 +1657,28 @@
             <div class="next-steps fade-in">
                 <div class="next-step">
                     <div class="step-num">1</div>
-                    <h4>Add to CI</h4>
-                    <p>Run <code>/tgd-verify</code> in your CI pipeline. Catch regressions automatically.</p>
+                    <h4><span data-lang="en">Add to CI</span><span data-lang="ja">CI に追加</span><span data-lang="de">CI integrieren</span></h4>
+                    <p><span data-lang="en">Run <code>/tgd-verify</code> in your CI pipeline. Catch regressions automatically.</span><span data-lang="ja">CI pipeline で <code>/tgd-verify</code> を実行。リグレッションを自動検出。</span><span data-lang="de"><code>/tgd-verify</code> in deiner CI-Pipeline laufen lassen. Regressionen automatisch abfangen.</span></p>
                 </div>
                 <div class="next-step">
                     <div class="step-num">2</div>
-                    <h4>Custom Skills</h4>
-                    <p>Add team-specific skills. Coding standards, deployment targets, domain rules.</p>
+                    <h4><span data-lang="en">Custom Skills</span><span data-lang="ja">カスタムスキル</span><span data-lang="de">Custom Skills</span></h4>
+                    <p><span data-lang="en">Add team-specific skills. Coding standards, deployment targets, domain rules.</span><span data-lang="ja">チーム専用のスキルを追加。コーディング規約・デプロイ先・ドメインルール。</span><span data-lang="de">Team-spezifische Skills hinzufügen. Coding-Standards, Deployment-Targets, Domain-Regeln.</span></p>
                 </div>
                 <div class="next-step">
                     <div class="step-num">3</div>
-                    <h4>Jira Integration</h4>
-                    <p>Enable <code>jira-auto-sync</code> for automatic ticket creation from plans.</p>
+                    <h4><span data-lang="en">Jira Integration</span><span data-lang="ja">Jira 連携</span><span data-lang="de">Jira-Integration</span></h4>
+                    <p><span data-lang="en">Enable <code>jira-auto-sync</code> for automatic ticket creation from plans.</span><span data-lang="ja"><code>jira-auto-sync</code> を有効にして、計画から自動でチケット作成。</span><span data-lang="de"><code>jira-auto-sync</code> aktivieren für automatische Ticket-Erstellung aus Plänen.</span></p>
                 </div>
                 <div class="next-step">
                     <div class="step-num">4</div>
-                    <h4>Multi-Agent</h4>
-                    <p>Use Ship’s parallel personas for every PR, not just releases.</p>
+                    <h4><span data-lang="en">Multi-Agent</span><span data-lang="ja">マルチエージェント</span><span data-lang="de">Multi-Agent</span></h4>
+                    <p><span data-lang="en">Use Ship's parallel personas for every PR, not just releases.</span><span data-lang="ja">リリースだけでなく、すべての PR で Ship の並列ペルソナを使う。</span><span data-lang="de">Ships parallele Personas für jeden PR nutzen, nicht nur für Releases.</span></p>
                 </div>
                 <div class="next-step">
                     <div class="step-num">5</div>
-                    <h4>Share &amp; Contribute</h4>
-                    <p>Star the repo. Open issues. Submit PRs. Build the community.</p>
+                    <h4><span data-lang="en">Share &amp; Contribute</span><span data-lang="ja">共有 &amp; コントリビュート</span><span data-lang="de">Teilen &amp; Mitmachen</span></h4>
+                    <p><span data-lang="en">Star the repo. Open issues. Submit PRs. Build the community.</span><span data-lang="ja">リポジトリにスター。Issue を立てる。PR を送る。コミュニティを一緒に作ろう。</span><span data-lang="de">Repo sternen. Issues eröffnen. PRs einreichen. Community mitaufbauen.</span></p>
                 </div>
             </div>
         </div>
