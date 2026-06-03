@@ -88,3 +88,16 @@ Use these commands in order. Do not skip phases:
 5. `/tgd-verify` → Run all tests, prove it works
 6. `/tgd-review` → Code quality + simplification
 7. `/tgd-ship` → Deploy with confidence
+
+## CodeGraph (if `.codegraph/` exists in project root)
+
+If the project has a `.codegraph/` directory, **USE IT**. These commands are fast (< 1s) and prevent blind spots:
+
+| Situation | Command | Why |
+|---|---|---|
+| Starting any code task | `codegraph context "<task>" --no-code` | Find entry points before touching files |
+| Before changing a function | `codegraph callers "<symbol>"` | Know who depends on it |
+| Before refactoring | `codegraph impact "<symbol>"` | Assess blast radius |
+| Before committing | `codegraph affected <changed files>` | Run only relevant tests |
+
+If `.codegraph/` does NOT exist, skip silently. Do not suggest installing it unprompted.
