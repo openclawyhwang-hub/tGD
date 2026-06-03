@@ -101,3 +101,16 @@ If the project has a `.codegraph/` directory, **USE IT**. These commands are fas
 | Before committing | `codegraph affected <changed files>` | Run only relevant tests |
 
 If `.codegraph/` does NOT exist, skip silently. Do not suggest installing it unprompted.
+
+## Understand-Anything (if `/understand` command is available)
+
+For deeper architectural understanding, especially on unfamiliar codebases:
+
+| Situation | Command | Why |
+|---|---|---|
+| First time exploring a project | `/understand` | Build full knowledge graph + dashboard |
+| Need business domain mapping | `/understand-domain` | Map code to business processes |
+| Onboarding a new team member | `/understand-onboard` | Guided tour of the architecture |
+| Before a big refactor | `/understand-diff` | Visualize impact of proposed changes |
+
+Use CodeGraph for fast symbol queries, Understand-Anything for deep comprehension. They complement each other.

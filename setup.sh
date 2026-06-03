@@ -196,7 +196,19 @@ print(f"   ✅ Removed {total_removed} tGD hooks from ~/.gemini/settings.json (u
 PYEOF
     fi
 
-    # 3. Remove tgd CLI
+    # 3. Remove Understand-Anything links
+    for dir in "$HOME/.claude/skills" "$HOME/.codex/skills" "$HOME/.config/opencode/skills" "$HOME/.gemini/skills" "$HOME/.pi/agent/skills"; do
+        if [[ -d "$dir" ]]; then
+            for link in "$dir"/understand*; do
+                if [[ -L "$link" ]] && readlink "$link" 2>/dev/null | grep -q "understand-anything"; then
+                    echo "   🗑️  Removing UA link: $link"
+                    rm -f "$link"
+                fi
+            done
+        fi
+    done
+
+    # 4. Remove tgd CLI
     for bin_path in "/usr/local/bin/tgd" "$HOME/.local/bin/tgd"; do
         if [[ -L "$bin_path" ]] && readlink "$bin_path" 2>/dev/null | grep -q "tGD"; then
             echo "   🗑️  Removing tgd CLI: $bin_path"
@@ -625,6 +637,60 @@ else
     else
         echo "   ⚠️  npm not found. Install CodeGraph manually:"
         echo "      npm install -g @colbymchenry/codegraph"
+    fi
+fi
+
+# Understand-Anything (bundled as submodule)
+echo "🧠 Checking Understand-Anything..."
+UA_SKILLS_DIR="$TGD_DIR/vendor/understand-anything/understand-anything-plugin/skills"
+if [ -d "$UA_SKILLS_DIR" ]; then
+    echo "   ✅ Understand-Anything submodule ready."
+else
+    echo "   📥 Initializing Understand-Anything submodule..."
+    cd "$TGD_DIR" && git submodule update --init vendor/understand-anything 2>/dev/null && echo "   ✅ Submodule initialized." || echo "   ⚠️  Run: git submodule update --init vendor/understand-anything"
+fi
+
+# Link Understand-Anything skills to each platform
+if [ -d "$UA_SKILLS_DIR" ]; then
+    # Claude Code: per-skill symlinks in ~/.claude/skills/
+    if [ -d "$HOME/.claude" ] || [ -L "$HOME/.claude" ]; then
+        for skill in "$UA_SKILLS_DIR"/*/; do
+            skill_name=$(basename "$skill")
+            ln -sf "$skill" "$HOME/.claude/skills/understand-$skill_name" 2>/dev/null || true
+        done
+        echo "   ✅ Claude: Understand-Anything skills linked."
+    fi
+    # Codex: folder symlink in ~/.codex/skills/
+    if [ -d "$HOME/.codex" ] || [ -L "$HOME/.codex" ]; then
+        mkdir -p "$HOME/.codex/skills"
+        if [ -d "$HOME/.codex/skills/understand-anything" ] && [ ! -L "$HOME/.codex/skills/understand-anything" ]; then
+            rm -rf "$HOME/.codex/skills/understand-anything"
+        fi
+        ln -sf "$UA_SKILLS_DIR" "$HOME/.codex/skills/understand-anything" 2>/dev/null && echo "   ✅ Codex: Understand-Anything skills linked."
+    fi
+    # OpenCode: folder symlink in ~/.config/opencode/skills/
+    if [ -d "$HOME/.config/opencode" ] || [ -L "$HOME/.config/opencode" ]; then
+        mkdir -p "$HOME/.config/opencode/skills"
+        if [ -d "$HOME/.config/opencode/skills/understand-anything" ] && [ ! -L "$HOME/.config/opencode/skills/understand-anything" ]; then
+            rm -rf "$HOME/.config/opencode/skills/understand-anything"
+        fi
+        ln -sf "$UA_SKILLS_DIR" "$HOME/.config/opencode/skills/understand-anything" 2>/dev/null && echo "   ✅ OpenCode: Understand-Anything skills linked."
+    fi
+    # Gemini: folder symlink in ~/.gemini/skills/
+    if [ -d "$HOME/.gemini" ] || [ -L "$HOME/.gemini" ]; then
+        mkdir -p "$HOME/.gemini/skills"
+        if [ -d "$HOME/.gemini/skills/understand-anything" ] && [ ! -L "$HOME/.gemini/skills/understand-anything" ]; then
+            rm -rf "$HOME/.gemini/skills/understand-anything"
+        fi
+        ln -sf "$UA_SKILLS_DIR" "$HOME/.gemini/skills/understand-anything" 2>/dev/null && echo "   ✅ Gemini: Understand-Anything skills linked."
+    fi
+    # Pi: folder symlink in ~/.pi/agent/skills/
+    if [ -d "$HOME/.pi" ] || [ -L "$HOME/.pi" ]; then
+        mkdir -p "$HOME/.pi/agent/skills"
+        if [ -d "$HOME/.pi/agent/skills/understand-anything" ] && [ ! -L "$HOME/.pi/agent/skills/understand-anything" ]; then
+            rm -rf "$HOME/.pi/agent/skills/understand-anything"
+        fi
+        ln -sf "$UA_SKILLS_DIR" "$HOME/.pi/agent/skills/understand-anything" 2>/dev/null && echo "   ✅ Pi: Understand-Anything skills linked."
     fi
 fi
 
