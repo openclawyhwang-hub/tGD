@@ -100,6 +100,8 @@ Bug report arrives
        │
        ▼
   Run full test suite (no regressions)
+       │  💡 If `.codegraph/` exists: `codegraph affected <changed files>`
+       │     to identify which tests to prioritize
 ```
 
 **Example:**

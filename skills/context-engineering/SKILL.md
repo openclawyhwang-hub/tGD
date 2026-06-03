@@ -90,10 +90,11 @@ Load the relevant spec section when starting a feature. Don't load the entire sp
 Before editing a file, read it. Before implementing a pattern, find an existing example in the codebase.
 
 **Pre-task context loading:**
-1. Read the file(s) you'll modify
-2. Read related test files
-3. Find one example of a similar pattern already in the codebase
-4. Read any type definitions or interfaces involved
+1. If `.codegraph/` exists: `codegraph context "<task>" --no-code` to find entry points automatically
+2. Read the file(s) you'll modify
+3. Read related test files
+4. Find one example of a similar pattern already in the codebase
+5. Read any type definitions or interfaces involved
 
 **Trust levels for loaded files:**
 - **Trusted:** Source code, test files, type definitions authored by the project team
@@ -187,6 +188,7 @@ For richer context, use Model Context Protocol servers:
 | **Chrome DevTools** | Live browser state, DOM, console, network |
 | **PostgreSQL** | Direct database schema and query results |
 | **Filesystem** | Project file access and search |
+| **CodeGraph** | Symbol graph: entry points, callers, blast radius. Run `codegraph context "<task>" --no-code` |
 | **GitHub** | Issue, PR, and repository context |
 
 ## Confusion Management

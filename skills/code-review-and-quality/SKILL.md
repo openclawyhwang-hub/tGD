@@ -127,6 +127,8 @@ Before looking at code, understand the intent:
 - What is the expected behavior change?
 ```
 
+If `.codegraph/` exists, run `codegraph callers "<modified-function>"` to verify the change doesn't miss any dependent code. Run `codegraph affected <changed-files>` to confirm all impacted tests are included.
+
 ### Step 2: Review the Tests First
 
 Tests reveal intent and coverage:

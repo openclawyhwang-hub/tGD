@@ -35,11 +35,12 @@ Build in thin vertical slices — implement one piece, test it, verify it, then 
 
 For each slice:
 
-1. **Implement** the smallest complete piece of functionality
-2. **Test** — run the test suite (or write a test if none exists)
-3. **Verify** — confirm the slice works as expected (tests pass, build succeeds, manual check)
-4. **Commit** -- save your progress with a descriptive message (see `git-workflow-and-versioning` for atomic commit guidance)
-5. **Move to the next slice** — carry forward, don't restart
+1. **Scope** — if `.codegraph/` exists, run `codegraph callers "<function>"` on any function you're about to modify to know who depends on it
+2. **Implement** the smallest complete piece of functionality
+3. **Test** — run the test suite (or write a test if none exists)
+4. **Verify** — confirm the slice works as expected (tests pass, build succeeds, manual check)
+5. **Commit** -- save your progress with a descriptive message (see `git-workflow-and-versioning` for atomic commit guidance)
+6. **Move to the next slice** — carry forward, don't restart
 
 ## Slicing Strategies
 
