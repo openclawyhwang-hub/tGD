@@ -5,6 +5,7 @@
   <img src="https://img.shields.io/github/license/openclawyhwang-hub/tGD?style=for-the-badge&color=blue" alt="License">
   <img src="https://img.shields.io/github/last-commit/openclawyhwang-hub/tGD?style=for-the-badge&logo=github&label=Last%20Commit&color=green" alt="Last Commit">
   <img src="https://img.shields.io/badge/platforms-Claude%20Code%20%7C%20Codex%20%7C%20Gemini%20%7C%20OpenCode%20%7C%20Pi-8A2BE2?style=for-the-badge" alt="Platforms">
+  <img src="https://img.shields.io/badge/version-semver-2ea44f?style=for-the-badge" alt="Version">
 </p>
 <p align="center">
   <a href="README.md">English</a> | <a href="README.zh-TW.md">繁體中文</a> | <a href="README.ja.md">日本語</a> | <a href="README.de.md">Deutsch</a>
@@ -52,17 +53,21 @@ Works with Claude Code, Codex CLI, Gemini CLI, OpenCode, and Pi Coding Agent.
 ### 1. Clone & Setup
 ```bash
 git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
-bash setup.sh
+tgd
 ```
 > Auto-detects your installed CLIs (Claude, Codex, Gemini, OpenCode, Pi) and configures everything. Webwright dependencies installed automatically.
+>
+> **Alternative:** If `tgd` is not yet installed, run `bash setup.sh` directly.
 
 ### Setup Options
 
 | Command | What it does |
 |---------|-------------|
-| `bash setup.sh` | Fresh install (or update to a new version) |
-| `bash setup.sh --upgrade` | Force refresh: clean broken symlinks and rebuild all links/hooks |
-| `bash setup.sh --uninstall` | Remove all tGD symlinks and hooks without touching your other files |
+| `tgd` | Install or refresh tGD |
+| `tgd --version` (`-v`) | Show current version (semver from git tag) |
+| `tgd --upgrade` (`-u`) | Force refresh: clean broken symlinks and rebuild all links/hooks |
+| `tgd --uninstall` | Remove all tGD symlinks and hooks without touching your other files |
+| `bash setup.sh` | Legacy fallback — equivalent to `tgd` |
 
 ### 2. Start Your Agent
 ```bash
@@ -208,6 +213,20 @@ When syncing to Jira, tGD doesn't just blindly create issues. It:
 
 ## ⌨️ Commands
 
+### CLI (`tgd`)
+
+The `tgd` CLI manages installation, updates, and diagnostics:
+
+| Command | Description |
+|---------|-------------|
+| `tgd` | Install or update tGD |
+| `tgd --version` (`-v`) | Show current version (semver from git tag) |
+| `tgd --upgrade` (`-u`) | Force refresh links and hooks |
+| `tgd --uninstall` | Remove all tGD installations |
+| `bash setup.sh` | Legacy fallback — equivalent to `tgd` |
+
+### Slash Commands
+
 8 slash commands that map to the development lifecycle. Each command chains the relevant skills automatically.
 
 | 🎯 What you're doing | ⌨️ Command | 💡 Key principle | 🔧 Invokes |
@@ -321,7 +340,7 @@ Skills use **progressive disclosure** — the agent only loads details when need
 ## ❓ FAQ
 
 **Q: Do I need to install anything besides the agent?**
-A: Just `bash setup.sh`. It auto-detects your CLI and configures everything. Webwright dependencies installed automatically.
+A: Just run `tgd`. It auto-detects your CLI and configures everything. Webwright dependencies installed automatically.
 
 **Q: What if my agent doesn't support slash commands?**
 A: Say "Plan this feature" in natural language — tGD maps intent to skills automatically.
@@ -467,7 +486,7 @@ MIT - use these skills in your projects, teams, and tools.
 
 ## 📎 Appendix: Manual Configuration
 
-> **Note:** Only needed if `bash setup.sh` fails or you prefer manual linking.
+> **Note:** Only needed if `tgd` fails or you prefer manual linking.
 
 ### Claude Code
 ```bash

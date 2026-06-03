@@ -5,6 +5,7 @@
   <img src="https://img.shields.io/github/license/openclawyhwang-hub/tGD?style=for-the-badge&color=blue" alt="License">
   <img src="https://img.shields.io/github/last-commit/openclawyhwang-hub/tGD?style=for-the-badge&logo=github&label=Last%20Commit&color=green" alt="Last Commit">
   <img src="https://img.shields.io/badge/platforms-Claude%20Code%20%7C%20Codex%20%7C%20Gemini%20%7C%20OpenCode%20%7C%20Pi-8A2BE2?style=for-the-badge" alt="Platforms">
+  <img src="https://img.shields.io/badge/version-semver-2ea44f?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -51,17 +52,21 @@ Funktioniert mit Claude Code, Codex CLI, Gemini CLI, OpenCode und Pi Coding Agen
 ### 1. Clone & Setup
 ```bash
 git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
-bash setup.sh
+tgd
 ```
 > Erkennt installierte CLIs automatisch. Webwright-Abhängigkeiten werden automatisch installiert.
+>
+> **Alternative:** Wenn `tgd` noch nicht installiert ist, führen Sie `bash setup.sh` direkt aus.
 
 ### Installationsoptionen
 
 | Befehl | Beschreibung |
 |--------|-------------|
-| `bash setup.sh` | Neuinstallation (oder Upgrade auf eine neue Version) |
-| `bash setup.sh --upgrade` | Erneuern: ungültige Symlinks bereinigen und alle Links/Hooks neu erstellen |
-| `bash setup.sh --uninstall` | Alle tGD-Installation entfernen, ohne andere Dateien zu beeinträchtigen |
+| `tgd` | Neuinstallation (oder Upgrade auf eine neue Version) |
+| `tgd --version` (`-v`) | Aktuelle Version anzeigen (semver aus git tag) |
+| `tgd --upgrade` (`-u`) | Erneuern: ungültige Symlinks bereinigen und alle Links/Hooks neu erstellen |
+| `tgd --uninstall` | Alle tGD-Installation entfernen, ohne andere Dateien zu beeinträchtigen |
+| `bash setup.sh` | Legacy-Fallback — entspricht `tgd` |
 
 ### 2. Agent starten
 ```bash
@@ -139,6 +144,20 @@ Agent: Finale Prüfungen...
 ---
 
 ## ⚙️ Pipeline
+
+### CLI (`tgd`)
+
+Die `tgd` CLI verwaltet Installation, Updates und Diagnose:
+
+| Befehl | Beschreibung |
+|--------|-------------|
+| `tgd` | tGD installieren oder aktualisieren |
+| `tgd --version` (`-v`) | Version anzeigen (semver) |
+| `tgd --upgrade` (`-u`) | Links und Hooks erneuern |
+| `tgd --uninstall` | Alle tGD-Installationen entfernen |
+| `bash setup.sh` | Legacy-Fallback — entspricht `tgd` |
+
+### Slash Commands
 
 8 Stufen von der Idee bis zur Produktion. Jede Stufe gatekept die nächste.
 
@@ -227,7 +246,7 @@ Jeder Skill folgt einer konsistenten Anatomie:
 ## ❓ FAQ
 
 **Q: Muss ich etwas außer dem Agent installieren?**
-A: Nur `bash setup.sh`. Erkennt Ihren CLI automatisch.
+A: Nur `tgd` ausführen. Erkennt Ihren CLI automatisch.
 
 **Q: Was wenn mein Agent keine Slash Commands unterstützt?**
 A: Sagen Sie "Plane dieses Feature" – tGD mappt Intent automatisch.
@@ -389,7 +408,7 @@ MIT – Nutzen Sie diese Skills in Ihren Projekten, Teams und Tools.
 
 ## 📎 Anhang: Manuelle Konfiguration
 
-> **Hinweis:** Nur nötig wenn `bash setup.sh` fehlschlägt oder Sie manuelles Linking bevorzugen.
+> **Hinweis:** Nur nötig wenn `tgd` fehlschlägt oder Sie manuelles Linking bevorzugen.
 
 ### Claude Code
 ```bash

@@ -5,6 +5,7 @@
   <img src="https://img.shields.io/github/license/openclawyhwang-hub/tGD?style=for-the-badge&color=blue" alt="License">
   <img src="https://img.shields.io/github/last-commit/openclawyhwang-hub/tGD?style=for-the-badge&logo=github&label=Last%20Commit&color=green" alt="Last Commit">
   <img src="https://img.shields.io/badge/platforms-Claude%20Code%20%7C%20Codex%20%7C%20Gemini%20%7C%20OpenCode%20%7C%20Pi-8A2BE2?style=for-the-badge" alt="Platforms">
+  <img src="https://img.shields.io/badge/version-semver-2ea44f?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -50,20 +51,24 @@
 
 ## 🚀 快速開始
 
-### 1. Clone & 安裝
+### 1. Clone & 安装
 ```bash
 git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
-bash setup.sh
+tgd
 ```
 > 自動偵測已安裝的 CLI（Claude、Codex、Gemini、OpenCode、Pi）並完成設定。Webwright 依賴自動安裝。
+>
+> **替代方案：** 如果 `tgd` 尚未安裝，可直接執行 `bash setup.sh`。
 
 ### 安裝選項
 
 | 指令 | 說明 |
 |------|------|
-| `bash setup.sh` | 全新安裝（或自動升級到新版本） |
-| `bash setup.sh --upgrade` | 強制重建：清除無效 symlink 並重新建立所有連結和 hooks |
-| `bash setup.sh --uninstall` | 移除所有 tGD 部署，不影響其他設定 |
+| `tgd` | 全新安裝（或自動升級到新版本） |
+| `tgd --version` (`-v`) | 顯示當前版本（semver 格式，從 git tag 讀取） |
+| `tgd --upgrade` (`-u`) | 強制重建：清除無效 symlink 並重新建立所有連結和 hooks |
+| `tgd --uninstall` | 移除所有 tGD 部署，不影響其他設定 |
+| `bash setup.sh` | 舊版備用方案 — 等同於 `tgd` |
 
 ### 2. 啟動你的 Agent
 ```bash
@@ -209,6 +214,20 @@ flowchart LR
 
 ## ⌨️ 指令
 
+### CLI（`tgd`）
+
+`tgd` CLI 管理安裝、更新和診斷：
+
+| 指令 | 說明 |
+|------|------|
+| `tgd` | 安裝或更新 tGD |
+| `tgd --version` (`-v`) | 顯示版本（semver 格式） |
+| `tgd --upgrade` (`-u`) | 強制重建連結和 hooks |
+| `tgd --uninstall` | 移除所有 tGD 部署 |
+| `bash setup.sh` | 舊版備用 — 等同於 `tgd` |
+
+### Slash 指令
+
 8 個 slash command 對應開發生命週期。每個指令自動串聯相關的 skills。
 
 | 🎯 做什麼 | ⌨️ 指令 | 💡 核心原則 | 🔧 呼叫的 Skills |
@@ -322,7 +341,7 @@ Skills 使用**漸進式揭露**——agent 只在需要時載入細節，保持
 ## ❓ 常見問題
 
 **Q：除了 agent 之外還需要裝什麼嗎？**
-A：只需要 `bash setup.sh`。它自動偵測你的 CLI 並完成設定。Webwright 依賴自動安裝。
+A：只需要執行 `tgd`。它自動偵測你的 CLI 並完成設定。Webwright 依賴自動安裝。
 
 **Q：我的 agent 不支援 slash command 怎麼辦？**
 A：用自然語言說「規劃這個功能」——tGD 自動將意圖映射到對應的 skill。
@@ -469,7 +488,7 @@ MIT - 在你的專案、團隊和工具中使用這些 skills。
 
 ## 📎 附錄：手動設定
 
-> **注意：** 只在 `bash setup.sh` 失敗或你偏好手動連結時才需要。
+> **注意：** 只在 `tgd` 失敗或你偏好手動連結時才需要。
 
 ### Claude Code
 ```bash
