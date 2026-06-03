@@ -196,7 +196,15 @@ print(f"   ✅ Removed {total_removed} tGD hooks from ~/.gemini/settings.json (u
 PYEOF
     fi
 
-    # 3. Remove version marker
+    # 3. Remove tgd CLI
+    for bin_path in "/usr/local/bin/tgd" "$HOME/.local/bin/tgd"; do
+        if [[ -L "$bin_path" ]] && readlink "$bin_path" 2>/dev/null | grep -q "tGD"; then
+            echo "   🗑️  Removing tgd CLI: $bin_path"
+            rm -f "$bin_path"
+        fi
+    done
+
+    # 4. Remove version marker
     if [[ -f "$TGD_DIR/.tgd-version" ]]; then
         echo "   🗑️  Removing version marker: $TGD_DIR/.tgd-version"
         rm -f "$TGD_DIR/.tgd-version"
@@ -209,6 +217,7 @@ PYEOF
     echo "The following were removed:"
     echo "  • All tGD symlinks (skills, commands, prompts, rules, extensions)"
     echo "  • All tGD hooks from config files"
+    echo "  • tgd CLI binary"
     echo "  • Version marker (.tgd-version)"
     echo ""
     echo "Your ~/.claude/skills/ (and other dirs) are untouched — only tGD items were removed."
@@ -694,6 +703,23 @@ ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.pi/agent/skills/tgd-rules" 2>/dev/nul
 
 echo ""
 echo "===================================="
+
+# ─── Install tgd CLI ────────────────────────────────────────────────────────
+TGD_BIN="$TGD_DIR/bin/tgd"
+chmod +x "$TGD_BIN"
+
+# Try /usr/local/bin first, fall back to ~/.local/bin
+if [[ -w "/usr/local/bin" ]] 2>/dev/null; then
+    ln -sf "$TGD_BIN" "/usr/local/bin/tgd" 2>/dev/null && echo "   🔧 tgd CLI → /usr/local/bin/tgd"
+else
+    mkdir -p "$HOME/.local/bin"
+    ln -sf "$TGD_BIN" "$HOME/.local/bin/tgd" && echo "   🔧 tgd CLI → ~/.local/bin/tgd"
+    # Ensure ~/.local/bin is in PATH hint
+    if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+        echo "   ⚠️  Add ~/.local/bin to PATH: export PATH=\"\$HOME/.local/bin:\$PATH\""
+    fi
+fi
+
 echo "✅ Setup Complete!"
 echo ""
 echo "tGD is now active in ALL projects."

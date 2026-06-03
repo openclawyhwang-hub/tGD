@@ -1,0 +1,56 @@
+#!/bin/bash
+# tGD CLI — thin wrapper around setup.sh
+# Installed to /usr/local/bin/tgd or ~/.local/bin/tgd
+
+set -e
+
+# Resolve the real script path (follow symlinks)
+REAL_SCRIPT="$0"
+while [[ -L "$REAL_SCRIPT" ]]; do
+    LINK_DIR="$(cd "$(dirname "$REAL_SCRIPT")" && pwd)"
+    REAL_SCRIPT="$(readlink "$REAL_SCRIPT")"
+    [[ "$REAL_SCRIPT" != /* ]] && REAL_SCRIPT="$LINK_DIR/$REAL_SCRIPT"
+done
+SCRIPT_DIR="$(cd "$(dirname "$REAL_SCRIPT")" && pwd)"
+
+# tGD repo is one level up from bin/
+TGD_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+if [[ ! -f "$TGD_DIR/setup.sh" ]]; then
+    echo "❌ Cannot find tGD installation. Run setup.sh first."
+    exit 1
+fi
+
+# Dispatch
+case "${1:-}" in
+    --version|-v)
+        VERSION=$(cd "$TGD_DIR" && git describe --tags --always 2>/dev/null || echo "unknown")
+        echo "tGD $VERSION"
+        ;;
+    --upgrade|-u)
+        exec bash "$TGD_DIR/setup.sh" --upgrade
+        ;;
+    --uninstall|--remove)
+        exec bash "$TGD_DIR/setup.sh" --uninstall
+        ;;
+    --help|-h)
+        echo "tGD — Make your agent great again."
+        echo ""
+        echo "Usage: tgd [command]"
+        echo ""
+        echo "Commands:"
+        echo "  (none)         Install or refresh tGD"
+        echo "  --upgrade, -u  Force refresh symlinks and hooks"
+        echo "  --uninstall    Remove all tGD deployments"
+        echo "  --version, -v  Show current version"
+        echo "  --help, -h     Show this help"
+        ;;
+    "")
+        exec bash "$TGD_DIR/setup.sh"
+        ;;
+    *)
+        echo "Unknown command: $1"
+        echo "Run 'tgd --help' for usage."
+        exit 1
+        ;;
+esac
