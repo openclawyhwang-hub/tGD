@@ -181,6 +181,16 @@ Testing in tGD ist eine progressive Disziplin über drei Stufen:
 
 ---
 
+## 🔗 Integrationen
+
+### Jira Data Center
+Wenn `/tgd-plan` eine `TASKS.md` generiert, kann der **`jira-auto-sync`** Skill automatisch Jira-Issues erstellen:
+```
+/tgd-plan → generiert TASKS.md → Benutzer bestätigt → erstellt Jira-Issues
+```
+
+---
+
 ## 🤖 Agent Personas
 
 | Agent | Rolle | Perspektive |
@@ -203,6 +213,17 @@ Jeder Skill folgt einer konsistenten Anatomie:
 
 ---
 
+## 📊 Leistung
+
+| Metrik | Wert |
+|--------|------|
+| **Geladene Skills** | 28 (On-Demand, nicht alle gleichzeitig) |
+| **Kontextnutzung** | ~5% pro Skill (Progressive Disclosure) |
+| **Setup-Zeit** | < 30 Sekunden |
+| **Erstes Feature** | ~15 Minuten (von `/tgd-define` bis `/tgd-ship`) |
+
+---
+
 ## ❓ FAQ
 
 **Q: Muss ich etwas außer dem Agent installieren?**
@@ -222,6 +243,40 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 
 ---
 
+## 📁 Projektstruktur
+
+### Laufzeitausgabe (wird während der Entwicklung generiert)
+```
+<your-project>/
+├── tGD/
+│   ├── map/
+│   │   └── CONTEXT.md              ← Projektkontext (/tgd-map)
+│   ├── define/                     ← PRD + SPEC + DESIGN pro Feature
+│   │   └── <feature-name>/         ← z.B. auth-feature, user-profile
+│   │       ├── PRD.md
+│   │       ├── SPEC.md
+│   │       └── DESIGN.md
+│   └── plan/                       ← Aufgabenzerlegung pro Feature
+│       └── <feature-name>/
+│           └── TASKS.md
+```
+
+### Repository-Inhalt
+```
+tGD/
+├── skills/                     # 28 Skills
+├── agents/                     # 3 Spezialisten-Personas
+├── references/                 # Checklisten (Sicherheit, Tests, etc.)
+├── .claude/commands/           # Claude Code Slash Commands
+├── .gemini/commands/           # Gemini CLI Commands
+├── .opencode/commands/         # OpenCode Commands
+├── .codex/prompts/             # Codex CLI Prompts
+├── scripts/                    # Setup & Validierung
+└── docs/                       # Plattformspezifische Guides
+```
+
+---
+
 ## 📦 Alle 28 Skills
 
 <details>
@@ -229,7 +284,7 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 
 | Skill | Zweck |
 |-------|-------|
-| using-tGD | Arbeit dem richtigen Skill zuordnen |
+| [using-tGD](skills/using-tGD/SKILL.md) | Arbeit dem richtigen Skill zuordnen |
 </details>
 
 <details>
@@ -237,9 +292,9 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 
 | Skill | Zweck |
 |-------|-------|
-| interview-me | Benutzer-Intent durch Q&A extrahieren |
-| idea-refine | Divergentes/konvergentes Denken |
-| spec-driven-development | PRD + SPEC vor Code |
+| [interview-me](skills/interview-me/SKILL.md) | Benutzer-Intent durch Q&A extrahieren |
+| [idea-refine](skills/idea-refine/SKILL.md) | Divergentes/konvergentes Denken |
+| [spec-driven-development](skills/spec-driven-development/SKILL.md) | PRD + SPEC vor Code |
 </details>
 
 <details>
@@ -247,22 +302,24 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 
 | Skill | Zweck |
 |-------|-------|
-| planning-and-task-breakdown | In TASKS.md zerlegen |
-| jira-auto-sync | Jira-Issues automatisch erstellen |
+| [planning-and-task-breakdown](skills/planning-and-task-breakdown/SKILL.md) | In TASKS.md zerlegen |
+| [jira-auto-sync](skills/jira-auto-sync/SKILL.md) | Jira-Issues automatisch erstellen |
 </details>
 
 <details>
-<summary><b>⚡ Build (7)</b></summary>
+<summary><b>⚡ Build (9)</b></summary>
 
 | Skill | Zweck |
 |-------|-------|
-| incremental-implementation | Schrittweise inkrementell |
-| test-driven-development | Red-Green-Refactor |
-| context-engineering | Richtige Infos an Agent liefern |
-| source-driven-development | Entscheidungen auf offizielle Docs stützen |
-| doubt-driven-development | Gegnerische Überprüfung |
-| frontend-ui-engineering | UI-Architektur & Design-Systeme |
-| api-and-interface-design | Contract-First-API-Design |
+| [subagent-driven-development](skills/subagent-driven-development/SKILL.md) | Parallele Tasks durch frische Subagenten |
+| [incremental-implementation](skills/incremental-implementation/SKILL.md) | Schrittweise inkrementell |
+| [test-driven-development](skills/test-driven-development/SKILL.md) | Red-Green-Refactor |
+| [verification-before-completion](skills/verification-before-completion/SKILL.md) | Beweis vor Behauptungen |
+| [context-engineering](skills/context-engineering/SKILL.md) | Richtige Infos an Agent liefern |
+| [source-driven-development](skills/source-driven-development/SKILL.md) | Entscheidungen auf offizielle Docs stützen |
+| [doubt-driven-development](skills/doubt-driven-development/SKILL.md) | Gegnerische Überprüfung |
+| [frontend-ui-engineering](skills/frontend-ui-engineering/SKILL.md) | UI-Architektur & Design-Systeme |
+| [api-and-interface-design](skills/api-and-interface-design/SKILL.md) | Contract-First-API-Design |
 </details>
 
 <details>
@@ -270,9 +327,9 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 
 | Skill | Zweck |
 |-------|-------|
-| browser-testing-with-devtools | Laufzeitdaten & DOM-Inspektion |
-| webwright | E2E-Browser-Automatisierung |
-| debugging-and-error-recovery | Triage, Fix, Guard |
+| [browser-testing-with-devtools](skills/browser-testing-with-devtools/SKILL.md) | Laufzeitdaten & DOM-Inspektion |
+| [webwright](skills/webwright/SKILL.md) | E2E-Browser-Automatisierung |
+| [debugging-and-error-recovery](skills/debugging-and-error-recovery/SKILL.md) | Triage, Fix, Guard |
 </details>
 
 <details>
@@ -280,10 +337,10 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 
 | Skill | Zweck |
 |-------|-------|
-| code-review-and-quality | 5-Achsen-Review |
-| code-simplification | Komplexität reduzieren |
-| security-and-hardening | OWASP & Secrets-Management |
-| performance-optimization | Profiling & Anti-Patterns |
+| [code-review-and-quality](skills/code-review-and-quality/SKILL.md) | 5-Achsen-Review |
+| [code-simplification](skills/code-simplification/SKILL.md) | Komplexität reduzieren |
+| [security-and-hardening](skills/security-and-hardening/SKILL.md) | OWASP & Secrets-Management |
+| [performance-optimization](skills/performance-optimization/SKILL.md) | Profiling & Anti-Patterns |
 </details>
 
 <details>
@@ -291,15 +348,72 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 
 | Skill | Zweck |
 |-------|-------|
-| git-workflow-and-versioning | Atomische Commits & Trunk-basiert |
-| ci-cd-and-automation | Shift Left & Feature-Flags |
-| deprecation-and-migration | Migrations-Pattern |
-| documentation-and-adrs | ADRs & API-Dokumentation |
-| shipping-and-launch | Stufen-Rollouts & Monitoring |
+| [git-workflow-and-versioning](skills/git-workflow-and-versioning/SKILL.md) | Atomische Commits & Trunk-basiert |
+| [ci-cd-and-automation](skills/ci-cd-and-automation/SKILL.md) | Shift Left & Feature-Flags |
+| [deprecation-and-migration](skills/deprecation-and-migration/SKILL.md) | Migrations-Pattern |
+| [documentation-and-adrs](skills/documentation-and-adrs/SKILL.md) | ADRs & API-Dokumentation |
+| [shipping-and-launch](skills/shipping-and-launch/SKILL.md) | Stufen-Rollouts & Monitoring |
 </details>
+
+---
+
+## 🗺️ Was kommt als nächstes?
+
+Nachdem Sie Ihr erstes Feature gebaut haben:
+
+1. 📖 Lesen Sie die [Test-Strategie](#test-strategie) um die 3-Stufen-Tests zu verstehen
+2. 🔧 Entdecken Sie [alle 28 Skills](#alle-28-skills) um zu sehen was verfügbar ist
+3. 🤖 Probieren Sie [Agent Personas](#agent-personas) für spezialisierte Reviews
+4. 🔗 Richten Sie die [Jira-Integration](#integrationen) für Task-Tracking ein
+5. 🌐 Aktivieren Sie [Webwright](skills/webwright/SKILL.md) für E2E-Browser-Tests
+
+---
+
+## 🤝 Beitragen
+
+Möchten Sie einen Skill hinzufügen oder tGD verbessern? Siehe [CONTRIBUTING.md](CONTRIBUTING.md).
+
+### ⚡ Kurz-Anleitung:
+1. Repository forken
+2. Skill in `skills/your-skill/` erstellen
+3. `bash scripts/validate-skills.js` ausführen
+4. PR einreichen
 
 ---
 
 ## 📄 Lizenz
 
 MIT – Nutzen Sie diese Skills in Ihren Projekten, Teams und Tools.
+
+---
+
+## 📎 Anhang: Manuelle Konfiguration
+
+> **Hinweis:** Nur nötig wenn `bash setup.sh` fehlschlägt oder Sie manuelles Linking bevorzugen.
+
+### Claude Code
+```bash
+claude skills install . --path skills
+```
+
+### Gemini CLI
+```bash
+gemini skills install . --path skills
+```
+
+### Codex CLI
+Codex verlässt sich auf **Skill-Autoerkennung** statt auf Slash Commands.
+```bash
+ln -s $(pwd)/skills ~/.codex/skills/tGD
+```
+*Auslöser:* Sagen Sie „Plane dieses Feature" – Codex wird den Skill automatisch aufrufen.
+
+### OpenCode
+OpenCode erkennt den `skills/` Ordner im Workspace automatisch.
+
+### Pi Coding Agent
+Pi unterstützt `/tgd-plan` nativ über eine **TypeScript Extension** (`.pi/extensions/`).
+```bash
+pi
+/tgd-plan
+```
