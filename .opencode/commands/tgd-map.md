@@ -18,14 +18,19 @@ This is the starting point for joining an existing project or before making sign
    - *Requires CodeGraph installed. Setup handles this automatically.*
 
 **Understand-Anything (deep knowledge graph):**
-1. Run `/understand` to build a full knowledge graph of the codebase
-2. This produces `.understand-anything/knowledge-graph.json` — an interactive map of all components, dependencies, and relationships
-3. If unfamiliar with the project, also run `/understand-onboard` for a guided architecture tour
+1. Create symlink so UA stores output in tGD/map:
+   ```bash
+   rm -rf .understand-anything  # remove stale link if any
+   ln -s tGD/map/.understand-anything .understand-anything
+   ```
+2. Run `/understand` to build a full knowledge graph of the codebase
+3. This produces `tGD/map/.understand-anything/knowledge-graph.json` — an interactive map of all components, dependencies, and relationships
+4. If unfamiliar with the project, also run `/understand-onboard` for a guided architecture tour
 
-**Outputs:**
-- `CONTEXT.md` — saved to `tGD/map/CONTEXT.md`
-- `.codegraph/codegraph.db` — stored at `tGD/map/.codegraph/codegraph.db` (via symlink)
-- `.understand-anything/knowledge-graph.json` — full knowledge graph (nodes, edges, clusters)
+**Outputs (all under `tGD/map/`):**
+- `CONTEXT.md` — project structure analysis
+- `.codegraph/codegraph.db` — symbol index (via symlink)
+- `.understand-anything/knowledge-graph.json` — full knowledge graph (via symlink)
 - `.understand-anything/config.json` — UA configuration
 
 After completing the mapping, verify the outputs.
@@ -33,6 +38,7 @@ After completing the mapping, verify the outputs.
 **Verification Gate:**
 - [ ] `tGD/map/CONTEXT.md` exists and is non-empty
 - [ ] `tGD/map/.codegraph` symlink exists
-- [ ] `.understand-anything/knowledge-graph.json` exists (if `/understand` was run)
+- [ ] `tGD/map/.understand-anything` symlink exists (if `/understand` was run)
+- [ ] `tGD/map/.understand-anything/knowledge-graph.json` exists
 
 If verification passes, suggest the next step: `/tgd-define` to start defining what to build.
