@@ -15,7 +15,7 @@ This is the starting point for joining an existing project or before making sign
 3. Initialize the project graph: `codegraph init -i`
    - *Requires CodeGraph installed. Setup handles this automatically.*
 
-**Understand-Anything (deep knowledge graph):**
+**Understand-Anything (deep knowledge graph + interactive dashboard):**
 1. Create symlink so UA stores output in tGD/map:
    ```bash
    rm -rf .understand-anything  # remove stale link if any
@@ -23,13 +23,15 @@ This is the starting point for joining an existing project or before making sign
    ```
 2. Run `/understand` to build a full knowledge graph
 3. Produces `tGD/map/.understand-anything/knowledge-graph.json`
-4. If unfamiliar, also run `/understand-onboard` for a guided tour
+4. Run `/understand-dashboard` to launch interactive web visualization (Vite dev server)
+5. If unfamiliar, also run `/understand-onboard` for a guided tour
 
 **Outputs (all under `tGD/map/`):**
 - `CONTEXT.md` — project structure analysis
 - `.codegraph/codegraph.db` — symbol index (via symlink)
 - `.understand-anything/knowledge-graph.json` — knowledge graph (via symlink)
 - `.understand-anything/config.json` — UA configuration
+- **Interactive dashboard** — launched via `/understand-dashboard` (localhost)
 
 After completing the mapping, verify the outputs.
 
