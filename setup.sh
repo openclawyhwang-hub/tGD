@@ -220,17 +220,17 @@ else
 fi
 
 # ─── Version marker ──────────────────────────────────────────────────────────
-# Bump this when you want setup.sh to prompt users to re-run after updates.
-TGD_VERSION="2026-06-02"
+# Version is derived from git tags (semver). To bump: git tag v1.4.0
+TGD_VERSION=$(cd "$TGD_DIR" && git describe --tags --always 2>/dev/null || echo "unknown")
 VERSION_FILE="$TGD_DIR/.tgd-version"
 
 if [[ "$MODE" == "install" ]] && [[ -f "$VERSION_FILE" ]]; then
     INSTALLED_VERSION=$(cat "$VERSION_FILE" 2>/dev/null || echo "unknown")
     if [[ "$INSTALLED_VERSION" == "$TGD_VERSION" ]]; then
-        echo "ℹ️  tGD v${TGD_VERSION} already installed — refreshing..."
+        echo "ℹ️  tGD ${TGD_VERSION} already installed — refreshing..."
         MODE="upgrade"
     else
-        echo "🔄 New version available: v${INSTALLED_VERSION} → v${TGD_VERSION}"
+        echo "🔄 New version available: ${INSTALLED_VERSION} → ${TGD_VERSION}"
         MODE="upgrade"
     fi
 fi
