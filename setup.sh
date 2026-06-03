@@ -221,7 +221,7 @@ fi
 
 # ─── Version marker ──────────────────────────────────────────────────────────
 # Bump this when you want setup.sh to prompt users to re-run after updates.
-TGD_VERSION="2026-06-01"
+TGD_VERSION="2026-06-02"
 VERSION_FILE="$TGD_DIR/.tgd-version"
 
 if [[ "$MODE" == "install" ]] && [[ -f "$VERSION_FILE" ]]; then
