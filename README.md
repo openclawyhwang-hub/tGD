@@ -231,7 +231,7 @@ The `tgd` CLI manages installation, updates, and diagnostics:
 
 | 🎯 What you're doing | ⌨️ Command | 💡 Key principle | 🔧 Invokes |
 |---|---|---|---|
-| Understand the project | `/tgd-map` | Context before changes | `context-engineering` + `codegraph init` |
+| Understand the project | `/tgd-map` | Context before changes | `context-engineering` + `codegraph init` + `understand-dashboard` |
 | Define what to build | `/tgd-define` | 3-option naming + Product + Spec | `interview-me` → `idea-refine` → `spec-driven-development` |
 | Plan how to build it | `/tgd-plan` | Read CONTEXT + PRD + SPEC → atomic tasks | `planning-and-task-breakdown` → `jira-auto-sync` |
 | Build in sandbox | `/tgd-develop` | **Mandatory Worktree** + smart routing | `source-driven-development` → (`subagent` OR `incremental`) → `test-driven-development` |

@@ -222,6 +222,12 @@ PYEOF
         rm -f "$TGD_DIR/.tgd-version"
     fi
 
+    # 5. Clean UA build artifacts (node_modules)
+    if [[ -d "$TGD_DIR/vendor/understand-anything/node_modules" ]]; then
+        echo "   🗑️  Removing UA build artifacts (vendor/understand-anything/node_modules)..."
+        rm -rf "$TGD_DIR/vendor/understand-anything/node_modules"
+    fi
+
     echo ""
     echo "===================================="
     echo "✅ tGD Uninstalled!"

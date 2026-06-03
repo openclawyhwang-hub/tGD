@@ -232,7 +232,7 @@ flowchart LR
 
 | 🎯 做什麼 | ⌨️ 指令 | 💡 核心原則 | 🔧 呼叫的 Skills |
 |---|---|---|---|
-| 了解專案 | `/tgd-map` | 先有 context 再動手 | `context-engineering` + `codegraph init` |
+| 了解專案 | `/tgd-map` | 先有 context 再動手 | `context-engineering` + `codegraph init` + `understand-dashboard` |
 | 定義要做什麼 | `/tgd-define` | 3 選 1 命名 + 產品 + 規格 | `interview-me` → `idea-refine` → `spec-driven-development` |
 | 規劃怎麼做 | `/tgd-plan` | 讀 CONTEXT + PRD + SPEC → 原子任務 | `planning-and-task-breakdown` → `jira-auto-sync` |
 | 沙盒建造 | `/tgd-develop` | **強制 Worktree** + 智能路由 | `source-driven-development` → (`subagent` OR `incremental`) → `test-driven-development` |
