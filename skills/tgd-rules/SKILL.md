@@ -106,11 +106,14 @@ If `.codegraph/` does NOT exist, skip silently. Do not suggest installing it unp
 
 For deeper architectural understanding, especially on unfamiliar codebases:
 
-| Situation | Command | Why |
-|---|---|---|
-| First time exploring a project | `/understand` | Build full knowledge graph + dashboard |
-| Need business domain mapping | `/understand-domain` | Map code to business processes |
-| Onboarding a new team member | `/understand-onboard` | Guided tour of the architecture |
-| Before a big refactor | `/understand-diff` | Visualize impact of proposed changes |
+| PDLC Phase | Situation | Command | Why |
+|---|---|---|---|
+| 🗺️ Map | First time exploring a project | `/understand` | Build full knowledge graph + dashboard |
+| 📐 Define | Need business domain mapping | `/understand-domain` | Map code to business processes |
+| 📋 Plan | Planning a large refactor | `/understand-diff` | Visualize impact of proposed changes |
+| 🔨 Develop | Working on unfamiliar code | `/understand` | Understand before you modify |
+| 🔍 Verify | Confirming change impact | `/understand-diff` | Verify no missed dependencies |
+| 👀 Review | Reviewing large changes | `/understand-diff` | Full blast radius before approval |
+| 🗺️ Map | Onboarding a new team member | `/understand-onboard` | Guided tour of the architecture |
 
 Use CodeGraph for fast symbol queries, Understand-Anything for deep comprehension. They complement each other.

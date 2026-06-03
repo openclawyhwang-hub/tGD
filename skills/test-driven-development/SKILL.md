@@ -102,6 +102,7 @@ Bug report arrives
   Run full test suite (no regressions)
        │  💡 If `.codegraph/` exists: `codegraph affected <changed files>`
        │     to identify which tests to prioritize
+       │  💡 Run `/understand-diff` to visualize change impact across the codebase
 ```
 
 **Example:**

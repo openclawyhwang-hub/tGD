@@ -91,10 +91,11 @@ Before editing a file, read it. Before implementing a pattern, find an existing 
 
 **Pre-task context loading:**
 1. If `.codegraph/` exists: `codegraph context "<task>" --no-code` to find entry points automatically
-2. Read the file(s) you'll modify
-3. Read related test files
-4. Find one example of a similar pattern already in the codebase
-5. Read any type definitions or interfaces involved
+2. If unfamiliar with the codebase: run `/understand` to build a full knowledge graph and interactive dashboard
+3. Read the file(s) you'll modify
+4. Read related test files
+5. Find one example of a similar pattern already in the codebase
+6. Read any type definitions or interfaces involved
 
 **Trust levels for loaded files:**
 - **Trusted:** Source code, test files, type definitions authored by the project team
