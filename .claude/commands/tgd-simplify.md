@@ -19,6 +19,8 @@ description: Simplify the code — clarity over cleverness
 
 Run the `code-simplification` skill. Apply Chesterton's Fence and Rule of 500. Reduce complexity, eliminate dead code, and improve readability while preserving exact behavior.
 
+Before deleting any code or functions, run `codegraph callers <symbol>` to confirm nothing depends on it.
+
 Clarity over cleverness. Prefer the boring, obvious solution.
 
 **Verification Gate:**
