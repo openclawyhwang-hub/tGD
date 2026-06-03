@@ -321,6 +321,10 @@ if command -v claude &> /dev/null; then
         mkdir -p ~/.claude/skills
         for skill in "$TGD_DIR"/skills/*/; do
             skill_name=$(basename "$skill")
+            # Remove real directories (from old copy-installs) before re-linking
+            if [ -d "$HOME/.claude/skills/$skill_name" ] && [ ! -L "$HOME/.claude/skills/$skill_name" ]; then
+                rm -rf "$HOME/.claude/skills/$skill_name"
+            fi
             ln -sf "$skill" ~/.claude/skills/$skill_name 2>/dev/null || true
         done
         echo "   ✅ Skills linked."
@@ -499,6 +503,10 @@ if command -v codex &> /dev/null; then
     echo "   📂 Codex CLI detected."
     mkdir -p ~/.codex
     if [ -d "$TGD_DIR/skills" ]; then
+        # Remove real directory (from old copy-installs) before re-linking
+        if [ -d "$HOME/.codex/skills/tGD" ] && [ ! -L "$HOME/.codex/skills/tGD" ]; then
+            rm -rf "$HOME/.codex/skills/tGD"
+        fi
         ln -sf "$TGD_DIR/skills" ~/.codex/skills/tGD 2>/dev/null || true
         echo "   ✅ Skills linked for auto-detection."
     fi
@@ -655,17 +663,29 @@ ln -sf "$TGD_DIR/skills/tgd-rules/SKILL.md" "$HOME/.claude/rules/tgd.md" 2>/dev/
 
 # Codex CLI: ~/.codex/skills/tgd-rules (auto-discovered)
 mkdir -p "$HOME/.codex/skills"
+if [ -d "$HOME/.codex/skills/tgd-rules" ] && [ ! -L "$HOME/.codex/skills/tgd-rules" ]; then
+    rm -rf "$HOME/.codex/skills/tgd-rules"
+fi
 ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.codex/skills/tgd-rules" 2>/dev/null && echo "   ✅ Codex CLI: ~/.codex/skills/tgd-rules → symlink"
 
 mkdir -p "$HOME/.config/opencode/skills"
+if [ -d "$HOME/.config/opencode/skills/tgd-rules" ] && [ ! -L "$HOME/.config/opencode/skills/tgd-rules" ]; then
+    rm -rf "$HOME/.config/opencode/skills/tgd-rules"
+fi
 ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.config/opencode/skills/tgd-rules" 2>/dev/null && echo "   ✅ OpenCode: ~/.config/opencode/skills/tgd-rules → symlink"
 
 # Gemini CLI: ~/.gemini/skills/tgd-rules
 mkdir -p "$HOME/.gemini/skills"
+if [ -d "$HOME/.gemini/skills/tgd-rules" ] && [ ! -L "$HOME/.gemini/skills/tgd-rules" ]; then
+    rm -rf "$HOME/.gemini/skills/tgd-rules"
+fi
 ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.gemini/skills/tgd-rules" 2>/dev/null && echo "   ✅ Gemini CLI: ~/.gemini/skills/tgd-rules → symlink"
 
 # Pi: ~/.pi/agent/skills/tgd-rules
 mkdir -p "$HOME/.pi/agent/skills"
+if [ -d "$HOME/.pi/agent/skills/tgd-rules" ] && [ ! -L "$HOME/.pi/agent/skills/tgd-rules" ]; then
+    rm -rf "$HOME/.pi/agent/skills/tgd-rules"
+fi
 ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.pi/agent/skills/tgd-rules" 2>/dev/null && echo "   ✅ Pi: ~/.pi/agent/skills/tgd-rules → symlink"
 
 echo ""
