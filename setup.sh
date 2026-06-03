@@ -1,6 +1,6 @@
 #!/bin/bash
 # tGD (tGD) One-Click Installer
-# Usage: bash setup.sh [--upgrade|--uninstall]
+# Usage: bash setup.sh [--upgrade|--uninstall|--version]
 #
 # --upgrade:  先掃描並清除舊版殘留的 stale symlink / hooks，再重新部署。
 #             適合 tGD-clone git pull 後執行，確保乾淨無殘留。
@@ -14,6 +14,11 @@ if [[ "$1" == "--upgrade" || "$1" == "-u" ]]; then
     MODE="upgrade"
 elif [[ "$1" == "--uninstall" || "$1" == "--remove" ]]; then
     MODE="uninstall"
+elif [[ "$1" == "--version" || "$1" == "-v" ]]; then
+    TGD_DIR="$(cd "$(dirname "$0")" && pwd)"
+    VERSION=$(cd "$TGD_DIR" && git describe --tags --always 2>/dev/null || echo "unknown")
+    echo "tGD $VERSION"
+    exit 0
 fi
 
 TGD_DIR="$(cd "$(dirname "$0")" && pwd)"
