@@ -171,12 +171,13 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 - Never: [...]
 ```
 
-### Phase 1.5: UI Design Gate (if Frontend or Full-stack)
+### Phase 1.5: UI Design Gate (MANDATORY USER PROMPT)
 
-After writing SPEC.md, check the **Feature Type** field.
+After writing SPEC.md, you MUST stop and ask the user:
+"**Does this feature have a UI component requiring DESIGN.md?**"
+**Do NOT skip this step. You cannot self-determine UI vs Backend — the user decides.**
 
-**If Frontend or Full-stack is checked:**
-
+**If user confirms YES:**
 1. **Check existing design** in SPEC.md:
    - If `[Figma URL]` → Use `web_extract` to fetch design screenshot + component structure → skip to step 3
    - If `[Screenshot/PDF]` → Use `vision_analyze` to extract UI elements → skip to step 3
@@ -197,6 +198,9 @@ After writing SPEC.md, check the **Feature Type** field.
 4. **Confirm with user:**
    - Present DESIGN.md summary: Visual Direction, Font choices, Color palette, Spacing
    - **STOP. Ask user:** "DESIGN.md confirmed? Ready to proceed to PLAN?"
+
+**If user confirms NO:**
+- Skip DESIGN.md entirely and proceed to PLAN.
    - If not satisfied → modify DESIGN.md → re-confirm
 
 5. **DESIGN.md template:**

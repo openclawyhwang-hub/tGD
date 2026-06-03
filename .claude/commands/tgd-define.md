@@ -14,7 +14,11 @@ This is the DEFINE phase. The full pipeline is:
 3. `interview-me` — if the ask is underspecified, extract what the user actually wants
 4. `idea-refine` — if the concept is vague, stress-test and expand options
 5. `spec-driven-development` — write the structured spec (PRD + SPEC)
-6. **UI Design Gate** — If SPEC has Frontend/Full-stack: fetch or generate design稿 → `DESIGN.md`
+
+**Phase 1.5: UI Design Gate (MANDATORY CHECK)**
+After writing SPEC.md, you MUST ask the user: "Does this feature have a UI component requiring DESIGN.md?"
+- If YES: generate 3 visual variants → user picks one → write DESIGN.md → wait for user confirmation.
+- If NO: skip DESIGN.md. **You cannot skip this step without explicit user approval.**
 
 Use `interview-me` first if the ask is underspecified. Use `idea-refine` if you have a rough concept but it's not concrete yet.
 

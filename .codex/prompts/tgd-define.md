@@ -12,7 +12,11 @@ Pipeline:
 4. interview-me — if ask is underspecified
 5. idea-refine — if concept is vague
 6. spec-driven-development — write PRD.md + SPEC.md
-7. UI Design Gate — if frontend: create DESIGN.md
+
+**Phase 1.5: UI Design Gate (MANDATORY CHECK)**
+After writing SPEC.md, you MUST ask the user: "Does this feature have a UI component requiring DESIGN.md?"
+- If YES: generate 3 visual variants → user picks one → write DESIGN.md → wait for user confirmation.
+- If NO: skip DESIGN.md. You cannot skip this step without explicit user approval.
 
 Verification Gate:
 - [ ] tGD/define/<feature-name>/PRD.md exists
