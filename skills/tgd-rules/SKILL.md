@@ -59,6 +59,18 @@ Before claiming any work is complete, fixed, or passing:
 
 ## Anti-Rationalization
 
+**MANDATORY SELECTION PROTOCOL (All Platforms)**
+When you need the user to pick an option (Feature Name, Design Variant, etc.), DO NOT use open-ended questions. 
+**ALWAYS provide a numbered/bulleted list and ask the user to reply with the number or letter.**
+
+| Context | Bad Question | Good (Selection Protocol) |
+|---|---|---|
+| Naming | "What should we name this feature?" | "Pick a name: 1. `user-login` 2. `auth-flow` 3. `sign-in-module` (or type your own)" |
+| Design | "Which design do you like?" | "Pick a direction: A (Conservative), B (Strong-fit), C (Divergent)" |
+| UI Gate | "Is this a UI feature?" | "Does this feature have a UI component? 1. Yes (Generate design) 2. No (Backend only)" |
+
+This ensures the user can reply with a simple "1" or "B" instead of typing a paragraph.
+
 <!-- Moved to ## Common Rationalizations above to satisfy skill-anatomy.md -->
 
 ## Completion Checklist
