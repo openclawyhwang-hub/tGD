@@ -220,6 +220,7 @@
             cursor: pointer;
             border: none;
             touch-action: manipulation;
+            font-size: 14px;
         }
 
         .btn-primary {
@@ -386,7 +387,7 @@
 
         .pipeline-step-num {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
+            font-size: 12px;
             color: rgba(59, 130, 246, 0.4);
             letter-spacing: 0.5px;
         }
@@ -422,7 +423,7 @@
         }
 
         .pipeline-label {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
             color: var(--text);
             letter-spacing: 0.5px;
@@ -430,7 +431,7 @@
 
         .pipeline-cmd {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
+            font-size: 13px;
             color: var(--text-muted);
             margin-top: 4px;
         }
@@ -441,7 +442,7 @@
         }
         .pipeline-output code {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
+            font-size: 12px;
             color: var(--green);
             background: rgba(34, 197, 94, 0.08);
             padding: 1px 6px;
@@ -844,12 +845,12 @@
         body.lang-ja a[data-lang="ja"],
         body.lang-de a[data-lang="de"] { display: inline; }
         .lang-select {
-            background: var(--bg);
+            background: var(--bg-code);
             border: 1px solid var(--border);
             color: var(--text-muted);
             padding: 4px 8px;
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 500;
             cursor: pointer;
             transition: border-color 0.2s, color 0.2s;
@@ -921,14 +922,14 @@
         .skill-group { padding: 24px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-card); }
         .skill-group h3 { font-size: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .skill-group .skill-list { display: flex; flex-wrap: wrap; gap: 6px; }
-        .skill-group .skill-tag { font-size: 11px; }
+        .skill-group .skill-tag { font-size: 13px; }
 
         /* Example cards */
         .examples-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px; }
         @media (max-width: 768px) { .examples-grid { grid-template-columns: 1fr; } }
         .example-card { padding: 24px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-card); }
         .example-card h3 { font-size: 18px; margin-bottom: 12px; }
-        .example-card .example-flow { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text-muted); line-height: 2; }
+        .example-card .example-flow { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--text-muted); line-height: 2; }
         .example-card .example-flow .cmd { color: var(--green); }
         .example-card .example-flow .output { color: var(--accent); }
 
@@ -947,10 +948,10 @@
         .anatomy-step { padding: 24px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-card); text-align: center; }
         .anatomy-step .step-num { font-size: 32px; font-weight: 800; color: var(--accent); margin-bottom: 8px; }
         .anatomy-step h4 { font-size: 16px; margin-bottom: 8px; }
-        .anatomy-step p { color: var(--text-muted); font-size: 13px; }
+        .anatomy-step p { color: var(--text-muted); font-size: 14px; }
 
         /* Project structure */
-        .tree-block { font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', 'SF Mono', Consolas, monospace; font-size: 13px; line-height: 1.8; color: var(--text-muted); white-space: pre; overflow-x: auto; }
+        .tree-block { font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', 'SF Mono', Consolas, monospace; font-size: 14px; line-height: 1.8; color: var(--text-muted); white-space: pre; overflow-x: auto; }
         .tree-block .dir { color: var(--accent); }
         .tree-block .file { color: var(--text-muted); }
         .tree-block .desc { color: var(--tree-desc); }
@@ -961,10 +962,10 @@
         .next-step { padding: 24px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-card); }
         .next-step .step-num { font-size: 24px; font-weight: 800; color: var(--accent); margin-bottom: 8px; }
         .next-step h4 { font-size: 15px; margin-bottom: 6px; }
-        .next-step p { color: var(--text-muted); font-size: 13px; }
+        .next-step p { color: var(--text-muted); font-size: 14px; }
 
         /* Output tag */
-        .output-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--green); background: rgba(34, 197, 94, 0.1); padding: 2px 8px; border-radius: 4px; margin: 2px; }
+        .output-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--green); background: rgba(34, 197, 94, 0.1); padding: 2px 8px; border-radius: 4px; margin: 2px; }
 
         /* Skip link */
         .skip-link {
