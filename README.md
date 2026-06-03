@@ -157,7 +157,7 @@ flowchart LR
     classDef amber fill:#d97706,color:#fffbeb,stroke:#fbbf24
     classDef rose fill:#e11d48,color:#fff1f2,stroke:#fb7185
     classDef teal fill:#0d9488,color:#f0fdfa,stroke:#5eead4
-    classDef indigo fill:#4f46e5,color:#eef2ff,stroke:#81cf8
+    classDef indigo fill:#4f46e5,color:#eef2ff,stroke:#818cf8
 
     class A cyan
     class B green
@@ -311,7 +311,7 @@ Skills use **progressive disclosure** — the agent only loads details when need
 
 | Metric | Value |
 |--------|-------|
-| **Skills loaded** | 26 (on-demand, not all at once) |
+| **Skills loaded** | 28 (on-demand, not all at once) |
 | **Context usage** | ~5% per skill (progressive disclosure) |
 | **Setup time** | < 30 seconds |
 | **First feature** | ~15 minutes (from `/tgd-define` to `/tgd-ship`) |
@@ -374,9 +374,9 @@ tGD/
 
 ---
 
-## 📦 All 26 Skills
+## 📦 All 28 Skills
 
-The commands above are entry points. The pack includes 26 skills total — 24 lifecycle skills plus `using-tGD` meta-skill and `tgd-rules` core rules.
+The commands above are entry points. The pack includes 28 skills total — 26 lifecycle skills plus `using-tGD` meta-skill and `tgd-rules` core rules.
 
 ### 🧭 Meta
 | Skill | Purpose |
@@ -440,7 +440,7 @@ The commands above are entry points. The pack includes 26 skills total — 24 li
 After you've built your first feature:
 
 1. 📖 Read the [Testing Strategy](#testing-strategy) to understand the 3-stage testing
-2. 🔧 Explore [All 26 Skills](#all-26-skills) to see what's available
+2. 🔧 Explore [All 28 Skills](#all-28-skills) to see what's available
 3. 🤖 Try [Agent Personas](#agent-personas) for specialized review
 4. 🔗 Set up [Jira Integration](#jira-data-center) for task tracking
 5. 🌐 Enable [Webwright](skills/webwright/SKILL.md) for E2E browser testing

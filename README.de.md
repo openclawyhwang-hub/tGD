@@ -222,7 +222,7 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 
 ---
 
-## 📦 Alle 26 Skills
+## 📦 Alle 28 Skills
 
 <details>
 <summary><b>🧭 Meta (1)</b></summary>
