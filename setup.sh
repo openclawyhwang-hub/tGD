@@ -642,9 +642,30 @@ fi
 
 # Understand-Anything (bundled in vendor/)
 echo "🧠 Checking Understand-Anything..."
-UA_SKILLS_DIR="$TGD_DIR/vendor/understand-anything/understand-anything-plugin/skills"
+UA_DIR="$TGD_DIR/vendor/understand-anything"
+UA_SKILLS_DIR="$UA_DIR/understand-anything-plugin/skills"
 if [ -d "$UA_SKILLS_DIR" ]; then
-    echo "   ✅ Understand-Anything ready."
+    echo "   ✅ Understand-Anything skills ready."
+    # Auto-build if not yet compiled (needs pnpm + network)
+    if [ ! -d "$UA_DIR/node_modules" ]; then
+        if command -v pnpm &> /dev/null; then
+            echo "   📦 Installing UA dependencies (pnpm install)..."
+            cd "$UA_DIR" && pnpm install --frozen-lockfile 2>/dev/null && echo "   ✅ Dependencies installed." || echo "   ⚠️  pnpm install failed (network issue?). Run manually: cd vendor/understand-anything && pnpm install"
+            if [ -d "$UA_DIR/node_modules" ]; then
+                echo "   🔨 Building UA (pnpm build)..."
+                cd "$UA_DIR" && pnpm build 2>/dev/null && echo "   ✅ UA built successfully." || echo "   ⚠️  Build failed. Run manually: cd vendor/understand-anything && pnpm build"
+            fi
+            cd "$TGD_DIR"
+        elif command -v npm &> /dev/null; then
+            echo "   ⚠️  pnpm not found. Install with: npm i -g pnpm"
+            echo "      Then run: cd vendor/understand-anything && pnpm install && pnpm build"
+        else
+            echo "   ⚠️  pnpm/npm not found. Skills work but scanning scripts won't run."
+            echo "      Install pnpm, then: cd vendor/understand-anything && pnpm install && pnpm build"
+        fi
+    else
+        echo "   ✅ UA dependencies already installed."
+    fi
 else
     echo "   ⚠️  Understand-Anything not found at vendor/understand-anything/"
     echo "      Re-clone tGD or manually download from: https://github.com/Lum1104/Understand-Anything"
