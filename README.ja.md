@@ -146,7 +146,7 @@ pi       # Pi Coding Agent
 |---|---|---|---|
 | プロジェクト理解 | `/tgd-map` | 変更前にコンテキスト | `context-engineering` + `codegraph init` |
 | 何を構築するか定義 | `/tgd-define` | 3択命名 + 製品 + 仕様 | `interview-me` → `idea-refine` → `spec-driven-development` |
-| 構築方法を計画 | `/tgd-plan` | CONTEXT + PRD + SPEC → アトミックタスク | `planning-and-task-breakdown` → **Jira同期** |
+| 構築方法を計画 | `/tgd-plan` | CONTEXT + PRD + SPEC → アトミックタスク | `planning-and-task-breakdown` → `jira-auto-sync` |
 | サンドボックス構築 | `/tgd-develop` | **必須 Worktree** + スマートルーティング | `source-driven-development` → (`subagent` OR `incremental`) → `test-driven-development` |
 | 動作を証明 | `/tgd-verify` | テストが証拠 | `debugging-and-error-recovery` → `test-driven-development` |
 | マージ前レビュー | `/tgd-review` | コードの健康改善 | `code-review-and-quality` → `code-simplification` |

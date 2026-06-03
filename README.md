@@ -214,7 +214,7 @@ When syncing to Jira, tGD doesn't just blindly create issues. It:
 |---|---|---|---|
 | Understand the project | `/tgd-map` | Context before changes | `context-engineering` + `codegraph init` |
 | Define what to build | `/tgd-define` | 3-option naming + Product + Spec | `interview-me` → `idea-refine` → `spec-driven-development` |
-| Plan how to build it | `/tgd-plan` | Read CONTEXT + PRD + SPEC → atomic tasks | `planning-and-task-breakdown` → **Jira sync** |
+| Plan how to build it | `/tgd-plan` | Read CONTEXT + PRD + SPEC → atomic tasks | `planning-and-task-breakdown` → `jira-auto-sync` |
 | Build in sandbox | `/tgd-develop` | **Mandatory Worktree** + smart routing | `source-driven-development` → (`subagent` OR `incremental`) → `test-driven-development` |
 | Prove it works | `/tgd-verify` | Tests are proof | `debugging-and-error-recovery` → `test-driven-development` |
 | Review before merge | `/tgd-review` | Improve code health | `code-review-and-quality` → `code-simplification` |
