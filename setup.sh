@@ -640,14 +640,14 @@ else
     fi
 fi
 
-# Understand-Anything (bundled as submodule)
+# Understand-Anything (bundled in vendor/)
 echo "🧠 Checking Understand-Anything..."
 UA_SKILLS_DIR="$TGD_DIR/vendor/understand-anything/understand-anything-plugin/skills"
 if [ -d "$UA_SKILLS_DIR" ]; then
-    echo "   ✅ Understand-Anything submodule ready."
+    echo "   ✅ Understand-Anything ready."
 else
-    echo "   📥 Initializing Understand-Anything submodule..."
-    cd "$TGD_DIR" && git submodule update --init vendor/understand-anything 2>/dev/null && echo "   ✅ Submodule initialized." || echo "   ⚠️  Run: git submodule update --init vendor/understand-anything"
+    echo "   ⚠️  Understand-Anything not found at vendor/understand-anything/"
+    echo "      Re-clone tGD or manually download from: https://github.com/Lum1104/Understand-Anything"
 fi
 
 # Link Understand-Anything skills to each platform
