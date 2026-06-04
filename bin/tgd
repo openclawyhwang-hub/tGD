@@ -24,8 +24,11 @@ fi
 # Dispatch
 case "${1:-}" in
     --version|-v)
-        VERSION=$(cd "$TGD_DIR" && git describe --tags --always 2>/dev/null || echo "unknown")
-        echo "tGD $VERSION"
+        # Read date-based version from setup.sh
+        SETUP_VERSION=$(grep '^TGD_VERSION=' "$TGD_DIR/setup.sh" 2>/dev/null | cut -d'"' -f2)
+        # Strip leading zeros: 2026-06-01 → 2026.6.1
+        DISPLAY_VERSION=$(echo "$SETUP_VERSION" | awk -F'-' '{printf "%d.%d.%d", $1, $2+0, $3+0}')
+        echo "tGD $DISPLAY_VERSION"
         ;;
     --upgrade|-u)
         exec bash "$TGD_DIR/setup.sh" --upgrade
