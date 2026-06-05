@@ -1,0 +1,71 @@
+/* tGD pitch deck — STRUCTURAL base (no colors, themes provide those) */
+.tpl-tgd-pitch{
+  font-family:'Inter','SF Mono','Menlo',sans-serif;
+}
+.tpl-tgd-pitch .slide{padding:72px 96px}
+.tpl-tgd-pitch .slide>*{position:relative;z-index:1}
+.tpl-tgd-pitch .kicker{font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase}
+.tpl-tgd-pitch .h1{font-size:72px;line-height:1.05;font-weight:900;letter-spacing:-.04em}
+.tpl-tgd-pitch .h2{font-size:48px;font-weight:800;letter-spacing:-.03em;line-height:1.15}
+.tpl-tgd-pitch .lede{font-size:18px;max-width:56ch;line-height:1.6}
+.tpl-tgd-pitch .card{border-radius:12px;padding:24px;transition:all .2s}
+.tpl-tgd-pitch .card:hover{transform:translateY(-2px)}
+.tpl-tgd-pitch .card h4{margin-bottom:8px}
+.tpl-tgd-pitch .card p{font-size:14px;line-height:1.5}
+.tpl-tgd-pitch .pill{display:inline-block;padding:4px 12px;border-radius:99px;font-size:13px;font-weight:600}
+.tpl-tgd-pitch .tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:600;font-family:'SF Mono','Menlo',monospace}
+.tpl-tgd-pitch .gradient-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tpl-tgd-pitch .num-tag{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.tpl-tgd-pitch .metric{display:flex;flex-direction:column;gap:6px}
+.tpl-tgd-pitch .metric .n{font-size:64px;font-weight:900;letter-spacing:-.035em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.tpl-tgd-pitch .metric .l{font-size:15px}
+.tpl-tgd-pitch .cover-bg{position:absolute;inset:0;z-index:-1}
+.tpl-tgd-pitch .cover-blob{position:absolute;right:-120px;top:-120px;width:480px;height:480px;border-radius:50%;background:var(--grad);filter:blur(120px);z-index:-1}
+.tpl-tgd-pitch .brand-dot{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--grad);margin-right:8px;vertical-align:middle}
+.tpl-tgd-pitch .brand{font-weight:800;font-size:20px;letter-spacing:-.02em}
+.tpl-tgd-pitch code{font-family:'SF Mono','Menlo',monospace;font-size:13px;border-radius:4px;padding:2px 6px}
+.tpl-tgd-pitch pre{border-radius:8px;padding:16px;font-family:'SF Mono','Menlo',monospace;font-size:13px;overflow-x:auto;line-height:1.6}
+.tpl-tgd-pitch .terminal{border-radius:10px;overflow:hidden}
+.tpl-tgd-pitch .terminal .bar{padding:8px 12px;display:flex;align-items:center;gap:6px;font-size:12px}
+.tpl-tgd-pitch .terminal .bar .dot{width:10px;height:10px;border-radius:50%}
+.tpl-tgd-pitch .terminal pre{border:none;border-radius:0;margin:0;padding:16px}
+.tpl-tgd-pitch .ask-box{padding:48px 56px;border-radius:16px}
+.tpl-tgd-pitch .ask-box .h2{color:#fff}
+.tpl-tgd-pitch .ask-box .dim{color:rgba(255,255,255,.85)}
+.tpl-tgd-pitch .deck-footer{font-size:13px}
+.tpl-tgd-pitch .deck-header{display:flex;justify-content:space-between;align-items:center}
+.tpl-tgd-pitch .slide-number{font-family:'SF Mono','Menlo',monospace;font-size:12px}
+
+/* Pipeline */
+.tpl-tgd-pitch .pipeline{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:24px}
+.tpl-tgd-pitch .pipeline .step{border-radius:8px;padding:8px 12px;text-align:center;min-width:80px;transition:all .2s}
+.tpl-tgd-pitch .pipeline .step:hover{transform:translateY(-2px)}
+.tpl-tgd-pitch .pipeline .step .icon{font-size:1.2rem;display:block}
+.tpl-tgd-pitch .pipeline .step .name{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.tpl-tgd-pitch .pipeline .step .cmd{font-size:10px;font-family:'SF Mono','Menlo',monospace}
+.tpl-tgd-pitch .pipeline .arrow{font-size:1rem}
+
+/* Stats */
+.tpl-tgd-pitch .stat-row{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+.tpl-tgd-pitch .stat{border-radius:10px;padding:20px;text-align:center;flex:1;min-width:120px}
+.tpl-tgd-pitch .stat .n{font-size:40px;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.tpl-tgd-pitch .stat .l{font-size:12px;margin-top:4px}
+
+/* Quote */
+.tpl-tgd-pitch .quote-box{border-radius:12px;padding:24px 32px;margin-top:16px}
+.tpl-tgd-pitch .quote-box .quote{font-size:17px;font-style:italic;line-height:1.6}
+.tpl-tgd-pitch .quote-box .source{font-size:13px;margin-top:8px}
+
+/* Phase */
+.tpl-tgd-pitch .phase{display:grid;grid-template-columns:48px 1fr;gap:12px;align-items:start;padding:12px 16px;border-radius:8px;margin-bottom:8px}
+.tpl-tgd-pitch .phase .p-icon{font-size:1.4rem;text-align:center}
+.tpl-tgd-pitch .phase .p-name{font-weight:700;font-size:14px}
+.tpl-tgd-pitch .phase .p-desc{font-size:13px;line-height:1.4}
+.tpl-tgd-pitch .phase .p-skills{font-size:11px;font-family:'SF Mono','Menlo',monospace;margin-top:4px}
+
+/* Persona */
+.tpl-tgd-pitch .persona{border-radius:12px;padding:24px;text-align:center}
+.tpl-tgd-pitch .persona .icon{font-size:2rem;margin-bottom:8px}
+.tpl-tgd-pitch .persona h4{margin-bottom:4px}
+.tpl-tgd-pitch .persona .role{font-size:13px;margin-bottom:8px}
+.tpl-tgd-pitch .persona p{font-size:13px}
