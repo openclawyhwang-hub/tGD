@@ -62,7 +62,7 @@ const tgdPrompts: Record<string, string> = {
     "Pipeline:\n" +
     "1. debugging-and-error-recovery if anything fails\n" +
     "2. test-driven-development — use codegraph affected <changed-files> to prioritize relevant tests\n" +
-    "3. Conditional: browser-based? → browser-testing-with-devtools\n" +
+    "3. Conditional: browser-based? → agent-browser\n" +
     "4. Conditional: want visual impact? → /understand-diff\n\n" +
     "Verification: ALL tests pass, build succeeds.\n" +
     "After completing, suggest: /tgd-review",
