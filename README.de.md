@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/github/license/openclawyhwang-hub/tGD?style=for-the-badge&color=blue" alt="License">
   <img src="https://img.shields.io/github/last-commit/openclawyhwang-hub/tGD?style=for-the-badge&logo=github&label=Last%20Commit&color=green" alt="Last Commit">
   <img src="https://img.shields.io/badge/platforms-Claude%20Code%20%7C%20Codex%20%7C%20Gemini%20%7C%20OpenCode%20%7C%20Pi-8A2BE2?style=for-the-badge" alt="Platforms">
-  <img src="https://img.shields.io/badge/version-semver-2ea44f?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/version-CalVer-2ea44f?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -63,7 +63,7 @@ tgd
 | Befehl | Beschreibung |
 |--------|-------------|
 | `tgd` | Neuinstallation (oder Upgrade auf eine neue Version) |
-| `tgd --version` (`-v`) | Aktuelle Version anzeigen (semver aus git tag) |
+| `tgd --version` (`-v`) | Aktuelle Version anzeigen (CalVer: YYYY.M.D) |
 | `tgd --upgrade` (`-u`) | Erneuern: ungültige Symlinks bereinigen und alle Links/Hooks neu erstellen |
 | `tgd --uninstall` | Alle tGD-Installation entfernen, ohne andere Dateien zu beeinträchtigen |
 | `bash setup.sh` | Legacy-Fallback — entspricht `tgd` |
@@ -152,7 +152,7 @@ Die `tgd` CLI verwaltet Installation, Updates und Diagnose:
 | Befehl | Beschreibung |
 |--------|-------------|
 | `tgd` | tGD installieren oder aktualisieren |
-| `tgd --version` (`-v`) | Version anzeigen (semver) |
+| `tgd --version` (`-v`) | Version anzeigen (CalVer) |
 | `tgd --upgrade` (`-u`) | Links und Hooks erneuern |
 | `tgd --uninstall` | Alle tGD-Installationen entfernen |
 | `bash setup.sh` | Legacy-Fallback — entspricht `tgd` |
@@ -346,8 +346,7 @@ tGD/
 
 | Skill | Zweck |
 |-------|-------|
-| [browser-testing-with-devtools](skills/browser-testing-with-devtools/SKILL.md) | Laufzeitdaten & DOM-Inspektion |
-| [webwright](skills/webwright/SKILL.md) | E2E-Browser-Automatisierung |
+| [agent-browser](skills/agent-browser/SKILL.md) | E2E-Browser-Automatisierung, CDP-basiertes CLI |
 | [debugging-and-error-recovery](skills/debugging-and-error-recovery/SKILL.md) | Triage, Fix, Guard |
 </details>
 
@@ -384,7 +383,7 @@ Nachdem Sie Ihr erstes Feature gebaut haben:
 2. 🔧 Entdecken Sie [alle 28 Skills](#alle-28-skills) um zu sehen was verfügbar ist
 3. 🤖 Probieren Sie [Agent Personas](#agent-personas) für spezialisierte Reviews
 4. 🔗 Richten Sie die [Jira-Integration](#integrationen) für Task-Tracking ein
-5. 🌐 Aktivieren Sie [Webwright](skills/webwright/SKILL.md) für E2E-Browser-Tests
+5. 🌐 Aktivieren Sie [Agent Browser](skills/agent-browser/SKILL.md) für E2E-Browser-Tests
 
 ---
 

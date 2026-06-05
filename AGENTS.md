@@ -39,7 +39,7 @@ This project supports 8 lifecycle commands that work across **OpenCode**, **Clau
 || `/tgd-define` | Define | `interview-me` → `idea-refine` → `spec-driven-development` |
 || `/tgd-plan` | Plan | `planning-and-task-breakdown` → **`jira-auto-sync` (conditional)** |
 || `/tgd-develop` | Build | `context-engineering` → `source-driven-development` → (`subagent-driven-development` OR `incremental-implementation`) → `test-driven-development` → `verification-before-completion` (+ `frontend-ui-engineering`, `api-and-interface-design`, `doubt-driven-development` when relevant) |
-|| `/tgd-verify` | Verify | `debugging-and-error-recovery` → `test-driven-development` (+ `webwright`, `browser-testing-with-devtools` when relevant) |
+|| `/tgd-verify` | Verify | `debugging-and-error-recovery` → `test-driven-development` → **MANDATORY `agent-browser` for Frontend/UI/DOM** |
 || `/tgd-review` | Review | `code-review-and-quality` → `code-simplification` (+ `security-and-hardening`, `performance-optimization` when relevant) |
 || `/tgd-simplify` | Review | `code-simplification` |
 || `/tgd-ship` | Ship | `git-workflow-and-versioning` → `shipping-and-launch` (+ `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs` when relevant) |

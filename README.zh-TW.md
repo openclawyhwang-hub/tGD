@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/github/license/openclawyhwang-hub/tGD?style=for-the-badge&color=blue" alt="License">
   <img src="https://img.shields.io/github/last-commit/openclawyhwang-hub/tGD?style=for-the-badge&logo=github&label=Last%20Commit&color=green" alt="Last Commit">
   <img src="https://img.shields.io/badge/platforms-Claude%20Code%20%7C%20Codex%20%7C%20Gemini%20%7C%20OpenCode%20%7C%20Pi-8A2BE2?style=for-the-badge" alt="Platforms">
-  <img src="https://img.shields.io/badge/version-semver-2ea44f?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/version-CalVer-2ea44f?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -65,7 +65,7 @@ tgd
 | 指令 | 說明 |
 |------|------|
 | `tgd` | 全新安裝（或自動升級到新版本） |
-| `tgd --version` (`-v`) | 顯示當前版本（semver 格式，從 git tag 讀取） |
+| `tgd --version` (`-v`) | 顯示當前版本（CalVer：YYYY.M.D） |
 | `tgd --upgrade` (`-u`) | 強制重建：清除無效 symlink 並重新建立所有連結和 hooks |
 | `tgd --uninstall` | 移除所有 tGD 部署，不影響其他設定 |
 | `bash setup.sh` | 舊版備用方案 — 等同於 `tgd` |
@@ -221,7 +221,7 @@ flowchart LR
 | 指令 | 說明 |
 |------|------|
 | `tgd` | 安裝或更新 tGD |
-| `tgd --version` (`-v`) | 顯示版本（semver 格式） |
+| `tgd --version` (`-v`) | 顯示版本（CalVer 格式） |
 | `tgd --upgrade` (`-u`) | 強制重建連結和 hooks |
 | `tgd --uninstall` | 移除所有 tGD 部署 |
 | `bash setup.sh` | 舊版備用 — 等同於 `tgd` |
@@ -280,8 +280,7 @@ tGD 強制執行測試金字塔比例：
 ```
 
 **E2E 測試工具：**
-- **`webwright`**（首選）：寫可重用的 Playwright 腳本，自動截圖驗證
-- **`browser-testing-with-devtools`**（備選）：即時 DOM 檢查、主控台除錯
+- **`agent-browser`** (強制關卡)：透過 CDP 協議的高速 Rust CLI。透過截圖與無障礙樹驗證 UI。
 
 ### 範例：建造登入功能
 
@@ -433,8 +432,7 @@ tGD/
 ### 🧪 Verify
 | Skill | 用途 |
 |---|---|
-| [browser-testing-with-devtools](skills/browser-testing-with-devtools/SKILL.md) | 即時執行資料 & DOM 檢查 |
-| [webwright](skills/webwright/SKILL.md) | E2E 瀏覽器自動化、可重用測試腳本 |
+| [agent-browser](skills/agent-browser/SKILL.md) | E2E 瀏覽器自動化、CDP 指令工具 |
 | [debugging-and-error-recovery](skills/debugging-and-error-recovery/SKILL.md) | 分診、修復、防護 |
 
 ### 🔎 Review
@@ -464,7 +462,7 @@ tGD/
 2. 🔧 探索[全部 28 個 Skills](#全部-28-個-skills)看有什麼可用
 3. 🤖 試試 [Agent Personas](#agent-personas) 專門化審查
 4. 🔗 設定 [Jira 整合](#jira-data-center) 任務追蹤
-5. 🌐 啟用 [Webwright](skills/webwright/SKILL.md) E2E 瀏覽器測試
+5. 🌐 啟用 [Agent Browser](skills/agent-browser/SKILL.md) E2E 瀏覽器測試
 
 ---
 

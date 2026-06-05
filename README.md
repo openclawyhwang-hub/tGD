@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/github/license/openclawyhwang-hub/tGD?style=for-the-badge&color=blue" alt="License">
   <img src="https://img.shields.io/github/last-commit/openclawyhwang-hub/tGD?style=for-the-badge&logo=github&label=Last%20Commit&color=green" alt="Last Commit">
   <img src="https://img.shields.io/badge/platforms-Claude%20Code%20%7C%20Codex%20%7C%20Gemini%20%7C%20OpenCode%20%7C%20Pi-8A2BE2?style=for-the-badge" alt="Platforms">
-  <img src="https://img.shields.io/badge/version-semver-2ea44f?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/version-CalVer-2ea44f?style=for-the-badge" alt="Version">
 </p>
 <p align="center">
   <a href="README.md">English</a> | <a href="README.zh-TW.md">繁體中文</a> | <a href="README.ja.md">日本語</a> | <a href="README.de.md">Deutsch</a>
@@ -64,7 +64,7 @@ tgd
 | Command | What it does |
 |---------|-------------|
 | `tgd` | Install or refresh tGD |
-| `tgd --version` (`-v`) | Show current version (semver from git tag) |
+| `tgd --version` (`-v`) | Show current version (CalVer: YYYY.M.D) |
 | `tgd --upgrade` (`-u`) | Force refresh: clean broken symlinks and rebuild all links/hooks |
 | `tgd --uninstall` | Remove all tGD symlinks and hooks without touching your other files |
 | `bash setup.sh` | Legacy fallback — equivalent to `tgd` |
@@ -220,7 +220,7 @@ The `tgd` CLI manages installation, updates, and diagnostics:
 | Command | Description |
 |---------|-------------|
 | `tgd` | Install or update tGD |
-| `tgd --version` (`-v`) | Show current version (semver from git tag) |
+| `tgd --version` (`-v`) | Show current version (CalVer: YYYY.M.D) |
 | `tgd --upgrade` (`-u`) | Force refresh links and hooks |
 | `tgd --uninstall` | Remove all tGD installations |
 | `bash setup.sh` | Legacy fallback — equivalent to `tgd` |
@@ -278,9 +278,8 @@ tGD enforces the test pyramid ratio:
  ╱──────────────────╲
 ```
 
-**E2E Testing Tools:**
-- **`webwright`** (preferred): Writes reusable Playwright scripts, auto-verifies with screenshots
-- **`browser-testing-with-devtools`** (fallback): Real-time DOM inspection, console debugging
+**E2E Testing Tool:**
+- **`agent-browser`** (Hard Gate): Fast Rust CLI for browser automation via CDP. Verifies UI with screenshots and accessibility trees.
 
 ### Example: Building a Login Feature
 
@@ -431,8 +430,7 @@ The commands above are entry points. The pack includes 28 skills total — 26 li
 ### 🧪 Verify
 | Skill | Purpose |
 |---|---|
-| [browser-testing-with-devtools](skills/browser-testing-with-devtools/SKILL.md) | Live runtime data & DOM inspection |
-| [webwright](skills/webwright/SKILL.md) | E2E browser automation, reusable test scripts |
+| [agent-browser](skills/agent-browser/SKILL.md) | E2E browser automation, CDP-based CLI |
 | [debugging-and-error-recovery](skills/debugging-and-error-recovery/SKILL.md) | Triage, fix, guard |
 
 ### 🔎 Review
@@ -462,7 +460,7 @@ After you've built your first feature:
 2. 🔧 Explore [All 28 Skills](#all-28-skills) to see what's available
 3. 🤖 Try [Agent Personas](#agent-personas) for specialized review
 4. 🔗 Set up [Jira Integration](#jira-data-center) for task tracking
-5. 🌐 Enable [Webwright](skills/webwright/SKILL.md) for E2E browser testing
+5. 🌐 Enable [Agent Browser](skills/agent-browser/SKILL.md) for E2E browser testing
 
 ---
 

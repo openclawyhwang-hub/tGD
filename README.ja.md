@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/github/license/openclawyhwang-hub/tGD?style=for-the-badge&color=blue" alt="License">
   <img src="https://img.shields.io/github/last-commit/openclawyhwang-hub/tGD?style=for-the-badge&logo=github&label=Last%20Commit&color=green" alt="Last Commit">
   <img src="https://img.shields.io/badge/platforms-Claude%20Code%20%7C%20Codex%20%7C%20Gemini%20%7C%20OpenCode%20%7C%20Pi-8A2BE2?style=for-the-badge" alt="Platforms">
-  <img src="https://img.shields.io/badge/version-semver-2ea44f?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/version-CalVer-2ea44f?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -63,7 +63,7 @@ tgd
 | コマンド | 説明 |
 |--------|------|
 | `tgd` | 新規インストール（または新バージョンへの自動アップグレード） |
-| `tgd --version` (`-v`) | 現在のバージョンを表示（git tag から semver 形式） |
+| `tgd --version` (`-v`) | 現在のバージョンを表示（CalVer：YYYY.M.D） |
 | `tgd --upgrade` (`-u`) | 強制更新：無効なシンボリックリンクをクリーンアップし、すべてのリンク/フックを再構築 |
 | `tgd --uninstall` | すべてのtGD配備を削除（他のファイルには影響しない） |
 | `bash setup.sh` | レガシー代替 — `tgd` と同等 |
@@ -152,7 +152,7 @@ pi       # Pi Coding Agent
 | コマンド | 説明 |
 |--------|------|
 | `tgd` | tGD のインストールまたは更新 |
-| `tgd --version` (`-v`) | バージョン表示（semver形式） |
+| `tgd --version` (`-v`) | バージョン表示（CalVer形式） |
 | `tgd --upgrade` (`-u`) | リンクとフックの強制再構築 |
 | `tgd --uninstall` | すべてのtGD配備を削除 |
 | `bash setup.sh` | レガシー代替 — `tgd` と同等 |
@@ -346,8 +346,7 @@ tGD/
 
 | スキル | 用途 |
 |--------|------|
-| [browser-testing-with-devtools](skills/browser-testing-with-devtools/SKILL.md) | ランタイムデータ & DOM検査 |
-| [webwright](skills/webwright/SKILL.md) | E2Eブラウザ自動化 |
+| [agent-browser](skills/agent-browser/SKILL.md) | E2Eブラウザ自動化、CDPベースCLI |
 | [debugging-and-error-recovery](skills/debugging-and-error-recovery/SKILL.md) | トリアージ、修正、防御 |
 </details>
 
@@ -384,7 +383,7 @@ tGD/
 2. 🔧 [全28スキル](#全28スキル)を探索して利用可能なものを見る
 3. 🤖 [Agent Personas](#agent-personas)で専門的なレビューを試す
 4. 🔗 [Jira 統合](#統合)でタスクトラッキングを設定
-5. 🌐 [Webwright](skills/webwright/SKILL.md)でE2Eブラウザテストを有効化
+5. 🌐 [Agent Browser](skills/agent-browser/SKILL.md)でE2Eブラウザテストを有効化
 
 ---
 
