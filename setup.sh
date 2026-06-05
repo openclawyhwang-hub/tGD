@@ -16,8 +16,9 @@ elif [[ "$1" == "--uninstall" || "$1" == "--remove" ]]; then
     MODE="uninstall"
 elif [[ "$1" == "--version" || "$1" == "-v" ]]; then
     TGD_DIR="$(cd "$(dirname "$0")" && pwd)"
-    VERSION=$(cd "$TGD_DIR" && git describe --tags --always 2>/dev/null || echo "unknown")
-    echo "tGD $VERSION"
+    TGD_VERSION=$(grep '^TGD_VERSION=' "$TGD_DIR/setup.sh" 2>/dev/null | cut -d'"' -f2)
+    DISPLAY_VERSION=$(echo "$TGD_VERSION" | awk -F'-' '{printf "%d.%d.%d", $1, $2+0, $3+0}')
+    echo "tGD $DISPLAY_VERSION"
     exit 0
 fi
 
@@ -663,8 +664,20 @@ if [ -d "$UA_SKILLS_DIR" ]; then
             fi
             cd "$TGD_DIR"
         elif command -v npm &> /dev/null; then
-            echo "   ⚠️  pnpm not found. Install with: npm i -g pnpm"
-            echo "      Then run: cd vendor/understand-anything && pnpm install && pnpm build"
+            echo "   📥 pnpm not found. Installing via npm..."
+            npm install -g pnpm 2>/dev/null && echo "   ✅ pnpm installed." || echo "   ⚠️  npm install -g pnpm failed. Install manually."
+            if command -v pnpm &> /dev/null; then
+                echo "   📦 Installing UA dependencies (pnpm install)..."
+                cd "$UA_DIR" && pnpm install --frozen-lockfile 2>/dev/null && echo "   ✅ Dependencies installed." || echo "   ⚠️  pnpm install failed (network issue?). Run manually: cd vendor/understand-anything && pnpm install"
+                if [ -d "$UA_DIR/node_modules" ]; then
+                    echo "   🔨 Building UA (pnpm build)..."
+                    cd "$UA_DIR" && pnpm build 2>/dev/null && echo "   ✅ UA built successfully." || echo "   ⚠️  Build failed. Run manually: cd vendor/understand-anything && pnpm build"
+                fi
+                cd "$TGD_DIR"
+            else
+                echo "   ⚠️  pnpm install failed. Install manually: npm i -g pnpm"
+                echo "      Then run: cd vendor/understand-anything && pnpm install && pnpm build"
+            fi
         else
             echo "   ⚠️  pnpm/npm not found. Skills work but scanning scripts won't run."
             echo "      Install pnpm, then: cd vendor/understand-anything && pnpm install && pnpm build"
@@ -721,41 +734,66 @@ if [ -d "$UA_SKILLS_DIR" ]; then
     fi
 fi
 
-# 3. Install Optional Dependencies (Webwright)
+# 3. Install Optional Dependencies (Agent Browser)
 echo "📦 Checking optional dependencies..."
 
-# Webwright (E2E browser testing)
-if [ -d "skills/webwright" ]; then
-    echo "   🌐 Webwright skill detected."
-    if command -v pip3 &> /dev/null || command -v pip &> /dev/null; then
-        PIP_CMD=$(command -v pip3 || command -v pip)
+# Agent Browser (E2E browser automation)
+if [ -d "skills/agent-browser" ]; then
+    echo "   🌐 Agent Browser skill detected."
+    if command -v npm &> /dev/null || command -v npx &> /dev/null; then
+        NPM_CMD=$(command -v npm || command -v npx)
         
-        # Check if webwright is already installed
-        if ! python3 -c "import playwright" 2>/dev/null; then
-            echo "   📥 Installing Webwright dependencies..."
-            $PIP_CMD install playwright httpx pydantic pyyaml rich typer python-dotenv platformdirs jinja2 2>/dev/null || echo "   ⚠️  pip install failed (network issue?). Install manually: pip install playwright"
-            
-            # Install browser (Firefox is preferred for Webwright)
-            if command -v playwright &> /dev/null; then
-                echo "   📥 Installing Playwright Firefox browser..."
-                playwright install firefox 2>/dev/null || echo "   ⚠️  Browser install failed. Run manually: playwright install firefox"
-                echo "   ✅ Webwright ready!"
+        # Check if agent-browser is already installed
+        if ! command -v agent-browser &> /dev/null; then
+            echo "   📥 Installing Agent Browser CLI..."
+            $NPM_CMD install -g agent-browser 2>/dev/null || echo "   ⚠️  npm install failed. Run manually: npm i -g agent-browser"
+        fi
+        
+        # Configure system Chrome and auto-connect
+        CONFIG_DIR="$HOME/.agent-browser"
+        CONFIG_FILE="$CONFIG_DIR/config.json"
+        
+        if [[ "$OSTYPE" == "darwin"* ]] && [ -d "/Applications/Google Chrome.app" ]; then
+            CHROME_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+        elif [ -x "/usr/bin/google-chrome" ]; then
+            CHROME_BIN="/usr/bin/google-chrome"
+        elif [ -x "/user/bin/google-chrome" ]; then
+            CHROME_BIN="/user/bin/google-chrome"
+        fi
+        
+        mkdir -p "$CONFIG_DIR"
+        
+        # Create or update config.json
+        if [ -f "$CONFIG_FILE" ]; then
+            # Check if autoConnect is already set
+            if ! grep -q "autoConnect" "$CONFIG_FILE" 2>/dev/null; then
+                # Add autoConnect and executablePath
+                echo "   🔧 Updating $CONFIG_FILE with auto-connect..."
+                python3 -c "
+import json
+with open('$CONFIG_FILE', 'r') as f:
+    config = json.load(f)
+config['autoConnect'] = True
+if '$CHROME_BIN':
+    config['executablePath'] = '$CHROME_BIN'
+with open('$CONFIG_FILE', 'w') as f:
+    json.dump(config, f, indent=2)
+"
             else
-                echo "   ⚠️  playwright command not found. Run: pip install playwright && playwright install firefox"
+                echo "   ✅ auto-connect already configured in $CONFIG_FILE"
             fi
         else
-            echo "   ✅ Webwright already installed."
+            echo "   📝 Creating $CONFIG_FILE with auto-connect..."
+            if [ -n "$CHROME_BIN" ]; then
+                echo "{\"autoConnect\": true, \"executablePath\": \"$CHROME_BIN\"}" > "$CONFIG_FILE"
+            else
+                echo "{\"autoConnect\": true}" > "$CONFIG_FILE"
+            fi
         fi
+        
+        echo "   ✅ Agent Browser ready! Uses your system Google Chrome with auto-connect."
     else
-        echo "   ⚠️  pip not found. Install Python first."
-    fi
-fi
-
-# Chrome DevTools MCP (alternative browser testing)
-if [ -d "skills/browser-testing-with-devtools" ]; then
-    echo "   🔍 Browser Testing skill detected."
-    if command -v npx &> /dev/null; then
-        echo "   ℹ️  To enable: npx @anthropic/chrome-devtools-mcp@latest"
+        echo "   ⚠️  npm/npx not found. Install Node.js first."
     fi
 fi
 
