@@ -25,8 +25,8 @@ Run the `debugging-and-error-recovery` skill. This is the VERIFY phase. The full
 2. `test-driven-development` — verify with the test pyramid (80% unit, 15% integration, 5% E2E)
 
 **Conditional (Frontend Mandatory):**
-- **Frontend/UI/DOM?** → **MUST run `webwright`**. Unit tests are NOT sufficient for UI verification.
-- **Verification Gate Failure**: If the feature touches frontend code but `webwright` did not run, the verification is FAILED.
+- **Frontend/UI/DOM?** → **MUST run `agent-browser`**. Unit tests are NOT sufficient for UI verification.
+- **Verification Gate Failure**: If the feature touches frontend code but `agent-browser` did not run, the verification is FAILED.
 
 Verify that the feature works correctly before proceeding to review. Tests are proof — "seems right" is never sufficient.
 
