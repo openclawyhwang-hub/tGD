@@ -7,3 +7,5 @@ node_modules/
 .claude/sdd-cache/
 .codegraph/
 fix_key.py
+skills/skills
+tGD/
