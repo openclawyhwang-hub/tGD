@@ -16,7 +16,7 @@ The user MUST provide these before the skill runs:
 
 ```
 JIRA_URL      = https://jira.company.com          (Data Center base URL)
-JIRA_TOKEN=*** token (PAT)
+JIRA_TOKEN = Personal Token (PAT)
 JIRA_PROJECT   = Project key (e.g. ENG, FE, BE) — 必填
 ```
 
@@ -79,59 +79,174 @@ Read `tGD/plan/<feature-name>/TASKS.md` and extract each task block:
 - Files Likely Touched
 - Estimate (if present)
 
-### Step 2: Discover Issue Types and Custom Fields
+### Step 2: Discover Issue Types and Required Fields (Jira 9.0+ DC Compliant)
 
-Data Center instances vary widely. You MUST query metadata first and let the user choose.
+**Step 2a: Fetch Available Issue Types for the Project**
+Use the Jira REST API v2 (Jira 9.0+ DC compliant) to get all available issue types for the project.
 
-**1. Fetch Project Metadata**
 ```bash
 curl -x "" -s \
-  "$JIRA_URL/rest/api/2/issue/createmeta?projectKeys=$JIRA_PROJECT&expand=projects.issuetypes.fields" \
+  "$JIRA_URL/rest/api/2/issue/createmeta/$JIRA_PROJECT/issuetypes" \
+  -H "Authorization: Bearer $JIRA_TOKEN" \
+  -H "Content-Type: application/json" > /tmp/jira_issuetypes.json
+```
+
+**Parse and present issue types:**
+```bash
+python3 << 'PYEOF'
+import json
+
+data = json.load(open("/tmp/jira_issuetypes.json"))
+issuetypes = data.get("values", [])
+
+print(f"📌 Project: {JIRA_PROJECT}")
+print("Available Issue Types:")
+for i, it in enumerate(issuetypes, 1):
+    print(f"  [{i}] {it['name']} (ID: {it['id']})")
+PYEOF
+```
+
+> 🛑 **Action:** Present the issue type list to the user. Default to **Story** if present. Store their choice as `ISSUE_TYPE_ID`.
+
+**Step 2b: Fetch Required Fields for the Selected Issue Type**
+Query the exact metadata for the chosen `ISSUE_TYPE_ID`. This returns **only** the fields available for that specific issue type in this project, including required flags and allowed values.
+
+```bash
+curl -x "" -s \
+  "$JIRA_URL/rest/api/2/issue/createmeta/$JIRA_PROJECT/issuetypes/$ISSUE_TYPE_ID" \
   -H "Authorization: Bearer $JIRA_TOKEN" \
   -H "Content-Type: application/json" > /tmp/jira_meta.json
 ```
 
-**2. Show Issue Types**
-Run this to extract available types and ask the user to pick one:
+**Parse and present required custom fields:**
 ```bash
-python3 -c "
-import json, sys
-d = json.load(open('/tmp/jira_meta.json'))
-for p in d.get('projects', []):
-    for t in p.get('issuetypes', []):
-        print(f\"  [{t['id']}] {t['name']}\")"
+python3 << 'PYEOF'
+import json, subprocess, os
+
+meta = json.load(open("/tmp/jira_meta.json"))
+fields = meta.get("fields", {})
+project_key = os.environ['JIRA_PROJECT']
+
+print(f"🔍 Required Custom Fields for {project_key} (IssueType ID: {os.environ['ISSUE_TYPE_ID']}):")
+
+required_fields = []
+for field_id, field_info in fields.items():
+    if field_info.get("required") and field_id not in ("summary", "description", "project", "issuetype", "priority", "labels", "reporter"):
+        required_fields.append({
+            "id": field_id,
+            "name": field_info["name"],
+            "schema": field_info.get("schema", {}),
+            "allowed_values": field_info.get("allowedValues", [])
+        })
+
+for rf in required_fields:
+    schema = rf["schema"]
+    allowed = rf["allowed_values"]
+    field_id = rf["id"]
+    
+    # Case 1: Has static allowedValues (Dropdown, select, components)
+    if allowed:
+        options = [v.get("name", v.get("value", str(v))) for v in allowed]
+        print(f"  • {field_id}: {rf['name']} (type: {schema.get('type')}) - Options: {options}")
+    
+    # Case 2: Dynamic Epic Link / Parent (Fetch existing epics in project)
+    elif "epic" in rf["name"].lower() or "parent" in rf["name"].lower():
+        print(f"  • {field_id}: {rf['name']} (type: {schema.get('type')}) - Dynamic Epic Link")
+        print("    🔍 Querying active Epics in JIRA...")
+        # Run JQL to get Epics
+        try:
+            res = subprocess.run([
+                "curl", "-x", "", "-s", 
+                "-H", f"Authorization: Bearer {os.environ.get('JIRA_TOKEN')}",
+                f"{os.environ.get('JIRA_URL')}/rest/api/2/search?jql=project={project_key}+AND+issuetype=Epic&maxResults=50&fields=key,summary"
+            ], capture_output=True, text=True)
+            epics_data = json.loads(res.stdout)
+            epics = epics_data.get("issues", [])
+            if epics:
+                print("    Available Epics:")
+                for ep in epics:
+                    print(f"      - [{ep['key']}] {ep.get('fields', {}).get('summary')}")
+            else:
+                print("    ⚠️ No Epics found in this project.")
+        except Exception as e:
+            print(f"    ⚠️ Failed to query Epics: {str(e)}")
+    
+    # Case 3: Standard open input (string, date, number)
+    else:
+        print(f"  • {field_id}: {rf['name']} (type: {schema.get('type')}) - [Open text/value input]")
+
+if not required_fields:
+    print("  ✅ No required custom fields.")
+
+print("\n===META_JSON===")
+print(json.dumps(meta))
+PYEOF
 ```
-> 🛑 **Action:** Present the list to the user. Default to **Story** if present. Store their choice as `ISSUE_TYPE_ID`.
 
-**3. Scan Required Fields for THIS Project & Issue Type**
-Run this script to check exactly which fields are marked `"required": true` in the metadata. The agent MUST inspect this before attempting to create issues.
-
-```bash
-python3 -c "
-import json
-meta = json.load(open('/tmp/jira_meta.json'))
-# Filter by the project key and selected issue type ID
-proj = [p for p in meta['projects'] if p['key'] == '$JIRA_PROJECT'][0]
-issuetype = [it for it in proj['issuetypes'] if it['id'] == '$ISSUE_TYPE_ID'][0]
-
-print('Required Custom Fields for $JIRA_PROJECT ($ISSUE_TYPE_ID):')
-for field_id, field_info in issuetype['fields'].items():
-    if field_info.get('required') and field_id not in ['summary', 'description', 'project', 'issuetype', 'priority', 'labels']:
-        print(f\"  🚨 {field_id}: {field_info['name']} (Type: {field_info['schema']['type']})\")"
-```
-
-> 🛑 **Action:**
-> 1. If the script outputs custom required fields, the Agent MUST ask the user for the values (e.g., "Component", "Fix Version").
-> 2. Construct the JSON payload dynamically to include these fields.
-> 3. **Do NOT guess.** If a field is required and the user hasn't provided it, ask before proceeding.
+> 🛑 **Agent Interaction Guide (Mandatory):**
+> When you find required fields, you MUST ask the user one-by-one or in a clean list. Follow this conversational style:
+>
+> ```
+> 🔍 I found the following required fields for project [ENG] with IssueType [Story]:
+>
+> 1. customfield_10100: "Component" (type: option)
+>    Options: [1] Backend  [2] Frontend  [3] Database
+>    👉 Please reply with the number or name to select.
+>
+> 2. customfield_10200: "Epic Link" (type: string)
+>    Options (Active Epics found via JQL):
+>    [1] [ENG-100] User Auth Redesign
+>    [2] [ENG-101] Core Database Migration
+>    👉 Please reply with the number or Epic Key.
+>
+> 3. customfield_10300: "Target Release Date" (type: date)
+>    👉 Please reply with the value (Format: YYYY-MM-DD).
+> ```
+>
+> **Do not guess or skip.** Store all user answers and dynamically build the payload under `fields`.
 
 ### Step 3: Create Issues
 
-For each parsed task, construct a JSON payload and create a Jira issue:
+For each parsed task, construct a JSON payload and create a Jira issue.
+
+**📝 Summary Format Rule (Mandatory):**
+The summary MUST be structured in the classic User Story format and strictly under 255 characters.
+Format: `[feature-name] As a <user role>, I want <action/goal> so that <benefit>`
+> 💡 Example: `[jwt-auth] As a user, I want to login via email to access my secure dashboard`
+
+**📝 Description Format Rule (Mandatory):**
+The Agent MUST construct the `DESCRIPTION` variable using this Wiki Markup structure. Do NOT deviate from this format.
+```
+h3. Background
+{noformat}
+<Why is this needed? Current pain point or context from PRD/SPEC.>
+{noformat}
+
+h3. Goal
+{noformat}
+<What exactly are we building? The desired measurable outcome.>
+{noformat}
+
+h3. Acceptance Criteria
+{noformat}
+AC-1:
+Given <initial context>
+When <action occurs>
+Then <expected result>
+{noformat}
+
+h3. Technical Notes
+{noformat}
+Files Likely Touched:
+- <path/to/file1>
+- <path/to/file2>
+Estimate: <X points>
+{noformat}
+```
 
 ```bash
 # 1. Export variables for the Python script (avoids bash escaping hell)
-export SUMMARY="[<feature-name>] As a..."
+export SUMMARY="[<feature-name>] Task Title"
 export PRIORITY="High"
 export DESCRIPTION="h3. Background..."
 export FEATURE_NAME="<feature-name>"
@@ -165,44 +280,7 @@ curl -x "" -s -X POST \
   -d @/tmp/jira_payload.json | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('key','ERROR: '+d.get('errorMessages',str(d))[0]))"
 ```
 
-#### 📝 Description Construction Guide
-
-The Agent MUST construct the `DESCRIPTION` variable using this Wiki Markup structure. Do NOT deviate from this format.
-
-**Template:**
-```
-h3. Background
-{noformat}
-<Why is this needed? What is the current pain point? Context from PRD/SPEC.>
-{noformat}
-
-h3. Goal
-{noformat}
-<What exactly are we building? What is the desired measurable outcome?>
-{noformat}
-
-h3. Acceptance Criteria
-{noformat}
-AC-1:
-Given <initial context>
-When <action occurs>
-Then <expected result>
-
-AC-2:
-Given <edge case or error condition>
-When <action occurs>
-Then <error handling / expected failure>
-{noformat}
-
-h3. Technical Notes
-{noformat}
-Files:
-- <path/to/file1>
-- <path/to/file2>
-{noformat}
-```
-
-#### 💉 Custom Field Injection Reference
+### 💉 Custom Field Injection Reference
 
 Mandatory fields vary by company and project. When a field is required, inject it into the JSON payload using the correct data type:
 
@@ -259,7 +337,7 @@ Mandatory fields vary by company and project. When a field is required, inject i
 If an issue creation fails, the script should:
 - **401/403**: Token expired or invalid → Stop and ask user to re-provide `JIRA_TOKEN`
 - **400 (summary too long)**: Jira limit is 255 chars. Shorten the summary and retry.
-- **400 (missing field)**: Print the error, identify missing required field via `createmeta`, ask user for value.
+- **400 (missing field)**: Print the error, re-check createmeta for required fields, ask user for value.
 - **400 (invalid priority)**: Fetch valid priorities via `$JIRA_URL/rest/api/2/priority` and retry.
 - **500**: Retry once with `sleep 1`, if still fails skip and continue
 - Continue processing remaining tasks even if one fails
@@ -284,7 +362,7 @@ In `/tgd-plan`, add as a conditional skill:
 **Conditional (apply when relevant):**
 - User wants Jira tickets? → `jira-auto-sync`
   1. Ask for JIRA_URL, JIRA_PROJECT (必填), JIRA_TOKEN.
-  2. Discover Issue Types & Required Fields. Let user select.
+  2. Query `createmeta` once to discover issue types + required fields. Let user choose issue type (default: Story). If required custom fields have allowedValues, present options.
   3. Parse tGD/plan/<feature-name>/TASKS.md and create issues via REST API v2.
   4. Report created issue keys.
 ```
@@ -306,7 +384,7 @@ If the company Jira has **required custom fields** (e.g., Component, Fix Version
 "components": [{"name": "Backend"}]
 ```
 
-**How to discover:** Run `createmeta` (Step 2) and check which fields have `"required": true`. Add them to the payload.
+**How to discover:** Step 2 的 `createmeta` 已經包含所有 required fields 和 `allowedValues`。直接用那個結果。
 
 ### SSL / Proxy Interception
 
