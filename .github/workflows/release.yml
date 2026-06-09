@@ -74,25 +74,25 @@ jobs:
             DISPLAY_MSG="$MSG"
 
             case "$MSG" in
-              feat|feat.*)
+              feat*:*|feat*)
                 FEATS="${FEATS}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
                 ;;
-              fix|fix.*)
+              fix*:*|fix*)
                 FIXES="${FIXES}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
                 ;;
-              docs|docs.*)
+              docs*:*|docs*)
                 DOCS="${DOCS}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
                 ;;
-              refactor|refactor.*)
+              refactor*:*|refactor*)
                 REFACTORS="${REFACTORS}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
                 ;;
-              test|test.*)
+              test*:*|test*)
                 TESTS="${TESTS}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
                 ;;
-              chore|chore.*)
+              chore*:*|chore*)
                 CHORES="${CHORES}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
                 ;;
-              ci|ci.*)
+              ci*:*|ci*)
                 CHORES="${CHORES}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
                 ;;
               *)
