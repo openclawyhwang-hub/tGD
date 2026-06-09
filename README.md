@@ -106,42 +106,61 @@ pi
 
 ## 💡 Real-world Examples
 
-### Example 1: Add User Auth
+### Example 1: Map the Project
+```
+User: /tgd-map
+
+Agent: 除了當前 repo，還有其他需要參考的 repo 嗎？（local path 或 git URL）
+User: github.com/CopilotKit/CopilotKit
+
+Agent: Cloning CopilotKit...
+→ Running /understand on primary repo...
+→ Running /understand on CopilotKit...
+→ tGD/map/CONTEXT.md created
+→ Dashboard: http://localhost:3838
+→ Ready for /tgd-define
+```
+
+### Example 2: Define a Feature
 ```
 User: /tgd-define I want to add JWT authentication
 
+Agent: Feature name — pick one:
+  1. jwt-auth
+  2. token-authentication
+  3. auth-jwt-middleware
+User: 1
+
 Agent: What endpoints need auth?
-User: /api/profile and /api/settings
+  1. Specific routes (/api/profile, /api/settings)
+  2. All routes except /api/login, /api/register
+  3. Role-based (admin vs user)
+User: 1
 
 Agent: Creating PRD + SPEC...
-→ tGD/define/auth-feature/PRD.md
-→ tGD/define/auth-feature/SPEC.md
+→ tGD/define/jwt-auth/PRD.md
+→ tGD/define/jwt-auth/SPEC.md
 → Ready for /tgd-plan
 ```
 
-### Example 2: Fix a Bug
+### Example 3: Verify (Strict Tone)
 ```
 User: /tgd-verify
 
-Agent: Running all tests...
+Agent: Running test suite...
 → 47 passed, 1 failed
-→ test_login_empty_password: Expected error, got success
+→ FAIL: test_login_empty_password — Expected ValidationError, got 200 OK
 
-Agent: Fixing...
-→ Added validation in auth.py
-→ All 48 tests pass
+Agent: Handing off to /tgd-develop for fix.
+
+[... /tgd-develop fixes auth.py ...]
+
+User: /tgd-verify
+
+Agent: Running test suite...
+→ 48 passed, 0 failed
+→ Exit code 0
 → Ready for /tgd-review
-```
-
-### Example 3: Ship with Confidence
-```
-User: /tgd-ship
-
-Agent: Running final checks...
-→ Code review: ✅ Passed (5-axis)
-→ Security audit: ✅ No vulnerabilities
-→ Test coverage: ✅ 87%
-→ Ready to merge
 ```
 
 ---
@@ -367,17 +386,25 @@ A: Yes! Edit the skill files in `skills/` to match your team's workflow.
 ```
 <your-project>/
 ├── tGD/
-│   ├── map/
-│   │   └── CONTEXT.md              ← Project context (/tgd-map)
-│   ├── define/                     ← PRD + SPEC + DESIGN per feature
-│   │   └── <feature-name>/         ← e.g. auth-feature, user-profile
-│   │       ├── PRD.md
-│   │       ├── SPEC.md
-│   │       └── DESIGN.md
-│   └── plan/                       ← Task breakdown per feature
+│   ├── map/                          ← /tgd-map output
+│   │   ├── CONTEXT.md                ← Project context (primary + additional repos)
+│   │   ├── .codegraph/               ← Symbol index (CodeGraph)
+│   │   └── .understand-anything/     ← Knowledge graph (mandatory)
+│   │
+│   ├── define/                       ← /tgd-define output (per feature)
+│   │   └── <feature-name>/           ← User picks from 3 options (e.g. jwt-auth)
+│   │       ├── PRD.md                ← Product requirements
+│   │       ├── SPEC.md               ← Technical spec
+│   │       └── DESIGN.md             ← UI design (if applicable)
+│   │
+│   └── plan/                         ← /tgd-plan output (per feature)
 │       └── <feature-name>/
-│           └── TASKS.md
+│           └── TASKS.md              ← Task breakdown (reads CONTEXT + PRD + SPEC)
 ```
+
+**Notes:**
+- `/tgd-develop` works in git worktree (no tGD/ output)
+- `/tgd-verify`, `/tgd-review`, `/tgd-ship` produce validation results, not persistent files
 
 ### Repo Contents
 ```

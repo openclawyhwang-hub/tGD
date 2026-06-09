@@ -96,42 +96,61 @@ pi       # Pi Coding Agent
 
 ## 💡 Praxisbeispiele
 
-### Beispiel 1: Authentifizierung hinzufügen
+### Beispiel 1: Projekt mappen
+```
+Benutzer: /tgd-map
+
+Agent: Neben dem aktuellen Repo, gibt es weitere Repositories zum Referenzieren? (local path oder git URL)
+Benutzer: github.com/CopilotKit/CopilotKit
+
+Agent: CopilotKit wird geklont...
+→ /understand wird auf Hauptrepo ausgeführt...
+→ /understand wird auf CopilotKit ausgeführt...
+→ tGD/map/CONTEXT.md erstellt
+→ Dashboard: http://localhost:3838
+→ Bereit für /tgd-define
+```
+
+### Beispiel 2: Feature definieren
 ```
 Benutzer: /tgd-define Ich möchte JWT-Authentifizierung
 
+Agent: Feature-Name — wählen Sie einen:
+  1. jwt-auth
+  2. token-authentication
+  3. auth-jwt-middleware
+Benutzer: 1
+
 Agent: Welche Endpunkte brauchen Auth?
-Benutzer: /api/profile und /api/settings
+  1. Spezifische Routen (/api/profile, /api/settings)
+  2. Alle Routen außer /api/login, /api/register
+  3. Rollenbasiert (admin vs user)
+Benutzer: 1
 
 Agent: Erstelle PRD + SPEC...
-→ tGD/define/auth-feature/PRD.md
-→ tGD/define/auth-feature/SPEC.md
+→ tGD/define/jwt-auth/PRD.md
+→ tGD/define/jwt-auth/SPEC.md
 → Bereit für /tgd-plan
 ```
 
-### Beispiel 2: Bug beheben
+### Beispiel 3: Verifizieren (strenger Ton)
 ```
 Benutzer: /tgd-verify
 
-Agent: Alle Tests ausführen...
+Agent: Test-Suite wird ausgeführt...
 → 47 bestanden, 1 fehlgeschlagen
-→ test_login_empty_password: Erwarteter Fehler, aber Erfolg
+→ FEHLER: test_login_empty_password — ValidationError erwartet, aber 200 OK erhalten
 
-Agent: Behebung...
-→ Validierung in auth.py hinzugefügt
-→ Alle 48 Tests bestanden
+Agent: Wird an /tgd-develop zur Behebung übergeben.
+
+[... /tgd-develop behebt auth.py ...]
+
+Benutzer: /tgd-verify
+
+Agent: Test-Suite wird ausgeführt...
+→ 48 bestanden, 0 fehlgeschlagen
+→ Exit code 0
 → Bereit für /tgd-review
-```
-
-### Beispiel 3: Sicher deployen
-```
-Benutzer: /tgd-ship
-
-Agent: Finale Prüfungen...
-→ Code-Review: ✅ Bestanden (5-Achsen)
-→ Security-Audit: ✅ Keine Schwachstellen
-→ Testabdeckung: ✅ 87%
-→ Bereit zum Merge
 ```
 
 ---
@@ -271,17 +290,25 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 ```
 <your-project>/
 ├── tGD/
-│   ├── map/
-│   │   └── CONTEXT.md              ← Projektkontext (/tgd-map)
-│   ├── define/                     ← PRD + SPEC + DESIGN pro Feature
-│   │   └── <feature-name>/         ← z.B. auth-feature, user-profile
-│   │       ├── PRD.md
-│   │       ├── SPEC.md
-│   │       └── DESIGN.md
-│   └── plan/                       ← Aufgabenzerlegung pro Feature
+│   ├── map/                          ← /tgd-map Ausgabe
+│   │   ├── CONTEXT.md                ← Projektkontext (Haupt- + zusätzliche Repos)
+│   │   ├── .codegraph/               ← Symbolindex (CodeGraph)
+│   │   └── .understand-anything/     ← Wissensgraph (obligatorisch)
+│   │
+│   ├── define/                       ← /tgd-define Ausgabe (pro Feature)
+│   │   └── <feature-name>/           ← Benutzer wählt aus 3 Optionen (z.B. jwt-auth)
+│   │       ├── PRD.md                ← Produktanforderungen
+│   │       ├── SPEC.md               ← Technische Spezifikation
+│   │       └── DESIGN.md             ← UI-Design (falls zutreffend)
+│   │
+│   └── plan/                         ← /tgd-plan Ausgabe (pro Feature)
 │       └── <feature-name>/
-│           └── TASKS.md
+│           └── TASKS.md              ← Aufgabenzerlegung (liest CONTEXT + PRD + SPEC)
 ```
+
+**Hinweise:**
+- `/tgd-develop` arbeitet in einem Git Worktree (keine tGD/ Ausgabe)
+- `/tgd-verify`, `/tgd-review`, `/tgd-ship` erzeugen Validierungsergebnisse, keine persistenten Dateien
 
 ### Repository-Inhalt
 ```
