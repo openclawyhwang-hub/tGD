@@ -528,6 +528,31 @@ Want to add a skill or improve tGD? See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
+## 🏷️ Release
+
+### Automated (recommended)
+When `.tgd-version` is updated and pushed to `main`, GitHub Actions automatically creates a tag and release with changelog.
+
+**To release a new version:**
+1. Update `.tgd-version` with the new version (e.g., `v1.7.0`)
+2. Update `TGD_VERSION` in `setup.sh` (CalVer format, e.g., `2026-06-09`)
+3. Commit and push to `main`
+4. GitHub Actions creates the release automatically
+
+### Manual
+```bash
+# Using the release script
+bash scripts/release.sh          # reads version from .tgd-version
+bash scripts/release.sh v1.7.0   # or specify version
+
+# Or manually
+git tag v1.7.0
+git push origin v1.7.0
+gh release create v1.7.0 --title "tGD v1.7.0" --notes "Release notes..."
+```
+
+---
+
 ## 📄 License
 
 Apache 2.0 - use these skills in your projects, teams, and tools.
