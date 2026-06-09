@@ -48,9 +48,9 @@ const tgdPrompts: Record<string, string> = {
     "5. Run spec-driven-development to write PRD.md + SPEC.md\n\n" +
     "Phase 1.5: UI Design Gate (MANDATORY via Selection Protocol)\n" +
     "After SPEC.md, ask: 'Does this feature have a UI component requiring DESIGN.md? 1. Yes 2. No'\n" +
-    "If YES → generate 3 design variants → user picks by letter → write DESIGN.md → wait for confirmation\n" +
-    "If NO → skip DESIGN.md (cannot skip without explicit user approval)\n\n" +
-    "Verification: PRD.md and SPEC.md exist. If UI: DESIGN.md exists and user confirmed.\n" +
+    "If YES → (1) Run sketch skill to generate 2-3 HTML prototype variants in tGD/define/<feature>/prototype/, (2) Present comparison table → user picks by letter, (3) Write DESIGN.md documenting chosen design + component tree, (4) Wait for confirmation\n" +
+    "If NO → skip DESIGN.md and prototype (cannot skip without explicit user approval)\n\n" +
+    "Verification: PRD.md and SPEC.md exist. If UI: DESIGN.md exists, prototype/ contains at least 2 HTML variants, and user confirmed.\n" +
     "After completing, suggest: /tgd-plan",
 
   "tgd-plan":

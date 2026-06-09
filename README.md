@@ -395,7 +395,10 @@ A: Yes! Edit the skill files in `skills/` to match your team's workflow.
 │   │   └── <feature-name>/           ← User picks from 3 options (e.g. jwt-auth)
 │   │       ├── PRD.md                ← Product requirements
 │   │       ├── SPEC.md               ← Technical spec
-│   │       └── DESIGN.md             ← UI design (if applicable)
+│   │       ├── DESIGN.md             ← UI design (if applicable)
+│   │       └── prototype/            ← HTML mockups (if UI feature)
+│   │           ├── variant-a.html
+│   │           └── variant-b.html
 │   │
 │   └── plan/                         ← /tgd-plan output (per feature)
 │       └── <feature-name>/

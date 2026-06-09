@@ -299,7 +299,10 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 │   │   └── <feature-name>/           ← Benutzer wählt aus 3 Optionen (z.B. jwt-auth)
 │   │       ├── PRD.md                ← Produktanforderungen
 │   │       ├── SPEC.md               ← Technische Spezifikation
-│   │       └── DESIGN.md             ← UI-Design (falls zutreffend)
+│   │       ├── DESIGN.md             ← UI-Design (falls zutreffend)
+│   │       └── prototype/            ← HTML-Mockups (bei UI-Features)
+│   │           ├── variant-a.html
+│   │           └── variant-b.html
 │   │
 │   └── plan/                         ← /tgd-plan Ausgabe (pro Feature)
 │       └── <feature-name>/

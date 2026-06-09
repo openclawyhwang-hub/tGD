@@ -21,12 +21,18 @@ This is the DEFINE phase. The full pipeline is:
 **Phase 1.5: UI Design Gate (MANDATORY CHECK via Selection Protocol)**
 After writing SPEC.md, you MUST ask the user: "Does this feature have a UI component requiring DESIGN.md?"
 **Format:** "1. Yes (Generate design) 2. No (Backend only)"
-- If YES: generate 3 visual variants → user picks one by letter → write DESIGN.md → wait for user confirmation.
-- If NO: skip DESIGN.md. You cannot skip this step without explicit user approval.
+- If YES: 
+  1. Run the `sketch` skill to generate 2-3 HTML prototype variants in `tGD/define/<feature-name>/prototype/`
+  2. Present comparison table → user picks one by letter (or requests iteration)
+  3. Write DESIGN.md documenting the chosen design decisions and component tree
+  4. Wait for user confirmation before proceeding.
+- If NO: skip DESIGN.md and prototype. You cannot skip this step without explicit user approval.
 
 Verification Gate:
 - [ ] tGD/define/<feature-name>/PRD.md exists
 - [ ] tGD/define/<feature-name>/SPEC.md exists
 - [ ] Working branch is feature/<feature-name>
+- [ ] If UI feature: tGD/define/<feature-name>/DESIGN.md exists
+- [ ] If UI feature: tGD/define/<feature-name>/prototype/ contains at least 2 HTML variants
 
 After completing, suggest: /tgd-plan to decompose into tasks.
