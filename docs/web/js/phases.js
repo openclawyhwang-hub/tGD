@@ -10,6 +10,7 @@ export const PHASES = [
     skills: [
       { name: 'context-engineering', required: true },
       { name: 'codegraph init', required: true, note: 'external CLI' },
+      { name: 'understand', required: true, note: 'MANDATORY' },
     ],
     platforms: ['claude', 'codex', 'opencode', 'pi', 'gemini'],
     outputs: ['tGD/map/CONTEXT.md', '.codegraph/codegraph.db'],
@@ -25,7 +26,7 @@ export const PHASES = [
     skills: [
       { name: 'spec-driven-development', required: true },
       { name: 'interview-me', required: false, note: 'if underspecified' },
-      { name: 'idea-refine', required: false, note: 'if vague' },
+      { name: 'idea-refine', required: true },
     ],
     platforms: ['claude', 'codex', 'opencode', 'pi', 'gemini'],
     outputs: ['tGD/define/<feature>/PRD.md', 'tGD/define/<feature>/SPEC.md', 'DESIGN.md (if UI)'],
@@ -62,6 +63,7 @@ export const PHASES = [
       { name: 'verification-before-completion', required: true },
       { name: 'frontend-ui-engineering', required: false, note: 'if UI' },
       { name: 'api-and-interface-design', required: false, note: 'if API' },
+      { name: 'doubt-driven-development', required: false, note: 'when uncertain' },
     ],
     platforms: ['claude', 'codex', 'opencode', 'pi'],
     outputs: ['src/', 'tests/'],

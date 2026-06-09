@@ -1,10 +1,12 @@
-# /tgd-define
+---
+description: Start spec-driven development — write a structured specification before writing code
+---
 
-Define — write PRD + SPEC before any code
+**🛑 Pre-flight: Environment Check**
+- [ ] `tGD/map/CONTEXT.md` exists (or `.codegraph/` is present).
+- **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
 
-Run the spec-driven-development skill. This is the DEFINE phase.
-
-Pre-flight: Check tGD/map/CONTEXT.md exists. If missing, STOP and tell user to run /tgd-map first.
+Run the `spec-driven-development` skill. Write a PRD (product requirements document) covering objectives, commands, structure, code style, testing strategy, and boundaries before any code is written.
 
 This is the DEFINE phase. The full pipeline is:
 1. **Feature Name Resolution** (Selection Protocol) — **Analyze the user's request first.** Extract the core action + object (e.g., "user login" → action: login, object: user). Then propose 3 distinct kebab-case `<feature-name>` options that **directly reflect the user's intent**:
@@ -13,10 +15,10 @@ This is the DEFINE phase. The full pipeline is:
    - Option 3: Domain-specific if applicable (e.g., `auth-flow`)
    
    **Wait for the user to select one by number or provide their own before proceeding.** Once locked, create `tGD/define/<feature-name>/`.
-2. **Git Branch Setup** — If on `main`/`master`, create and switch to `feature/<feature-name>` (`git checkout -b feature/user-login`).
-4. interview-me — if ask is underspecified
-5. idea-refine — if concept is vague
-6. spec-driven-development — write PRD.md + SPEC.md
+2. **🌿 Git Branch Setup** — If on `main`/`master`, create and switch to `feature/<feature-name>` (`git checkout -b feature/user-login`).
+3. `interview-me` — if the ask is underspecified, extract what the user actually wants
+4. `idea-refine` — if the concept is vague, stress-test and expand options
+5. `spec-driven-development` — write the structured spec (PRD + SPEC)
 
 **Phase 1.5: UI Design Gate (MANDATORY CHECK via Selection Protocol)**
 After writing SPEC.md, you MUST ask the user: "Does this feature have a UI component requiring DESIGN.md?"
@@ -26,13 +28,18 @@ After writing SPEC.md, you MUST ask the user: "Does this feature have a UI compo
   2. Present comparison table → user picks one by letter (or requests iteration)
   3. Write DESIGN.md documenting the chosen design decisions and component tree
   4. Wait for user confirmation before proceeding.
-- If NO: skip DESIGN.md and prototype. You cannot skip this step without explicit user approval.
+- If NO: skip DESIGN.md and prototype. **You cannot skip this step without explicit user approval.**
 
-Verification Gate:
-- [ ] tGD/define/<feature-name>/PRD.md exists
-- [ ] tGD/define/<feature-name>/SPEC.md exists
-- [ ] Working branch is feature/<feature-name>
-- [ ] If UI feature: tGD/define/<feature-name>/DESIGN.md exists
-- [ ] If UI feature: tGD/define/<feature-name>/prototype/ contains at least 2 HTML variants
+Use `interview-me` first if the ask is underspecified. Use `idea-refine` if you have a rough concept but it's not concrete yet.
 
-After completing, suggest: /tgd-plan to decompose into tasks.
+After completing the spec, verify the outputs.
+
+**Verification Gate:**
+- [ ] `tGD/define/` directory exists
+- [ ] `tGD/define/<feature-name>/PRD.md` exists and is non-empty
+- [ ] `tGD/define/<feature-name>/SPEC.md` exists and is non-empty
+- [ ] Working branch is `feature/<feature-name>`
+- [ ] If UI feature: `tGD/define/<feature-name>/DESIGN.md` exists with Component Tree
+- [ ] If UI feature: `tGD/define/<feature-name>/prototype/` contains at least 2 HTML variants
+
+If verification passes, suggest the next step: `/tgd-plan` to decompose it into tasks.

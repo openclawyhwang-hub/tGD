@@ -16,7 +16,7 @@
 **Probably not.**
 
 tGD is an 8-stage pipeline that forces agents to follow the same workflow you would:
-Map → Define → Plan → Build → Verify → Review → Ship
+Map → Define → Plan → Develop → Verify → Review → Ship
 
 No shortcuts. No "should work". Just evidence.
 
@@ -58,7 +58,7 @@ Works with Claude Code, Codex CLI, Gemini CLI, OpenCode, and Pi Coding Agent.
 git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
 bash setup.sh
 ```
-> Auto-detects your installed CLIs (Claude, Codex, Gemini, OpenCode, Pi) and configures everything. Webwright dependencies installed automatically.
+> Auto-detects your installed CLIs (Claude, Codex, Gemini, OpenCode, Pi) and configures everything. agent-browser dependencies installed automatically.
 >
 > This also installs the `tgd` CLI to your PATH for future use.
 
@@ -309,7 +309,7 @@ Testing in tGD isn't a single phase — it's a progressive discipline across thr
 tGD enforces the test pyramid ratio:
 ```
           ╱╲
-         ╱  ╲         E2E Tests (~5%)      ← Verify stage (Webwright)
+         ╱  ╲         E2E Tests (~5%)      ← Verify stage (agent-browser)
         ╱    ╲        Full user flows, real browser
        ╱──────╲
       ╱        ╲      Integration Tests (~15%)  ← Verify stage
@@ -535,7 +535,7 @@ Want to add a skill or improve tGD? See [CONTRIBUTING.md](CONTRIBUTING.md).
 When `.tgd-version` is updated and pushed to `main`, GitHub Actions automatically creates a tag and release with changelog.
 
 **To release a new version:**
-1. Update `.tgd-version` with the new version (e.g., `v1.7.0`)
+1. Update `.tgd-version` with the new version (e.g., `v2026.06.09`)
 2. Update `TGD_VERSION` in `setup.sh` (CalVer format, e.g., `2026-06-09`)
 3. Commit and push to `main`
 4. GitHub Actions creates the release automatically
@@ -544,12 +544,12 @@ When `.tgd-version` is updated and pushed to `main`, GitHub Actions automaticall
 ```bash
 # Using the release script
 bash scripts/release.sh          # reads version from .tgd-version
-bash scripts/release.sh v1.7.0   # or specify version
+bash scripts/release.sh v2026.06.09   # or specify version
 
 # Or manually
-git tag v1.7.0
-git push origin v1.7.0
-gh release create v1.7.0 --title "tGD v1.7.0" --notes "Release notes..."
+git tag v2026.06.09
+git push origin v2026.06.09
+gh release create v2026.06.09 --title "tGD v2026.06.09" --notes "Release notes..."
 ```
 
 ---

@@ -17,34 +17,23 @@ Before analyzing anything, ask the user:
 
 Run the `context-engineering` skill. Analyze the current project: tech stack, architecture, dependencies, code organization, and existing patterns.
 
-This is the starting point for joining an existing project or before making significant changes.
-
 ## Step 3: CodeGraph Setup
 
 1. Ensure output directory exists: `mkdir -p tGD/map`
-2. Create symlink so CodeGraph finds its DB at the expected root path:
-   ```bash
-   rm -rf .codegraph  # remove stale link if any
-   ln -s tGD/map/.codegraph .codegraph
-   ```
-3. Initialize the project graph: `codegraph init -i`
-   - *Requires CodeGraph installed. Setup handles this automatically.*
+2. Create symlink: `rm -rf .codegraph && ln -s tGD/map/.codegraph .codegraph`
+3. Initialize project graph: `codegraph init -i`
 
 ## Step 4: Understand-Anything (MANDATORY)
 
 This step is **required**, not optional.
 
-1. Create symlink so UA stores output in tGD/map:
-   ```bash
-   rm -rf .understand-anything  # remove stale link if any
-   ln -s tGD/map/.understand-anything .understand-anything
-   ```
+1. Create symlink: `rm -rf .understand-anything && ln -s tGD/map/.understand-anything .understand-anything`
 2. Run `/understand` to build a full knowledge graph of the codebase
-3. This produces `tGD/map/.understand-anything/knowledge-graph.json` — an interactive map of all components, dependencies, and relationships
-4. After graph is built, run `/understand-dashboard` to launch an interactive web visualization (Vite dev server) for exploring the architecture visually
-5. If unfamiliar with the project, also run `/understand-onboard` for a guided architecture tour
+3. This produces `tGD/map/.understand-anything/knowledge-graph.json`
+4. After graph is built, run `/understand-dashboard` to launch interactive web visualization
+5. If unfamiliar with the project, also run `/understand-onboard` for a guided tour
 
-If additional repos were provided in Step 1, run `/understand` on each of them as well and capture their key insights.
+If additional repos were provided in Step 1, run `/understand` on each of them as well.
 
 ## Step 5: Produce CONTEXT.md
 
@@ -53,7 +42,7 @@ If additional repos were provided in Step 1, run `/understand` on each of them a
 - `.codegraph/codegraph.db` — symbol index (via symlink)
 - `.understand-anything/knowledge-graph.json` — full knowledge graph (via symlink)
 - `.understand-anything/config.json` — UA configuration
-- **Interactive dashboard** — launched via `/understand-dashboard` (reads knowledge-graph.json, serves on localhost)
+- **Interactive dashboard** — launched via `/understand-dashboard` (localhost)
 
 **CONTEXT.md Structure:**
 When writing `CONTEXT.md`, DO NOT rely solely on visual inspection of code.

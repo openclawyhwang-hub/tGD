@@ -17,7 +17,7 @@
 **たぶん、書いてない。**
 
 tGDは8段階のパイプラインで、エージェントにあなたと同じワークフローを強制します：
-Map → Define → Plan → Build → Verify → Review → Ship
+Map → Define → Plan → Develop → Verify → Review → Ship
 
 近道なし。「たぶん動く」なし。証拠だけ。
 
@@ -174,6 +174,37 @@ pi       # Pi Coding Agent
 
 ---
 
+## ⚙️ パイプライン
+
+```mermaid
+flowchart LR
+    A["🔍 マップ\n/tgd-map"] --> B["📋 定義\n/tgd-define"]
+    B --> C["📐 計画\n/tgd-plan"]
+    C --> D["⚡ 開発\n/tgd-develop"]
+    D --> E["🧪 検証\n/tgd-verify"]
+    E --> F["🔎 レビュー\n/tgd-review"]
+    F --> G["✨ 簡素化\n/tgd-simplify"]
+    G --> H["🚀 出荷\n/tgd-ship"]
+
+    classDef cyan fill:#0e7490,color:#ecfeff,stroke:#22d3ee
+    classDef green fill:#059669,color:#ecfdf5,stroke:#34d399
+    classDef blue fill:#2563eb,color:#eff6ff,stroke:#60a5fa
+    classDef purple fill:#7c3aed,color:#f5f3ff,stroke:#a78bfa
+    classDef amber fill:#d97706,color:#fffbeb,stroke:#fbbf24
+    classDef rose fill:#e11d48,color:#fff1f2,stroke:#fb7185
+    classDef teal fill:#0d9488,color:#f0fdfa,stroke:#5eead4
+    classDef indigo fill:#4f46e5,color:#eef2ff,stroke:#818cf8
+
+    class A cyan
+    class B green
+    class C blue
+    class D purple
+    class E amber
+    class F rose
+    class G teal
+    class H indigo
+```
+
 ## 🔑 主な機能
 
 - **🏖️ 必須 Worktree 隔離**: 全てのコード実装は隔離された Git Worktree サンドボックスで実行。`tGD/` 計画ファイルがコードで汚染されることはありません。
@@ -196,6 +227,7 @@ pi       # Pi Coding Agent
 | `tgd` | tGD のインストールまたは更新（初回インストール後に使用） |
 | `tgd --version` (`-v`) | バージョン表示（CalVer形式） |
 | `tgd --upgrade` (`-u`) | リンクとフックの強制再構築 |
+| `tgd --release` | GitHub リリースを作成（.tgd-version を読み取り） |
 | `tgd --uninstall` | すべてのtGD配備を削除 |
 
 ### スラッシュコマンド
@@ -204,7 +236,7 @@ pi       # Pi Coding Agent
 
 | 🎯 内容 | ⌨️ コマンド | 💡 原則 | 🔧 呼び出し |
 |---|---|---|---|
-| プロジェクト理解 | `/tgd-map` | 変更前にコンテキスト | `context-engineering` + `codegraph init` |
+| プロジェクト理解 | `/tgd-map` | 変更前にコンテキスト | `context-engineering` + `codegraph init` + `understand-dashboard` |
 | 何を構築するか定義 | `/tgd-define` | 3択命名 + 製品 + 仕様 | `interview-me` → `idea-refine` → `spec-driven-development` |
 | 構築方法を計画 | `/tgd-plan` | CONTEXT + PRD + SPEC → アトミックタスク | `planning-and-task-breakdown` → `jira-auto-sync` |
 | サンドボックス構築 | `/tgd-develop` | **必須 Worktree** + スマートルーティング | `source-driven-development` → (`subagent` OR `incremental`) → `test-driven-development` |
@@ -451,6 +483,31 @@ tGD/
 
 ---
 
+## 🏷️ リリース
+
+### 自動（推奨）
+`.tgd-version` を更新して `main` にプッシュすると、GitHub Actions が自動的にタグとリリースを作成します。
+
+**新しいバージョンをリリースするには：**
+1. `.tgd-version` を新しいバージョンに更新（例：`v2026.06.09`）
+2. `setup.sh` の `TGD_VERSION` を更新（CalVer形式、例：`2026-06-09`）
+3. コミットして `main` にプッシュ
+4. GitHub Actions が自動的にリリースを作成
+
+### 手動
+```bash
+# リリーススクリプトを使用
+bash scripts/release.sh          # .tgd-version からバージョンを読み取り
+bash scripts/release.sh v2026.06.09   # またはバージョンを指定
+
+# または手動で
+git tag v2026.06.09
+git push origin v2026.06.09
+gh release create v2026.06.09 --title "tGD v2026.06.09" --notes "リリースノート..."
+```
+
+---
+
 ## 📄 ライセンス
 
 Apache 2.0 - あなたのプロジェクト、チーム、ツールでこれらのスキルを使用してください。
@@ -487,3 +544,20 @@ Piは**TypeScript Extension**（`.pi/extensions/`）で `/tgd-plan` をネイテ
 pi
 /tgd-plan
 ```
+
+### その他のプラットフォーム
+<details>
+<summary><b>Cursor / Windsurf / Kiro</b></summary>
+
+- **Cursor：** `skills/` を `.cursor/rules/` にコピー
+- **Windsurf：** スキルの内容を rules 設定に追加
+- **Kiro：** skills を `.kiro/skills/` に配置
+
+</details>
+
+<details>
+<summary><b>GitHub Copilot</b></summary>
+
+`AGENTS.md` と `.github/copilot-instructions.md` を使用してワークフローを読み込みます。
+
+</details>

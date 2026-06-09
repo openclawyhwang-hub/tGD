@@ -8,7 +8,7 @@ A collection of skills for Claude.ai and Claude Code for senior software enginee
 
 ## OpenCode Integration
 
-OpenCode uses a **skill-driven execution model** powered by the `skill` tool and this repository's `/skills` directory.
+OpenCode uses a **skill-driven execution model** powered by the `skill` tool and this repository's `skills/` directory.
 
 ### Core Rules
 
@@ -35,13 +35,13 @@ This project supports 8 lifecycle commands that work across **OpenCode**, **Clau
 
 || Command | Phase | Pipeline |
 ||---------|-------|----------|
-|| `/tgd-map` | Map | `context-discovery` → `context-engineering` → `codegraph init` → `/understand` (MANDATORY) |
+|| `/tgd-map` | Map | `context-engineering` → `codegraph init` → `/understand` (MANDATORY) |
 || `/tgd-define` | Define | `interview-me` → `idea-refine` → `spec-driven-development` → `sketch` (if UI) |
 || `/tgd-plan` | Plan | `planning-and-task-breakdown` → **`jira-auto-sync` (conditional)** |
-|| `/tgd-develop` | Build | `context-engineering` → `source-driven-development` → (`subagent-driven-development` OR `incremental-implementation`) → `test-driven-development` → `verification-before-completion` (+ `frontend-ui-engineering`, `api-and-interface-design`, `doubt-driven-development` when relevant) |
+|| `/tgd-develop` | Develop | `context-engineering` → `source-driven-development` → (`subagent-driven-development` OR `incremental-implementation`) → `test-driven-development` → `verification-before-completion` (+ `frontend-ui-engineering`, `api-and-interface-design`, `doubt-driven-development` when relevant) |
 || `/tgd-verify` | Verify | `debugging-and-error-recovery` → `test-driven-development` → **MANDATORY `agent-browser` for Frontend/UI/DOM** |
 || `/tgd-review` | Review | `code-review-and-quality` → `code-simplification` (+ `security-and-hardening`, `performance-optimization` when relevant) |
-|| `/tgd-simplify` | Review | `code-simplification` |
+|| `/tgd-simplify` | Simplify | `code-simplification` |
 || `/tgd-ship` | Ship | `git-workflow-and-versioning` → `shipping-and-launch` (+ `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs` when relevant) |
 
 Each command runs its entry skill plus all relevant conditional skills, then suggests the next step in the pipeline.
@@ -54,8 +54,8 @@ If the user types a command, invoke it. If they use natural language instead, ma
 
 - DEFINE → `spec-driven-development`
 - PLAN → `planning-and-task-breakdown`
-- MAP → `context-discovery` → `context-engineering` → `/understand` (MANDATORY)
-- BUILD → `context-engineering` + `incremental-implementation` + `test-driven-development`
+- MAP → `context-engineering` → `/understand` (MANDATORY)
+- DEVELOP → `context-engineering` + `incremental-implementation` + `test-driven-development`
 - VERIFY → `debugging-and-error-recovery`
 - REVIEW → `code-review-and-quality`
 - SHIP → `shipping-and-launch`
@@ -128,6 +128,7 @@ Each lifecycle phase has a distinct communication tone. Follow these when respon
 | VERIFY | Strict Zero-Tolerance | Evidence-only, no hedging | "Tests failed: 3/34. Exit code 1. Must fix." |
 | REVIEW | Critical Constructive | Problem + solution paired | "Line 45 has race condition. Suggest mutex." |
 | SHIP | Cautious Process | Checklists, risk assessment | "Pre-deploy: ✅ tests ✅ build ⚠️ migration pending" |
+| SIMPLIFY | Pragmatic Refiner | Simplify, remove bloat, improve clarity | "Removed 3 redundant abstractions. Lines: -47, tests still pass." |
 
 **Rules:**
 - Match the tone to the current phase — do not mix tones
@@ -144,7 +145,7 @@ This repo has three composable layers. They have different jobs and should not b
 
 Composition rule: **the user (or a slash command) is the orchestrator. Personas do not invoke other personas.** A persona may invoke skills.
 
-The only multi-persona orchestration pattern this repo endorses is **parallel fan-out with a merge step** — used by `/ship` to run `code-reviewer`, `security-auditor`, and `test-engineer` concurrently and synthesize their reports. Do not build a "router" persona that decides which other persona to call; that's the job of slash commands and intent mapping.
+The only multi-persona orchestration pattern this repo endorses is **parallel fan-out with a merge step** — used by `/tgd-ship` to run `code-reviewer`, `security-auditor`, and `test-engineer` concurrently and synthesize their reports. Do not build a "router" persona that decides which other persona to call; that's the job of slash commands and intent mapping.
 
 See [agents/README.md](agents/README.md) for the decision matrix and [references/orchestration-patterns.md](references/orchestration-patterns.md) for the full pattern catalog.
 

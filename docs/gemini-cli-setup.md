@@ -144,21 +144,22 @@ This is useful when you want to ensure a specific workflow is followed without w
 
 ## Slash Commands
 
-The repo ships 7 slash commands under `.gemini/commands/` that map to the development lifecycle. Gemini CLI auto-discovers them when you run from the project root.
+The repo ships 8 slash commands under `.gemini/commands/` that map to the development lifecycle. Gemini CLI auto-discovers them when you run from the project root.
 
 | Command | What it does |
 |---------|--------------|
-| `/spec` | Write a structured spec before writing code |
-| `/planning` | Break work into small, verifiable tasks |
-| `/build` | Implement the next task incrementally |
-| `/test` | Run TDD workflow — red, green, refactor |
-| `/review` | Five-axis code review |
-| `/code-simplify` | Reduce complexity without changing behavior |
-| `/ship` | Pre-launch checklist via parallel persona fan-out |
+| `/tgd-map` | Scan and understand the existing project context |
+| `/tgd-define` | Write a structured spec before writing code |
+| `/tgd-plan` | Break work into small, verifiable tasks |
+| `/tgd-develop` | Implement the next task incrementally |
+| `/tgd-verify` | Run TDD workflow — red, green, refactor |
+| `/tgd-review` | Five-axis code review |
+| `/tgd-simplify` | Reduce complexity without changing behavior |
+| `/tgd-ship` | Pre-launch checklist via parallel persona fan-out |
 
 Each command invokes the corresponding skill automatically — no manual skill loading required.
 
-> **Note:** Use `/planning` instead of `/plan` — `/plan` conflicts with a Gemini CLI internal command name.
+> **Note:** Commands now use the `/tgd-*` namespace to avoid conflicts with built-in CLI commands.
 
 ## Usage Tips
 

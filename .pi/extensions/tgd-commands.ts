@@ -38,19 +38,27 @@ const tgdPrompts: Record<string, string> = {
     "After completing, suggest: /tgd-define",
 
   "tgd-define":
-    "Run the spec-driven-development skill. DEFINE phase.\n\n" +
-    "Pre-flight: Check tGD/map/CONTEXT.md exists. If missing, STOP and tell user to run /tgd-map first.\n\n" +
+    "Run the spec-driven-development skill. Write a PRD (product requirements document) covering objectives, commands, structure, code style, testing strategy, and boundaries before any code is written. DEFINE phase.\n\n" +
+    "Pre-flight: Check tGD/map/CONTEXT.md exists (or .codegraph/ is present). If missing, STOP and tell user to run /tgd-map first.\n\n" +
     "Pipeline:\n" +
-    "1. Feature Name Resolution (Selection Protocol) — **Analyze the user's request first.** Extract core action + object (e.g., 'user login' → action: login, object: user). Propose 3 kebab-case names that **directly reflect intent**: (a) most literal/direct, (b) action-focused, (c) domain-specific. Wait for user to pick by number.\n" +
-    "2. Create tGD/define/<feature>/ directory\n" +
-    "3. Run interview-me if underspecified\n" +
-    "4. Run idea-refine if vague\n" +
-    "5. Run spec-driven-development to write PRD.md + SPEC.md\n\n" +
-    "Phase 1.5: UI Design Gate (MANDATORY via Selection Protocol)\n" +
-    "After SPEC.md, ask: 'Does this feature have a UI component requiring DESIGN.md? 1. Yes 2. No'\n" +
-    "If YES → (1) Run sketch skill to generate 2-3 HTML prototype variants in tGD/define/<feature>/prototype/, (2) Present comparison table → user picks by letter, (3) Write DESIGN.md documenting chosen design + component tree, (4) Wait for confirmation\n" +
-    "If NO → skip DESIGN.md and prototype (cannot skip without explicit user approval)\n\n" +
-    "Verification: PRD.md and SPEC.md exist. If UI: DESIGN.md exists, prototype/ contains at least 2 HTML variants, and user confirmed.\n" +
+    "1. Feature Name Resolution (Selection Protocol) — **Analyze the user's request first.** Extract core action + object (e.g., 'user login' → action: login, object: user). Propose 3 kebab-case names that **directly reflect intent**: (a) most literal/direct, (b) action-focused, (c) domain-specific. Wait for user to pick by number. Once locked, create tGD/define/<feature-name>/.\n" +
+    "2. Git Branch Setup — If on main/master, create and switch to feature/<feature-name> (git checkout -b feature/user-login).\n" +
+    "3. interview-me — if the ask is underspecified, extract what the user actually wants\n" +
+    "4. idea-refine — if the concept is vague, stress-test and expand options\n" +
+    "5. spec-driven-development — write the structured spec (PRD + SPEC)\n\n" +
+    "Phase 1.5: UI Design Gate (MANDATORY CHECK via Selection Protocol)\n" +
+    "After writing SPEC.md, ask: 'Does this feature have a UI component requiring DESIGN.md? 1. Yes (Generate design) 2. No (Backend only)'\n" +
+    "If YES → (1) Run sketch skill to generate 2-3 HTML prototype variants in tGD/define/<feature-name>/prototype/, (2) Present comparison table → user picks one by letter (or requests iteration), (3) Write DESIGN.md documenting the chosen design decisions and component tree, (4) Wait for user confirmation before proceeding\n" +
+    "If NO → skip DESIGN.md and prototype. You cannot skip this step without explicit user approval.\n\n" +
+    "Use interview-me first if the ask is underspecified. Use idea-refine if you have a rough concept but it's not concrete yet.\n\n" +
+    "After completing the spec, verify the outputs.\n\n" +
+    "Verification Gate:\n" +
+    "- [ ] tGD/define/ directory exists\n" +
+    "- [ ] tGD/define/<feature-name>/PRD.md exists and is non-empty\n" +
+    "- [ ] tGD/define/<feature-name>/SPEC.md exists and is non-empty\n" +
+    "- [ ] Working branch is feature/<feature-name>\n" +
+    "- [ ] If UI feature: tGD/define/<feature-name>/DESIGN.md exists with Component Tree\n" +
+    "- [ ] If UI feature: tGD/define/<feature-name>/prototype/ contains at least 2 HTML variants\n\n" +
     "After completing, suggest: /tgd-plan",
 
   "tgd-plan":

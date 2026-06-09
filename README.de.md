@@ -17,7 +17,7 @@
 **Wahrscheinlich nicht.**
 
 tGD ist eine 8-Stufen-Pipeline, die Agenten zwingt, denselben Workflow zu befolgen wie Sie:
-Map → Define → Plan → Build → Verify → Review → Ship
+Map → Define → Plan → Develop → Verify → Review → Ship
 
 Keine Abkürzungen. Kein "sollte funktionieren". Nur Beweise.
 
@@ -174,6 +174,37 @@ Agent: Test-Suite wird ausgeführt...
 
 ---
 
+## ⚙️ Pipeline
+
+```mermaid
+flowchart LR
+    A["🔍 MAP\n/tgd-map"] --> B["📋 DEFINIEREN\n/tgd-define"]
+    B --> C["📐 PLANEN\n/tgd-plan"]
+    C --> D["⚡ ENTWICKELN\n/tgd-develop"]
+    D --> E["🧪 VERIFIZIEREN\n/tgd-verify"]
+    E --> F["🔎 REVIEW\n/tgd-review"]
+    F --> G["✨ VEREINFACHEN\n/tgd-simplify"]
+    G --> H["🚀 LIEFERN\n/tgd-ship"]
+
+    classDef cyan fill:#0e7490,color:#ecfeff,stroke:#22d3ee
+    classDef green fill:#059669,color:#ecfdf5,stroke:#34d399
+    classDef blue fill:#2563eb,color:#eff6ff,stroke:#60a5fa
+    classDef purple fill:#7c3aed,color:#f5f3ff,stroke:#a78bfa
+    classDef amber fill:#d97706,color:#fffbeb,stroke:#fbbf24
+    classDef rose fill:#e11d48,color:#fff1f2,stroke:#fb7185
+    classDef teal fill:#0d9488,color:#f0fdfa,stroke:#5eead4
+    classDef indigo fill:#4f46e5,color:#eef2ff,stroke:#818cf8
+
+    class A cyan
+    class B green
+    class C blue
+    class D purple
+    class E amber
+    class F rose
+    class G teal
+    class H indigo
+```
+
 ## 🔑 Hauptfunktionen
 
 - **🏖️ Pflicht-Worktree-Isolierung**: Alle Code-Implementierungen laufen in einer isolierten Git-Worktree-Sandbox. `tGD/`-Planungsdateien bleiben unberührt.
@@ -196,6 +227,7 @@ Die `tgd` CLI verwaltet Installation, Updates und Diagnose:
 | `tgd` | tGD installieren oder aktualisieren (nach der Erstinstallation) |
 | `tgd --version` (`-v`) | Version anzeigen (CalVer) |
 | `tgd --upgrade` (`-u`) | Links und Hooks erneuern |
+| `tgd --release` | GitHub-Release erstellt (liest .tgd-version) |
 | `tgd --uninstall` | Alle tGD-Installationen entfernen |
 
 ### Slash Commands
@@ -204,7 +236,7 @@ Die `tgd` CLI verwaltet Installation, Updates und Diagnose:
 
 | 🎯 Was | ⌨️ Command | 💡 Prinzip | 🔧 Skills |
 |---|---|---|---|
-| Projekt verstehen | `/tgd-map` | Kontext vor Änderungen | `context-engineering` + `codegraph init` |
+| Projekt verstehen | `/tgd-map` | Kontext vor Änderungen | `context-engineering` + `codegraph init` + `understand-dashboard` |
 | Definition | `/tgd-define` | 3-Option-Naming + Produkt + Spezifikation | `interview-me` → `idea-refine` → `spec-driven-development` |
 | Planung | `/tgd-plan` | CONTEXT + PRD + SPEC → Atomare Tasks | `planning-and-task-breakdown` → `jira-auto-sync` |
 | Sandbox-Bau | `/tgd-develop` | **Pflicht-Worktree** + Intelligentes Routing | `source-driven-development` → (`subagent` OR `incremental`) → `test-driven-development` |
@@ -451,6 +483,31 @@ Möchten Sie einen Skill hinzufügen oder tGD verbessern? Siehe [CONTRIBUTING.md
 
 ---
 
+## 🏷️ Release
+
+### Automatisiert (empfohlen)
+Wenn `.tgd-version` aktualisiert und auf `main` gepusht wird, erstellt GitHub Actions automatisch einen Tag und Release mit Changelog.
+
+**So erstellen Sie ein neues Release:**
+1. `.tgd-version` mit der neuen Version aktualisieren (z.B. `v2026.06.09`)
+2. `TGD_VERSION` in `setup.sh` aktualisieren (CalVer-Format, z.B. `2026-06-09`)
+3. Committen und auf `main` pushen
+4. GitHub Actions erstellt das Release automatisch
+
+### Manuell
+```bash
+# Mit dem Release-Script
+bash scripts/release.sh          # liest Version aus .tgd-version
+bash scripts/release.sh v2026.06.09   # oder Version angeben
+
+# Oder manuell
+git tag v2026.06.09
+git push origin v2026.06.09
+gh release create v2026.06.09 --title "tGD v2026.06.09" --notes "Release-Notizen..."
+```
+
+---
+
 ## 📄 Lizenz
 
 Apache 2.0 – Nutzen Sie diese Skills in Ihren Projekten, Teams und Tools.
@@ -487,3 +544,20 @@ Pi unterstützt `/tgd-plan` nativ über eine **TypeScript Extension** (`.pi/exte
 pi
 /tgd-plan
 ```
+
+### Andere Plattformen
+<details>
+<summary><b>Cursor / Windsurf / Kiro</b></summary>
+
+- **Cursor:** `skills/` nach `.cursor/rules/` kopieren
+- **Windsurf:** Skill-Inhalte zur Rules-Konfiguration hinzufügen
+- **Kiro:** Skills in `.kiro/skills/` ablegen
+
+</details>
+
+<details>
+<summary><b>GitHub Copilot</b></summary>
+
+Verwenden Sie `AGENTS.md` und `.github/copilot-instructions.md` um diese Workflows zu laden.
+
+</details>

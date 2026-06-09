@@ -105,12 +105,14 @@ The `.claude/commands/` directory contains slash commands for Claude Code:
 
 | Command | Skill Invoked |
 |---------|---------------|
-| `/spec` | spec-driven-development |
-| `/plan` | planning-and-task-breakdown |
-| `/build` | incremental-implementation + test-driven-development |
-| `/test` | test-driven-development |
-| `/review` | code-review-and-quality |
-| `/ship` | shipping-and-launch |
+| `/tgd-map` | context-engineering + codegraph init |
+| `/tgd-define` | spec-driven-development |
+| `/tgd-plan` | planning-and-task-breakdown |
+| `/tgd-develop` | source-driven-development + incremental-implementation + test-driven-development + verification-before-completion |
+| `/tgd-verify` | debugging-and-error-recovery + test-driven-development + agent-browser |
+| `/tgd-review` | code-review-and-quality + code-simplification |
+| `/tgd-simplify` | code-simplification |
+| `/tgd-ship` | git-workflow-and-versioning + shipping-and-launch |
 
 ## Using References
 
@@ -127,7 +129,7 @@ Load a reference when you need detailed patterns beyond what the skill covers.
 
 ## Spec and task artifacts
 
-The `/spec` and `/plan` commands create working artifacts (`SPEC.md`, `tasks/plan.md`, `tasks/todo.md`). Treat them as **living documents** while the work is in progress:
+The `/tgd-define` and `/tgd-plan` commands create working artifacts (`tGD/define/<feature>/PRD.md`, `tGD/plan/<feature>/TASKS.md`). Treat them as **living documents** while the work is in progress:
 
 - Keep them in version control during development so the human and the agent have a shared source of truth.
 - Update them when scope or decisions change.
