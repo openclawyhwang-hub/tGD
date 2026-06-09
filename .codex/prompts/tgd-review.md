@@ -17,4 +17,4 @@ Conditional:
 
 If change > ~100 lines, split into smaller reviews.
 
-After completing, suggest: /tgd-simplify or /tgd-ship.
+After completing, suggest: /tgd-ship.

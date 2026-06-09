@@ -111,7 +111,6 @@ The `.claude/commands/` directory contains slash commands for Claude Code:
 | `/tgd-develop` | source-driven-development + incremental-implementation + test-driven-development + verification-before-completion |
 | `/tgd-verify` | debugging-and-error-recovery + test-driven-development + agent-browser |
 | `/tgd-review` | code-review-and-quality + code-simplification |
-| `/tgd-simplify` | code-simplification |
 | `/tgd-ship` | git-workflow-and-versioning + shipping-and-launch |
 
 ## Using References

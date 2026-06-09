@@ -31,7 +31,7 @@ The agent should automatically map user intent to skills:
 
 ### Lifecycle Commands
 
-This project supports 8 lifecycle commands that work across **OpenCode**, **Claude Code**, **Gemini CLI**, and **Codex CLI**. Each command is a full pipeline — invoking it runs the phase's entry skill plus all relevant conditional skills:
+This project supports 7 lifecycle commands that work across **OpenCode**, **Claude Code**, **Gemini CLI**, and **Codex CLI**. Each command is a full pipeline — invoking it runs the phase's entry skill plus all relevant conditional skills:
 
 || Command | Phase | Pipeline |
 ||---------|-------|----------|
@@ -41,7 +41,6 @@ This project supports 8 lifecycle commands that work across **OpenCode**, **Clau
 || `/tgd-develop` | Develop | `context-engineering` → `source-driven-development` → (`subagent-driven-development` OR `incremental-implementation`) → `test-driven-development` → `verification-before-completion` (+ `frontend-ui-engineering`, `api-and-interface-design`, `doubt-driven-development` when relevant) |
 || `/tgd-verify` | Verify | `debugging-and-error-recovery` → `test-driven-development` → **MANDATORY `agent-browser` for Frontend/UI/DOM** |
 || `/tgd-review` | Review | `code-review-and-quality` → `code-simplification` (+ `security-and-hardening`, `performance-optimization` when relevant) |
-|| `/tgd-simplify` | Simplify | `code-simplification` |
 || `/tgd-ship` | Ship | `git-workflow-and-versioning` → `shipping-and-launch` (+ `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs` when relevant) |
 
 Each command runs its entry skill plus all relevant conditional skills, then suggests the next step in the pipeline.
@@ -59,7 +58,6 @@ If the user types a command, invoke it. If they use natural language instead, ma
 - VERIFY → `debugging-and-error-recovery`
 - REVIEW → `code-review-and-quality`
 - SHIP → `shipping-and-launch`
-- SIMPLIFY → `code-simplification`
 
 ### Execution Model
 
@@ -128,7 +126,6 @@ Each lifecycle phase has a distinct communication tone. Follow these when respon
 | VERIFY | Strict Zero-Tolerance | Evidence-only, no hedging | "Tests failed: 3/34. Exit code 1. Must fix." |
 | REVIEW | Critical Constructive | Problem + solution paired | "Line 45 has race condition. Suggest mutex." |
 | SHIP | Cautious Process | Checklists, risk assessment | "Pre-deploy: ✅ tests ✅ build ⚠️ migration pending" |
-| SIMPLIFY | Pragmatic Refiner | Simplify, remove bloat, improve clarity | "Removed 3 redundant abstractions. Lines: -47, tests still pass." |
 
 **Rules:**
 - Match the tone to the current phase — do not mix tones

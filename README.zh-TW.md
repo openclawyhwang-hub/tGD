@@ -209,8 +209,7 @@ flowchart LR
     C --> D["⚡ DEVELOP\n/tgd-develop"]
     D --> E["🧪 VERIFY\n/tgd-verify"]
     E --> F["🔎 REVIEW\n/tgd-review"]
-    F --> G["✨ SIMPLIFY\n/tgd-simplify"]
-    G --> H["🚀 SHIP\n/tgd-ship"]
+    F --> G["🚀 SHIP\n/tgd-ship"]
 
     classDef cyan fill:#0e7490,color:#ecfeff,stroke:#22d3ee
     classDef green fill:#059669,color:#ecfdf5,stroke:#34d399
@@ -227,8 +226,7 @@ flowchart LR
     class D purple
     class E amber
     class F rose
-    class G teal
-    class H indigo
+    class G indigo
 ```
 
 ---
@@ -285,7 +283,7 @@ flowchart LR
 
 ### Slash 指令
 
-8 個 slash command 對應開發生命週期。每個指令自動串聯相關的 skills。
+7 個 slash command 對應開發生命週期。每個指令自動串聯相關的 skills。
 
 | 🎯 做什麼 | ⌨️ 指令 | 💡 核心原則 | 🔧 呼叫的 Skills |
 |---|---|---|---|
@@ -295,7 +293,6 @@ flowchart LR
 | 沙盒建造 | `/tgd-develop` | **強制 Worktree** + 智能路由 | `source-driven-development` → (`subagent` OR `incremental`) → `test-driven-development` |
 | 證明它能跑 | `/tgd-verify` | 測試就是證明 | `debugging-and-error-recovery` → `test-driven-development` |
 | 合併前審查 | `/tgd-review` | 改善程式碼健康 | `code-review-and-quality` → `code-simplification` |
-| 簡化程式碼 | `/tgd-simplify` | 清晰勝過花巧 | `code-simplification` |
 | 部署到生產 | `/tgd-ship` | 快就是安全 | `git-workflow-and-versioning` → `shipping-and-launch` |
 
 ---

@@ -96,9 +96,6 @@ Gemini CLI supports session lifecycle hooks. tGD ships a complete hook configura
 | Hook | Event | Purpose |
 |------|-------|---------|
 | `session-start.sh` | `SessionStart` | Injects `using-tGD` meta-skill |
-| `simplify-pre.sh` | `BeforeTool` (Read) | Filters simplify-ignore blocks before read |
-| `simplify-post.sh` | `AfterTool` (Edit/Write) | Re-filters after edits |
-| `simplify-cleanup.sh` | `SessionEnd` | Restores protected files |
 | `sdd-cache-pre/post.sh` | `BeforeTool/AfterTool` (WebFetch) | HTTP cache for doc fetching |
 
 #### Installation
@@ -118,14 +115,7 @@ ln -sf "$(pwd)/.gemini/settings.json" ~/.gemini/settings.json
 
 #### How It Works
 
-**simplify-ignore** — Mark code blocks that should not be simplified:
 
-```typescript
-// simplify-ignore-start: security-critical validation
-if (!validateToken(token)) {
-  throw new AuthError("Invalid token")
-}
-// simplify-ignore-end
 ```
 
 The hooks replace these blocks with `BLOCK_<hash>` placeholders before the agent reads them, then restore the real content after edits. Protected files are fully restored on session end.
@@ -154,7 +144,6 @@ The repo ships 8 slash commands under `.gemini/commands/` that map to the develo
 | `/tgd-develop` | Implement the next task incrementally |
 | `/tgd-verify` | Run TDD workflow — red, green, refactor |
 | `/tgd-review` | Five-axis code review |
-| `/tgd-simplify` | Reduce complexity without changing behavior |
 | `/tgd-ship` | Pre-launch checklist via parallel persona fan-out |
 
 Each command invokes the corresponding skill automatically — no manual skill loading required.

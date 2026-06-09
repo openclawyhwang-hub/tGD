@@ -186,8 +186,7 @@ flowchart LR
     C --> D["⚡ 開発\n/tgd-develop"]
     D --> E["🧪 検証\n/tgd-verify"]
     E --> F["🔎 レビュー\n/tgd-review"]
-    F --> G["✨ 簡素化\n/tgd-simplify"]
-    G --> H["🚀 出荷\n/tgd-ship"]
+    F --> G["🚀 出荷\n/tgd-ship"]
 
     classDef cyan fill:#0e7490,color:#ecfeff,stroke:#22d3ee
     classDef green fill:#059669,color:#ecfdf5,stroke:#34d399
@@ -204,8 +203,7 @@ flowchart LR
     class D purple
     class E amber
     class F rose
-    class G teal
-    class H indigo
+    class G indigo
 ```
 
 ## 🔑 主な機能
@@ -245,7 +243,6 @@ flowchart LR
 | サンドボックス構築 | `/tgd-develop` | **必須 Worktree** + スマートルーティング | `source-driven-development` → (`subagent` OR `incremental`) → `test-driven-development` |
 | 動作を証明 | `/tgd-verify` | テストが証拠 | `debugging-and-error-recovery` → `test-driven-development` |
 | マージ前レビュー | `/tgd-review` | コードの健康改善 | `code-review-and-quality` → `code-simplification` |
-| コード簡素化 | `/tgd-simplify` | 賢さより明瞭さ | `code-simplification` |
 | 本番デプロイ | `/tgd-ship` | 速い方が安全 | `git-workflow-and-versioning` → `shipping-and-launch` |
 
 ---

@@ -101,20 +101,6 @@ export const PHASES = [
     platforms: ['claude', 'codex', 'opencode'],
     outputs: ['Review report'],
     verify: 'Code review passes, no anti-patterns',
-    suggestNext: '/tgd-simplify or /tgd-ship',
-  },
-  {
-    id: 'simplify',
-    name: 'Simplify',
-    icon: '✂️',
-    command: '/tgd-simplify',
-    desc: 'Remove complexity, reduce line count',
-    skills: [
-      { name: 'code-simplification', required: true },
-    ],
-    platforms: ['claude', 'codex', 'opencode'],
-    outputs: ['Reduced codebase'],
-    verify: 'Fewer lines, same behavior, tests pass',
     suggestNext: '/tgd-ship',
   },
   {

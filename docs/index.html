@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0c0f1a" media="(prefers-color-scheme: dark)">
     <title>tGD — The Agentic PDLC Harness</title>
-    <meta name="description" content="Your AI agent wrote 500 lines of code. Did it run the tests? Probably not. tGD is an 8-stage pipeline that forces agents to follow the same workflow you would — no shortcuts, just evidence.">
+    <meta name="description" content="Your AI agent wrote 500 lines of code. Did it run the tests? Probably not. tGD is an 7-stage pipeline that forces agents to follow the same workflow you would — no shortcuts, just evidence.">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1023,7 +1023,7 @@
             <h1>t<span>GD</span></h1>
             <p class="hero-subtitle">
                 <span data-lang="en">Your AI agent wrote 500 lines of code. Did it run the tests? Read your codebase? Write a spec?
-                <strong>Probably not.</strong> tGD is an 8-stage pipeline that forces agents to follow the same workflow you would — Map → Define → Plan → Build → Verify → Review → Ship. No shortcuts. No "should work". Just evidence.</span>
+                <strong>Probably not.</strong> tGD is an 7-stage pipeline that forces agents to follow the same workflow you would — Map → Define → Plan → Build → Verify → Review → Ship. No shortcuts. No "should work". Just evidence.</span>
                 <span data-lang="zh">你的 AI agent 寫了 500 行 code。它有跑測試嗎？讀過你的 codebase？寫過 spec 嗎？
                 <strong>八成沒有。</strong>tGD 是一個 8 階段的 pipeline，強制 agent 跟你一樣走完整流程 — Map → Define → Plan → Build → Verify → Review → Ship。沒有捷徑。不准「應該能用」。只看證據。</span>
                 <span data-lang="ja">AI エージェントが500行のコードを書いた。テストは走ったか？コードベースは読んだか？スペックは書いたか？
@@ -1121,7 +1121,7 @@
                 </div>
                 <div class="who-card">
                     <h3>👥 <span data-lang="en">Team Lead</span><span data-lang="zh">團隊主管</span><span data-lang="ja">チームリード</span><span data-lang="de">Team Lead</span></h3>
-                    <p><span data-lang="en">Enforce standards across AI-generated code. Every PR follows the same 8-stage pipeline — no exceptions.</span><span data-lang="zh">統一管理 AI 產生的 code。每個 PR 都走同一套 8 階段 pipeline——沒有例外。</span><span data-lang="ja">AI が生成したコード全体に基準を適用。すべての PR が同じ8ステージ pipeline を通る——例外なし。</span><span data-lang="de">Standards für AI-generierten Code durchsetzen. Jeder PR durchläuft dieselbe 8-Stufen-Pipeline — keine Ausnahmen.</span></p>
+                    <p><span data-lang="en">Enforce standards across AI-generated code. Every PR follows the same 7-stage pipeline — no exceptions.</span><span data-lang="zh">統一管理 AI 產生的 code。每個 PR 都走同一套 8 階段 pipeline——沒有例外。</span><span data-lang="ja">AI が生成したコード全体に基準を適用。すべての PR が同じ8ステージ pipeline を通る——例外なし。</span><span data-lang="de">Standards für AI-generierten Code durchsetzen. Jeder PR durchläuft dieselbe 8-Stufen-Pipeline — keine Ausnahmen.</span></p>
                 </div>
                 <div class="who-card">
                     <h3>🚀 <span data-lang="en">Startup</span><span data-lang="zh">新創公司</span><span data-lang="ja">スタートアップ</span><span data-lang="de">Startup</span></h3>
@@ -1143,7 +1143,7 @@
             <h2 class="fade-in"><span data-lang="en">The Pipeline</span><span data-lang="zh">工作流程</span>
                 <span data-lang="ja">パイプライン</span>
                 <span data-lang="de">Pipeline</span></h2>
-            <p class="section-subtitle fade-in"><span data-lang="en">8 stages from idea to production. Each stage gates the next.</span><span data-lang="zh">8 個階段，從想法到生產環境。每個階段關卡守護下一個。</span>
+            <p class="section-subtitle fade-in"><span data-lang="en">7 stages from idea to production. Each stage gates the next.</span><span data-lang="zh">8 個階段，從想法到生產環境。每個階段關卡守護下一個。</span>
                 <span data-lang="ja">アイデアから本番環境まで8つのステージ。各ステージが次のステージをゲートキープする。</span>
                 <span data-lang="de">8 Stufen von der Idee bis zur Produktion. Jede Stufe kontrolliert den Übergang zur nächsten.</span></p>
             
@@ -1205,15 +1205,6 @@
                 </div>
                 <div class="pipeline-step">
                     <div class="pipeline-step-num">STEP 07</div>
-                    <div class="pipeline-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/></svg></div>
-                    <div class="pipeline-step-info">
-                        <div class="pipeline-label">SIMPLIFY</div>
-                        <div class="pipeline-cmd">/tgd-simplify</div>
-                        <div class="pipeline-output"><code>Clean code</code></div>
-                    </div>
-                </div>
-                <div class="pipeline-step">
-                    <div class="pipeline-step-num">STEP 08</div>
                     <div class="pipeline-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></div>
                     <div class="pipeline-step-info">
                         <div class="pipeline-label">SHIP</div>
@@ -1344,13 +1335,6 @@
                             <td>Code health</td>
                             <td><span class="skill-tag">code-review-and-quality</span> <span class="skill-tag">code-simplification</span></td>
                             <td><span class="output-tag">Review report</span></td>
-                        </tr>
-                        <tr>
-                            <td>Simplify</td>
-                            <td><span class="cmd-name">/tgd-simplify</span></td>
-                            <td>Clarity &gt; cleverness</td>
-                            <td><span class="skill-tag">code-simplification</span></td>
-                            <td><span class="output-tag">Simplified code</span></td>
                         </tr>
                         <tr>
                             <td>Ship</td>

@@ -18,7 +18,7 @@
 
 **Probably not.**
 
-tGD is an 8-stage pipeline that forces agents to follow the same workflow you would:
+tGD is an 7-stage pipeline that forces agents to follow the same workflow you would:
 Map → Define → Plan → Develop → Verify → Review → Ship
 
 No shortcuts. No "should work". Just evidence.
@@ -196,8 +196,7 @@ flowchart LR
     C --> D["⚡ BUILD\n/tgd-develop"]
     D --> E["🧪 VERIFY\n/tgd-verify"]
     E --> F["🔎 REVIEW\n/tgd-review"]
-    F --> G["✨ SIMPLIFY\n/tgd-simplify"]
-    G --> H["🚀 SHIP\n/tgd-ship"]
+    F --> G["🚀 SHIP\n/tgd-ship"]
 
     classDef cyan fill:#0e7490,color:#ecfeff,stroke:#22d3ee
     classDef green fill:#059669,color:#ecfdf5,stroke:#34d399
@@ -214,8 +213,7 @@ flowchart LR
     class D purple
     class E amber
     class F rose
-    class G teal
-    class H indigo
+    class G indigo
 ```
 
 ---
@@ -282,7 +280,6 @@ The `tgd` CLI manages installation, updates, and diagnostics:
 | Build in sandbox | `/tgd-develop` | **Mandatory Worktree** + smart routing | `source-driven-development` → (`subagent` OR `incremental`) → `test-driven-development` |
 | Prove it works | `/tgd-verify` | Tests are proof | `debugging-and-error-recovery` → `test-driven-development` |
 | Review before merge | `/tgd-review` | Improve code health | `code-review-and-quality` → `code-simplification` |
-| Simplify the code | `/tgd-simplify` | Clarity over cleverness | `code-simplification` |
 | Ship to production | `/tgd-ship` | Faster is safer | `git-workflow-and-versioning` → `shipping-and-launch` |
 
 ---

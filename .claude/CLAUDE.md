@@ -26,6 +26,6 @@ Never use "should", "probably", "seems to" when describing code state.
 
 ## tGD Lifecycle Commands
 
-Use slash commands for each phase: /tgd-map → /tgd-define → /tgd-plan → /tgd-develop → /tgd-verify → /tgd-review → /tgd-simplify → /tgd-ship
+Use slash commands for each phase: /tgd-map → /tgd-define → /tgd-plan → /tgd-develop → /tgd-verify → /tgd-review → /tgd-ship
 
 Each command has pre-flight checks. Do not skip phases.

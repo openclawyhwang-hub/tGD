@@ -105,17 +105,8 @@ const tgdPrompts: Record<string, string> = {
     "4. Conditional: performance concerns? → performance-optimization\n" +
     "5. Conditional: large/unfamiliar changes? → /understand-diff for blast radius visualization\n\n" +
     "Verification: Code review passes, no anti-patterns.\n" +
-    "After completing, suggest: /tgd-simplify or /tgd-ship",
-
-  "tgd-simplify":
-    "Run the code-simplification skill.\n\n" +
-    "1. Before deleting code, run codegraph callers <symbol> to confirm nothing depends on it\n" +
-    "2. Identify over-engineered abstractions\n" +
-    "3. Reduce line count while preserving functionality\n" +
-    "4. Remove dead code and unnecessary complexity\n\n" +
-    "Conditional: Need to understand complex structure first? → /understand\n" +
-    "Verification: Fewer lines, same behavior, tests pass.\n" +
     "After completing, suggest: /tgd-ship",
+
 
   "tgd-ship":
     "Run the shipping-and-launch skill. SHIP phase.\n\n" +
@@ -134,7 +125,7 @@ export default function (pi: ExtensionAPI) {
     ctx.ui.notify("tGD workflow loaded. Use /tgd-map to begin.", "info");
   });
 
-  // Register 8 lifecycle slash commands
+  // Register 7 lifecycle slash commands
   for (const [name, description] of [
     ["tgd-map", "Map — scan and understand the existing project context"],
     ["tgd-define", "Define — write PRD + SPEC before any code"],
@@ -142,7 +133,7 @@ export default function (pi: ExtensionAPI) {
     ["tgd-develop", "Build — implement thin vertical slices with tests"],
     ["tgd-verify", "Verify — debug, test, and prove it works"],
     ["tgd-review", "Review — code review, quality gates, simplification"],
-    ["tgd-simplify", "Simplify — remove complexity, reduce line count"],
+    
     ["tgd-ship", "Ship — clean git history, deploy safely"],
   ] as [string, string][]) {
     pi.registerCommand(name, {

@@ -186,8 +186,7 @@ flowchart LR
     C --> D["⚡ ENTWICKELN\n/tgd-develop"]
     D --> E["🧪 VERIFIZIEREN\n/tgd-verify"]
     E --> F["🔎 REVIEW\n/tgd-review"]
-    F --> G["✨ VEREINFACHEN\n/tgd-simplify"]
-    G --> H["🚀 LIEFERN\n/tgd-ship"]
+    F --> G["🚀 LIEFERN\n/tgd-ship"]
 
     classDef cyan fill:#0e7490,color:#ecfeff,stroke:#22d3ee
     classDef green fill:#059669,color:#ecfdf5,stroke:#34d399
@@ -204,8 +203,7 @@ flowchart LR
     class D purple
     class E amber
     class F rose
-    class G teal
-    class H indigo
+    class G indigo
 ```
 
 ## 🔑 Hauptfunktionen
@@ -245,7 +243,6 @@ Die `tgd` CLI verwaltet Installation, Updates und Diagnose:
 | Sandbox-Bau | `/tgd-develop` | **Pflicht-Worktree** + Intelligentes Routing | `source-driven-development` → (`subagent` OR `incremental`) → `test-driven-development` |
 | Beweis erbringen | `/tgd-verify` | Tests sind der Beweis | `debugging-and-error-recovery` → `test-driven-development` |
 | Review vor Merge | `/tgd-review` | Code-Qualität verbessern | `code-review-and-quality` → `code-simplification` |
-| Code vereinfachen | `/tgd-simplify` | Klarheit vor Cleverness | `code-simplification` |
 | Produktion | `/tgd-ship` | Schneller ist sicherer | `git-workflow-and-versioning` → `shipping-and-launch` |
 
 ---
