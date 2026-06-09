@@ -1,7 +1,7 @@
 #!/bin/bash
-# Create a GitHub release for tGD
+# Create a GitHub release for tGD with auto-categorized CHANGELOG
 # Usage: bash scripts/release.sh [version]
-# If version not provided, reads from .tgd-version
+# If version not provided, uses today's date (CalVer)
 
 set -e
 
@@ -13,10 +13,19 @@ cd "$REPO_ROOT"
 if [ "$1" == "--help" ] || [ "$1" == "-h" ]; then
     echo "Usage: $0 [version]"
     echo ""
-    echo "Create a GitHub release for tGD."
+    echo "Create a GitHub release for tGD with categorized changelog."
     echo ""
     echo "If version is not provided, uses today's date (CalVer)."
-    echo "Syncs both .tgd-version and setup.sh TGD_VERSION."
+    echo "Syncs .tgd-version, setup.sh, and CHANGELOG.md."
+    echo ""
+    echo "Commit message convention (Conventional Commits):"
+    echo "  feat:     → ✨ Features"
+    echo "  fix:      → 🐛 Bug Fixes"
+    echo "  docs:     → 📝 Documentation"
+    echo "  refactor: → ♻️  Refactoring"
+    echo "  test:     → ✅ Tests"
+    echo "  chore:    → 🔧 Chores"
+    echo "  (other)   → 📦 Other Changes"
     echo ""
     echo "Examples:"
     echo "  $0          # Release as vYYYY.MM.DD (today)"
@@ -80,40 +89,117 @@ if git rev-parse "$VERSION" &> /dev/null; then
     fi
 fi
 
-# Generate changelog from git log
-echo "📝 Generating changelog..."
+# Generate categorized changelog from git log
+echo "📝 Generating categorized changelog..."
 PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
 
 if [ -n "$PREV_TAG" ]; then
-    CHANGELOG=$(git log --pretty=format:"- %s (%h)" "$PREV_TAG"..HEAD)
+    COMMITS=$(git log --pretty=format:"%s|||%h" "$PREV_TAG"..HEAD)
     RANGE="$PREV_TAG..HEAD"
 else
-    CHANGELOG=$(git log --pretty=format:"- %s (%h)" -20)
-    RANGE="last 20 commits"
+    COMMITS=$(git log --pretty=format:"%s|||%h" -30)
+    RANGE="last 30 commits"
 fi
 
-if [ -z "$CHANGELOG" ]; then
-    CHANGELOG="- No changes recorded"
+# Categorize commits
+FEATS=""
+FIXES=""
+DOCS=""
+REFACTORS=""
+TESTS=""
+CHORES=""
+OTHERS=""
+
+while IFS= read -r line; do
+    [ -z "$line" ] && continue
+    MSG="${line%%|||*}"
+    HASH="${line##*|||}"
+
+    # Strip conventional commit prefix for display
+    DISPLAY_MSG="$MSG"
+
+    case "$MSG" in
+        feat:*|feat\(*):*)
+            FEATS="${FEATS}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
+            ;;
+        fix:*|fix\(*):*)
+            FIXES="${FIXES}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
+            ;;
+        docs:*|docs\(*):*)
+            DOCS="${DOCS}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
+            ;;
+        refactor:*|refactor\(*):*)
+            REFACTORS="${REFACTORS}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
+            ;;
+        test:*|test\(*):*)
+            TESTS="${TESTS}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
+            ;;
+        chore:*|chore\(*):*)
+            CHORES="${CHORES}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
+            ;;
+        ci:*|ci\(*):*)
+            CHORES="${CHORES}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
+            ;;
+        *)
+            OTHERS="${OTHERS}- ${DISPLAY_MSG} (\`$HASH\`)\n"
+            ;;
+    esac
+done <<< "$COMMITS"
+
+# Build release notes
+build_section() {
+    local title="$1"
+    local content="$2"
+    if [ -n "$content" ]; then
+        echo "### $title"
+        echo -e "$content"
+    fi
+}
+
+RELEASE_NOTES="## tGD $VERSION\n\n"
+[ -n "$FEATS" ]     && RELEASE_NOTES+=$(build_section "✨ Features" "$FEATS")"\n"
+[ -n "$FIXES" ]     && RELEASE_NOTES+=$(build_section "🐛 Bug Fixes" "$FIXES")"\n"
+[ -n "$DOCS" ]      && RELEASE_NOTES+=$(build_section "📝 Documentation" "$DOCS")"\n"
+[ -n "$REFACTORS" ] && RELEASE_NOTES+=$(build_section "♻️ Refactoring" "$REFACTORS")"\n"
+[ -n "$TESTS" ]     && RELEASE_NOTES+=$(build_section "✅ Tests" "$TESTS")"\n"
+[ -n "$CHORES" ]    && RELEASE_NOTES+=$(build_section "🔧 Chores" "$CHORES")"\n"
+[ -n "$OTHERS" ]    && RELEASE_NOTES+=$(build_section "📦 Other Changes" "$OTHERS")"\n"
+
+if [ -n "$PREV_TAG" ]; then
+    COMPARE_URL="https://github.com/openclawyhwang-hub/tGD/compare/${PREV_TAG}...${VERSION}"
+else
+    COMPARE_URL="https://github.com/openclawyhwang-hub/tGD/commits/${VERSION}"
 fi
 
-# Create release notes file
-RELEASE_NOTES=$(cat <<EOF
-## tGD $VERSION
-
-### Changes
-$CHANGELOG
-
----
-**Full Changelog**: https://github.com/openclawyhwang-hub/tGD/compare/${PREV_TAG:-$VERSION}...$VERSION
-EOF
-)
+RELEASE_NOTES+="---\n**Full Changelog**: $COMPARE_URL"
 
 echo ""
 echo "📋 Release notes:"
 echo "---"
-echo "$RELEASE_NOTES"
+echo -e "$RELEASE_NOTES"
 echo "---"
 echo ""
+
+# Update CHANGELOG.md
+CHANGELOG_HEADER="# Changelog\n\nAll notable changes to tGD will be documented in this file.\n\nFormat based on [Keep a Changelog](https://keepachangelog.com/). Versions follow [CalVer](https://calver.org/) (YYYY.MM.DD).\n\n"
+NEW_ENTRY="## $VERSION\n\n"
+[ -n "$FEATS" ]     && NEW_ENTRY+=$(build_section "✨ Features" "$FEATS")"\n"
+[ -n "$FIXES" ]     && NEW_ENTRY+=$(build_section "🐛 Bug Fixes" "$FIXES")"\n"
+[ -n "$DOCS" ]      && NEW_ENTRY+=$(build_section "📝 Documentation" "$DOCS")"\n"
+[ -n "$REFACTORS" ] && NEW_ENTRY+=$(build_section "♻️ Refactoring" "$REFACTORS")"\n"
+[ -n "$TESTS" ]     && NEW_ENTRY+=$(build_section "✅ Tests" "$TESTS")"\n"
+[ -n "$CHORES" ]    && NEW_ENTRY+=$(build_section "🔧 Chores" "$CHORES")"\n"
+[ -n "$OTHERS" ]    && NEW_ENTRY+=$(build_section "📦 Other Changes" "$OTHERS")"\n"
+NEW_ENTRY+="\n"
+
+if [ -f "CHANGELOG.md" ]; then
+    # Extract header (first 5 lines) + insert new entry after header
+    EXISTING_ENTRIES=$(sed -n '6,$p' CHANGELOG.md)
+    echo -e "${CHANGELOG_HEADER}${NEW_ENTRY}${EXISTING_ENTRIES}" > CHANGELOG.md
+else
+    echo -e "${CHANGELOG_HEADER}${NEW_ENTRY}" > CHANGELOG.md
+fi
+echo "📝 Updated CHANGELOG.md"
 
 # Confirm
 read -p "Create tag and release? (Y/n) " -n 1 -r
@@ -128,11 +214,16 @@ echo "🏷️  Creating tag $VERSION..."
 git tag -a "$VERSION" -m "Release $VERSION" || git tag "$VERSION"
 git push origin "$VERSION"
 
+# Commit CHANGELOG.md update
+git add CHANGELOG.md .tgd-version setup.sh
+git commit -m "docs: update CHANGELOG.md for $VERSION" || echo "⚠️  No CHANGELOG changes to commit"
+git push origin main
+
 # Create GitHub release
 echo "📦 Creating GitHub release..."
 gh release create "$VERSION" \
     --title "tGD $VERSION" \
-    --notes "$RELEASE_NOTES" \
+    --notes "$(echo -e "$RELEASE_NOTES")" \
     --latest
 
 echo ""

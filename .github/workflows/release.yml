@@ -41,23 +41,95 @@ jobs:
             echo "Tag ${{ steps.version.outputs.version }} does not exist, will create release"
           fi
 
-      - name: Generate changelog
+      - name: Generate categorized changelog
         if: steps.check_tag.outputs.exists == 'false'
         id: changelog
         run: |
+          VERSION="${{ steps.version.outputs.version }}"
+
           # Get previous tag
           PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-          
+
           if [ -n "$PREV_TAG" ]; then
-            CHANGELOG=$(git log --pretty=format:"- %s (%h)" "$PREV_TAG"..HEAD)
+            COMMITS=$(git log --pretty=format:"%s|||%h" "$PREV_TAG"..HEAD)
             echo "prev_tag=$PREV_TAG" >> $GITHUB_OUTPUT
           else
-            CHANGELOG=$(git log --pretty=format:"- %s (%h)" -20)
+            COMMITS=$(git log --pretty=format:"%s|||%h" -30)
             echo "prev_tag=" >> $GITHUB_OUTPUT
           fi
-          
-          # Save changelog to file for multi-line output
-          echo "$CHANGELOG" > /tmp/changelog.txt
+
+          # Categorize commits
+          FEATS=""
+          FIXES=""
+          DOCS=""
+          REFACTORS=""
+          TESTS=""
+          CHORES=""
+          OTHERS=""
+
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            MSG="${line%%|||*}"
+            HASH="${line##*|||}"
+            DISPLAY_MSG="$MSG"
+
+            case "$MSG" in
+              feat:*|feat\(*):*)
+                FEATS="${FEATS}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
+                ;;
+              fix:*|fix\(*):*)
+                FIXES="${FIXES}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
+                ;;
+              docs:*|docs\(*):*)
+                DOCS="${DOCS}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
+                ;;
+              refactor:*|refactor\(*):*)
+                REFACTORS="${REFACTORS}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
+                ;;
+              test:*|test\(*):*)
+                TESTS="${TESTS}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
+                ;;
+              chore:*|chore\(*):*)
+                CHORES="${CHORES}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
+                ;;
+              ci:*|ci\(*):*)
+                CHORES="${CHORES}- ${DISPLAY_MSG#*: } (\`$HASH\`)\n"
+                ;;
+              *)
+                OTHERS="${OTHERS}- ${DISPLAY_MSG} (\`$HASH\`)\n"
+                ;;
+            esac
+          done <<< "$COMMITS"
+
+          # Build release notes
+          build_section() {
+            local title="$1"
+            local content="$2"
+            if [ -n "$content" ]; then
+              echo "### $title"
+              echo -e "$content"
+            fi
+          }
+
+          RELEASE_NOTES="## tGD $VERSION\n\n"
+          [ -n "$FEATS" ]     && RELEASE_NOTES+=$(build_section "✨ Features" "$FEATS")"\n"
+          [ -n "$FIXES" ]     && RELEASE_NOTES+=$(build_section "🐛 Bug Fixes" "$FIXES")"\n"
+          [ -n "$DOCS" ]      && RELEASE_NOTES+=$(build_section "📝 Documentation" "$DOCS")"\n"
+          [ -n "$REFACTORS" ] && RELEASE_NOTES+=$(build_section "♻️ Refactoring" "$REFACTORS")"\n"
+          [ -n "$TESTS" ]     && RELEASE_NOTES+=$(build_section "✅ Tests" "$TESTS")"\n"
+          [ -n "$CHORES" ]    && RELEASE_NOTES+=$(build_section "🔧 Chores" "$CHORES")"\n"
+          [ -n "$OTHERS" ]    && RELEASE_NOTES+=$(build_section "📦 Other Changes" "$OTHERS")"\n"
+
+          if [ -n "$PREV_TAG" ]; then
+            COMPARE_URL="https://github.com/openclawyhwang-hub/tGD/compare/${PREV_TAG}...${VERSION}"
+          else
+            COMPARE_URL="https://github.com/openclawyhwang-hub/tGD/commits/${VERSION}"
+          fi
+
+          RELEASE_NOTES+="---\n**Full Changelog**: $COMPARE_URL"
+
+          # Save to file for multi-line output
+          echo -e "$RELEASE_NOTES" > /tmp/release-notes.md
 
       - name: Create Release
         if: steps.check_tag.outputs.exists == 'false'
@@ -65,33 +137,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION="${{ steps.version.outputs.version }}"
-          PREV_TAG="${{ steps.changelog.outputs.prev_tag }}"
-          
-          # Read changelog
-          CHANGELOG=$(cat /tmp/changelog.txt)
-          
-          # Create release notes
-          if [ -n "$PREV_TAG" ]; then
-            COMPARE_URL="https://github.com/openclawyhwang-hub/tGD/compare/${PREV_TAG}...${VERSION}"
-          else
-            COMPARE_URL="https://github.com/openclawyhwang-hub/tGD/commits/${VERSION}"
-          fi
-          
-          RELEASE_NOTES=$(cat <<EOF
-          ## tGD $VERSION
-          
-          ### Changes
-          $CHANGELOG
-          
-          ---
-          **Full Changelog**: $COMPARE_URL
-          EOF
-          )
-          
-          # Create tag and release
+
           gh release create "$VERSION" \
             --title "tGD $VERSION" \
-            --notes "$RELEASE_NOTES" \
+            --notes-file /tmp/release-notes.md \
             --latest
-          
+
           echo "✅ Release $VERSION created successfully!"
