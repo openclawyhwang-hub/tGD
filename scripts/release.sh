@@ -9,6 +9,20 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(dirname "$SCRIPT_DIR")"
 cd "$REPO_ROOT"
 
+# Check for help flag
+if [ "$1" == "--help" ] || [ "$1" == "-h" ]; then
+    echo "Usage: $0 [version]"
+    echo ""
+    echo "Create a GitHub release for tGD."
+    echo ""
+    echo "If version is not provided, reads from .tgd-version"
+    echo ""
+    echo "Examples:"
+    echo "  $0          # Create release from .tgd-version"
+    echo "  $0 v1.7.0   # Create release for specific version"
+    exit 0
+fi
+
 # Check if gh CLI is installed
 if ! command -v gh &> /dev/null; then
     echo "❌ GitHub CLI (gh) is required but not installed."
