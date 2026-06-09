@@ -19,7 +19,7 @@
 
 **大概沒有。**
 
-tGD 是一個 8 階段 pipeline，強迫 agent 遵循你也會遵循的工作流程：
+tGD 是一個 7 階段 pipeline，強迫 agent 遵循你也會遵循的工作流程：
 Map → Define → Plan → Develop → Verify → Review → Ship
 
 沒有捷徑。沒有「應該可以」。只有證據。

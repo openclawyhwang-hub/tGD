@@ -19,7 +19,7 @@
 
 **Wahrscheinlich nicht.**
 
-tGD ist eine 8-Stufen-Pipeline, die Agenten zwingt, denselben Workflow zu befolgen wie Sie:
+tGD ist eine 7-Stufen-Pipeline, die Agenten zwingt, denselben Workflow zu befolgen wie Sie:
 Map → Define → Plan → Develop → Verify → Review → Ship
 
 Keine Abkürzungen. Kein "sollte funktionieren". Nur Beweise.
@@ -38,7 +38,7 @@ Funktioniert mit Claude Code, Codex CLI, Gemini CLI, OpenCode und Pi Coding Agen
 **✅ Mit tGD:**
 - Agent schreibt 50 Zeilen, Tests bestehen, weiter zum nächsten Task
 - Jedes Feature hat PRD + SPEC + DESIGN bevor Code geliefert wird
-- 8-Stufen-Pipeline fängt Bugs ab bevor sie die Produktion erreichen
+- 7-Stufen-Pipeline fängt Bugs ab bevor sie die Produktion erreichen
 
 ---
 
