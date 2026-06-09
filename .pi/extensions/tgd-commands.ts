@@ -41,7 +41,7 @@ const tgdPrompts: Record<string, string> = {
     "Run the spec-driven-development skill. DEFINE phase.\n\n" +
     "Pre-flight: Check tGD/map/CONTEXT.md exists. If missing, STOP and tell user to run /tgd-map first.\n\n" +
     "Pipeline:\n" +
-    "1. Feature Name Resolution (Selection Protocol) — propose 3 kebab-case names. Wait for user to pick by number.\n" +
+    "1. Feature Name Resolution (Selection Protocol) — **Analyze the user's request first.** Extract core action + object (e.g., 'user login' → action: login, object: user). Propose 3 kebab-case names that **directly reflect intent**: (a) most literal/direct, (b) action-focused, (c) domain-specific. Wait for user to pick by number.\n" +
     "2. Create tGD/define/<feature>/ directory\n" +
     "3. Run interview-me if underspecified\n" +
     "4. Run idea-refine if vague\n" +
