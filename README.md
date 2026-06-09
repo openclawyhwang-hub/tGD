@@ -11,11 +11,14 @@
   <a href="README.md">English</a> | <a href="README.zh-TW.md">繁體中文</a> | <a href="README.ja.md">日本語</a> | <a href="README.de.md">Deutsch</a>
 </p>
 
-**tGD — The Agentic PDLC Harness.**
+**Your AI agent wrote 500 lines of code. Did it run the tests? Read your codebase? Write a spec?**
 
-Your AI agents can code. tGD makes them ship.
+**Probably not.**
 
-8-stage pipeline that constrains, guides, and verifies every agent decision — from spec to production, no shortcuts.
+tGD is an 8-stage pipeline that forces agents to follow the same workflow you would:
+Map → Define → Plan → Build → Verify → Review → Ship
+
+No shortcuts. No "should work". Just evidence.
 
 Works with Claude Code, Codex CLI, Gemini CLI, OpenCode, and Pi Coding Agent.
 

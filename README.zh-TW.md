@@ -12,11 +12,14 @@
   <a href="README.md">English</a> | <a href="README.zh-TW.md">繁體中文</a> | <a href="README.ja.md">日本語</a> | <a href="README.de.md">Deutsch</a>
 </p>
 
-**tGD — The Agentic PDLC Harness.**
+**你的 AI agent 寫了 500 行 code。但它跑測試了嗎？讀過你的 codebase 嗎？寫了 spec 嗎？**
 
-你的 AI agent 會寫 code。tGD 讓它穩定出貨。
+**大概沒有。**
 
-8 階段 pipeline 約束、引導、驗證 agent 的每個決策——從規格到上線，沒有捷徑。
+tGD 是一個 8 階段 pipeline，強迫 agent 遵循你也會遵循的工作流程：
+Map → Define → Plan → Build → Verify → Review → Ship
+
+沒有捷徑。沒有「應該可以」。只有證據。
 
 支援 Claude Code、Codex CLI、Gemini CLI、OpenCode、Pi Coding Agent。
 
