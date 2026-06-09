@@ -12,6 +12,41 @@ metadata:
 ---
 
 # Sketch
+## Overview
+
+Generate 2-3 disposable HTML mockups to compare design directions before committing to implementation. Each variant is a self-contained HTML file with realistic content, inline CSS, and basic interactivity. The goal is visual comparison, not production code.
+
+Use this skill when the user wants to **see a design direction before committing** to one — exploring a UI/UX idea as disposable HTML mockups. The point is to generate 2-3 interactive variants so the user can compare visual directions side-by-side, not to produce shippable code.
+
+## When to Use
+
+- User wants to explore UI/UX directions before building
+- User says "sketch this screen", "show me what X could look like", "compare layout A vs B"
+- User wants 2-3 takes on a UI to compare visual directions
+- User wants a quick mockup before committing to design
+- Early-stage design exploration where speed matters more than polish
+
+## Common Rationalizations
+
+- **"I'll just build one version"** — Without comparison, you're guessing at the best direction. Two variants take 2x effort but eliminate 80% of redesign risk.
+- **"I'll skip the README"** — The README captures *why* each variant makes its choices. Without it, you're comparing pixels, not principles.
+- **"One variant is enough"** — One variant is a prototype, not a comparison. The skill's value is in the head-to-head evaluation.
+
+## Red Flags
+
+- Variants that differ only in color/accent — these aren't real alternatives, just recolors
+- No interactivity — a static screenshot is worse than a wireframe you can click
+- Skipping the intake questions — generating without understanding feel/references/core action produces generic output
+- More than 3 variants — diminishing returns; the user can't compare meaningfully
+- Production-quality code — sketches are disposable; don't over-invest
+
+## Verification
+
+- Open each variant in a browser and verify it renders correctly
+- Check that each variant has a different design stance (not just different colors)
+- Verify basic interactivity works (clicks, hovers, state transitions)
+- Confirm the comparison table is opinionated — state which variant is strongest and why
+- Ensure READMEs explain the trade-offs, not just list features
 
 Use this skill when the user wants to **see a design direction before committing** to one — exploring a UI/UX idea as disposable HTML mockups. The point is to generate 2-3 interactive variants so the user can compare visual directions side-by-side, not to produce shippable code.
 
