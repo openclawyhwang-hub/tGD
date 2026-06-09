@@ -15,11 +15,12 @@ if [ "$1" == "--help" ] || [ "$1" == "-h" ]; then
     echo ""
     echo "Create a GitHub release for tGD."
     echo ""
-    echo "If version is not provided, reads from .tgd-version"
+    echo "If version is not provided, uses today's date (CalVer)."
+    echo "Syncs both .tgd-version and setup.sh TGD_VERSION."
     echo ""
     echo "Examples:"
-    echo "  $0          # Create release from .tgd-version"
-    echo "  $0 v1.7.0   # Create release for specific version"
+    echo "  $0          # Release as vYYYY.MM.DD (today)"
+    echo "  $0 v2026.06.09   # Release for specific version"
     exit 0
 fi
 
@@ -37,22 +38,29 @@ if ! gh auth status &> /dev/null; then
     exit 1
 fi
 
-# Get version
+# Get version — default to today's date (CalVer)
 if [ -n "$1" ]; then
     VERSION="$1"
 else
-    if [ -f ".tgd-version" ]; then
-        VERSION=$(cat .tgd-version)
-    else
-        echo "❌ No version specified and .tgd-version not found."
-        echo "   Usage: $0 <version>"
-        exit 1
-    fi
+    VERSION="v$(date +%Y.%m.%d)"
 fi
 
 # Ensure version starts with 'v'
 if [[ ! "$VERSION" =~ ^v ]]; then
     VERSION="v$VERSION"
+fi
+
+# Derive date format for setup.sh (e.g. v2026.06.09 → 2026-06-09)
+SETUP_DATE=$(echo "$VERSION" | sed 's/^v//' | tr '.' '-')
+
+# Sync .tgd-version
+echo "$VERSION" > .tgd-version
+echo "📝 Updated .tgd-version → $VERSION"
+
+# Sync setup.sh TGD_VERSION
+if grep -q '^TGD_VERSION=' setup.sh; then
+    sed -i '' "s/^TGD_VERSION=\"[^\"]*\"/TGD_VERSION=\"$SETUP_DATE\"/" setup.sh
+    echo "📝 Updated setup.sh TGD_VERSION → $SETUP_DATE"
 fi
 
 echo "🚀 Creating release for $VERSION"

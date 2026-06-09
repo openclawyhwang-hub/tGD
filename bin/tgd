@@ -24,11 +24,12 @@ fi
 # Dispatch
 case "${1:-}" in
     --version|-v)
-        # Read date-based version from setup.sh
-        SETUP_VERSION=$(grep '^TGD_VERSION=' "$TGD_DIR/setup.sh" 2>/dev/null | cut -d'"' -f2)
-        # Strip leading zeros: 2026-06-01 → 2026.6.1
-        DISPLAY_VERSION=$(echo "$SETUP_VERSION" | awk -F'-' '{printf "%d.%d.%d", $1, $2+0, $3+0}')
-        echo "tGD $DISPLAY_VERSION"
+        # Read from .tgd-version (single source of truth)
+        if [[ -f "$TGD_DIR/.tgd-version" ]]; then
+            echo "tGD $(cat "$TGD_DIR/.tgd-version")"
+        else
+            echo "tGD (unknown — .tgd-version not found)"
+        fi
         ;;
     --upgrade|-u)
         exec bash "$TGD_DIR/setup.sh" --upgrade
@@ -54,7 +55,7 @@ case "${1:-}" in
         echo "  --upgrade, -u  Force refresh symlinks and hooks"
         echo "  --uninstall    Remove all tGD deployments"
         echo "  --version, -v  Show current version"
-        echo "  --release      Create a GitHub release (reads .tgd-version)"
+        echo "  --release      Create a GitHub release (CalVer, or pass version)"
         echo "  --help, -h     Show this help"
         ;;
     "")
