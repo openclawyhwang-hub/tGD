@@ -29,8 +29,14 @@ Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow
 - feat: bind Understand-Anything into all 6 PDLC phases|6e7b6cb`)
 - feat: auto-build Understand-Anything in setup.sh|ef24f74`)
 - feat: bundle Understand-Anything directly instead of submodule|44ce665`)
+- feat: bundle Understand-Anything as submodule|4b672f4`)
+- feat: wire CodeGraph into 6 tGD lifecycle skills|eb012d8`)
+- feat(rules): add CodeGraph usage hints to tgd-rules|d734d91`)
+- feat: add 'tgd' CLI command|0df1724`)
+- feat(setup): add --version flag|49eb2f9`)
 
 ### 🐛 Bug Fixes
+- fix: comprehensive audit — 42 issues across AGENTS.md, README, platform commands, and docs|5e603c1`)
 - fix: commit categorization — match scoped prefixes like feat(scope):|52e39df`)
 - fix: resolve CI failures — shell pattern escaping + sketch skill validation|67089a6`)
 - fix: unify version source — tgd -v reads .tgd-version, release.sh syncs both files|a41e1c6`)
@@ -41,12 +47,16 @@ Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow
 - fix: enforce mandatory UI Design Gate check in /tgd-define|35841d2`)
 
 ### 📝 Documentation
+- docs: sync GitHub Pages hero text with README intro (all 4 languages)|0d28633`)
+- docs: update GitHub Pages license from MIT to Apache 2.0|51dfad9`)
+- docs: regenerate CHANGELOG.md with proper categorization|b1bdd23`)
 - docs: update README examples to show prototype generation|bcf7019`)
 - docs: update README examples and runtime output|aef6ee5`)
 - docs: rewrite README intro with pain-point hook|e3046a7`)
 - docs: update Quick Start to assume first-time install|e23e7d0`)
 - docs: add Understand-Anything to README and docs + cleanup uninstall|0b115e5`)
 - docs: use --recursive for git clone|b3741aa`)
+- docs: sync READMEs and GitHub Pages with new 'tgd' CLI|f4a6ed3`)
 
 ### ♻️ Refactoring
 - refactor: optimize UA/CodeGraph usage (Active/Passive split)|3ad52fc`)
