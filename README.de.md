@@ -401,7 +401,7 @@ Möchten Sie einen Skill hinzufügen oder tGD verbessern? Siehe [CONTRIBUTING.md
 
 ## 📄 Lizenz
 
-MIT – Nutzen Sie diese Skills in Ihren Projekten, Teams und Tools.
+Apache 2.0 – Nutzen Sie diese Skills in Ihren Projekten, Teams und Tools.
 
 ---
 

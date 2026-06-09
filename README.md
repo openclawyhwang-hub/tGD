@@ -478,7 +478,7 @@ Want to add a skill or improve tGD? See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## 📄 License
 
-MIT - use these skills in your projects, teams, and tools.
+Apache 2.0 - use these skills in your projects, teams, and tools.
 
 ---
 
