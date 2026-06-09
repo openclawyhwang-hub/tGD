@@ -11,6 +11,9 @@
 <p align="center">
   <a href="README.md">English</a> | <a href="README.zh-TW.md">繁體中文</a> | <a href="README.ja.md">日本語</a> | <a href="README.de.md">Deutsch</a>
 </p>
+<p align="center">
+  <a href="https://openclawyhwang-hub.github.io/tGD/">🌐 GitHub Pages</a> &nbsp;|&nbsp; <a href="https://openclawyhwang-hub.github.io/tGD/tGD-intro.html">🎬 Intro</a>
+</p>
 
 **你的 AI agent 寫了 500 行 code。但它跑測試了嗎？讀過你的 codebase 嗎？寫了 spec 嗎？**
 
