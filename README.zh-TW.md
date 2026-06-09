@@ -54,17 +54,18 @@
 ### 1. Clone & 安装
 ```bash
 git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
-tgd
+bash setup.sh
 ```
 > 自動偵測已安裝的 CLI（Claude、Codex、Gemini、OpenCode、Pi）並完成設定。Webwright 依賴自動安裝。
 >
-> **替代方案：** 如果 `tgd` 尚未安裝，可直接執行 `bash setup.sh`。
+> 這也會將 `tgd` CLI 安裝到你的 PATH，方便後續使用。
 
 ### 安裝選項
 
 | 指令 | 說明 |
 |------|------|
-| `tgd` | 全新安裝（或自動升級到新版本） |
+| `bash setup.sh` | 首次安裝（從 clone 的 repo 執行） |
+| `tgd` | 安裝或更新 tGD（首次安裝後使用） |
 | `tgd --version` (`-v`) | 顯示當前版本（CalVer：YYYY.M.D） |
 | `tgd --upgrade` (`-u`) | 強制重建：清除無效 symlink 並重新建立所有連結和 hooks |
 | `tgd --uninstall` | 移除所有 tGD 部署，不影響其他設定 |
@@ -220,11 +221,11 @@ flowchart LR
 
 | 指令 | 說明 |
 |------|------|
-| `tgd` | 安裝或更新 tGD |
+| `bash setup.sh` | 首次安裝（從 clone 的 repo 執行） |
+| `tgd` | 安裝或更新 tGD（首次安裝後使用） |
 | `tgd --version` (`-v`) | 顯示版本（CalVer 格式） |
 | `tgd --upgrade` (`-u`) | 強制重建連結和 hooks |
 | `tgd --uninstall` | 移除所有 tGD 部署 |
-| `bash setup.sh` | 舊版備用 — 等同於 `tgd` |
 
 ### Slash 指令
 
@@ -340,7 +341,7 @@ Skills 使用**漸進式揭露**——agent 只在需要時載入細節，保持
 ## ❓ 常見問題
 
 **Q：除了 agent 之外還需要裝什麼嗎？**
-A：只需要執行 `tgd`。它自動偵測你的 CLI 並完成設定。Webwright 依賴自動安裝。
+A：Clone repo 後執行 `bash setup.sh`。它自動偵測你的 CLI 並完成設定。`tgd` CLI 也會自動安裝。
 
 **Q：我的 agent 不支援 slash command 怎麼辦？**
 A：用自然語言說「規劃這個功能」——tGD 自動將意圖映射到對應的 skill。

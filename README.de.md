@@ -52,21 +52,21 @@ Funktioniert mit Claude Code, Codex CLI, Gemini CLI, OpenCode und Pi Coding Agen
 ### 1. Clone & Setup
 ```bash
 git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
-tgd
+bash setup.sh
 ```
 > Erkennt installierte CLIs automatisch. Webwright-Abhängigkeiten werden automatisch installiert.
 >
-> **Alternative:** Wenn `tgd` noch nicht installiert ist, führen Sie `bash setup.sh` direkt aus.
+> Dies installiert auch die `tgd` CLI in Ihren PATH für zukünftige Verwendung.
 
 ### Installationsoptionen
 
 | Befehl | Beschreibung |
 |--------|-------------|
-| `tgd` | Neuinstallation (oder Upgrade auf eine neue Version) |
+| `bash setup.sh` | Erstinstallation (aus dem geklonten Repository ausführen) |
+| `tgd` | tGD installieren oder aktualisieren (nach der Erstinstallation) |
 | `tgd --version` (`-v`) | Aktuelle Version anzeigen (CalVer: YYYY.M.D) |
 | `tgd --upgrade` (`-u`) | Erneuern: ungültige Symlinks bereinigen und alle Links/Hooks neu erstellen |
 | `tgd --uninstall` | Alle tGD-Installation entfernen, ohne andere Dateien zu beeinträchtigen |
-| `bash setup.sh` | Legacy-Fallback — entspricht `tgd` |
 
 ### 2. Agent starten
 ```bash
@@ -151,11 +151,11 @@ Die `tgd` CLI verwaltet Installation, Updates und Diagnose:
 
 | Befehl | Beschreibung |
 |--------|-------------|
-| `tgd` | tGD installieren oder aktualisieren |
+| `bash setup.sh` | Erstinstallation (aus dem geklonten Repository ausführen) |
+| `tgd` | tGD installieren oder aktualisieren (nach der Erstinstallation) |
 | `tgd --version` (`-v`) | Version anzeigen (CalVer) |
 | `tgd --upgrade` (`-u`) | Links und Hooks erneuern |
 | `tgd --uninstall` | Alle tGD-Installationen entfernen |
-| `bash setup.sh` | Legacy-Fallback — entspricht `tgd` |
 
 ### Slash Commands
 
@@ -246,7 +246,7 @@ Jeder Skill folgt einer konsistenten Anatomie:
 ## ❓ FAQ
 
 **Q: Muss ich etwas außer dem Agent installieren?**
-A: Nur `tgd` ausführen. Erkennt Ihren CLI automatisch.
+A: Repository klonen und `bash setup.sh` ausführen. Erkennt Ihren CLI automatisch und installiert die `tgd` CLI mit.
 
 **Q: Was wenn mein Agent keine Slash Commands unterstützt?**
 A: Sagen Sie "Plane dieses Feature" – tGD mappt Intent automatisch.

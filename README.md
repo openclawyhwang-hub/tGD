@@ -53,21 +53,21 @@ Works with Claude Code, Codex CLI, Gemini CLI, OpenCode, and Pi Coding Agent.
 ### 1. Clone & Setup
 ```bash
 git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
-tgd
+bash setup.sh
 ```
 > Auto-detects your installed CLIs (Claude, Codex, Gemini, OpenCode, Pi) and configures everything. Webwright dependencies installed automatically.
 >
-> **Alternative:** If `tgd` is not yet installed, run `bash setup.sh` directly.
+> This also installs the `tgd` CLI to your PATH for future use.
 
 ### Setup Options
 
 | Command | What it does |
 |---------|-------------|
-| `tgd` | Install or refresh tGD |
+| `bash setup.sh` | First-time install (run from cloned repo) |
+| `tgd` | Install or refresh tGD (after first install) |
 | `tgd --version` (`-v`) | Show current version (CalVer: YYYY.M.D) |
 | `tgd --upgrade` (`-u`) | Force refresh: clean broken symlinks and rebuild all links/hooks |
 | `tgd --uninstall` | Remove all tGD symlinks and hooks without touching your other files |
-| `bash setup.sh` | Legacy fallback — equivalent to `tgd` |
 
 ### 2. Start Your Agent
 ```bash
@@ -219,11 +219,11 @@ The `tgd` CLI manages installation, updates, and diagnostics:
 
 | Command | Description |
 |---------|-------------|
-| `tgd` | Install or update tGD |
+| `bash setup.sh` | First-time install (run from cloned repo) |
+| `tgd` | Install or update tGD (after first install) |
 | `tgd --version` (`-v`) | Show current version (CalVer: YYYY.M.D) |
 | `tgd --upgrade` (`-u`) | Force refresh links and hooks |
 | `tgd --uninstall` | Remove all tGD installations |
-| `bash setup.sh` | Legacy fallback — equivalent to `tgd` |
 
 ### Slash Commands
 
@@ -339,7 +339,7 @@ Skills use **progressive disclosure** — the agent only loads details when need
 ## ❓ FAQ
 
 **Q: Do I need to install anything besides the agent?**
-A: Just run `tgd`. It auto-detects your CLI and configures everything. Webwright dependencies installed automatically.
+A: Clone the repo and run `bash setup.sh`. It auto-detects your CLI and configures everything. The `tgd` CLI is installed automatically for future use.
 
 **Q: What if my agent doesn't support slash commands?**
 A: Say "Plan this feature" in natural language — tGD maps intent to skills automatically.
