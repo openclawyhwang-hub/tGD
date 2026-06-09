@@ -130,6 +130,25 @@ pi       # Pi Coding Agent
 エージェント：PRD + SPEC を作成中...
 → tGD/define/jwt-auth/PRD.md
 → tGD/define/jwt-auth/SPEC.md
+
+エージェント：この機能にUIコンポーネントはありますか？
+  1. はい（デザインを生成）
+  2. いいえ（バックエンドのみ）
+ユーザー：1
+
+エージェント：3つのHTMLプロトタイプを生成中...
+→ tGD/define/jwt-auth/prototype/variant-a.html
+→ tGD/define/jwt-auth/prototype/variant-b.html
+→ tGD/define/jwt-auth/prototype/variant-c.html
+
+エージェント：デザインの方向性を選んでください：
+  A. ミニマルカードベース（クリーン、集中）
+  B. ダンスダッシュボード（パワーユーザー向け）
+  C. 分割ペイン（コンテキスト豊富）
+ユーザー：A
+
+エージェント：DESIGN.md を作成中...
+→ tGD/define/jwt-auth/DESIGN.md
 → /tgd-plan の準備完了
 ```
 

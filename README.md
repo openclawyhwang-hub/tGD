@@ -140,6 +140,25 @@ User: 1
 Agent: Creating PRD + SPEC...
 → tGD/define/jwt-auth/PRD.md
 → tGD/define/jwt-auth/SPEC.md
+
+Agent: Does this feature have a UI component?
+  1. Yes (Generate design)
+  2. No (Backend only)
+User: 1
+
+Agent: Generating 3 HTML prototypes...
+→ tGD/define/jwt-auth/prototype/variant-a.html
+→ tGD/define/jwt-auth/prototype/variant-b.html
+→ tGD/define/jwt-auth/prototype/variant-c.html
+
+Agent: Pick a design direction:
+  A. Minimal card-based (clean, focused)
+  B. Dense dashboard (power-user oriented)
+  C. Split-pane (context-rich)
+User: A
+
+Agent: Writing DESIGN.md...
+→ tGD/define/jwt-auth/DESIGN.md
 → Ready for /tgd-plan
 ```
 

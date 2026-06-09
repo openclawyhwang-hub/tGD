@@ -130,6 +130,25 @@ Benutzer: 1
 Agent: Erstelle PRD + SPEC...
 → tGD/define/jwt-auth/PRD.md
 → tGD/define/jwt-auth/SPEC.md
+
+Agent: Hat dieses Feature eine UI-Komponente?
+  1. Ja (Design generieren)
+  2. Nein (nur Backend)
+Benutzer: 1
+
+Agent: Generiere 3 HTML-Prototypen...
+→ tGD/define/jwt-auth/prototype/variant-a.html
+→ tGD/define/jwt-auth/prototype/variant-b.html
+→ tGD/define/jwt-auth/prototype/variant-c.html
+
+Agent: Wählen Sie eine Designrichtung:
+  A. Minimal kartengestützt (sauber, fokussiert)
+  B. Dichtes Dashboard (Power-User-orientiert)
+  C. Geteilte Ansicht (kontextreich)
+Benutzer: A
+
+Agent: Schreibe DESIGN.md...
+→ tGD/define/jwt-auth/DESIGN.md
 → Bereit für /tgd-plan
 ```
 

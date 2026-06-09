@@ -142,6 +142,25 @@ Agent：哪些端點需要認證？
 Agent：建立 PRD + SPEC...
 → tGD/define/jwt-auth/PRD.md
 → tGD/define/jwt-auth/SPEC.md
+
+Agent：這個功能有 UI 元件嗎？
+  1. 是（產生設計）
+  2. 否（純後端）
+使用者：1
+
+Agent：產生 3 個 HTML 原型...
+→ tGD/define/jwt-auth/prototype/variant-a.html
+→ tGD/define/jwt-auth/prototype/variant-b.html
+→ tGD/define/jwt-auth/prototype/variant-c.html
+
+Agent：選擇設計方向：
+  A. 極簡卡片式（乾淨、專注）
+  B. 密集儀表板（進階用戶導向）
+  C. 分割面板（上下文豐富）
+使用者：A
+
+Agent：撰寫 DESIGN.md...
+→ tGD/define/jwt-auth/DESIGN.md
 → 準備執行 /tgd-plan
 ```
 
