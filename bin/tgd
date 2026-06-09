@@ -36,6 +36,14 @@ case "${1:-}" in
     --uninstall|--remove)
         exec bash "$TGD_DIR/setup.sh" --uninstall
         ;;
+    --release)
+        if ! command -v gh &> /dev/null; then
+            echo "❌ GitHub CLI (gh) is required for releases."
+            echo "   Install: https://cli.github.com/"
+            exit 1
+        fi
+        exec bash "$TGD_DIR/scripts/release.sh" "${2:-}"
+        ;;
     --help|-h)
         echo "tGD — Make your agent great again."
         echo ""
@@ -46,6 +54,7 @@ case "${1:-}" in
         echo "  --upgrade, -u  Force refresh symlinks and hooks"
         echo "  --uninstall    Remove all tGD deployments"
         echo "  --version, -v  Show current version"
+        echo "  --release      Create a GitHub release (reads .tgd-version)"
         echo "  --help, -h     Show this help"
         ;;
     "")

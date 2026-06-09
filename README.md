@@ -264,6 +264,7 @@ The `tgd` CLI manages installation, updates, and diagnostics:
 | `tgd` | Install or update tGD (after first install) |
 | `tgd --version` (`-v`) | Show current version (CalVer: YYYY.M.D) |
 | `tgd --upgrade` (`-u`) | Force refresh links and hooks |
+| `tgd --release` | Create a GitHub release (reads .tgd-version) |
 | `tgd --uninstall` | Remove all tGD installations |
 
 ### Slash Commands
