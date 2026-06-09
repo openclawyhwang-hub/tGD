@@ -17,6 +17,18 @@ Feed agents the right information at the right time. Context is the single bigge
 - Setting up a new project for AI-assisted development
 - The agent is not following project conventions
 
+## Context Discovery (First Step)
+
+Before any analysis, determine the full scope of context needed:
+
+1. Ask the user: "除了當前 repo，還有其他需要參考的 repo 嗎？（local path 或 git URL）"
+2. Accept **local paths** (e.g. `~/Projects/wayflow`) — resolve to absolute path
+3. Accept **git URLs** (e.g. `github.com/CopilotKit/CopilotKit`) — clone to `/tmp/tgd-context/<repo-name>`
+4. If user says "no" or provides nothing, proceed with primary repo only
+5. For each additional repo, run the same context loading process (read key files, understand structure)
+
+This ensures the agent has a complete picture of all relevant codebases before proceeding.
+
 ## The Context Hierarchy
 
 Structure context from most persistent to most transient:

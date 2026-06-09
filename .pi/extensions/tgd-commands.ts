@@ -5,15 +5,36 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 const tgdPrompts: Record<string, string> = {
   "tgd-map":
+    "## Step 1: Context Discovery\n\n" +
+    "Before analyzing anything, ask the user:\n" +
+    "> \"除了當前 repo，還有其他需要參考的 repo 嗎？（local path 或 git URL）\"\n\n" +
+    "- Accept local paths (e.g. ~/Projects/wayflow) — resolve to absolute path\n" +
+    "- Accept git URLs (e.g. github.com/CopilotKit/CopilotKit) — clone to /tmp/tgd-context/<repo-name>\n" +
+    "- If user says \"no\" or provides nothing, proceed with primary repo only\n\n" +
+    "## Step 2: Context Engineering\n\n" +
     "Run the context-engineering skill. Analyze the current project: tech stack, architecture, dependencies, code organization, and existing patterns.\n\n" +
+    "## Step 3: CodeGraph Setup\n\n" +
     "1. mkdir -p tGD/map\n" +
     "2. rm -rf .codegraph && ln -s tGD/map/.codegraph .codegraph\n" +
-    "3. codegraph init -i\n" +
-    "4. rm -rf .understand-anything && ln -s tGD/map/.understand-anything .understand-anything\n" +
-    "5. Run /understand to build knowledge graph → produces tGD/map/.understand-anything/knowledge-graph.json\n" +
-    "6. Run /understand-dashboard to launch interactive visualization\n\n" +
-    "Outputs: tGD/map/CONTEXT.md (must reference CodeGraph/UA data), .codegraph/codegraph.db, .understand-anything/knowledge-graph.json\n" +
-    "Verification: tGD/map/CONTEXT.md exists and is non-empty, .codegraph and .understand-anything symlinks exist.\n" +
+    "3. codegraph init -i\n\n" +
+    "## Step 4: Understand-Anything (MANDATORY)\n\n" +
+    "This step is required, not optional.\n\n" +
+    "1. rm -rf .understand-anything && ln -s tGD/map/.understand-anything .understand-anything\n" +
+    "2. Run /understand to build knowledge graph → produces tGD/map/.understand-anything/knowledge-graph.json\n" +
+    "3. Run /understand-dashboard to launch interactive visualization\n" +
+    "4. If additional repos were provided in Step 1, run /understand on each of them as well\n\n" +
+    "## Step 5: Produce CONTEXT.md\n\n" +
+    "CONTEXT.md must include:\n" +
+    "1. Primary Repository — path, name, structure, key files, summary, code entry points\n" +
+    "2. Additional Context Repositories — for each: source, resolved path, summary, key insights, relevance\n" +
+    "3. Synthesis — integration points, architecture decisions, open questions\n" +
+    "4. See Also — dashboard URL\n\n" +
+    "## Step 6: Verification Gate\n\n" +
+    "- [ ] tGD/map/CONTEXT.md exists and is non-empty\n" +
+    "- [ ] tGD/map/.codegraph symlink exists\n" +
+    "- [ ] tGD/map/.understand-anything symlink exists\n" +
+    "- [ ] tGD/map/.understand-anything/knowledge-graph.json exists\n" +
+    "- [ ] If additional repos were provided, their summaries appear in CONTEXT.md\n\n" +
     "After completing, suggest: /tgd-define",
 
   "tgd-define":

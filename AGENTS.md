@@ -35,7 +35,7 @@ This project supports 8 lifecycle commands that work across **OpenCode**, **Clau
 
 || Command | Phase | Pipeline |
 ||---------|-------|----------|
-|| `/tgd-map` | Map | `context-engineering` → `codegraph init` (external CLI tool, not a skill — skip if not installed) |
+|| `/tgd-map` | Map | `context-discovery` → `context-engineering` → `codegraph init` → `/understand` (MANDATORY) |
 || `/tgd-define` | Define | `interview-me` → `idea-refine` → `spec-driven-development` |
 || `/tgd-plan` | Plan | `planning-and-task-breakdown` → **`jira-auto-sync` (conditional)** |
 || `/tgd-develop` | Build | `context-engineering` → `source-driven-development` → (`subagent-driven-development` OR `incremental-implementation`) → `test-driven-development` → `verification-before-completion` (+ `frontend-ui-engineering`, `api-and-interface-design`, `doubt-driven-development` when relevant) |
@@ -54,7 +54,7 @@ If the user types a command, invoke it. If they use natural language instead, ma
 
 - DEFINE → `spec-driven-development`
 - PLAN → `planning-and-task-breakdown`
-- MAP → `context-engineering`
+- MAP → `context-discovery` → `context-engineering` → `/understand` (MANDATORY)
 - BUILD → `context-engineering` + `incremental-implementation` + `test-driven-development`
 - VERIFY → `debugging-and-error-recovery`
 - REVIEW → `code-review-and-quality`
