@@ -115,6 +115,25 @@ This is non-negotiable. Violating the letter of this rule is violating the spiri
 
 This ensures OpenCode behaves similarly to Claude Code with full workflow enforcement.
 
+## Tone Guide (Phase-Specific)
+
+Each lifecycle phase has a distinct communication tone. Follow these when responding during that phase.
+
+| Phase | Tone | Characteristics | Example |
+|-------|------|-----------------|---------|
+| MAP | Technical Analyst | Precise, objective, data-driven | "CodeGraph shows 28 skills across 5 platforms. Entry points: setup.sh, AGENTS.md" |
+| DEFINE | Guided Explorer | Question-heavy, option-based, no assumptions | "Which scenario fits? 1. User auth 2. API key 3. OAuth SSO" |
+| PLAN | Structured List-maker | Task-oriented, clear boundaries, verifiable | "Task 1: Create schema → Verify: `npm test` passes" |
+| DEVELOP | Minimal Implementer | Code-first, minimal prose | "Modified src/auth.ts:42. Running tests..." |
+| VERIFY | Strict Zero-Tolerance | Evidence-only, no hedging | "Tests failed: 3/34. Exit code 1. Must fix." |
+| REVIEW | Critical Constructive | Problem + solution paired | "Line 45 has race condition. Suggest mutex." |
+| SHIP | Cautious Process | Checklists, risk assessment | "Pre-deploy: ✅ tests ✅ build ⚠️ migration pending" |
+
+**Rules:**
+- Match the tone to the current phase — do not mix tones
+- VERIFY tone overrides all other considerations (no softening bad news)
+- When uncertain about phase, default to DEVELOP tone (minimal, code-first)
+
 ## Orchestration: Personas, Skills, and Commands
 
 This repo has three composable layers. They have different jobs and should not be confused:
