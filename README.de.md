@@ -339,62 +339,19 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 
 ### Laufzeitausgabe (wird während der Entwicklung generiert)
 
-So sieht Ihr Workspace nach dem tGD-Lebenszyklus aus:
+Beispiel: SaaS-Anwendung mit Express-Backend + React-Frontend, zwei Features in unterschiedlichen Phasen:
 
 ```
 workspace/
-├── my-project/                         # Code-Repository
-│   ├── .codegraph → tGD/.codegraph     # Symlink für CodeGraph CLI
+├── acme-api/                           # Backend repo (Express + Prisma)
+│   ├── .codegraph → tGD/.codegraph     # symlink for CodeGraph CLI
 │   ├── tGD/
-│   │   ├── .codegraph/                 # Symbolindex (automatisch)
-│   │   └── .understand-anything/       # Wissensgraph (automatisch)
-│   ├── src/                            # Implementierungscode
-│   └── tests/                          # Testdateien
-│
-├── my-project-frontend/                # Code-Repository (optional)
-│   ├── .codegraph → tGD/.codegraph
-│   ├── tGD/
-│   └── src/
-│
-└── my-project-tGD/                     # ← $TGD_DIR (Geschwister-Repo)
-    ├── CONTEXT.md                      # Produktkontext + Repo-Inventar
-    ├── CHANGELOG.md                    # Einheitliches Versionsprotokoll
-    ├── .scans/                         # Zentralisierte Scan-Daten
-    │   ├── my-project/
-    │   │   ├── .codegraph/
-    │   │   └── .understand-anything/
-    │   └── my-project-frontend/
-    │       ├── .codegraph/
-    │       └── .understand-anything/
-    │
-    └── <feature-name>/                 # Ein Ordner pro Feature
-        ├── PRD.md                      # What & Why (10 Sektionen)
-        ├── SPEC.md                     # How (Repo-getaggt)
-        ├── DESIGN.md                   # UI-Design (falls zutreffend)
-        ├── prototype/                  # HTML-Mockups (bei UI)
-        │   ├── variant-a.html
-        │   └── variant-b.html
-        ├── TASKS.md                    # BDD-Aufgaben (Repo-getaggt)
-        ├── REVIEW.md                   # Code-Review + Simplifikation
-        └── decisions/                  # ADRs (beliebige Phase)
-            └── ADR-001.md
-```
-
-#### Beispiel: Vollständiger Workspace mit mehreren Features
-
-Ein realistischer Workspace für eine SaaS-Anwendung mit Express-Backend + React-Frontend und zwei Features in unterschiedlichen Phasen:
-
-```
-workspace/
-├── acme-api/                           # Backend-Repo (Express + Prisma)
-│   ├── .codegraph → tGD/.codegraph
-│   ├── tGD/
-│   │   ├── .codegraph/
-│   │   └── .understand-anything/
+│   │   ├── .codegraph/                 # Symbol index (auto-generated)
+│   │   └── .understand-anything/       # Knowledge graph (auto-generated)
 │   ├── src/
 │   │   ├── routes/
-│   │   │   ├── auth.ts                 # ← user-auth Feature
-│   │   │   ├── payment.ts              # ← payment-flow Feature
+│   │   │   ├── auth.ts                 # ← user-auth feature
+│   │   │   ├── payment.ts              # ← payment-flow feature
 │   │   │   └── health.ts
 │   │   ├── models/
 │   │   │   ├── user.ts
@@ -405,15 +362,13 @@ workspace/
 │       ├── auth.test.ts
 │       └── payment.test.ts
 │
-├── acme-web/                           # Frontend-Repo (React + Vite)
+├── acme-web/                           # Frontend repo (React + Vite)
 │   ├── .codegraph → tGD/.codegraph
 │   ├── tGD/
-│   │   ├── .codegraph/
-│   │   └── .understand-anything/
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── LoginForm.tsx           # ← user-auth Feature
-│   │   │   ├── PaymentForm.tsx         # ← payment-flow Feature
+│   │   │   ├── LoginForm.tsx           # ← user-auth feature
+│   │   │   ├── PaymentForm.tsx         # ← payment-flow feature
 │   │   │   └── Dashboard.tsx
 │   │   └── pages/
 │   │       ├── login.tsx
@@ -422,13 +377,13 @@ workspace/
 │       ├── LoginForm.test.tsx
 │       └── PaymentForm.test.tsx
 │
-└── acme-tGD/                           # ← $TGD_DIR (Geschwister-Repo)
-    ├── CONTEXT.md                      # Repo-Inventar: acme-api, acme-web
+└── acme-tGD/                           # ← $TGD_DIR (sibling, not inside)
+    ├── CONTEXT.md                      # Repo inventory: acme-api, acme-web
     ├── CHANGELOG.md
     │   # v1.0.0 - user-auth shipped
     │   # v1.1.0 - payment-flow shipped
     │
-    ├── .scans/
+    ├── .scans/                         # Centralized scan data
     │   ├── acme-api/
     │   │   ├── .codegraph/
     │   │   └── .understand-anything/
@@ -436,35 +391,41 @@ workspace/
     │       ├── .codegraph/
     │       └── .understand-anything/
     │
-    ├── user-auth/                      # Feature 1: ausgeliefert ✅
-    │   ├── PRD.md                      # "Benutzer müssen sich anmelden"
+    ├── user-auth/                      # Feature 1: shipped ✅
+    │   ├── PRD.md                      # "Users need to log in"
     │   ├── SPEC.md                     # Backend: JWT + bcrypt / Frontend: LoginForm
-    │   ├── DESIGN.md                   # Login-Seitenentwurf
+    │   ├── DESIGN.md                   # Login page mockup
     │   ├── prototype/
-    │   │   ├── variant-a.html          # Minimales Login-Formular
-    │   │   └── variant-b.html          # Mit Social-Login-Buttons
-    │   ├── TASKS.md                    # 5 Aufgaben, alle erledigt
-    │   ├── REVIEW.md                   # Bestanden: 87% Coverage
+    │   │   ├── variant-a.html          # Minimal login form
+    │   │   └── variant-b.html          # Login with social buttons
+    │   ├── TASKS.md                    # 5 tasks, all done
+    │   ├── REVIEW.md                   # Passed: 87% coverage
     │   └── decisions/
-    │       └── ADR-001-use-jwt.md      # Warum JWT statt Sessions
+    │       └── ADR-001-use-jwt.md      # Why JWT over sessions
     │
-    └── payment-flow/                   # Feature 2: in Planung 🚧
-        ├── PRD.md                      # "Benutzer müssen bezahlen"
+    └── payment-flow/                   # Feature 2: in planning 🚧
+        ├── PRD.md                      # "Users need to pay"
         ├── SPEC.md                     # Backend: Stripe API / Frontend: PaymentForm
-        ├── DESIGN.md                   # Checkout-Seitenentwurf
+        ├── DESIGN.md                   # Checkout page mockup
         ├── prototype/
-        │   ├── variant-a.html          # Einzelseiten-Checkout
-        │   └── variant-b.html          # Mehrstufiger Checkout
-        └── TASKS.md                    # 8 Aufgaben, noch nicht begonnen
+        │   ├── variant-a.html          # Single-page checkout
+        │   └── variant-b.html          # Multi-step checkout
+        └── TASKS.md                    # 8 tasks, not started
 ```
 
-**Was Sie sehen:**
-- **2 Code-Repositories** (acme-api, acme-web) + **1 tGD-Repository** (acme-tGD) als Geschwister
-- **2 Features** im tGD-Repo: `user-auth` (ausgeliefert) und `payment-flow` (Planung)
-- **Jedes Feature** hat eigene PRD, SPEC, DESIGN, prototype, TASKS, REVIEW und decisions
-- **SPEC.md** und **TASKS.md** taggen Einträge nach Repo-Name (z.B. `[acme-api]`, `[acme-web]`)
-- **Code-Repositories** sind sauber — nur `tGD/` Symlink-Ordner + `src/` + `tests/`
-- **CHANGELOG.md** protokolliert die einheitliche Versionshistorie über alle Features
+**Wichtige Punkte:**
+- **Geschwister**: `acme-api/`, `acme-web/`, `acme-tGD/` sind auf gleicher Ebene — tGD ist NICHT in den Code-Repos
+- **Feature-first**: jedes Feature (`user-auth/`, `payment-flow/`) hat eigenen Ordner mit allen Artefakten
+- **Multi-Repo**: SPEC.md und TASKS.md taggen Einträge nach Repo-Name (z.B. `[acme-api]`, `[acme-web]`)
+- **Saubere Code-Repos**: an der Wurzel nur `tGD/` Symlink-Ordner + `src/` + `tests/`
+- **Einheitliches Changelog**: CHANGELOG.md im tGD-Root protokolliert alle Features über alle Repos
+
+**Symlink-Kette** (wie Scan-Daten fließen):
+```
+acme-api/.codegraph → acme-api/tGD/.codegraph → acme-tGD/.scans/acme-api/.codegraph
+```
+
+**Phase → Artefakt-Zuordnung:**
 
 | Phase | Befehl | Artefakte | Ort |
 |-------|--------|-----------|-----|
@@ -476,60 +437,7 @@ workspace/
 | Review | `/tgd-review` | REVIEW.md | `$TGD_DIR/<feature>/REVIEW.md` |
 | Ship | `/tgd-ship` | CHANGELOG.md, git tag | `$TGD_DIR/CHANGELOG.md` |
 
-#### Multi-Repo-Tagging
-
-Wenn Ihr Projekt mehrere Repositories umfasst, taggen SPEC.md und TASKS.md Einträge nach Repo:
-
-**SPEC.md:**
-```markdown
-## Backend (my-project)
-- POST /api/auth/login
-- JWT token generation
-- Password hashing with bcrypt
-
-## Frontend (my-project-frontend)
-- LoginForm component
-- Token storage in httpOnly cookie
-- Redirect after login
-```
-
-**TASKS.md:**
-```markdown
-## Task 1: Auth endpoint
-- [my-project] POST /api/auth/login
-- Acceptance: returns JWT on valid credentials
-- Files: src/routes/auth.ts
-- Tests: tests/auth.test.ts
-
-## Task 2: LoginForm
-- [my-project-frontend] LoginForm component
-- Acceptance: submits credentials, stores token
-- Files: src/components/LoginForm.tsx
-- Tests: tests/LoginForm.test.tsx
-```
-
-#### Scan-Daten (`.scans/`)
-
-CodeGraph- und Understand-Anything-Ausgaben werden in `$TGD_DIR/.scans/<repo>/` zentralisiert. Jedes Code-Repository hat Symlinks, damit die Tools ohne Kenntnis des zentralen Speichers funktionieren:
-
-```
-my-project/.codegraph        → tGD/.codegraph        → $TGD_DIR/.scans/my-project/.codegraph
-my-project/.understand-anything → tGD/.understand-anything → $TGD_DIR/.scans/my-project/.understand-anything
-```
-
-So bleiben Code-Repositories sauber — an der Wurzel nur `tGD/` (Symlink-Ordner) und `src/`.
-
-#### Wichtige Konventionen
-
-| Konvention | Beschreibung |
-|------------|--------------|
-| `$TGD_DIR` | Umgebungsvariable zum tGD-Ordner |
-| Feature-Branches | Sowohl tGD- als auch Code-Repo erstellen `feature/<name>` |
-| Branch-Benennung | Gleicher Name über alle Repos (Traceability) |
-| CONTEXT.md | Eins pro Produkt, enthält Repo-Inventartabelle |
-| CHANGELOG.md | Eins pro Produkt, iteratives Versionsprotokoll |
-| decisions/ | ADRs aus jeder Phase, nicht an Define gebunden |
-
+### Repository-Inhalt
 ### Repository-Inhalt
 ```
 tGD/

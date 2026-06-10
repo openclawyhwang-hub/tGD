@@ -404,58 +404,15 @@ A: Yes! Edit the skill files in `skills/` to match your team's workflow.
 
 ### Runtime Output (generated during development)
 
-After running the tGD lifecycle, your workspace looks like this:
-
-```
-workspace/
-├── my-project/                         # Code repo
-│   ├── .codegraph → tGD/.codegraph     # symlink for CodeGraph CLI
-│   ├── tGD/
-│   │   ├── .codegraph/                 # Symbol index (auto-generated)
-│   │   └── .understand-anything/       # Knowledge graph (auto-generated)
-│   ├── src/                            # Implementation code
-│   └── tests/                          # Test files
-│
-├── my-project-frontend/                # Code repo (optional)
-│   ├── .codegraph → tGD/.codegraph
-│   ├── tGD/
-│   └── src/
-│
-└── my-project-tGD/                     # ← $TGD_DIR (sibling, not inside)
-    ├── CONTEXT.md                      # Product-level context + repo inventory
-    ├── CHANGELOG.md                    # Unified version log
-    ├── .scans/                         # Centralized scan data
-    │   ├── my-project/
-    │   │   ├── .codegraph/
-    │   │   └── .understand-anything/
-    │   └── my-project-frontend/
-    │       ├── .codegraph/
-    │       └── .understand-anything/
-    │
-    └── <feature-name>/                 # One folder per feature
-        ├── PRD.md                      # What & Why (10 sections)
-        ├── SPEC.md                     # How (tagged by repo)
-        ├── DESIGN.md                   # UI design (if applicable)
-        ├── prototype/                  # HTML mockups (if UI)
-        │   ├── variant-a.html
-        │   └── variant-b.html
-        ├── TASKS.md                    # BDD tasks (tagged by repo)
-        ├── REVIEW.md                   # Code review + simplification
-        └── decisions/                  # ADRs (any phase)
-            └── ADR-001.md
-```
-
-#### Example: Full Workspace with Multiple Features
-
-Here's a realistic workspace for a SaaS app with Express backend + React frontend, and two features at different stages:
+Example: SaaS app with Express backend + React frontend, two features at different stages:
 
 ```
 workspace/
 ├── acme-api/                           # Backend repo (Express + Prisma)
-│   ├── .codegraph → tGD/.codegraph
+│   ├── .codegraph → tGD/.codegraph     # symlink for CodeGraph CLI
 │   ├── tGD/
-│   │   ├── .codegraph/
-│   │   └── .understand-anything/
+│   │   ├── .codegraph/                 # Symbol index (auto-generated)
+│   │   └── .understand-anything/       # Knowledge graph (auto-generated)
 │   ├── src/
 │   │   ├── routes/
 │   │   │   ├── auth.ts                 # ← user-auth feature
@@ -473,8 +430,6 @@ workspace/
 ├── acme-web/                           # Frontend repo (React + Vite)
 │   ├── .codegraph → tGD/.codegraph
 │   ├── tGD/
-│   │   ├── .codegraph/
-│   │   └── .understand-anything/
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── LoginForm.tsx           # ← user-auth feature
@@ -487,13 +442,13 @@ workspace/
 │       ├── LoginForm.test.tsx
 │       └── PaymentForm.test.tsx
 │
-└── acme-tGD/                           # ← $TGD_DIR (sibling)
+└── acme-tGD/                           # ← $TGD_DIR (sibling, not inside)
     ├── CONTEXT.md                      # Repo inventory: acme-api, acme-web
     ├── CHANGELOG.md
     │   # v1.0.0 - user-auth shipped
     │   # v1.1.0 - payment-flow shipped
     │
-    ├── .scans/
+    ├── .scans/                         # Centralized scan data
     │   ├── acme-api/
     │   │   ├── .codegraph/
     │   │   └── .understand-anything/
@@ -523,15 +478,19 @@ workspace/
         └── TASKS.md                    # 8 tasks, not started
 ```
 
-**What you see:**
-- **2 code repos** (acme-api, acme-web) + **1 tGD repo** (acme-tGD) as siblings
-- **2 features** in the tGD repo: `user-auth` (shipped) and `payment-flow` (planning)
-- **Each feature** has its own PRD, SPEC, DESIGN, prototype, TASKS, REVIEW, and decisions
-- **SPEC.md** and **TASKS.md** tag items by repo name (e.g., `[acme-api]`, `[acme-web]`)
-- **Code repos** are clean — only `tGD/` symlink folder + `src/` + `tests/`
-- **CHANGELOG.md** tracks the unified version history across all features
+**Key points:**
+- **Siblings**: `acme-api/`, `acme-web/`, `acme-tGD/` are at the same level — tGD is NOT inside the code repos
+- **Feature-first**: each feature (`user-auth/`, `payment-flow/`) has its own folder with all artifacts
+- **Multi-repo**: SPEC.md and TASKS.md tag items by repo name (e.g., `[acme-api]`, `[acme-web]`)
+- **Clean code repos**: only `tGD/` symlink folder + `src/` + `tests/` at root
+- **Unified changelog**: CHANGELOG.md at tGD root tracks all features across all repos
 
-#### Phase → Artifact Mapping
+**Symlink chain** (how scan data flows):
+```
+acme-api/.codegraph → acme-api/tGD/.codegraph → acme-tGD/.scans/acme-api/.codegraph
+```
+
+**Phase → Artifact mapping:**
 
 | Phase | Command | Artifacts | Location |
 |-------|---------|-----------|----------|
@@ -542,60 +501,6 @@ workspace/
 | Verify | `/tgd-verify` | tests/ | Code repo |
 | Review | `/tgd-review` | REVIEW.md | `$TGD_DIR/<feature>/REVIEW.md` |
 | Ship | `/tgd-ship` | CHANGELOG.md, git tag | `$TGD_DIR/CHANGELOG.md` |
-
-#### Multi-Repo Tagging
-
-When your project spans multiple repos, SPEC.md and TASKS.md tag items by repo:
-
-**SPEC.md:**
-```markdown
-## Backend (my-project)
-- POST /api/auth/login
-- JWT token generation
-- Password hashing with bcrypt
-
-## Frontend (my-project-frontend)
-- LoginForm component
-- Token storage in httpOnly cookie
-- Redirect after login
-```
-
-**TASKS.md:**
-```markdown
-## Task 1: Auth endpoint
-- [my-project] POST /api/auth/login
-- Acceptance: returns JWT on valid credentials
-- Files: src/routes/auth.ts
-- Tests: tests/auth.test.ts
-
-## Task 2: LoginForm
-- [my-project-frontend] LoginForm component
-- Acceptance: submits credentials, stores token
-- Files: src/components/LoginForm.tsx
-- Tests: tests/LoginForm.test.tsx
-```
-
-#### Scan Data (`.scans/`)
-
-CodeGraph and Understand-Anything outputs are centralized in `$TGD_DIR/.scans/<repo>/`. Each code repo has symlinks so the tools work without knowing about the central storage:
-
-```
-my-project/.codegraph        → tGD/.codegraph        → $TGD_DIR/.scans/my-project/.codegraph
-my-project/.understand-anything → tGD/.understand-anything → $TGD_DIR/.scans/my-project/.understand-anything
-```
-
-This keeps code repos clean — only `tGD/` (symlink folder) and `src/` at the root.
-
-#### Key Conventions
-
-| Convention | Description |
-|------------|-------------|
-| `$TGD_DIR` | Environment variable pointing to the tGD folder |
-| Feature branches | Both tGD and code repos create `feature/<name>` |
-| Branch naming | Same name across all repos for traceability |
-| CONTEXT.md | One per product, includes repo inventory table |
-| CHANGELOG.md | One per product, iterative version log |
-| decisions/ | ADRs from any phase, not tied to Define |
 
 ### Repo Contents
 ```
