@@ -555,7 +555,7 @@ tGD/
 | [planning-and-task-breakdown](skills/planning-and-task-breakdown/SKILL.md) | 將規格拆解為 TASKS.md |
 | [jira-auto-sync](skills/jira-auto-sync/SKILL.md) | 從 TASKS.md 自動建立 Jira issue |
 
-### ⚡ Build
+### ⚡ Develop
 | Skill | 用途 |
 |---|---|
 | [subagent-driven-development](skills/subagent-driven-development/SKILL.md) | 透過新子代理並行處理任務 |

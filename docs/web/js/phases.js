@@ -50,7 +50,7 @@ export const PHASES = [
   },
   {
     id: 'develop',
-    name: 'Build',
+    name: 'Develop',
     icon: '🔨',
     command: '/tgd-develop',
     desc: 'Implement thin vertical slices with tests',

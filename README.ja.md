@@ -484,7 +484,7 @@ tGD/
 </details>
 
 <details>
-<summary><b>⚡ Build (9)</b></summary>
+<summary><b>⚡ Develop (9)</b></summary>
 
 | スキル | 用途 |
 |--------|------|
