@@ -408,7 +408,7 @@ Example: SaaS app with Express backend + React frontend, two features at differe
 
 ```
 workspace/
-├── acme-api/                           # Backend repo (Express + Prisma)
+├── my-project-backend/                           # Backend repo (Express + Prisma)
 │   ├── .codegraph → tGD/.codegraph     # symlink for CodeGraph CLI
 │   ├── tGD/
 │   │   ├── .codegraph/                 # Symbol index (auto-generated)
@@ -427,7 +427,7 @@ workspace/
 │       ├── auth.test.ts
 │       └── payment.test.ts
 │
-├── acme-web/                           # Frontend repo (React + Vite)
+├── my-project-frontend/                           # Frontend repo (React + Vite)
 │   ├── .codegraph → tGD/.codegraph
 │   ├── tGD/
 │   ├── src/
@@ -442,17 +442,17 @@ workspace/
 │       ├── LoginForm.test.tsx
 │       └── PaymentForm.test.tsx
 │
-└── acme-tGD/                           # ← $TGD_DIR (sibling, not inside)
-    ├── CONTEXT.md                      # Repo inventory: acme-api, acme-web
+└── my-project-tGD/                           # ← $TGD_DIR (sibling, not inside)
+    ├── CONTEXT.md                      # Repo inventory: my-project-backend, my-project-frontend
     ├── CHANGELOG.md
     │   # v1.0.0 - user-auth shipped
     │   # v1.1.0 - payment-flow shipped
     │
     ├── .scans/                         # Centralized scan data
-    │   ├── acme-api/
+    │   ├── my-project-backend/
     │   │   ├── .codegraph/
     │   │   └── .understand-anything/
-    │   └── acme-web/
+    │   └── my-project-frontend/
     │       ├── .codegraph/
     │       └── .understand-anything/
     │
@@ -479,15 +479,15 @@ workspace/
 ```
 
 **Key points:**
-- **Siblings**: `acme-api/`, `acme-web/`, `acme-tGD/` are at the same level — tGD is NOT inside the code repos
+- **Siblings**: `my-project-backend/`, `my-project-frontend/`, `my-project-tGD/` are at the same level — tGD is NOT inside the code repos
 - **Feature-first**: each feature (`user-auth/`, `payment-flow/`) has its own folder with all artifacts
-- **Multi-repo**: SPEC.md and TASKS.md tag items by repo name (e.g., `[acme-api]`, `[acme-web]`)
+- **Multi-repo**: SPEC.md and TASKS.md tag items by repo name (e.g., `[my-project-backend]`, `[my-project-frontend]`)
 - **Clean code repos**: only `tGD/` symlink folder + `src/` + `tests/` at root
 - **Unified changelog**: CHANGELOG.md at tGD root tracks all features across all repos
 
 **Symlink chain** (how scan data flows):
 ```
-acme-api/.codegraph → acme-api/tGD/.codegraph → acme-tGD/.scans/acme-api/.codegraph
+my-project-backend/.codegraph → my-project-backend/tGD/.codegraph → my-project-tGD/.scans/my-project-backend/.codegraph
 ```
 
 **Phase → Artifact mapping:**
