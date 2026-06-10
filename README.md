@@ -331,6 +331,49 @@ tGD enforces the test pyramid ratio:
 | **Verify** | Start server, run all tests, auto-click browser | Integration/E2E | Database connection fails (env var missing), login button hidden by cookie banner |
 | **Review** | Check test files for coverage gaps | Coverage Audit | Missing edge case tests: empty password, 1000-char password |
 
+### 📊 TEST-REPORT.md
+
+Verify stage auto-generates `TEST-REPORT.md` in the feature folder. Format is language-agnostic:
+
+| Section | Content |
+|---------|---------|
+| Summary | Total / Passed / Failed / Coverage / Regression count |
+| All Test Cases | Auto-generated from test runner output |
+| Failures | Error details + location |
+| Sign-off | QA approval |
+
+### 🏷️ Regression Markers
+
+Acceptance-level tests are marked as regression using stack-appropriate conventions:
+
+| Stack | Marker |
+|-------|--------|
+| Python | `@pytest.mark.regression` |
+| TypeScript/JS | `*.regression.test.ts` naming or tag |
+| Go | `//go:build regression` or `TestXxxRegression` naming |
+| Java | `@Tag("regression")` |
+
+Ship gate: regression suite must be 100% pass.
+
+---
+
+## 👥 Human Roles & Sign-off
+
+tGD has three human roles. Each artifact has a `## Sign-off` section at the bottom:
+
+| Role | Focus | Reviews | Signs off on |
+|------|-------|---------|-------------|
+| **PM** | Product direction | PRD (what & why) | PRD.md, Ship |
+| **DEV** | Implementation quality | TASKS, code | TASKS.md, code, REVIEW.md |
+| **QA** | Test quality & coverage | TEST-REPORT, test quality | TEST-REPORT.md, REVIEW.md |
+
+**How it works:**
+- Agent produces artifact → human reviews on their own machine → edits `## Sign-off` in the artifact → commits & pushes
+- Agent checks Sign-off status before proceeding (Gate 3)
+- Ship is the hard gate: all required Sign-offs must be `✅`
+- One person can hold multiple roles (common in small teams)
+- No extra tooling needed — git is the coordination mechanism
+
 ---
 
 ## 🔗 Integrations

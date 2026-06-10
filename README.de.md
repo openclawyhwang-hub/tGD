@@ -271,6 +271,49 @@ Testing in tGD ist eine progressive Disziplin über drei Stufen:
  ╱──────────────────╲
 ```
 
+### 📊 TEST-REPORT.md
+
+Die Verify-Stufe generiert automatisch `TEST-REPORT.md` im Feature-Ordner. Das Format ist sprachunabhängig:
+
+| Abschnitt | Inhalt |
+|-----------|--------|
+| Summary | Total / Passed / Failed / Coverage / Regression-Anzahl |
+| All Test Cases | Automatisch aus Test-Runner-Ausgabe generiert |
+| Failures | Fehlerdetails + Position |
+| Sign-off | QA-Freigabe |
+
+### 🏷️ Regression-Marker
+
+Akzeptanz-Level-Tests werden mit stack-spezifischen Konventionen als Regression markiert:
+
+| Stack | Marker |
+|-------|--------|
+| Python | `@pytest.mark.regression` |
+| TypeScript/JS | `*.regression.test.ts` Benennung oder Tag |
+| Go | `//go:build regression` oder `TestXxxRegression` Benennung |
+| Java | `@Tag("regression")` |
+
+Ship-Gate: Regression-Suite muss 100% bestehen.
+
+---
+
+## 👥 Menschliche Rollen & Sign-off
+
+tGD hat drei menschliche Rollen. Jedes Artifact hat einen `## Sign-off`-Bereich am Ende:
+
+| Rolle | Fokus | Prüft | Sign-off für |
+|-------|-------|-------|-------------|
+| **PM** | Produktrichtung | PRD (Was & Warum) | PRD.md, Ship |
+| **DEV** | Implementierungsqualität | TASKS, Code | TASKS.md, Code, REVIEW.md |
+| **QA** | Testqualität & Coverage | TEST-REPORT, Testqualität | TEST-REPORT.md, REVIEW.md |
+
+**So funktioniert es:**
+- Agent produziert Artifact → Mensch prüft auf eigenem Rechner → bearbeitet `## Sign-off` im Artifact → commit & push
+- Agent prüft Sign-off-Status vor dem nächsten Schritt (Gate 3)
+- Ship ist das harte Gate: alle erforderlichen Sign-offs müssen `✅` sein
+- Eine Person kann mehrere Rollen haben (bei kleinen Teams üblich)
+- Kein zusätzliches Werkzeug nötig — git ist der Koordinationsmechanismus
+
 ---
 
 ## 🔗 Integrationen

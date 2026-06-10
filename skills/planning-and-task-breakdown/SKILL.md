@@ -93,6 +93,7 @@ Before writing any code, operate in read-only mode to gather context from all av
 - **Given** [initial context]
 - **When** [event happens]
 - **Then** [expected outcome]
+- **Regression**: [Yes `[R]` / No] — mark as `[R]` if this criterion verifies a PRD acceptance criterion or critical user path
 
 ### 4. Files Likely Touched
 - `path/to/file.ts`
@@ -104,6 +105,11 @@ Before writing any code, operate in read-only mode to gather context from all av
 ✅ All tests pass (`npm test`)
 ✅ Build succeeds
 ✅ Lint clean
+
+## Sign-off
+| Role | Reviewer | Status | Date | Comments |
+|------|----------|--------|------|----------|
+| DEV | | ⏳ | | |
 ```
 
 ### Step 2: Identify the Dependency Graph

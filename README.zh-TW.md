@@ -344,6 +344,49 @@ tGD 強制執行測試金字塔比例：
 | **Verify** | 啟動伺服器、跑所有測試、自動點擊瀏覽器 | 整合/E2E | 資料庫連線失敗（環境變數遺漏）、登入按鈕被 cookie 橫幅遮住 |
 | **Review** | 檢查測試檔案覆蓋率 | 覆蓋率審計 | 缺少邊界案例測試：空密碼、1000 字元密碼 |
 
+### 📊 TEST-REPORT.md
+
+Verify 階段自動產出 `TEST-REPORT.md`，格式與語言無關：
+
+| 區塊 | 內容 |
+|------|------|
+| Summary | Total / Passed / Failed / Coverage / Regression 數量 |
+| All Test Cases | 從 test runner 輸出自動產生 |
+| Failures | 錯誤詳情 + 位置 |
+| Sign-off | QA 簽核 |
+
+### 🏷️ Regression 標記
+
+驗收等級的測試用 stack 適當的慣例標記為 regression：
+
+| Stack | 標記方式 |
+|-------|----------|
+| Python | `@pytest.mark.regression` |
+| TypeScript/JS | `*.regression.test.ts` 命名或 tag |
+| Go | `//go:build regression` 或 `TestXxxRegression` 命名 |
+| Java | `@Tag("regression")` |
+
+Ship 門檻：regression suite 必須 100% pass。
+
+---
+
+## 👥 人類角色與簽核
+
+tGD 有三個角色。每個 artifact 底部都有 `## Sign-off` 區塊：
+
+| 角色 | 職責 | 審查項目 | 簽核對象 |
+|------|------|----------|----------|
+| **PM** | 產品方向 | PRD（做什麼、為什麼） | PRD.md、Ship |
+| **DEV** | 實作品質 | TASKS、程式碼 | TASKS.md、程式碼、REVIEW.md |
+| **QA** | 測試品質與覆蓋率 | TEST-REPORT、測試品質 | TEST-REPORT.md、REVIEW.md |
+
+**運作方式：**
+- Agent 產出 artifact → 人類在自己的電腦上審查 → 編輯 artifact 裡的 `## Sign-off` → commit & push
+- Agent 在進入下一階段前檢查 Sign-off 狀態（Gate 3）
+- Ship 是硬門檻：所有必要 Sign-offs 必須為 `✅`
+- 一人可兼多角（小團隊常見）
+- 不需要額外工具 — git 就是協調機制
+
 ---
 
 ## 🔗 整合
