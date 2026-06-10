@@ -338,42 +338,113 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 ## 📁 Projektstruktur
 
 ### Laufzeitausgabe (wird während der Entwicklung generiert)
+
+So sieht Ihr Workspace nach dem tGD-Lebenszyklus aus:
+
 ```
 workspace/
 ├── my-project/                         # Code-Repository
-│   ├── .codegraph → tGD/.codegraph     # Symlink (CodeGraph)
+│   ├── .codegraph → tGD/.codegraph     # Symlink für CodeGraph CLI
 │   ├── tGD/
-│   │   ├── .codegraph/                 # Symbolindex
-│   │   └── .understand-anything/       # Wissensgraph
-│   └── src/
+│   │   ├── .codegraph/                 # Symbolindex (automatisch)
+│   │   └── .understand-anything/       # Wissensgraph (automatisch)
+│   ├── src/                            # Implementierungscode
+│   └── tests/                          # Testdateien
 │
 ├── my-project-frontend/                # Code-Repository (optional)
+│   ├── .codegraph → tGD/.codegraph
+│   ├── tGD/
+│   └── src/
 │
 └── my-project-tGD/                     # ← $TGD_DIR (Geschwister-Repo)
     ├── CONTEXT.md                      # Produktkontext + Repo-Inventar
     ├── CHANGELOG.md                    # Einheitliches Versionsprotokoll
     ├── .scans/                         # Zentralisierte Scan-Daten
-    │   └── <repo>/
+    │   ├── my-project/
+    │   │   ├── .codegraph/
+    │   │   └── .understand-anything/
+    │   └── my-project-frontend/
     │       ├── .codegraph/
     │       └── .understand-anything/
     │
-    └── <feature-name>/                 # Feature-first: ein Ordner pro Feature
-        ├── PRD.md                      # Produktanforderungen
-        ├── SPEC.md                     # Technische Spezifikation (Repo-getaggt)
+    └── <feature-name>/                 # Ein Ordner pro Feature
+        ├── PRD.md                      # What & Why (10 Sektionen)
+        ├── SPEC.md                     # How (Repo-getaggt)
         ├── DESIGN.md                   # UI-Design (falls zutreffend)
         ├── prototype/                  # HTML-Mockups (bei UI)
         │   ├── variant-a.html
         │   └── variant-b.html
         ├── TASKS.md                    # BDD-Aufgaben (Repo-getaggt)
-        ├── REVIEW.md                   # Code-Review-Bericht
+        ├── REVIEW.md                   # Code-Review + Simplifikation
         └── decisions/                  # ADRs (beliebige Phase)
             └── ADR-001.md
 ```
 
-**Hinweise:**
-- `$TGD_DIR` — Umgebungsvariable zum tGD-Ordner
-- Feature-Branches: sowohl tGD- als auch Code-Repo erstellen `feature/<name>`
-- SPEC.md / TASKS.md verwenden Repo-Namen als Tags für Multi-Projekte
+#### Phase → Artefakt-Zuordnung
+
+| Phase | Befehl | Artefakte | Ort |
+|-------|--------|-----------|-----|
+| Map | `/tgd-map` | CONTEXT.md | `$TGD_DIR/CONTEXT.md` |
+| Define | `/tgd-define` | PRD.md, SPEC.md, DESIGN.md, prototype/ | `$TGD_DIR/<feature>/` |
+| Plan | `/tgd-plan` | TASKS.md | `$TGD_DIR/<feature>/TASKS.md` |
+| Develop | `/tgd-develop` | src/ | Code-Repository |
+| Verify | `/tgd-verify` | tests/ | Code-Repository |
+| Review | `/tgd-review` | REVIEW.md | `$TGD_DIR/<feature>/REVIEW.md` |
+| Ship | `/tgd-ship` | CHANGELOG.md, git tag | `$TGD_DIR/CHANGELOG.md` |
+
+#### Multi-Repo-Tagging
+
+Wenn Ihr Projekt mehrere Repositories umfasst, taggen SPEC.md und TASKS.md Einträge nach Repo:
+
+**SPEC.md:**
+```markdown
+## Backend (my-project)
+- POST /api/auth/login
+- JWT token generation
+- Password hashing with bcrypt
+
+## Frontend (my-project-frontend)
+- LoginForm component
+- Token storage in httpOnly cookie
+- Redirect after login
+```
+
+**TASKS.md:**
+```markdown
+## Task 1: Auth endpoint
+- [my-project] POST /api/auth/login
+- Acceptance: returns JWT on valid credentials
+- Files: src/routes/auth.ts
+- Tests: tests/auth.test.ts
+
+## Task 2: LoginForm
+- [my-project-frontend] LoginForm component
+- Acceptance: submits credentials, stores token
+- Files: src/components/LoginForm.tsx
+- Tests: tests/LoginForm.test.tsx
+```
+
+#### Scan-Daten (`.scans/`)
+
+CodeGraph- und Understand-Anything-Ausgaben werden in `$TGD_DIR/.scans/<repo>/` zentralisiert. Jedes Code-Repository hat Symlinks, damit die Tools ohne Kenntnis des zentralen Speichers funktionieren:
+
+```
+my-project/.codegraph        → tGD/.codegraph        → $TGD_DIR/.scans/my-project/.codegraph
+my-project/.understand-anything → tGD/.understand-anything → $TGD_DIR/.scans/my-project/.understand-anything
+```
+
+So bleiben Code-Repositories sauber — an der Wurzel nur `tGD/` (Symlink-Ordner) und `src/`.
+
+#### Wichtige Konventionen
+
+| Konvention | Beschreibung |
+|------------|--------------|
+| `$TGD_DIR` | Umgebungsvariable zum tGD-Ordner |
+| Feature-Branches | Sowohl tGD- als auch Code-Repo erstellen `feature/<name>` |
+| Branch-Benennung | Gleicher Name über alle Repos (Traceability) |
+| CONTEXT.md | Eins pro Produkt, enthält Repo-Inventartabelle |
+| CHANGELOG.md | Eins pro Produkt, iteratives Versionsprotokoll |
+| decisions/ | ADRs aus jeder Phase, nicht an Define gebunden |
 
 ### Repository-Inhalt
 ```
