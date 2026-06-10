@@ -36,12 +36,12 @@ This project supports 7 lifecycle commands that work across **OpenCode**, **Clau
 || Command | Phase | Pipeline |
 ||---------|-------|----------|
 || `/tgd-map` | Map | `context-engineering` → `codegraph init` → `/understand` (MANDATORY) |
-|| `/tgd-define` | Define | `interview-me` → `idea-refine` → `spec-driven-development` → `sketch` (if UI) |
-|| `/tgd-plan` | Plan | `planning-and-task-breakdown` → **`jira-auto-sync` (conditional)** |
-|| `/tgd-develop` | Develop | `context-engineering` → `source-driven-development` → (`subagent-driven-development` OR `incremental-implementation`) → `test-driven-development` → `verification-before-completion` (+ `frontend-ui-engineering`, `api-and-interface-design`, `doubt-driven-development` when relevant) |
-|| `/tgd-verify` | Verify | `debugging-and-error-recovery` → `test-driven-development` → **MANDATORY `agent-browser` for Frontend/UI/DOM** |
-|| `/tgd-review` | Review | `code-review-and-quality` → `code-simplification` (+ `security-and-hardening`, `performance-optimization` when relevant) |
-|| `/tgd-ship` | Ship | `git-workflow-and-versioning` → `shipping-and-launch` (+ `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs` when relevant) |
+|| `/tgd-define` | Define | `interview-me` → `idea-refine` → `spec-driven-development` → `sketch` (if UI) → **PM Sign-off on PRD.md** |
+|| `/tgd-plan` | Plan | `planning-and-task-breakdown` → **DEV Sign-off on TASKS.md** → **`jira-auto-sync` (conditional)** |
+|| `/tgd-develop` | Develop | `context-engineering` → `source-driven-development` → (`subagent-driven-development` OR `incremental-implementation`) → `test-driven-development` → `verification-before-completion` (+ `frontend-ui-engineering`, `api-and-interface-design`, `doubt-driven-development` when relevant) → **DEV Sign-off** |
+|| `/tgd-verify` | Verify | `debugging-and-error-recovery` → `test-driven-development` → **TEST-REPORT.md** → **MANDATORY `agent-browser` for Frontend/UI/DOM** → **QA Sign-off on TEST-REPORT** |
+|| `/tgd-review` | Review | `code-review-and-quality` → `code-simplification` (+ `security-and-hardening`, `performance-optimization` when relevant) → **QA + DEV Sign-off on REVIEW.md** |
+|| `/tgd-ship` | Ship | **Sign-off gate check** → `git-workflow-and-versioning` → `shipping-and-launch` (+ `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs` when relevant) → **PM Sign-off** |
 
 Each command runs its entry skill plus all relevant conditional skills, then suggests the next step in the pipeline.
 
@@ -131,6 +131,27 @@ Each lifecycle phase has a distinct communication tone. Follow these when respon
 - Match the tone to the current phase — do not mix tones
 - VERIFY tone overrides all other considerations (no softening bad news)
 - When uncertain about phase, default to DEVELOP tone (minimal, code-first)
+
+## Human Roles & Sign-off Protocol
+
+tGD has three human roles. Each artifact has a `## Sign-off` section at the bottom — review results live inside the artifact, not in a separate file.
+
+| Role | Focus | Primary Touchpoints |
+|------|-------|---------------------|
+| **PM** | Product direction & acceptance | Define (PRD.md), Ship (final sign-off) |
+| **DEV** | Implementation quality | Plan (TASKS.md), Develop (code), Review |
+| **QA** | Test quality & coverage | Verify (TEST-REPORT.md), Review (REVIEW.md) |
+
+**Sign-off rules:**
+- Each role only modifies their own row in the `## Sign-off` section
+- Status: `⏳ Pending` → `✅ Approved` or `❌ Rejected (reason)`
+- Agent checks Sign-off before proceeding (Gate 3)
+- Ship is the hard gate: all required Sign-offs must be `✅`
+- One person can hold multiple roles (common in small teams)
+
+**Async workflow:** Agent runs all phases but blocks at Ship until sign-offs are complete. Humans review on their own schedule — no real-time blocking.
+
+See `skills/tgd-lifecycle-commands/references/human-roles.md` for full details.
 
 ## Orchestration: Personas, Skills, and Commands
 
