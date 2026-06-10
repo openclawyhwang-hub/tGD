@@ -109,7 +109,7 @@ pi       # Pi Coding Agent
 エージェント：CopilotKit をクローン中...
 → メインリポジトリで /understand を実行...
 → CopilotKit で /understand を実行...
-→ tGD/map/CONTEXT.md を作成
+→ $TGD_DIR/CONTEXT.md を作成
 → ダッシュボード：http://localhost:3838
 → /tgd-define の準備完了
 ```
@@ -131,8 +131,8 @@ pi       # Pi Coding Agent
 ユーザー：1
 
 エージェント：PRD + SPEC を作成中...
-→ tGD/define/jwt-auth/PRD.md
-→ tGD/define/jwt-auth/SPEC.md
+→ $TGD_DIR/jwt-auth/PRD.md
+→ $TGD_DIR/jwt-auth/SPEC.md
 
 エージェント：この機能にUIコンポーネントはありますか？
   1. はい（デザインを生成）
@@ -140,9 +140,9 @@ pi       # Pi Coding Agent
 ユーザー：1
 
 エージェント：3つのHTMLプロトタイプを生成中...
-→ tGD/define/jwt-auth/prototype/variant-a.html
-→ tGD/define/jwt-auth/prototype/variant-b.html
-→ tGD/define/jwt-auth/prototype/variant-c.html
+→ $TGD_DIR/jwt-auth/prototype/variant-a.html
+→ $TGD_DIR/jwt-auth/prototype/variant-b.html
+→ $TGD_DIR/jwt-auth/prototype/variant-c.html
 
 エージェント：デザインの方向性を選んでください：
   A. ミニマルカードベース（クリーン、集中）
@@ -151,7 +151,7 @@ pi       # Pi Coding Agent
 ユーザー：A
 
 エージェント：DESIGN.md を作成中...
-→ tGD/define/jwt-auth/DESIGN.md
+→ $TGD_DIR/jwt-auth/DESIGN.md
 → /tgd-plan の準備完了
 ```
 

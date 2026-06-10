@@ -30,9 +30,9 @@ Before writing any code, operate in read-only mode:
 - Map dependencies between components
 - Note risks and unknowns
 
-**Do NOT write code during planning.** Write a plan document at `tGD/plan/<feature-name>/TASKS.md` covering: dependency graph, ordered task list with acceptance criteria, verification checkpoints, and risks with mitigations.
+**Do NOT write code during planning.** Write a plan document at `$TGD_DIR/<feature-name>/TASKS.md` covering: dependency graph, ordered task list with acceptance criteria, verification checkpoints, and risks with mitigations.
 
-**TASKS.md template (save to `tGD/plan/<feature-name>/TASKS.md`):**
+**TASKS.md template (save to `$TGD_DIR/<feature-name>/TASKS.md`):**
 
 ```markdown
 # TASKS.md: [Feature Name]

@@ -20,16 +20,16 @@ Run the `context-engineering` skill. Analyze the current project: tech stack, ar
 ## Step 3: CodeGraph Setup
 
 1. Ensure output directory exists: `mkdir -p tGD/map`
-2. Create symlink: `rm -rf .codegraph && ln -s tGD/map/.codegraph .codegraph`
+2. Create symlink: `rm -rf .codegraph && ln -s $TGD_DIR/.codegraph .codegraph`
 3. Initialize project graph: `codegraph init -i`
 
 ## Step 4: Understand-Anything (MANDATORY)
 
 This step is **required**, not optional.
 
-1. Create symlink: `rm -rf .understand-anything && ln -s tGD/map/.understand-anything .understand-anything`
+1. Create symlink: `rm -rf .understand-anything && ln -s $TGD_DIR/.understand-anything .understand-anything`
 2. Run `/understand` to build a full knowledge graph of the codebase
-3. This produces `tGD/map/.understand-anything/knowledge-graph.json`
+3. This produces `$TGD_DIR/.understand-anything/knowledge-graph.json`
 4. After graph is built, run `/understand-dashboard` to launch interactive web visualization
 5. If unfamiliar with the project, also run `/understand-onboard` for a guided tour
 
@@ -37,7 +37,7 @@ If additional repos were provided in Step 1, run `/understand` on each of them a
 
 ## Step 5: Produce CONTEXT.md
 
-**Outputs (all under `tGD/map/`):**
+**Outputs (all under `$TGD_DIR/`):**
 - `CONTEXT.md` — project structure analysis (MUST reference CodeGraph/UA data)
 - `.codegraph/codegraph.db` — symbol index (via symlink)
 - `.understand-anything/knowledge-graph.json` — full knowledge graph (via symlink)
@@ -97,10 +97,10 @@ Synthesize data from the tools:
 
 ## Step 6: Verification Gate
 
-- [ ] `tGD/map/CONTEXT.md` exists and is non-empty
-- [ ] `tGD/map/.codegraph` symlink exists
-- [ ] `tGD/map/.understand-anything` symlink exists
-- [ ] `tGD/map/.understand-anything/knowledge-graph.json` exists
+- [ ] `$TGD_DIR/CONTEXT.md` exists and is non-empty
+- [ ] `$TGD_DIR/.codegraph` symlink exists
+- [ ] `$TGD_DIR/.understand-anything` symlink exists
+- [ ] `$TGD_DIR/.understand-anything/knowledge-graph.json` exists
 - [ ] If additional repos were provided, their summaries appear in CONTEXT.md
 
 If verification passes, suggest the next step: `/tgd-define` to start defining what to build.

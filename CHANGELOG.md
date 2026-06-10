@@ -24,7 +24,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow
 - feat: integrate CodeGraph/UA usage across all PDLC commands|8c79c10`)
 - feat: synthesize CONTEXT.md from CodeGraph & UA data|5b9a812`)
 - feat: add /understand-dashboard to tgd-map outputs|26f6258`)
-- feat: symlink .understand-anything into tGD/map/|e460aec`)
+- feat: symlink .understand-anything into $TGD_DIR/|e460aec`)
 - feat: add UA output to /tgd-map across all platforms|aa5ff15`)
 - feat: bind Understand-Anything into all 6 PDLC phases|6e7b6cb`)
 - feat: auto-build Understand-Anything in setup.sh|ef24f74`)

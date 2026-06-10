@@ -128,7 +128,7 @@ Load a reference when you need detailed patterns beyond what the skill covers.
 
 ## Spec and task artifacts
 
-The `/tgd-define` and `/tgd-plan` commands create working artifacts (`tGD/define/<feature>/PRD.md`, `tGD/plan/<feature>/TASKS.md`). Treat them as **living documents** while the work is in progress:
+The `/tgd-define` and `/tgd-plan` commands create working artifacts (`$TGD_DIR/<feature>/PRD.md`, `$TGD_DIR/<feature>/TASKS.md`). Treat them as **living documents** while the work is in progress:
 
 - Keep them in version control during development so the human and the agent have a shared source of truth.
 - Update them when scope or decisions change.

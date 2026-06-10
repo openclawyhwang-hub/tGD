@@ -43,24 +43,24 @@ This means every task must contain:
 
 ### Step 0: Feature Name Resolution
 Before planning, determine and validate `<feature-name>`:
-1. **Verify**: Check if `tGD/define/` contains exactly one subdirectory (set by `/tgd-define`). If so, lock that name.
+1. **Verify**: Check if `$TGD_DIR/` contains exactly one subdirectory (set by `/tgd-define`). If so, lock that name.
 2. **Propose (if ambiguous)**: If multiple feature directories exist or none exist, propose 3 kebab-case `<feature-name>` options and wait for user selection.
-3. **Lock**: All planning artifacts go into `tGD/plan/<feature-name>/`.
+3. **Lock**: All planning artifacts go into `$TGD_DIR/<feature-name>/`.
 
 ### Step 1: Enter Plan Mode (Read-Only Analysis)
 
 Before writing any code, operate in read-only mode to gather context from all available tGD artifacts:
 
-- **Read `tGD/map/CONTEXT.md`**: Understand existing project structure, tech stack, and conventions.
-- **Read `tGD/define/<feature-name>/PRD.md`**: Understand the business goals, user pain points, and scope boundaries.
-- **Read `tGD/define/<feature-name>/SPEC.md`**: Analyze technical requirements, API contracts, and database schemas.
-- **Read `tGD/define/<feature-name>/DESIGN.md` (if present)**: Review component trees and UI flows.
+- **Read `$TGD_DIR/CONTEXT.md`**: Understand existing project structure, tech stack, and conventions.
+- **Read `$TGD_DIR/<feature-name>/PRD.md`**: Understand the business goals, user pain points, and scope boundaries.
+- **Read `$TGD_DIR/<feature-name>/SPEC.md`**: Analyze technical requirements, API contracts, and database schemas.
+- **Read `$TGD_DIR/<feature-name>/DESIGN.md` (if present)**: Review component trees and UI flows.
 
 **Synthesis:** Map dependencies between existing code and new requirements. Note risks and unknowns. If `.codegraph/` exists, run `codegraph impact "<core-symbol>"` on any symbol the feature will modify to assess blast radius and inform task ordering. If planning a large refactor, run `/understand-diff` to visualize the impact of proposed changes before breaking down tasks.
 
-**Do NOT write code during planning.** Write a plan document at `tGD/plan/<feature-name>/TASKS.md` covering: dependency graph, ordered task list with acceptance criteria, verification checkpoints, and risks with mitigations.
+**Do NOT write code during planning.** Write a plan document at `$TGD_DIR/<feature-name>/TASKS.md` covering: dependency graph, ordered task list with acceptance criteria, verification checkpoints, and risks with mitigations.
 
-**TASKS.md template (save to `tGD/plan/<feature-name>/TASKS.md`):**
+**TASKS.md template (save to `$TGD_DIR/<feature-name>/TASKS.md`):**
 
 ```markdown
 # TASKS.md: [Feature Name]
@@ -295,4 +295,4 @@ Before starting implementation, confirm:
 - [ ] No task touches more than ~5 files
 - [ ] Checkpoints exist between major phases
 - [ ] The human has reviewed and approved the plan
-- [ ] If UI feature: `tGD/define/<feature-name>/DESIGN.md` exists (created in Define phase)
+- [ ] If UI feature: `$TGD_DIR/<feature-name>/DESIGN.md` exists (created in Define phase)

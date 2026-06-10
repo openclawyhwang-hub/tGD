@@ -27,7 +27,7 @@ ADRs capture the reasoning behind significant technical decisions. They're the h
 ### Step 0: Feature Name Validation
 Before writing ADRs, determine `<feature-name>`:
 1. **Derive**: Use kebab-case from the feature (e.g., `user-login`).
-2. **Verify**: Ensure `tGD/define/<feature-name>/SPEC.md` exists.
+2. **Verify**: Ensure `$TGD_DIR/<feature-name>/SPEC.md` exists.
 3. **Path**: All ADRs go in `tGD/decisions/<feature-name>/`. If it affects multiple features, use `tGD/shared/decisions/`.
 
 ### When to Write an ADR

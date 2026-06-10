@@ -15,12 +15,12 @@ const tgdPrompts: Record<string, string> = {
     "Run the context-engineering skill. Analyze the current project: tech stack, architecture, dependencies, code organization, and existing patterns.\n\n" +
     "## Step 3: CodeGraph Setup\n\n" +
     "1. mkdir -p tGD/map\n" +
-    "2. rm -rf .codegraph && ln -s tGD/map/.codegraph .codegraph\n" +
+    "2. rm -rf .codegraph && ln -s $TGD_DIR/.codegraph .codegraph\n" +
     "3. codegraph init -i\n\n" +
     "## Step 4: Understand-Anything (MANDATORY)\n\n" +
     "This step is required, not optional.\n\n" +
-    "1. rm -rf .understand-anything && ln -s tGD/map/.understand-anything .understand-anything\n" +
-    "2. Run /understand to build knowledge graph → produces tGD/map/.understand-anything/knowledge-graph.json\n" +
+    "1. rm -rf .understand-anything && ln -s $TGD_DIR/.understand-anything .understand-anything\n" +
+    "2. Run /understand to build knowledge graph → produces $TGD_DIR/.understand-anything/knowledge-graph.json\n" +
     "3. Run /understand-dashboard to launch interactive visualization\n" +
     "4. If additional repos were provided in Step 1, run /understand on each of them as well\n\n" +
     "## Step 5: Produce CONTEXT.md\n\n" +
@@ -30,40 +30,40 @@ const tgdPrompts: Record<string, string> = {
     "3. Synthesis — integration points, architecture decisions, open questions\n" +
     "4. See Also — dashboard URL\n\n" +
     "## Step 6: Verification Gate\n\n" +
-    "- [ ] tGD/map/CONTEXT.md exists and is non-empty\n" +
-    "- [ ] tGD/map/.codegraph symlink exists\n" +
-    "- [ ] tGD/map/.understand-anything symlink exists\n" +
-    "- [ ] tGD/map/.understand-anything/knowledge-graph.json exists\n" +
+    "- [ ] $TGD_DIR/CONTEXT.md exists and is non-empty\n" +
+    "- [ ] $TGD_DIR/.codegraph symlink exists\n" +
+    "- [ ] $TGD_DIR/.understand-anything symlink exists\n" +
+    "- [ ] $TGD_DIR/.understand-anything/knowledge-graph.json exists\n" +
     "- [ ] If additional repos were provided, their summaries appear in CONTEXT.md\n\n" +
     "After completing, suggest: /tgd-define",
 
   "tgd-define":
     "Run the spec-driven-development skill. Write a PRD (product requirements document) covering objectives, commands, structure, code style, testing strategy, and boundaries before any code is written. DEFINE phase.\n\n" +
-    "Pre-flight: Check tGD/map/CONTEXT.md exists (or .codegraph/ is present). If missing, STOP and tell user to run /tgd-map first.\n\n" +
+    "Pre-flight: Check $TGD_DIR/CONTEXT.md exists (or .codegraph/ is present). If missing, STOP and tell user to run /tgd-map first.\n\n" +
     "Pipeline:\n" +
-    "1. Feature Name Resolution (Selection Protocol) — **Analyze the user's request first.** Extract core action + object (e.g., 'user login' → action: login, object: user). Propose 3 kebab-case names that **directly reflect intent**: (a) most literal/direct, (b) action-focused, (c) domain-specific. Wait for user to pick by number. Once locked, create tGD/define/<feature-name>/.\n" +
+    "1. Feature Name Resolution (Selection Protocol) — **Analyze the user's request first.** Extract core action + object (e.g., 'user login' → action: login, object: user). Propose 3 kebab-case names that **directly reflect intent**: (a) most literal/direct, (b) action-focused, (c) domain-specific. Wait for user to pick by number. Once locked, create $TGD_DIR/<feature-name>/.\n" +
     "2. Git Branch Setup — If on main/master, create and switch to feature/<feature-name> (git checkout -b feature/user-login).\n" +
     "3. interview-me — if the ask is underspecified, extract what the user actually wants\n" +
     "4. idea-refine — if the concept is vague, stress-test and expand options\n" +
     "5. spec-driven-development — write the structured spec (PRD + SPEC)\n\n" +
     "Phase 1.5: UI Design Gate (MANDATORY CHECK via Selection Protocol)\n" +
     "After writing SPEC.md, ask: 'Does this feature have a UI component requiring DESIGN.md? 1. Yes (Generate design) 2. No (Backend only)'\n" +
-    "If YES → (1) Run sketch skill to generate 2-3 HTML prototype variants in tGD/define/<feature-name>/prototype/, (2) Present comparison table → user picks one by letter (or requests iteration), (3) Write DESIGN.md documenting the chosen design decisions and component tree, (4) Wait for user confirmation before proceeding\n" +
+    "If YES → (1) Run sketch skill to generate 2-3 HTML prototype variants in $TGD_DIR/<feature-name>/prototype/, (2) Present comparison table → user picks one by letter (or requests iteration), (3) Write DESIGN.md documenting the chosen design decisions and component tree, (4) Wait for user confirmation before proceeding\n" +
     "If NO → skip DESIGN.md and prototype. You cannot skip this step without explicit user approval.\n\n" +
     "Use interview-me first if the ask is underspecified. Use idea-refine if you have a rough concept but it's not concrete yet.\n\n" +
     "After completing the spec, verify the outputs.\n\n" +
     "Verification Gate:\n" +
-    "- [ ] tGD/define/ directory exists\n" +
-    "- [ ] tGD/define/<feature-name>/PRD.md exists and is non-empty\n" +
-    "- [ ] tGD/define/<feature-name>/SPEC.md exists and is non-empty\n" +
+    "- [ ] $TGD_DIR/ directory exists\n" +
+    "- [ ] $TGD_DIR/<feature-name>/PRD.md exists and is non-empty\n" +
+    "- [ ] $TGD_DIR/<feature-name>/SPEC.md exists and is non-empty\n" +
     "- [ ] Working branch is feature/<feature-name>\n" +
-    "- [ ] If UI feature: tGD/define/<feature-name>/DESIGN.md exists with Component Tree\n" +
-    "- [ ] If UI feature: tGD/define/<feature-name>/prototype/ contains at least 2 HTML variants\n\n" +
+    "- [ ] If UI feature: $TGD_DIR/<feature-name>/DESIGN.md exists with Component Tree\n" +
+    "- [ ] If UI feature: $TGD_DIR/<feature-name>/prototype/ contains at least 2 HTML variants\n\n" +
     "After completing, suggest: /tgd-plan",
 
   "tgd-plan":
     "Run the planning-and-task-breakdown skill. PLAN phase.\n\n" +
-    "Pre-flight: Check tGD/define/<feature>/SPEC.md exists. If missing, suggest /tgd-define first.\n\n" +
+    "Pre-flight: Check $TGD_DIR/<feature>/SPEC.md exists. If missing, suggest /tgd-define first.\n\n" +
     "Pipeline:\n" +
     "1. Read the existing SPEC.md (and DESIGN.md if UI)\n" +
     "2. If .codegraph/ exists, run codegraph impact on core symbols to assess blast radius\n" +

@@ -119,7 +119,7 @@ User: github.com/CopilotKit/CopilotKit
 Agent: Cloning CopilotKit...
 → Running /understand on primary repo...
 → Running /understand on CopilotKit...
-→ tGD/map/CONTEXT.md created
+→ $TGD_DIR/CONTEXT.md created
 → Dashboard: http://localhost:3838
 → Ready for /tgd-define
 ```
@@ -141,8 +141,8 @@ Agent: What endpoints need auth?
 User: 1
 
 Agent: Creating PRD + SPEC...
-→ tGD/define/jwt-auth/PRD.md
-→ tGD/define/jwt-auth/SPEC.md
+→ $TGD_DIR/jwt-auth/PRD.md
+→ $TGD_DIR/jwt-auth/SPEC.md
 
 Agent: Does this feature have a UI component?
   1. Yes (Generate design)
@@ -150,9 +150,9 @@ Agent: Does this feature have a UI component?
 User: 1
 
 Agent: Generating 3 HTML prototypes...
-→ tGD/define/jwt-auth/prototype/variant-a.html
-→ tGD/define/jwt-auth/prototype/variant-b.html
-→ tGD/define/jwt-auth/prototype/variant-c.html
+→ $TGD_DIR/jwt-auth/prototype/variant-a.html
+→ $TGD_DIR/jwt-auth/prototype/variant-b.html
+→ $TGD_DIR/jwt-auth/prototype/variant-c.html
 
 Agent: Pick a design direction:
   A. Minimal card-based (clean, focused)
@@ -161,7 +161,7 @@ Agent: Pick a design direction:
 User: A
 
 Agent: Writing DESIGN.md...
-→ tGD/define/jwt-auth/DESIGN.md
+→ $TGD_DIR/jwt-auth/DESIGN.md
 → Ready for /tgd-plan
 ```
 

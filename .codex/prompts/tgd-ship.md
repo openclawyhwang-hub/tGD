@@ -6,7 +6,7 @@ Run the shipping-and-launch skill. This is the SHIP phase.
 
 Pre-flight:
 - Check review passed (no critical issues)
-- Check tGD/review/REVIEW.md exists
+- Check $TGD_DIR/<feature>/REVIEW.md exists
 - Check tests/ exists and passes
 If missing, /tgd-review first.
 

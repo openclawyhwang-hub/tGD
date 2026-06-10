@@ -101,17 +101,16 @@
         <h4 style="color:var(--accent);margin-bottom:8px">📦 Output</h4>
         <div class="terminal">
           <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>Output Structure</span></div>
-<pre>tGD/
-└── map/
-    ├── CONTEXT.md       ← Project overview
-    │   - Tech stack
-    │   - Architecture
-    │   - Dependencies
-    │   - Code patterns
-    │   - Entry points
-    └── .codegraph/      ← Knowledge graph DB
-        ├── graph.json
-        └── index/</pre>
+<pre>$TGD_DIR/                   ← Sibling to project repos
+├── CONTEXT.md             ← Product-level context
+│   - Tech stack
+│   - Architecture
+│   - Repo inventory
+│   - Dependencies
+└── .scans/                ← Scan data (centralized)
+    └── &lt;repo&gt;/
+        ├── .codegraph/    ← Knowledge graph DB
+        └── .understand-anything/</pre>
         </div>
         <h4 style="color:var(--accent);margin:16px 0 8px">💡 Usage</h4>
         <div class="terminal">
@@ -121,7 +120,7 @@ Agent: Scanning project...
 → Tech stack: Next.js 15, TypeScript, Prisma
 → 47 source files, 12 test files
 → Architecture: App Router + API routes
-→ tGD/map/CONTEXT.md created ✓</pre>
+→ $TGD_DIR/CONTEXT.md created ✓</pre>
         </div>
       </div>
     </div>
@@ -142,7 +141,7 @@ Agent: Scanning project...
           <div class="tag">spec-driven-development</div>
         </div>
         <h4 style="color:var(--accent);margin:16px 0 8px">🔒 Pre-flight</h4>
-        <div style="font-size:13px;color:var(--text-2)">Requires <code>tGD/map/CONTEXT.md</code> — run <code>/tgd-map</code> first.</div>
+        <div style="font-size:13px;color:var(--text-2)">Requires <code>$TGD_DIR/CONTEXT.md</code> — run <code>/tgd-map</code> first.</div>
         <h4 style="color:var(--accent);margin:16px 0 8px">📋 Process</h4>
         <div class="stack" style="font-size:13px;color:var(--text-2)">
           <div>1. <b>3-Option Naming</b> — propose 3 kebab-case names, user picks one</div>
@@ -157,22 +156,21 @@ Agent: Scanning project...
         <h4 style="color:var(--accent);margin-bottom:8px">📦 Output</h4>
         <div class="terminal">
           <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>Output Structure</span></div>
-<pre>tGD/
-└── define/
-    └── &lt;feature-name&gt;/
-        ├── PRD.md         ← Product Requirements
-        │   - Objectives
-        │   - User stories
-        │   - Scope & boundaries
-        ├── SPEC.md        ← Technical Spec
-        │   - API contracts
-        │   - Data models
-        │   - Error handling
-        │   - Test strategy
-        └── DESIGN.md      ← (optional) UI Design
-            - Component tree
-            - Visual specs
-            - Responsive rules</pre>
+<pre>$TGD_DIR/
+└── &lt;feature-name&gt;/
+    ├── PRD.md         ← Product Requirements
+    │   - Objectives
+    │   - User stories
+    │   - Scope & boundaries
+    ├── SPEC.md        ← Technical Spec
+    │   - API contracts
+    │   - Data models
+    │   - Error handling
+    │   - Test strategy
+    └── DESIGN.md      ← (optional) UI Design
+        - Component tree
+        - Visual specs
+        - Responsive rules</pre>
         </div>
       </div>
     </div>
@@ -193,9 +191,9 @@ Agent: Scanning project...
         </div>
         <h4 style="color:var(--accent);margin:16px 0 8px">🔒 Pre-flight</h4>
         <div class="stack" style="font-size:13px;color:var(--text-2)">
-          <div>✓ <code>tGD/map/CONTEXT.md</code> exists</div>
-          <div>✓ <code>tGD/define/&lt;feature&gt;/PRD.md</code> exists</div>
-          <div>✓ <code>tGD/define/&lt;feature&gt;/SPEC.md</code> exists</div>
+          <div>✓ <code>$TGD_DIR/CONTEXT.md</code> exists</div>
+          <div>✓ <code>$TGD_DIR/&lt;feature&gt;/PRD.md</code> exists</div>
+          <div>✓ <code>$TGD_DIR/&lt;feature&gt;/SPEC.md</code> exists</div>
         </div>
         <h4 style="color:var(--accent);margin:16px 0 8px">📋 Process</h4>
         <div class="stack" style="font-size:13px;color:var(--text-2)">
@@ -211,27 +209,26 @@ Agent: Scanning project...
         <h4 style="color:var(--accent);margin-bottom:8px">📦 Output</h4>
         <div class="terminal">
           <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>Output Structure</span></div>
-<pre>tGD/
-└── plan/
-    └── &lt;feature-name&gt;/
-        └── TASKS.md       ← Task breakdown
-            ## Task 1: Setup auth middleware
-            - Acceptance: JWT validation works
-            - Files: src/middleware/auth.ts
-            - Tests: tests/auth.test.ts
+<pre>$TGD_DIR/
+└── &lt;feature-name&gt;/
+    └── TASKS.md       ← Task breakdown
+        ## Task 1: Setup auth middleware
+        - Acceptance: JWT validation works
+        - Files: src/middleware/auth.ts
+        - Tests: tests/auth.test.ts
 
-            ## Task 2: User model
-            - Acceptance: CRUD operations
-            - Files: src/models/user.ts
-            - Tests: tests/user.test.ts
+        ## Task 2: User model
+        - Acceptance: CRUD operations
+        - Files: src/models/user.ts
+        - Tests: tests/user.test.ts
 
-            ## Task 3: Login endpoint
-            - Acceptance: POST /api/login
-            - Files: src/routes/auth.ts
-            - Tests: tests/login.test.ts
+        ## Task 3: Login endpoint
+        - Acceptance: POST /api/login
+        - Files: src/routes/auth.ts
+        - Tests: tests/login.test.ts
 
-            ## Checkpoint: Integration test
-            ## Checkpoint: E2E test</pre>
+        ## Checkpoint: Integration test
+        ## Checkpoint: E2E test</pre>
         </div>
       </div>
     </div>
@@ -256,7 +253,7 @@ Agent: Scanning project...
         <h4 style="color:var(--accent);margin:16px 0 8px">🔒 Pre-flight</h4>
         <div class="stack" style="font-size:13px;color:var(--text-2)">
           <div>✓ CONTEXT.md + PRD.md + SPEC.md all exist</div>
-          <div>✓ <code>tGD/plan/&lt;feature&gt;/TASKS.md</code> exists</div>
+          <div>✓ <code>$TGD_DIR/&lt;feature&gt;/TASKS.md</code> exists</div>
         </div>
         <h4 style="color:var(--accent);margin:16px 0 8px">📋 Smart Routing</h4>
         <div class="stack" style="font-size:13px;color:var(--text-2)">
@@ -323,22 +320,20 @@ Agent: Scanning project...
         <h4 style="color:var(--accent);margin-bottom:8px">📦 Output</h4>
         <div class="terminal">
           <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>Output Structure</span></div>
-<pre>tGD/
-└── verify/
-    └── &lt;feature-name&gt;/
-        └── VERIFY.md      ← Verification report
-            ## Test Results
-            - Unit: 34/34 pass ✓
-            - Integration: 12/12 pass ✓
-            - E2E: 5/5 pass ✓
+<pre>Code Repo: my-project/
+└── tests/
+    ├── auth.test.ts        ← Unit tests pass ✓
+    ├── login.test.ts       ← Integration tests pass ✓
+    └── e2e/
+        └── auth-flow.spec.ts ← E2E tests pass ✓
 
-            ## Browser Evidence
-            - screenshot-001.png
-            - screenshot-002.png
+## Browser Evidence
+- screenshot-001.png
+- screenshot-002.png
 
-            ## Fixes Applied
-            - auth.ts: added empty password check
-            - user.ts: fixed null email edge case</pre>
+## Fixes Applied
+- auth.ts: added empty password check
+- user.ts: fixed null email edge case</pre>
         </div>
         <div style="margin-top:12px;padding:12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:8px;font-size:13px">
           <b style="color:#ef4444">🚫 Hard Gate Rule:</b> <span style="color:var(--text-2)">If ANY test fails, the pipeline stops. No merge, no ship, no exceptions.</span>
@@ -380,8 +375,8 @@ Agent: Scanning project...
         <h4 style="color:var(--accent);margin-bottom:8px">📦 Output</h4>
         <div class="terminal">
           <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>Output Structure</span></div>
-<pre>tGD/
-└── review/
+<pre>$TGD_DIR/
+└── &lt;feature-name&gt;/
     └── REVIEW.md          ← Review report
         ## Code Review (5-axis)
         ✅ Correctness: Matches SPEC
@@ -418,7 +413,7 @@ Agent: Scanning project...
         <h4 style="color:var(--accent);margin:16px 0 8px">🔒 Pre-flight</h4>
         <div class="stack" style="font-size:13px;color:var(--text-2)">
           <div>✓ Review passed (no critical issues)</div>
-          <div>✓ <code>tGD/review/REVIEW.md</code> exists</div>
+          <div>✓ <code>$TGD_DIR/&lt;feature&gt;/REVIEW.md</code> exists</div>
           <div>✓ All tests pass</div>
         </div>
         <h4 style="color:var(--accent);margin:16px 0 8px">📋 Process</h4>
@@ -434,18 +429,15 @@ Agent: Scanning project...
         <h4 style="color:var(--accent);margin-bottom:8px">📦 Output</h4>
         <div class="terminal">
           <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>Output Structure</span></div>
-<pre>tGD/
-└── ship/
-    └── &lt;feature-name&gt;/
-        ├── SHIP.md        ← Ship report
-        │   - Commit SHA
-        │   - CI status
-        │   - Rollout plan
-        ├── ADR.md          ← Architecture Decision
-        │   - Context
-        │   - Decision
-        │   - Consequences
-        └── CHANGELOG.md    ← Release notes
+<pre>$TGD_DIR/
+├── CHANGELOG.md         ← Unified release notes
+│   v1.0.0 - auth feature shipped
+└── &lt;feature-name&gt;/
+    └── decisions/
+        └── ADR.md       ← Architecture Decision
+            - Context
+            - Decision
+            - Consequences
 
 <span style="color:var(--text-3)">Git:</span>
   feat(auth): add JWT middleware

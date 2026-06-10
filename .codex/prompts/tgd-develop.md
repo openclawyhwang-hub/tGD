@@ -3,8 +3,8 @@
 Build — implement with isolated worktree and task-based execution mode.
 
 Pre-flight:
-- Check tGD/map/CONTEXT.md exists. If missing, /tgd-map first.
-- Check tGD/plan/<feature-name>/TASKS.md exists. If missing, /tgd-plan first.
+- Check $TGD_DIR/CONTEXT.md exists. If missing, /tgd-map first.
+- Check $TGD_DIR/<feature-name>/TASKS.md exists. If missing, /tgd-plan first.
 
 **🌳 Step 1: Worktree Isolation (Mandatory)**
 1. Create: `git worktree add ../project-<feature-name> feature/<feature-name>`

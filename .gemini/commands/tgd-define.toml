@@ -2,7 +2,7 @@ description = "Start spec-driven development — write a structured specificatio
 
 prompt = """
 **🛑 Pre-flight: Environment Check**
-- [ ] `tGD/map/CONTEXT.md` exists (or `.codegraph/` is present).
+- [ ] `$TGD_DIR/CONTEXT.md` exists (or `.codegraph/` is present).
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
 
 This is the DEFINE phase. The full pipeline is:
@@ -11,7 +11,7 @@ This is the DEFINE phase. The full pipeline is:
    - Option 2: Action-focused (e.g., `authenticate-user`)
    - Option 3: Domain-specific if applicable (e.g., `auth-flow`)
    
-   **Wait for the user to select one by number or provide their own before proceeding.** Once locked, create `tGD/define/<feature-name>/`.
+   **Wait for the user to select one by number or provide their own before proceeding.** Once locked, create `$TGD_DIR/<feature-name>/`.
 2. **🌿 Git Branch Setup** — If on `main`/`master`, create and switch to `feature/<feature-name>` (`git checkout -b feature/user-login`).
 3. interview-me — if the ask is underspecified, extract what the user actually wants
 4. idea-refine — if the concept is vague, stress-test and expand options
@@ -21,7 +21,7 @@ This is the DEFINE phase. The full pipeline is:
 After writing SPEC.md, you MUST ask the user: "Does this feature have a UI component requiring DESIGN.md?"
 **Format:** "1. Yes (Generate design) 2. No (Backend only)"
 - If YES: 
-  1. Run the `sketch` skill to generate 2-3 HTML prototype variants in `tGD/define/<feature-name>/prototype/`
+  1. Run the `sketch` skill to generate 2-3 HTML prototype variants in `$TGD_DIR/<feature-name>/prototype/`
   2. Present comparison table → user picks one by letter (or requests iteration)
   3. Write DESIGN.md documenting the chosen design decisions and component tree
   4. Wait for user confirmation before proceeding.
@@ -30,12 +30,12 @@ After writing SPEC.md, you MUST ask the user: "Does this feature have a UI compo
 After completing the spec, verify the outputs.
 
 **Verification Gate:**
-- [ ] `tGD/define/<feature-name>/` directory exists
-- [ ] `tGD/define/<feature-name>/PRD.md` exists and is non-empty
-- [ ] `tGD/define/<feature-name>/SPEC.md` exists and is non-empty
+- [ ] `$TGD_DIR/<feature-name>/` directory exists
+- [ ] `$TGD_DIR/<feature-name>/PRD.md` exists and is non-empty
+- [ ] `$TGD_DIR/<feature-name>/SPEC.md` exists and is non-empty
 - [ ] Working branch is `feature/<feature-name>`
-- [ ] If UI feature: `tGD/define/<feature-name>/DESIGN.md` exists with Component Tree
-- [ ] If UI feature: `tGD/define/<feature-name>/prototype/` contains at least 2 HTML variants
+- [ ] If UI feature: `$TGD_DIR/<feature-name>/DESIGN.md` exists with Component Tree
+- [ ] If UI feature: `$TGD_DIR/<feature-name>/prototype/` contains at least 2 HTML variants
 
 If verification passes, suggest the next step: `/tgd-plan` to decompose it into tasks.
 """

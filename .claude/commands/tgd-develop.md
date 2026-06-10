@@ -3,7 +3,7 @@ description: Develop — implement with fresh subagents per task and two-stage r
 ---
 
 **🛑 Pre-flight: Environment Check**
-- [ ] `tGD/map/CONTEXT.md` exists (or `.codegraph/` is present).
+- [ ] `$TGD_DIR/CONTEXT.md` exists (or `.codegraph/` is present).
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
 
 **🔑 Step 0: Feature Name Resolution**
@@ -11,12 +11,12 @@ description: Develop — implement with fresh subagents per task and two-stage r
 2. If none found: 🛑 STOP. "No features defined. Run `/tgd-define` first."
 3. If exactly one found: Lock it as `<feature-name>`.
 4. If multiple found: List them and ask user to specify.
-5. **Verify**: `tGD/define/<feature-name>/SPEC.md` exists (defines scope).
+5. **Verify**: `$TGD_DIR/<feature-name>/SPEC.md` exists (defines scope).
 
 **🔒 Pre-flight: Artifact Check**
-- [ ] `tGD/plan/<feature-name>/TASKS.md` exists and is non-empty.
-- [ ] `tGD/define/<feature-name>/PRD.md` exists and is non-empty.
-- [ ] `tGD/define/<feature-name>/SPEC.md` exists and is non-empty.
+- [ ] `$TGD_DIR/<feature-name>/TASKS.md` exists and is non-empty.
+- [ ] `$TGD_DIR/<feature-name>/PRD.md` exists and is non-empty.
+- [ ] `$TGD_DIR/<feature-name>/SPEC.md` exists and is non-empty.
 - **If missing:** STOP. Tell user: "Specs are missing. Please run `/tgd-define` first."
 
 This is the BUILD phase. The pipeline operates in an isolated environment.

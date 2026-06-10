@@ -3,7 +3,7 @@ description: Plan — decompose specs into small, verifiable tasks with acceptan
 ---
 
 **🛑 Pre-flight: Environment Check**
-- [ ] `tGD/map/CONTEXT.md` exists (or `.codegraph/` is present).
+- [ ] `$TGD_DIR/CONTEXT.md` exists (or `.codegraph/` is present).
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
 
 **🔑 Step 0: Feature Name Resolution**
@@ -11,24 +11,24 @@ description: Plan — decompose specs into small, verifiable tasks with acceptan
 2. If none found: 🛑 STOP. "No features defined. Run `/tgd-define` first."
 3. If exactly one found: Lock it as `<feature-name>`.
 4. If multiple found: List them and ask user to specify.
-5. **Verify**: Ensure all work targets `tGD/plan/`.
+5. **Verify**: Ensure all work targets `$TGD_DIR/`.
 
 **🔒 Pre-flight: Artifact Check**
-- [ ] `tGD/define/<feature-name>/PRD.md` exists and is non-empty.
-- [ ] `tGD/define/<feature-name>/SPEC.md` exists and is non-empty.
+- [ ] `$TGD_DIR/<feature-name>/PRD.md` exists and is non-empty.
+- [ ] `$TGD_DIR/<feature-name>/SPEC.md` exists and is non-empty.
 - **If missing:** STOP. Tell user: "Specs are missing. Please run `/tgd-define` first."
-- [ ] If SPEC has Frontend/Full-stack: `tGD/define/<feature-name>/DESIGN.md` exists.
+- [ ] If SPEC has Frontend/Full-stack: `$TGD_DIR/<feature-name>/DESIGN.md` exists.
 - **If missing:** STOP. Tell user: "Design is missing. Please run `/tgd-define` first."
 
 Run the `planning-and-task-breakdown` skill. Decompose the specification into small, verifiable tasks with acceptance criteria and dependency ordering.
 
 **Mandatory Reading:**
-1. **Read `tGD/map/CONTEXT.md`**: Understand existing project structure and tech stack.
-2. **Read `tGD/define/<feature-name>/PRD.md`**: Understand business goals and user pain points.
-3. **Read `tGD/define/<feature-name>/SPEC.md`**: Analyze technical requirements and API contracts.
-4. **Read `tGD/define/<feature-name>/DESIGN.md` (if present)**: Review UI flows and components.
+1. **Read `$TGD_DIR/CONTEXT.md`**: Understand existing project structure and tech stack.
+2. **Read `$TGD_DIR/<feature-name>/PRD.md`**: Understand business goals and user pain points.
+3. **Read `$TGD_DIR/<feature-name>/SPEC.md`**: Analyze technical requirements and API contracts.
+4. **Read `$TGD_DIR/<feature-name>/DESIGN.md` (if present)**: Review UI flows and components.
 
-**Output:** `tGD/plan/<feature-name>/TASKS.md`.
+**Output:** `$TGD_DIR/<feature-name>/TASKS.md`.
 
 Each task should be implementable in isolation with clear success criteria. Order tasks by dependencies so they can be executed in the right sequence.
 
@@ -41,12 +41,12 @@ After completing the plan, verify the outputs.
 If yes → Run the `jira-auto-sync` skill.
 1. Ask for `JIRA_URL`, `JIRA_PROJECT` (key), and `JIRA_TOKEN` (Bearer/PAT) if not provided.
 2. Discover Issue Types & Required Fields. Let user select.
-3. Parse `tGD/plan/<feature-name>/TASKS.md` and create issues via Jira REST API v2.
+3. Parse `$TGD_DIR/<feature-name>/TASKS.md` and create issues via Jira REST API v2.
 4. Report created issue keys (e.g., `ENG-1234`).
 If no → Skip silently and proceed to verification.
 
 **Verification Gate:**
-- [ ] `tGD/plan/<feature-name>/TASKS.md` exists and is non-empty
+- [ ] `$TGD_DIR/<feature-name>/TASKS.md` exists and is non-empty
 - [ ] TASKS.md contains at least one task with Acceptance Criteria
 - [ ] If UI feature: TASKS.md references DESIGN.md components
 

@@ -396,7 +396,7 @@ When tech debt is identified:
    - [x] Implement login API  <!-- TECH-DEBT: JIRA-456 - Password hashing should use bcrypt -->
    ```
 
-2. Create a `tGD/review/<feature-name>/DEBT.md` file to track all tech debt:
+2. Create a `$TGD_DIR/<feature-name>/DEBT.md` file to track all tech debt:
    ```markdown
    # Tech Debt: <feature-name>
 

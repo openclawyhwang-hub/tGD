@@ -121,7 +121,7 @@ Agent：除了當前 repo，還有其他需要參考的 repo 嗎？（local path
 Agent：複製 CopilotKit...
 → 對主專案執行 /understand...
 → 對 CopilotKit 執行 /understand...
-→ tGD/map/CONTEXT.md 已建立
+→ $TGD_DIR/CONTEXT.md 已建立
 → Dashboard: http://localhost:3838
 → 準備執行 /tgd-define
 ```
@@ -143,8 +143,8 @@ Agent：哪些端點需要認證？
 使用者：1
 
 Agent：建立 PRD + SPEC...
-→ tGD/define/jwt-auth/PRD.md
-→ tGD/define/jwt-auth/SPEC.md
+→ $TGD_DIR/jwt-auth/PRD.md
+→ $TGD_DIR/jwt-auth/SPEC.md
 
 Agent：這個功能有 UI 元件嗎？
   1. 是（產生設計）
@@ -152,9 +152,9 @@ Agent：這個功能有 UI 元件嗎？
 使用者：1
 
 Agent：產生 3 個 HTML 原型...
-→ tGD/define/jwt-auth/prototype/variant-a.html
-→ tGD/define/jwt-auth/prototype/variant-b.html
-→ tGD/define/jwt-auth/prototype/variant-c.html
+→ $TGD_DIR/jwt-auth/prototype/variant-a.html
+→ $TGD_DIR/jwt-auth/prototype/variant-b.html
+→ $TGD_DIR/jwt-auth/prototype/variant-c.html
 
 Agent：選擇設計方向：
   A. 極簡卡片式（乾淨、專注）
@@ -163,7 +163,7 @@ Agent：選擇設計方向：
 使用者：A
 
 Agent：撰寫 DESIGN.md...
-→ tGD/define/jwt-auth/DESIGN.md
+→ $TGD_DIR/jwt-auth/DESIGN.md
 → 準備執行 /tgd-plan
 ```
 
