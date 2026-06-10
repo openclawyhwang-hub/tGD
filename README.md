@@ -445,6 +445,92 @@ workspace/
             └── ADR-001.md
 ```
 
+#### Example: Full Workspace with Multiple Features
+
+Here's a realistic workspace for a SaaS app with Express backend + React frontend, and two features at different stages:
+
+```
+workspace/
+├── acme-api/                           # Backend repo (Express + Prisma)
+│   ├── .codegraph → tGD/.codegraph
+│   ├── tGD/
+│   │   ├── .codegraph/
+│   │   └── .understand-anything/
+│   ├── src/
+│   │   ├── routes/
+│   │   │   ├── auth.ts                 # ← user-auth feature
+│   │   │   ├── payment.ts              # ← payment-flow feature
+│   │   │   └── health.ts
+│   │   ├── models/
+│   │   │   ├── user.ts
+│   │   │   └── payment.ts
+│   │   └── middleware/
+│   │       └── jwt.ts
+│   └── tests/
+│       ├── auth.test.ts
+│       └── payment.test.ts
+│
+├── acme-web/                           # Frontend repo (React + Vite)
+│   ├── .codegraph → tGD/.codegraph
+│   ├── tGD/
+│   │   ├── .codegraph/
+│   │   └── .understand-anything/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── LoginForm.tsx           # ← user-auth feature
+│   │   │   ├── PaymentForm.tsx         # ← payment-flow feature
+│   │   │   └── Dashboard.tsx
+│   │   └── pages/
+│   │       ├── login.tsx
+│   │       └── checkout.tsx
+│   └── tests/
+│       ├── LoginForm.test.tsx
+│       └── PaymentForm.test.tsx
+│
+└── acme-tGD/                           # ← $TGD_DIR (sibling)
+    ├── CONTEXT.md                      # Repo inventory: acme-api, acme-web
+    ├── CHANGELOG.md
+    │   # v1.0.0 - user-auth shipped
+    │   # v1.1.0 - payment-flow shipped
+    │
+    ├── .scans/
+    │   ├── acme-api/
+    │   │   ├── .codegraph/
+    │   │   └── .understand-anything/
+    │   └── acme-web/
+    │       ├── .codegraph/
+    │       └── .understand-anything/
+    │
+    ├── user-auth/                      # Feature 1: shipped ✅
+    │   ├── PRD.md                      # "Users need to log in"
+    │   ├── SPEC.md                     # Backend: JWT + bcrypt / Frontend: LoginForm
+    │   ├── DESIGN.md                   # Login page mockup
+    │   ├── prototype/
+    │   │   ├── variant-a.html          # Minimal login form
+    │   │   └── variant-b.html          # Login with social buttons
+    │   ├── TASKS.md                    # 5 tasks, all done
+    │   ├── REVIEW.md                   # Passed: 87% coverage
+    │   └── decisions/
+    │       └── ADR-001-use-jwt.md      # Why JWT over sessions
+    │
+    └── payment-flow/                   # Feature 2: in planning 🚧
+        ├── PRD.md                      # "Users need to pay"
+        ├── SPEC.md                     # Backend: Stripe API / Frontend: PaymentForm
+        ├── DESIGN.md                   # Checkout page mockup
+        ├── prototype/
+        │   ├── variant-a.html          # Single-page checkout
+        │   └── variant-b.html          # Multi-step checkout
+        └── TASKS.md                    # 8 tasks, not started
+```
+
+**What you see:**
+- **2 code repos** (acme-api, acme-web) + **1 tGD repo** (acme-tGD) as siblings
+- **2 features** in the tGD repo: `user-auth` (shipped) and `payment-flow` (planning)
+- **Each feature** has its own PRD, SPEC, DESIGN, prototype, TASKS, REVIEW, and decisions
+- **SPEC.md** and **TASKS.md** tag items by repo name (e.g., `[acme-api]`, `[acme-web]`)
+- **Code repos** are clean — only `tGD/` symlink folder + `src/` + `tests/`
+- **CHANGELOG.md** tracks the unified version history across all features
+
 #### Phase → Artifact Mapping
 
 | Phase | Command | Artifacts | Location |

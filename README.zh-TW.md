@@ -458,6 +458,92 @@ workspace/
             └── ADR-001.md
 ```
 
+#### 範例：完整的多 Repo + 多 Feature 工作區
+
+一個 SaaS 應用的實際 workspace，Express 後端 + React 前端，兩個功能在不同階段：
+
+```
+workspace/
+├── acme-api/                           # 後端 repo（Express + Prisma）
+│   ├── .codegraph → tGD/.codegraph
+│   ├── tGD/
+│   │   ├── .codegraph/
+│   │   └── .understand-anything/
+│   ├── src/
+│   │   ├── routes/
+│   │   │   ├── auth.ts                 # ← user-auth 功能
+│   │   │   ├── payment.ts              # ← payment-flow 功能
+│   │   │   └── health.ts
+│   │   ├── models/
+│   │   │   ├── user.ts
+│   │   │   └── payment.ts
+│   │   └── middleware/
+│   │       └── jwt.ts
+│   └── tests/
+│       ├── auth.test.ts
+│       └── payment.test.ts
+│
+├── acme-web/                           # 前端 repo（React + Vite）
+│   ├── .codegraph → tGD/.codegraph
+│   ├── tGD/
+│   │   ├── .codegraph/
+│   │   └── .understand-anything/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── LoginForm.tsx           # ← user-auth 功能
+│   │   │   ├── PaymentForm.tsx         # ← payment-flow 功能
+│   │   │   └── Dashboard.tsx
+│   │   └── pages/
+│   │       ├── login.tsx
+│   │       └── checkout.tsx
+│   └── tests/
+│       ├── LoginForm.test.tsx
+│       └── PaymentForm.test.tsx
+│
+└── acme-tGD/                           # ← $TGD_DIR（同層級）
+    ├── CONTEXT.md                      # Repo inventory: acme-api, acme-web
+    ├── CHANGELOG.md
+    │   # v1.0.0 - user-auth shipped
+    │   # v1.1.0 - payment-flow shipped
+    │
+    ├── .scans/
+    │   ├── acme-api/
+    │   │   ├── .codegraph/
+    │   │   └── .understand-anything/
+    │   └── acme-web/
+    │       ├── .codegraph/
+    │       └── .understand-anything/
+    │
+    ├── user-auth/                      # Feature 1：已交付 ✅
+    │   ├── PRD.md                      # 「使用者需要登入」
+    │   ├── SPEC.md                     # 後端：JWT + bcrypt / 前端：LoginForm
+    │   ├── DESIGN.md                   # 登入頁面設計
+    │   ├── prototype/
+    │   │   ├── variant-a.html          # 簡約登入表單
+    │   │   └── variant-b.html          # 含社群登入按鈕
+    │   ├── TASKS.md                    # 5 個任務，全部完成
+    │   ├── REVIEW.md                   # 通過：87% 覆蓋率
+    │   └── decisions/
+    │       └── ADR-001-use-jwt.md      # 為什麼選 JWT 而不是 session
+    │
+    └── payment-flow/                   # Feature 2：規劃中 🚧
+        ├── PRD.md                      # 「使用者需要付款」
+        ├── SPEC.md                     # 後端：Stripe API / 前端：PaymentForm
+        ├── DESIGN.md                   # 結帳頁面設計
+        ├── prototype/
+        │   ├── variant-a.html          # 單頁結帳
+        │   └── variant-b.html          # 多步驟結帳
+        └── TASKS.md                    # 8 個任務，尚未開始
+```
+
+**你看到的：**
+- **2 個 code repo**（acme-api、acme-web）+ **1 個 tGD repo**（acme-tGD）同層級
+- **2 個 feature**：`user-auth`（已交付）和 `payment-flow`（規劃中）
+- **每個 feature** 有自己的 PRD、SPEC、DESIGN、prototype、TASKS、REVIEW、decisions
+- **SPEC.md** 和 **TASKS.md** 用 repo 名稱標記（如 `[acme-api]`、`[acme-web]`）
+- **Code repo** 保持乾淨 — 只有 `tGD/` symlink 資料夾 + `src/` + `tests/`
+- **CHANGELOG.md** 記錄跨所有 feature 的統一版本歷史
+
 #### 階段 → 產出對應
 
 | 階段 | 指令 | 產出 | 位置 |

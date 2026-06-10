@@ -380,7 +380,91 @@ workspace/
             └── ADR-001.md
 ```
 
-#### フェーズ → アーティファクト対応表
+#### 例：マルチリポジトリ × マルチフィーチャーの完全なワークスペース
+
+Expressバックエンド + ReactフロントエンドのSaaSアプリで、2つのフィーチャーが異なる段階にある実際のワークスペース：
+
+```
+workspace/
+├── acme-api/                           # バックエンドリポジトリ（Express + Prisma）
+│   ├── .codegraph → tGD/.codegraph
+│   ├── tGD/
+│   │   ├── .codegraph/
+│   │   └── .understand-anything/
+│   ├── src/
+│   │   ├── routes/
+│   │   │   ├── auth.ts                 # ← user-authフィーチャー
+│   │   │   ├── payment.ts              # ← payment-flowフィーチャー
+│   │   │   └── health.ts
+│   │   ├── models/
+│   │   │   ├── user.ts
+│   │   │   └── payment.ts
+│   │   └── middleware/
+│   │       └── jwt.ts
+│   └── tests/
+│       ├── auth.test.ts
+│       └── payment.test.ts
+│
+├── acme-web/                           # フロントエンドリポジトリ（React + Vite）
+│   ├── .codegraph → tGD/.codegraph
+│   ├── tGD/
+│   │   ├── .codegraph/
+│   │   └── .understand-anything/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── LoginForm.tsx           # ← user-authフィーチャー
+│   │   │   ├── PaymentForm.tsx         # ← payment-flowフィーチャー
+│   │   │   └── Dashboard.tsx
+│   │   └── pages/
+│   │       ├── login.tsx
+│   │       └── checkout.tsx
+│   └── tests/
+│       ├── LoginForm.test.tsx
+│       └── PaymentForm.test.tsx
+│
+└── acme-tGD/                           # ← $TGD_DIR（兄弟ディレクトリ）
+    ├── CONTEXT.md                      # Repo一覧: acme-api, acme-web
+    ├── CHANGELOG.md
+    │   # v1.0.0 - user-auth shipped
+    │   # v1.1.0 - payment-flow shipped
+    │
+    ├── .scans/
+    │   ├── acme-api/
+    │   │   ├── .codegraph/
+    │   │   └── .understand-anything/
+    │   └── acme-web/
+    │       ├── .codegraph/
+    │       └── .understand-anything/
+    │
+    ├── user-auth/                      # フィーチャー1：出荷済み ✅
+    │   ├── PRD.md                      # 「ユーザーはログインが必要」
+    │   ├── SPEC.md                     # バックエンド: JWT + bcrypt / フロントエンド: LoginForm
+    │   ├── DESIGN.md                   # ログインページデザイン
+    │   ├── prototype/
+    │   │   ├── variant-a.html          # ミニマルログインフォーム
+    │   │   └── variant-b.html          # ソーシャルログイン付き
+    │   ├── TASKS.md                    # 5タスク、すべて完了
+    │   ├── REVIEW.md                   # 合格：カバレッジ87%
+    │   └── decisions/
+    │       └── ADR-001-use-jwt.md      # セッションではなくJWTを選んだ理由
+    │
+    └── payment-flow/                   # フィーチャー2：計画中 🚧
+        ├── PRD.md                      # 「ユーザーは支払いが必要」
+        ├── SPEC.md                     # バックエンド: Stripe API / フロントエンド: PaymentForm
+        ├── DESIGN.md                   # チェックアウトページデザイン
+        ├── prototype/
+        │   ├── variant-a.html          # ワンページチェックアウト
+        │   └── variant-b.html          # マルチステップチェックアウト
+        └── TASKS.md                    # 8タスク、未着手
+```
+
+**見えるもの：**
+- **2つのコードリポジトリ**（acme-api、acme-web）+ **1つのtGDリポジトリ**（acme-tGD）が兄弟構造
+- **2つのフィーチャー**：`user-auth`（出荷済み）と`payment-flow`（計画中）
+- **各フィーチャー**がPRD、SPEC、DESIGN、prototype、TASKS、REVIEW、decisionsを個別に持つ
+- **SPEC.md**と**TASKS.md**はリポジトリ名でタグ付け（例：`[acme-api]`、`[acme-web]`）
+- **コードリポジトリ**はクリーン — `tGD/`シンボリックリンクフォルダ + `src/` + `tests/`のみ
+- **CHANGELOG.md**は全フィーチャーにわたる統一バージョン履歴を記録
 
 | フェーズ | コマンド | アーティファクト | 場所 |
 |----------|----------|-----------------|------|
