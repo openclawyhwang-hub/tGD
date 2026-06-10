@@ -404,30 +404,41 @@ A: Yes! Edit the skill files in `skills/` to match your team's workflow.
 
 ### Runtime Output (generated during development)
 ```
-<your-project>/
-├── tGD/
-│   ├── map/                          ← /tgd-map output
-│   │   ├── CONTEXT.md                ← Project context (primary + additional repos)
-│   │   ├── .codegraph/               ← Symbol index (CodeGraph)
-│   │   └── .understand-anything/     ← Knowledge graph (mandatory)
-│   │
-│   ├── define/                       ← /tgd-define output (per feature)
-│   │   └── <feature-name>/           ← User picks from 3 options (e.g. jwt-auth)
-│   │       ├── PRD.md                ← Product requirements
-│   │       ├── SPEC.md               ← Technical spec
-│   │       ├── DESIGN.md             ← UI design (if applicable)
-│   │       └── prototype/            ← HTML mockups (if UI feature)
-│   │           ├── variant-a.html
-│   │           └── variant-b.html
-│   │
-│   └── plan/                         ← /tgd-plan output (per feature)
-│       └── <feature-name>/
-│           └── TASKS.md              ← Task breakdown (reads CONTEXT + PRD + SPEC)
+workspace/
+├── my-project/                         # Code repo
+│   ├── .codegraph → tGD/.codegraph     # symlink (CodeGraph)
+│   ├── tGD/
+│   │   ├── .codegraph/                 # Symbol index
+│   │   └── .understand-anything/       # Knowledge graph
+│   └── src/
+│
+├── my-project-frontend/                # Code repo (optional)
+│
+└── my-project-tGD/                     # ← $TGD_DIR (sibling, not inside)
+    ├── CONTEXT.md                      # Product-level context + repo inventory
+    ├── CHANGELOG.md                    # Unified version log
+    ├── .scans/                         # Centralized scan data
+    │   └── <repo>/
+    │       ├── .codegraph/
+    │       └── .understand-anything/
+    │
+    └── <feature-name>/                 # Feature-first: one folder per feature
+        ├── PRD.md                      # Product requirements
+        ├── SPEC.md                     # Technical spec (tagged by repo)
+        ├── DESIGN.md                   # UI design (if applicable)
+        ├── prototype/                  # HTML mockups (if UI)
+        │   ├── variant-a.html
+        │   └── variant-b.html
+        ├── TASKS.md                    # BDD tasks (tagged by repo)
+        ├── REVIEW.md                   # Code review report
+        └── decisions/                  # ADRs (any phase)
+            └── ADR-001.md
 ```
 
 **Notes:**
-- `/tgd-develop` works in git worktree (no tGD/ output)
-- `/tgd-verify`, `/tgd-review`, `/tgd-ship` produce validation results, not persistent files
+- `$TGD_DIR` — environment variable pointing to the tGD folder
+- Feature branches: both tGD and code repos create `feature/<name>`
+- SPEC.md / TASKS.md tag items by repo name for multi-repo projects
 
 ### Repo Contents
 ```

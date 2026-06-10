@@ -339,30 +339,41 @@ A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Pl
 
 ### Laufzeitausgabe (wird während der Entwicklung generiert)
 ```
-<your-project>/
-├── tGD/
-│   ├── map/                          ← /tgd-map Ausgabe
-│   │   ├── CONTEXT.md                ← Projektkontext (Haupt- + zusätzliche Repos)
-│   │   ├── .codegraph/               ← Symbolindex (CodeGraph)
-│   │   └── .understand-anything/     ← Wissensgraph (obligatorisch)
-│   │
-│   ├── define/                       ← /tgd-define Ausgabe (pro Feature)
-│   │   └── <feature-name>/           ← Benutzer wählt aus 3 Optionen (z.B. jwt-auth)
-│   │       ├── PRD.md                ← Produktanforderungen
-│   │       ├── SPEC.md               ← Technische Spezifikation
-│   │       ├── DESIGN.md             ← UI-Design (falls zutreffend)
-│   │       └── prototype/            ← HTML-Mockups (bei UI-Features)
-│   │           ├── variant-a.html
-│   │           └── variant-b.html
-│   │
-│   └── plan/                         ← /tgd-plan Ausgabe (pro Feature)
-│       └── <feature-name>/
-│           └── TASKS.md              ← Aufgabenzerlegung (liest CONTEXT + PRD + SPEC)
+workspace/
+├── my-project/                         # Code-Repository
+│   ├── .codegraph → tGD/.codegraph     # Symlink (CodeGraph)
+│   ├── tGD/
+│   │   ├── .codegraph/                 # Symbolindex
+│   │   └── .understand-anything/       # Wissensgraph
+│   └── src/
+│
+├── my-project-frontend/                # Code-Repository (optional)
+│
+└── my-project-tGD/                     # ← $TGD_DIR (Geschwister-Repo)
+    ├── CONTEXT.md                      # Produktkontext + Repo-Inventar
+    ├── CHANGELOG.md                    # Einheitliches Versionsprotokoll
+    ├── .scans/                         # Zentralisierte Scan-Daten
+    │   └── <repo>/
+    │       ├── .codegraph/
+    │       └── .understand-anything/
+    │
+    └── <feature-name>/                 # Feature-first: ein Ordner pro Feature
+        ├── PRD.md                      # Produktanforderungen
+        ├── SPEC.md                     # Technische Spezifikation (Repo-getaggt)
+        ├── DESIGN.md                   # UI-Design (falls zutreffend)
+        ├── prototype/                  # HTML-Mockups (bei UI)
+        │   ├── variant-a.html
+        │   └── variant-b.html
+        ├── TASKS.md                    # BDD-Aufgaben (Repo-getaggt)
+        ├── REVIEW.md                   # Code-Review-Bericht
+        └── decisions/                  # ADRs (beliebige Phase)
+            └── ADR-001.md
 ```
 
 **Hinweise:**
-- `/tgd-develop` arbeitet in einem Git Worktree (keine tGD/ Ausgabe)
-- `/tgd-verify`, `/tgd-review`, `/tgd-ship` erzeugen Validierungsergebnisse, keine persistenten Dateien
+- `$TGD_DIR` — Umgebungsvariable zum tGD-Ordner
+- Feature-Branches: sowohl tGD- als auch Code-Repo erstellen `feature/<name>`
+- SPEC.md / TASKS.md verwenden Repo-Namen als Tags für Multi-Projekte
 
 ### Repository-Inhalt
 ```
