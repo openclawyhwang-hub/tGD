@@ -1180,7 +1180,7 @@
                     <div class="pipeline-step-num">STEP 04</div>
                     <div class="pipeline-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
                     <div class="pipeline-step-info">
-                        <div class="pipeline-label">BUILD</div>
+                        <div class="pipeline-label">DEVELOP</div>
                         <div class="pipeline-cmd">/tgd-develop</div>
                         <div class="pipeline-output"><code>Code</code> + <code>Tests</code></div>
                     </div>
@@ -1497,7 +1497,7 @@
     </section>
 
     <div class="divider"></div>
-
+    <!-- Project Structure -->
     <section id="structure">
         <div class="container">
             <h2 class="fade-in"><span data-lang="en">Project Structure</span><span data-lang="zh">專案結構</span>
@@ -1530,6 +1530,54 @@
   <span class="file">tgd</span>                     <span class="desc"># CLI entry point</span>
   <span class="file">AGENTS.md</span>              <span class="desc"># Agent instructions</span>
   <span class="file">README.md</span>              <span class="desc"># Full documentation</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Output Structure -->
+    <section id="output-structure">
+        <div class="container">
+            <h2 class="fade-in"><span data-lang="en">Output Structure</span><span data-lang="zh">產出結構</span>
+                <span data-lang="ja">出力構造</span>
+                <span data-lang="de">Ausgabestruktur</span></h2>
+            <p class="section-subtitle fade-in"><span data-lang="en">tGD is a sibling to your project repos. Feature-first, not phase-first.</span><span data-lang="zh">tGD 是專案 repo 的同層級目錄。以功能為單位，不是以階段。</span>
+                <span data-lang="ja">tGDはプロジェクトrepoの兄弟ディレクトリ。フェーズではなく機能単位。</span>
+                <span data-lang="de">tGD ist ein Geschwister-Repo. Feature-first, nicht Phase-first.</span></p>
+
+            <div class="fade-in" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                <div>
+                    <h4 style="color:var(--accent);margin-bottom:8px;font-size:14px"><span data-lang="en">🗂️ Workspace</span><span data-lang="zh">🗂️ 工作區</span><span data-lang="ja">🗂️ ワークスペース</span><span data-lang="de">🗂️ Workspace</span></h4>
+                    <div class="code-block tree-block" style="font-size:13px">
+<span class="dir">workspace/</span>
+├── <span class="dir">my-project/</span>              <span class="desc"># Code repo</span>
+│   ├── <span class="file">.codegraph → tGD/</span>     <span class="desc"># symlink</span>
+│   ├── <span class="dir">tGD/</span>                  <span class="desc"># scan data</span>
+│   └── <span class="dir">src/</span>
+├── <span class="dir">my-project-frontend/</span>     <span class="desc"># Code repo</span>
+│
+└── <span class="dir">my-project-tGD/</span>          <span class="desc"># ← $TGD_DIR (sibling)</span>
+    ├── <span class="file">CONTEXT.md</span>             <span class="desc"># Product-level</span>
+    ├── <span class="file">CHANGELOG.md</span>           <span class="desc"># Unified version</span>
+    └── <span class="dir">.scans/</span>               <span class="desc"># Centralized data</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="color:var(--accent);margin-bottom:8px;font-size:14px"><span data-lang="en">📁 Feature Folder</span><span data-lang="zh">📁 功能資料夾</span><span data-lang="ja">📁 フィーチャーフォルダ</span><span data-lang="de">📁 Feature-Ordner</span></h4>
+                    <div class="code-block tree-block" style="font-size:13px">
+<span class="dir">$TGD_DIR/</span>
+└── <span class="dir">&lt;feature-name&gt;/</span>         <span class="desc"># Feature-first</span>
+    ├── <span class="file">PRD.md</span>                 <span class="desc"># What & Why</span>
+    ├── <span class="file">SPEC.md</span>                <span class="desc"># How (tagged by repo)</span>
+    ├── <span class="file">DESIGN.md</span>              <span class="desc"># UI (if applicable)</span>
+    ├── <span class="dir">prototype/</span>             <span class="desc"># HTML mockups</span>
+    ├── <span class="file">TASKS.md</span>               <span class="desc"># BDD tasks (tagged)</span>
+    ├── <span class="file">REVIEW.md</span>              <span class="desc"># Code review</span>
+    └── <span class="dir">decisions/</span>             <span class="desc"># ADRs (any phase)</span>
+        └── <span class="file">ADR-001.md</span>
+                    </div>
                 </div>
             </div>
         </div>
