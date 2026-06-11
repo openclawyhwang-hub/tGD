@@ -80,6 +80,13 @@ if [[ "$MODE" == "uninstall" ]]; then
         echo "   🗑️  Removing Codex skills/tGD: $HOME/.codex/skills/tGD"
         rm -f "$HOME/.codex/skills/tGD"
     fi
+    # Remove OpenCode/Gemini/Pi top-level skills/tGD symlinks
+    for dir in "$HOME/.config/opencode/skills" "$HOME/.gemini/skills" "$HOME/.pi/agent/skills"; do
+        if [[ -L "$dir/tGD" ]]; then
+            echo "   🗑️  Removing $dir/tGD"
+            rm -f "$dir/tGD"
+        fi
+    done
 
     # Remove Pi instructions
     if [[ -L "$HOME/.pi/agent/instructions.md" ]]; then
@@ -352,6 +359,15 @@ if command -v opencode &> /dev/null; then
         ln -sf "$cmd" ~/.config/opencode/commands/$cmd_name 2>/dev/null || true
     done
     echo "   ✅ Commands linked (7 tgd-* commands)."
+    # Link skills for auto-detection (agent can find skills by name)
+    if [ -d "$TGD_DIR/skills" ]; then
+        mkdir -p ~/.config/opencode/skills
+        if [ -d "$HOME/.config/opencode/skills/tGD" ] && [ ! -L "$HOME/.config/opencode/skills/tGD" ]; then
+            rm -rf "$HOME/.config/opencode/skills/tGD"
+        fi
+        ln -sf "$TGD_DIR/skills" ~/.config/opencode/skills/tGD 2>/dev/null || true
+        echo "   ✅ Skills linked for auto-detection."
+    fi
     # Install plugins (hooks)
     if [ -d "$TGD_DIR/.opencode/plugins" ]; then
         mkdir -p ~/.config/opencode/plugins
@@ -443,6 +459,15 @@ if command -v gemini &> /dev/null; then
         mkdir -p ~/.gemini/commands
         ln -sf "$TGD_DIR/.gemini/commands"/* ~/.gemini/commands/ 2>/dev/null || true
         echo "   ✅ Commands linked."
+    fi
+    # Link skills for auto-detection
+    if [ -d "$TGD_DIR/skills" ]; then
+        mkdir -p ~/.gemini/skills
+        if [ -d "$HOME/.gemini/skills/tGD" ] && [ ! -L "$HOME/.gemini/skills/tGD" ]; then
+            rm -rf "$HOME/.gemini/skills/tGD"
+        fi
+        ln -sf "$TGD_DIR/skills" ~/.gemini/skills/tGD 2>/dev/null || true
+        echo "   ✅ Skills linked for auto-detection."
     fi
     # Install hooks (Gemini uses flat format, different from Claude Code/Codex nested format)
     if [ -f "$TGD_DIR/.gemini/settings.json" ]; then
@@ -643,6 +668,15 @@ if command -v pi &> /dev/null; then
     if [ -f "$TGD_DIR/.pi/instructions.md" ]; then
         ln -sf "$TGD_DIR/.pi/instructions.md" "$HOME/.pi/agent/instructions.md" 2>/dev/null || true
         echo "   ✅ Instructions installed to ~/.pi/agent/instructions.md"
+    fi
+    # Link skills for auto-detection
+    if [ -d "$TGD_DIR/skills" ]; then
+        mkdir -p "$HOME/.pi/agent/skills"
+        if [ -d "$HOME/.pi/agent/skills/tGD" ] && [ ! -L "$HOME/.pi/agent/skills/tGD" ]; then
+            rm -rf "$HOME/.pi/agent/skills/tGD"
+        fi
+        ln -sf "$TGD_DIR/skills" "$HOME/.pi/agent/skills/tGD" 2>/dev/null || true
+        echo "   ✅ Skills linked for auto-detection."
     fi
 else
     echo "   ℹ️  Pi Coding Agent not detected — skip extension install."
