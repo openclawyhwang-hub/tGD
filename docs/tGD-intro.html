@@ -167,10 +167,16 @@ Agent: Scanning project...
     │   - Data models
     │   - Error handling
     │   - Test strategy
-    └── DESIGN.md      ← (optional) UI Design
-        - Component tree
-        - Visual specs
-        - Responsive rules</pre>
+    ├── DESIGN.md      ← (optional) UI Design
+    │   - Component tree
+    │   - Visual specs
+    │   - Responsive rules
+    └── prototype/     ← (optional) HTML mockups
+        ├── variant-a.html
+        └── variant-b.html
+
+<span style="color:var(--text-3)">Sign-off:</span>
+  - [ ] <b>PM</b>: (pending)</pre>
         </div>
       </div>
     </div>
@@ -211,24 +217,22 @@ Agent: Scanning project...
           <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>Output Structure</span></div>
 <pre>$TGD_DIR/
 └── &lt;feature-name&gt;/
-    └── TASKS.md       ← Task breakdown
+    └── TASKS.md       ← Task breakdown (BDD)
         ## Task 1: Setup auth middleware
-        - Acceptance: JWT validation works
+        - Given valid JWT → When API call → Then 200  [R]
         - Files: src/middleware/auth.ts
         - Tests: tests/auth.test.ts
 
-        ## Task 2: User model
-        - Acceptance: CRUD operations
-        - Files: src/models/user.ts
-        - Tests: tests/user.test.ts
-
-        ## Task 3: Login endpoint
-        - Acceptance: POST /api/login
+        ## Task 2: Login endpoint
+        - Given valid creds → When POST /login → Then 200 + token  [R]
+        - Given wrong pwd → When POST /login → Then 401  [R]
         - Files: src/routes/auth.ts
         - Tests: tests/login.test.ts
 
-        ## Checkpoint: Integration test
-        ## Checkpoint: E2E test</pre>
+<span style="color:var(--text-3)">[R] = regression marker (acceptance-level test)</span>
+
+<span style="color:var(--text-3)">Sign-off:</span>
+  - [ ] <b>DEV</b>: (pending)</pre>
         </div>
       </div>
     </div>
@@ -320,20 +324,24 @@ Agent: Scanning project...
         <h4 style="color:var(--accent);margin-bottom:8px">📦 Output</h4>
         <div class="terminal">
           <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>Output Structure</span></div>
-<pre>Code Repo: my-project/
-└── tests/
-    ├── auth.test.ts        ← Unit tests pass ✓
-    ├── login.test.ts       ← Integration tests pass ✓
-    └── e2e/
-        └── auth-flow.spec.ts ← E2E tests pass ✓
+<pre>$TGD_DIR/
+└── &lt;feature-name&gt;/
+    └── TEST-REPORT.md    ← Auto-generated test results
+        ## Summary
+        Total: 12  Passed: 12  Failed: 0
+        Regression: 5/5 ✓
 
-## Browser Evidence
-- screenshot-001.png
-- screenshot-002.png
+        ## All Test Cases
+        [R] test_valid_jwt         ✅
+        [R] test_valid_login       ✅
+        [R] test_wrong_password    ✅
+        test_empty_password        ✅
+        ...
 
-## Fixes Applied
-- auth.ts: added empty password check
-- user.ts: fixed null email edge case</pre>
+<span style="color:var(--text-3)">Code Repo:</span> tests/ (all passing)
+
+<span style="color:var(--text-3)">Sign-off:</span>
+  - [ ] <b>QA</b>: (pending)</pre>
         </div>
         <div style="margin-top:12px;padding:12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:8px;font-size:13px">
           <b style="color:#ef4444">🚫 Hard Gate Rule:</b> <span style="color:var(--text-2)">If ANY test fails, the pipeline stops. No merge, no ship, no exceptions.</span>
@@ -390,7 +398,11 @@ Agent: Scanning project...
         - [LOW] user.ts: unused import
 
         ## Recommendation
-        Fix rate limit, then ready to ship.</pre>
+        Fix rate limit, then ready to ship.
+
+<span style="color:var(--text-3)">Sign-off:</span>
+  - [ ] <b>QA</b>: (pending)
+  - [ ] <b>DEV</b>: (pending)</pre>
         </div>
       </div>
     </div>
@@ -436,14 +448,16 @@ Agent: Scanning project...
 └── &lt;feature-name&gt;/
     └── decisions/
         └── ADR.md       ← Architecture Decision
-            - Context
-            - Decision
-            - Consequences
+
+<span style="color:var(--text-3)">Ship Gate (all must be [x]):</span>
+  PRD.md        → - [x] PM ✓
+  TASKS.md      → - [x] DEV ✓
+  TEST-REPORT   → - [x] QA ✓ (regression 5/5)
+  REVIEW.md     → - [x] QA + DEV ✓
 
 <span style="color:var(--text-3)">Git:</span>
   feat(auth): add JWT middleware
-  test(auth): add integration tests
-  docs(auth): add ADR for JWT choice</pre>
+  test(auth): add integration tests</pre>
         </div>
       </div>
     </div>
