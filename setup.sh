@@ -24,6 +24,21 @@ fi
 
 TGD_DIR="$(cd "$(dirname "$0")" && pwd)"
 
+# ─── Prerequisite checks ─────────────────────────────────────────────────────
+missing_deps=()
+command -v git &> /dev/null || missing_deps+=("git")
+command -v node &> /dev/null || missing_deps+=("node (Node.js >= 22)")
+command -v python3 &> /dev/null || missing_deps+=("python3")
+if [ ${#missing_deps[@]} -gt 0 ]; then
+    echo "❌ Missing required dependencies:"
+    for dep in "${missing_deps[@]}"; do
+        echo "   • $dep"
+    done
+    echo ""
+    echo "Install them and re-run: bash setup.sh"
+    exit 1
+fi
+
 # ─── Uninstall mode ──────────────────────────────────────────────────────────
 if [[ "$MODE" == "uninstall" ]]; then
     echo "🗑️  tGD Uninstall — Removing all deployments..."
@@ -198,7 +213,7 @@ PYEOF
     fi
 
     # 3. Remove Understand-Anything links
-    for dir in "$HOME/.claude/skills" "$HOME/.codex/skills" "$HOME/.config/opencode/skills" "$HOME/.gemini/skills" "$HOME/.pi/agent/skills"; do
+    for dir in "$HOME/.claude/skills" "$HOME/.agents/skills" "$HOME/.codex/skills" "$HOME/.config/opencode/skills" "$HOME/.gemini/skills" "$HOME/.pi/agent/skills"; do
         if [[ -d "$dir" ]]; then
             for link in "$dir"/understand*; do
                 if [[ -L "$link" ]] && readlink "$link" 2>/dev/null | grep -q "understand-anything"; then
@@ -336,7 +351,7 @@ if command -v opencode &> /dev/null; then
         cmd_name=$(basename "$cmd")
         ln -sf "$cmd" ~/.config/opencode/commands/$cmd_name 2>/dev/null || true
     done
-    echo "   ✅ Commands linked (8 tgd-* commands)."
+    echo "   ✅ Commands linked (7 tgd-* commands)."
     # Install plugins (hooks)
     if [ -d "$TGD_DIR/.opencode/plugins" ]; then
         mkdir -p ~/.config/opencode/plugins
@@ -365,7 +380,7 @@ if command -v claude &> /dev/null; then
         if [ -d "$TGD_DIR/.claude/commands" ]; then
             mkdir -p ~/.claude/commands
             ln -sf "$TGD_DIR/.claude/commands"/* ~/.claude/commands/ 2>/dev/null || true
-            echo "   ✅ Commands linked (8 tgd-* slash commands)."
+            echo "   ✅ Commands linked (7 tgd-* slash commands)."
         fi
 
         # Install hooks into settings.json (resolve paths to absolute)
@@ -545,7 +560,7 @@ if command -v codex &> /dev/null; then
     if [ -d "$TGD_DIR/.codex/prompts" ]; then
         mkdir -p ~/.codex/prompts
         ln -sf "$TGD_DIR/.codex/prompts"/* ~/.codex/prompts/ 2>/dev/null || true
-        echo "   ✅ Prompts linked (8 tgd-* commands)."
+        echo "   ✅ Prompts linked (7 tgd-* commands)."
     fi
     # Install hooks (Codex only reads ~/.codex/hooks.json — plugin-local hooks don't work)
     if [ -f "$TGD_DIR/hooks/hooks.json" ]; then
@@ -647,44 +662,47 @@ else
     fi
 fi
 
+# ─── Install UA dependencies (subshell-safe: cd won't leak) ──────────────────
+install_ua_deps() {
+    local ua_dir="$1"
+    if [ -d "$ua_dir/node_modules" ]; then
+        echo "   ✅ UA dependencies already installed."
+        return 0
+    fi
+    if ! command -v pnpm &> /dev/null && ! command -v npm &> /dev/null; then
+        echo "   ⚠️  pnpm/npm not found. Skills work but scanning scripts won't run."
+        echo "      Install pnpm, then: cd vendor/understand-anything && pnpm install && pnpm build"
+        return 1
+    fi
+    # Install pnpm if missing
+    if ! command -v pnpm &> /dev/null; then
+        echo "   📥 pnpm not found. Installing via npm..."
+        npm install -g pnpm 2>/dev/null && echo "   ✅ pnpm installed." || { echo "   ⚠️  npm install -g pnpm failed. Install manually."; return 1; }
+    fi
+    echo "   📦 Installing UA dependencies (pnpm install)..."
+    # Subshell: cd won't affect the parent shell's cwd
+    (cd "$ua_dir" && pnpm install --frozen-lockfile) && echo "   ✅ Dependencies installed." || {
+        echo "   ⚠️  pnpm install failed. Last 5 lines:"
+        (cd "$ua_dir" && pnpm install --frozen-lockfile 2>&1 | tail -5)
+        echo "      Manual fix: cd vendor/understand-anything && pnpm install"
+        return 1
+    }
+    if [ -d "$ua_dir/node_modules" ]; then
+        echo "   🔨 Building UA (pnpm build)..."
+        (cd "$ua_dir" && pnpm build) && echo "   ✅ UA built successfully." || {
+            echo "   ⚠️  Build failed. Manual fix: cd vendor/understand-anything && pnpm build"
+            return 1
+        }
+    fi
+}
+
 # Understand-Anything (bundled in vendor/)
 echo "🧠 Checking Understand-Anything..."
 UA_DIR="$TGD_DIR/vendor/understand-anything"
 UA_SKILLS_DIR="$UA_DIR/understand-anything-plugin/skills"
 if [ -d "$UA_SKILLS_DIR" ]; then
     echo "   ✅ Understand-Anything skills ready."
-    # Auto-build if not yet compiled (needs pnpm + network)
-    if [ ! -d "$UA_DIR/node_modules" ]; then
-        if command -v pnpm &> /dev/null; then
-            echo "   📦 Installing UA dependencies (pnpm install)..."
-            cd "$UA_DIR" && pnpm install --frozen-lockfile 2>/dev/null && echo "   ✅ Dependencies installed." || echo "   ⚠️  pnpm install failed (network issue?). Run manually: cd vendor/understand-anything && pnpm install"
-            if [ -d "$UA_DIR/node_modules" ]; then
-                echo "   🔨 Building UA (pnpm build)..."
-                cd "$UA_DIR" && pnpm build 2>/dev/null && echo "   ✅ UA built successfully." || echo "   ⚠️  Build failed. Run manually: cd vendor/understand-anything && pnpm build"
-            fi
-            cd "$TGD_DIR"
-        elif command -v npm &> /dev/null; then
-            echo "   📥 pnpm not found. Installing via npm..."
-            npm install -g pnpm 2>/dev/null && echo "   ✅ pnpm installed." || echo "   ⚠️  npm install -g pnpm failed. Install manually."
-            if command -v pnpm &> /dev/null; then
-                echo "   📦 Installing UA dependencies (pnpm install)..."
-                cd "$UA_DIR" && pnpm install --frozen-lockfile 2>/dev/null && echo "   ✅ Dependencies installed." || echo "   ⚠️  pnpm install failed (network issue?). Run manually: cd vendor/understand-anything && pnpm install"
-                if [ -d "$UA_DIR/node_modules" ]; then
-                    echo "   🔨 Building UA (pnpm build)..."
-                    cd "$UA_DIR" && pnpm build 2>/dev/null && echo "   ✅ UA built successfully." || echo "   ⚠️  Build failed. Run manually: cd vendor/understand-anything && pnpm build"
-                fi
-                cd "$TGD_DIR"
-            else
-                echo "   ⚠️  pnpm install failed. Install manually: npm i -g pnpm"
-                echo "      Then run: cd vendor/understand-anything && pnpm install && pnpm build"
-            fi
-        else
-            echo "   ⚠️  pnpm/npm not found. Skills work but scanning scripts won't run."
-            echo "      Install pnpm, then: cd vendor/understand-anything && pnpm install && pnpm build"
-        fi
-    else
-        echo "   ✅ UA dependencies already installed."
-    fi
+    install_ua_deps "$UA_DIR"
 else
     echo "   ⚠️  Understand-Anything not found at vendor/understand-anything/"
     echo "      Re-clone tGD or manually download from: https://github.com/Lum1104/Understand-Anything"
@@ -692,6 +710,9 @@ fi
 
 # Link Understand-Anything skills to each platform
 if [ -d "$UA_SKILLS_DIR" ]; then
+    # Universal: ~/.agents/skills/understand (SKILL.md's primary fallback for plugin root resolution)
+    mkdir -p "$HOME/.agents/skills"
+    ln -sf "$UA_SKILLS_DIR/understand" "$HOME/.agents/skills/understand" 2>/dev/null && echo "   ✅ Universal: ~/.agents/skills/understand → symlink"
     # Claude Code: per-skill symlinks in ~/.claude/skills/
     if [ -d "$HOME/.claude" ] || [ -L "$HOME/.claude" ]; then
         for skill in "$UA_SKILLS_DIR"/*/; do
