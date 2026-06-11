@@ -9,7 +9,9 @@ import crypto from "crypto";
 // Generate a one-time token when the server process starts.
 // This token is printed to the terminal and must be in the URL
 // to fetch knowledge-graph.json or diff-overlay.json.
-const ACCESS_TOKEN = process.env.UNDERSTAND_ACCESS_TOKEN || crypto.randomBytes(16).toString("hex");
+// Set UNDERSTAND_NO_AUTH=1 to disable token check (local use only).
+const NO_AUTH = process.env.UNDERSTAND_NO_AUTH === "1";
+const ACCESS_TOKEN = NO_AUTH ? "" : (process.env.UNDERSTAND_ACCESS_TOKEN || crypto.randomBytes(16).toString("hex"));
 const MAX_SOURCE_FILE_BYTES = 1024 * 1024;
 
 function graphFileCandidates(fileName: string): string[] {
@@ -187,7 +189,7 @@ export default defineConfig({
   server: {
     host: "127.0.0.1",
     port: 5173,
-    open: `/?token=${ACCESS_TOKEN}`,
+    open: NO_AUTH ? `/` : `/?token=${ACCESS_TOKEN}`,
   },
 
   resolve: {
@@ -240,7 +242,7 @@ export default defineConfig({
           const address = server.httpServer?.address();
           const port = typeof address === "object" && address ? address.port : 5173;
           console.log(
-            `\n  🔑  Dashboard URL: http://127.0.0.1:${port}/?token=${ACCESS_TOKEN}\n`
+            `\n  🔑  Dashboard URL: http://127.0.0.1:${port}/${NO_AUTH ? "" : "?token=" + ACCESS_TOKEN}\n`
           );
         });
 
@@ -262,7 +264,8 @@ export default defineConfig({
 
           // FIX 3 — require the one-time token on all data endpoints.
           // Requests without a matching ?token= get a 403.
-          if (url.searchParams.get("token") !== ACCESS_TOKEN) {
+          // Skip if UNDERSTAND_NO_AUTH=1.
+          if (!NO_AUTH && url.searchParams.get("token") !== ACCESS_TOKEN) {
             sendJson(res, 403, { error: "Forbidden: missing or invalid token" });
             return;
           }
