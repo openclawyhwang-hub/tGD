@@ -311,6 +311,7 @@ tGD には3つの人間ロール。各artifact の下部に `## Sign-off` セク
 - Agent が artifact を生成 → 人間が自分のPCで審査 → `## Sign-off` を編集 → commit & push
 - Agent が次のフェーズ前に Sign-off チェックボックスをチェック（Gate 3）
 - Ship がハードゲート：必須 Sign-off が全て `[x]`
+- フォーマット：`- [x] **PM**: Approved — 日付 — コメント` または `- [x] **QA**: Rejected — 日付 — 理由`
 - 1人が複数ロールを兼任可能（小チームでは一般的）
 - 追加ツール不要 — git が協調メカニズム
 
