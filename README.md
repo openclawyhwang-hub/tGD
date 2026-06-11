@@ -368,9 +368,10 @@ tGD has three human roles. Each artifact has a `## Sign-off` section at the bott
 | **QA** | Test quality & coverage | TEST-REPORT, test quality | TEST-REPORT.md, REVIEW.md |
 
 **How it works:**
-- Agent produces artifact → human reviews on their own machine → edits `## Sign-off` in the artifact → commits & pushes
-- Agent checks Sign-off status before proceeding (Gate 3)
-- Ship is the hard gate: all required Sign-offs must be `✅`
+- Agent produces artifact → human reviews on their own machine → edits `## Sign-off` (checkbox format) → commits & pushes
+- Agent checks for `[x]` in required role lines before proceeding (Gate 3)
+- Ship is the hard gate: all required Sign-offs must be `[x]`
+- Approve: `- [x] **PM**: Approved — date — comment`
 - One person can hold multiple roles (common in small teams)
 - No extra tooling needed — git is the coordination mechanism
 

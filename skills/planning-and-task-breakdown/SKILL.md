@@ -107,9 +107,7 @@ Before writing any code, operate in read-only mode to gather context from all av
 ✅ Lint clean
 
 ## Sign-off
-| Role | Reviewer | Status | Date | Comments |
-|------|----------|--------|------|----------|
-| DEV | | ⏳ | | |
+- [ ] **DEV**: (pending)
 ```
 
 ### Step 2: Identify the Dependency Graph

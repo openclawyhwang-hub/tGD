@@ -382,8 +382,8 @@ tGD 有三個角色。每個 artifact 底部都有 `## Sign-off` 區塊：
 
 **運作方式：**
 - Agent 產出 artifact → 人類在自己的電腦上審查 → 編輯 artifact 裡的 `## Sign-off` → commit & push
-- Agent 在進入下一階段前檢查 Sign-off 狀態（Gate 3）
-- Ship 是硬門檻：所有必要 Sign-offs 必須為 `✅`
+- Agent 在進入下一階段前檢查 Sign-off checkbox（Gate 3）
+- Ship 是硬門檻：所有必要 Sign-offs 必須為 `[x]`
 - 一人可兼多角（小團隊常見）
 - 不需要額外工具 — git 就是協調機制
 

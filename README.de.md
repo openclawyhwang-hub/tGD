@@ -309,8 +309,8 @@ tGD hat drei menschliche Rollen. Jedes Artifact hat einen `## Sign-off`-Bereich 
 
 **So funktioniert es:**
 - Agent produziert Artifact → Mensch prüft auf eigenem Rechner → bearbeitet `## Sign-off` im Artifact → commit & push
-- Agent prüft Sign-off-Status vor dem nächsten Schritt (Gate 3)
-- Ship ist das harte Gate: alle erforderlichen Sign-offs müssen `✅` sein
+- Agent prüft Sign-off-Checkboxen vor dem nächsten Schritt (Gate 3)
+- Ship ist das harte Gate: alle erforderlichen Sign-offs müssen `[x]` sein
 - Eine Person kann mehrere Rollen haben (bei kleinen Teams üblich)
 - Kein zusätzliches Werkzeug nötig — git ist der Koordinationsmechanismus
 

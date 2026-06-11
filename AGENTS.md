@@ -143,10 +143,11 @@ tGD has three human roles. Each artifact has a `## Sign-off` section at the bott
 | **QA** | Test quality & coverage | Verify (TEST-REPORT.md), Review (REVIEW.md) |
 
 **Sign-off rules:**
-- Each role only modifies their own row in the `## Sign-off` section
-- Status: `⏳ Pending` → `✅ Approved` or `❌ Rejected (reason)`
-- Agent checks Sign-off before proceeding (Gate 3)
-- Ship is the hard gate: all required Sign-offs must be `✅`
+- Each role only modifies their own checkbox line in the `## Sign-off` section
+- Approve: `- [x] **PM**: Approved — YYYY-MM-DD — comment`
+- Reject: `- [x] **PM**: Rejected — YYYY-MM-DD — reason`
+- Agent checks for `[x]` in required role lines before proceeding (Gate 3)
+- Ship is the hard gate: all required Sign-offs must be `[x]`
 - One person can hold multiple roles (common in small teams)
 
 **Async workflow:** Agent runs all phases but blocks at Ship until sign-offs are complete. Humans review on their own schedule — no real-time blocking.
