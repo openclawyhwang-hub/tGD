@@ -16,7 +16,7 @@ Steps:
 4. Decompose into small, verifiable tasks with acceptance criteria.
 5. Order by dependencies.
 6. Write `$TGD_DIR/<feature-name>/TASKS.md`.
-5. **🔗 Mandatory: Jira Integration Gate** → After TASKS.md is generated, check Jira config:
+7. **🔗 Jira Integration Gate** → IMMEDIATELY after TASKS.md is written (before verification):
    - Check env vars: `JIRA_URL`, `JIRA_PROJECT`, `JIRA_TOKEN`.
    - **If ALL configured:** Run `jira-auto-sync` **automatically**. Do NOT ask, do NOT skip.
      1. Discover Issue Types & Required Fields.

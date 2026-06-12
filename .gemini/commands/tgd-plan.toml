@@ -33,9 +33,7 @@ Each task should be implementable in isolation with clear success criteria. Orde
 
 **If UI feature:** Read `DESIGN.md` to understand Component Tree, Design Tokens, Responsive Breakpoints, and Interaction Patterns. Use these to inform task breakdown.
 
-After completing the plan, verify the outputs.
-
-**🔗 Mandatory: Jira Integration Gate** → After TASKS.md is generated, check Jira configuration:
+**🔗 Step N: Jira Integration Gate** → IMMEDIATELY after TASKS.md is written (before verification):
 1. Check env vars: `JIRA_URL`, `JIRA_PROJECT`, `JIRA_TOKEN`.
 2. **If ALL configured:** Run the `jira-auto-sync` skill **automatically**. Do NOT ask, do NOT skip.
    - Discover Issue Types & Required Fields.
