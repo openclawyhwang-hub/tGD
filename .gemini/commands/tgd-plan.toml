@@ -33,17 +33,23 @@ Each task should be implementable in isolation with clear success criteria. Orde
 
 **If UI feature:** Read `DESIGN.md` to understand Component Tree, Design Tokens, Responsive Breakpoints, and Interaction Patterns. Use these to inform task breakdown.
 
-**🔗 Step N: Jira Integration Gate** → IMMEDIATELY after TASKS.md is written (before verification):
+**🔗 Jira Integration Gate** → IMMEDIATELY after TASKS.md is written. Do NOT skip this step.
 1. Check env vars: `JIRA_URL`, `JIRA_PROJECT`, `JIRA_TOKEN`.
-2. **If ALL configured:** Run the `jira-auto-sync` skill **automatically**. Do NOT ask, do NOT skip.
-   - Discover Issue Types & Required Fields.
-   - Parse `$TGD_DIR/<feature-name>/TASKS.md` and create issues via Jira REST API v2.
-   - Report created issue keys (e.g., `ENG-1234`).
-   - Add issue keys to TASKS.md tasks as `[ENG-1234]`.
-3. **If NOT configured:** 🛑 STOP. Tell user: "Jira is not configured. Set `JIRA_URL`, `JIRA_PROJECT`, and `JIRA_TOKEN` environment variables, then re-run `/tgd-plan`. Alternatively, run `jira-auto-sync` skill manually to configure."
-   - **Do NOT proceed to verification until Jira is synced or user explicitly opts out with: `TGD_SKIP_JIRA=1`**
-
-**Verification Gate:**
+2. **If ALL configured:** Run the `jira-auto-sync` skill automatically. Do NOT ask.
+   - Parse TASKS.md, create issues, report keys (e.g., `ENG-1234`).
+   - Add issue keys back to TASKS.md tasks as `[ENG-1234]`.
+3. **If NOT configured:** Ask the user conversationally:
+   ```
+   📋 TASKS.md 已完成（N 個任務）。
+   🔗 要同步到 Jira 嗡？(y/n)
+   ```
+   - **If yes:** Ask for each missing value one at a time:
+     - `JIRA_URL`（例：https://jira.company.com）
+     - `JIRA_PROJECT`（例：ENG）
+     - `JIRA_TOKEN`（Personal Access Token）
+     Save to `$TGD_DIR/.env` for future runs. Then run `jira-auto-sync` skill.
+   - **If no:** Skip Jira, proceed to verification.
+4. **Verification Gate:**
 - [ ] `$TGD_DIR/<feature-name>/TASKS.md` exists and is non-empty
 - [ ] TASKS.md contains at least one task with Acceptance Criteria
 - [ ] If UI feature: TASKS.md references DESIGN.md components

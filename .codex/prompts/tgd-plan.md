@@ -16,15 +16,16 @@ Steps:
 4. Decompose into small, verifiable tasks with acceptance criteria.
 5. Order by dependencies.
 6. Write `$TGD_DIR/<feature-name>/TASKS.md`.
-7. **🔗 Jira Integration Gate** → IMMEDIATELY after TASKS.md is written (before verification):
+7. **🔗 Jira Integration Gate** → IMMEDIATELY after TASKS.md is written. Do NOT skip.
    - Check env vars: `JIRA_URL`, `JIRA_PROJECT`, `JIRA_TOKEN`.
-   - **If ALL configured:** Run `jira-auto-sync` **automatically**. Do NOT ask, do NOT skip.
-     1. Discover Issue Types & Required Fields.
-     2. Create issues via Jira REST API v2.
-     3. Report created issue keys.
-     4. Add issue keys to TASKS.md tasks as `[ENG-1234]`.
-   - **If NOT configured:** 🛑 STOP. "Jira is not configured. Set `JIRA_URL`, `JIRA_PROJECT`, `JIRA_TOKEN` env vars, then re-run `/tgd-plan`."
-     - **Do NOT proceed to verification until Jira is synced or user sets `TGD_SKIP_JIRA=1`**
+   - **If ALL configured:** Run `jira-auto-sync` automatically. Parse TASKS.md, create issues, report keys, add `[ENG-1234]` to TASKS.md.
+   - **If NOT configured:** Ask conversationally:
+     ```
+     📋 TASKS.md 已完成（N 個任務）。
+     🔗 要同步到 Jira 嗡？(y/n)
+     ```
+     - Yes → ask for JIRA_URL, JIRA_PROJECT, JIRA_TOKEN one at a time. Save to `$TGD_DIR/.env`. Then run `jira-auto-sync`.
+     - No → skip, proceed to verification.
 
 Verification Gate:
 - [ ] $TGD_DIR/<feature-name>/TASKS.md exists and is non-empty

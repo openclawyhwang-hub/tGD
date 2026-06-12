@@ -63,16 +63,19 @@ const tgdPrompts: Record<string, string> = {
 
   "tgd-plan":
     "Run the planning-and-task-breakdown skill. PLAN phase.\n\n" +
-    "Pre-flight:\n" +
-    "- Check $TGD_DIR/<feature>/SPEC.md exists. If missing, suggest /tgd-define first.\n" +
-    "- Check Jira config: JIRA_URL, JIRA_PROJECT, JIRA_TOKEN. If ALL set → mark JIRA_READY=true. If NOT set → STOP and tell user: \"Jira not configured. Set env vars or TGD_SKIP_JIRA=1 to skip.\" Do NOT proceed until resolved.\n\n" +
+    "Pre-flight: Check $TGD_DIR/<feature>/SPEC.md exists. If missing, suggest /tgd-define first.\n\n" +
     "Pipeline:\n" +
     "1. Read the existing SPEC.md (and DESIGN.md if UI)\n" +
     "2. If .codegraph/ exists, run codegraph impact on core symbols to assess blast radius\n" +
     "3. Break into small, verifiable tasks\n" +
     "4. Create TASKS.md with ordered checklist\n" +
-    "5. If JIRA_READY=true → run jira-auto-sync automatically (no ask, no skip). Report created issue keys and add them to TASKS.md.\n\n" +
-    "Verification: TASKS.md exists with acceptance criteria per task. Jira issues created (if configured).\n" +
+    "5. 🔗 Jira Integration Gate (IMMEDIATELY after TASKS.md, do NOT skip):\n" +
+    "   - Check JIRA_URL, JIRA_PROJECT, JIRA_TOKEN.\n" +
+    "   - If ALL set → run jira-auto-sync automatically. Report keys, add to TASKS.md.\n" +
+    "   - If NOT set → ask: \"📋 TASKS.md 已完成。🔗 要同步到 Jira 嗡？(y/n)\"\n" +
+    "     - Yes → ask for JIRA_URL, JIRA_PROJECT, JIRA_TOKEN one at a time. Save to $TGD_DIR/.env. Then run jira-auto-sync.\n" +
+    "     - No → skip.\n\n" +
+    "Verification: TASKS.md exists with acceptance criteria per task.\n" +
     "After completing, suggest: /tgd-develop",
 
   "tgd-develop":
