@@ -21,12 +21,12 @@ const tgdPrompts: Record<string, string> = {
     "Run the context-engineering skill. Analyze the current project: tech stack, architecture, dependencies, code organization, and existing patterns.\n\n" +
     "## Step 3: CodeGraph Setup\n\n" +
     "1. mkdir -p tGD/.scans/$(basename $(pwd))\n" +
-    "2. rm -rf .codegraph && ln -s $TGD_DIR/.codegraph .codegraph\n" +
+    "2. rm -rf .codegraph && ln -s $TGD_DIR/.scans/$(basename $(pwd))/.codegraph .codegraph\n" +
     "3. codegraph init -i\n\n" +
     "## Step 4: Understand-Anything (MANDATORY)\n\n" +
     "This step is required, not optional.\n\n" +
-    "1. rm -rf .understand-anything && ln -s $TGD_DIR/.understand-anything .understand-anything\n" +
-    "2. Run /understand to build knowledge graph → produces $TGD_DIR/.understand-anything/knowledge-graph.json\n" +
+    "1. rm -rf .understand-anything && ln -s $TGD_DIR/.scans/$(basename $(pwd))/.understand-anything .understand-anything\n" +
+    "2. Run /understand to build knowledge graph → produces $TGD_DIR/.scans/$(basename $(pwd))/.understand-anything/knowledge-graph.json\n" +
     "3. Run /understand-dashboard to launch interactive visualization\n" +
     "4. If additional repos were provided in Step 1, run /understand on each of them as well\n\n" +
     "## Step 5: Produce CONTEXT.md\n\n" +
@@ -37,9 +37,9 @@ const tgdPrompts: Record<string, string> = {
     "4. See Also — dashboard URL\n\n" +
     "## Step 6: Verification Gate\n\n" +
     "- [ ] $TGD_DIR/CONTEXT.md exists and is non-empty\n" +
-    "- [ ] $TGD_DIR/.codegraph symlink exists\n" +
-    "- [ ] $TGD_DIR/.understand-anything symlink exists\n" +
-    "- [ ] $TGD_DIR/.understand-anything/knowledge-graph.json exists\n" +
+    "- [ ] $TGD_DIR/.scans/<repo>/.codegraph symlink exists\n" +
+    "- [ ] $TGD_DIR/.scans/<repo>/.understand-anything symlink exists\n" +
+    "- [ ] $TGD_DIR/.scans/<repo>/.understand-anything/knowledge-graph.json exists\n" +
     "- [ ] If additional repos were provided, their summaries appear in CONTEXT.md\n\n" +
     "After completing, suggest: /tgd-define",
 

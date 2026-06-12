@@ -19,17 +19,17 @@ Run the `context-engineering` skill. Analyze the current project: tech stack, ar
 
 ## Step 3: CodeGraph Setup
 
-1. Ensure output directory exists: `mkdir -p tGD/map`
-2. Create symlink: `rm -rf .codegraph && ln -s $TGD_DIR/.codegraph .codegraph`
+1. Ensure output directory exists: `mkdir -p tGD/.scans/$(basename $(pwd))`
+2. Create symlink: `rm -rf .codegraph && ln -s $TGD_DIR/.scans/$(basename $(pwd))/.codegraph .codegraph`
 3. Initialize project graph: `codegraph init -i`
 
 ## Step 4: Understand-Anything (MANDATORY)
 
 This step is **required**, not optional.
 
-1. Create symlink: `rm -rf .understand-anything && ln -s $TGD_DIR/.understand-anything .understand-anything`
+1. Create symlink: `rm -rf .understand-anything && ln -s $TGD_DIR/.scans/$(basename $(pwd))/.understand-anything .understand-anything`
 2. Run `/understand` to build a full knowledge graph of the codebase
-3. This produces `$TGD_DIR/.understand-anything/knowledge-graph.json`
+3. This produces `$TGD_DIR/.scans/$(basename $(pwd))/.understand-anything/knowledge-graph.json`
 4. After graph is built, run `/understand-dashboard` to launch interactive web visualization
 5. If unfamiliar with the project, also run `/understand-onboard` for a guided tour
 
@@ -98,9 +98,9 @@ Synthesize data from the tools:
 ## Step 6: Verification Gate
 
 - [ ] `$TGD_DIR/CONTEXT.md` exists and is non-empty
-- [ ] `$TGD_DIR/.codegraph` symlink exists
-- [ ] `$TGD_DIR/.understand-anything` symlink exists
-- [ ] `$TGD_DIR/.understand-anything/knowledge-graph.json` exists
+- [ ] `$TGD_DIR/.scans/<repo>/.codegraph` symlink exists
+- [ ] `$TGD_DIR/.scans/<repo>/.understand-anything` symlink exists
+- [ ] `$TGD_DIR/.scans/<repo>/.understand-anything/knowledge-graph.json` exists
 - [ ] If additional repos were provided, their summaries appear in CONTEXT.md
 
 If verification passes, suggest the next step: `/tgd-define` to start defining what to build.
