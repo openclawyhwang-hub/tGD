@@ -81,7 +81,7 @@ function resolveInitialToken(): string | null {
     window.history.replaceState(null, "", newUrl);
     return urlToken;
   }
-  return sessionStorage.getItem(SESSION_TOKEN_KEY);
+  return sessionStorage.getItem(SESSION_TOKEN_KEY) ?? "local";
 }
 
 function App() {
