@@ -711,9 +711,24 @@ install_ua_deps() {
     # Install pnpm if missing
     if ! command -v pnpm &> /dev/null; then
         echo "   📥 pnpm not found. Installing via npm..."
+        # Check npm registry — refuse to use default registry.npmjs.org
+        NPM_REGISTRY=$(npm config get registry 2>/dev/null || echo "")
+        if [[ "$NPM_REGISTRY" == *"registry.npmjs.org"* ]] || [[ -z "$NPM_REGISTRY" ]]; then
+            echo "   ⚠️  npm registry is set to registry.npmjs.org (or not configured)."
+            echo "      Set your registry first: npm config set registry <公司 registry URL>"
+            echo "      Then re-run setup.sh, or install pnpm manually."
+            return 1
+        fi
         npm install -g pnpm 2>/dev/null && echo "   ✅ pnpm installed." || { echo "   ⚠️  npm install -g pnpm failed. Install manually."; return 1; }
     fi
     echo "   📦 Installing UA dependencies (pnpm install)..."
+    # Check pnpm registry — refuse to use default registry.npmjs.org
+    PNPM_REGISTRY=$(pnpm config get registry 2>/dev/null || echo "")
+    if [[ "$PNPM_REGISTRY" == *"registry.npmjs.org"* ]] || [[ -z "$PNPM_REGISTRY" ]]; then
+        echo "   ⚠️  pnpm registry is set to registry.npmjs.org (or not configured)."
+        echo "      Set your registry first: pnpm config set registry <公司 registry URL>"
+        return 1
+    fi
     # Subshell: cd won't affect the parent shell's cwd
     (cd "$ua_dir" && pnpm install --frozen-lockfile) && echo "   ✅ Dependencies installed." || {
         echo "   ⚠️  pnpm install failed. Last 5 lines:"
