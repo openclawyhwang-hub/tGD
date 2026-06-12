@@ -8,6 +8,8 @@ argument-hint: [wiki-directory]
 
 Analyzes a Karpathy-pattern LLM wiki — a three-layer knowledge base with raw sources, wiki markdown, and a schema file — and produces an interactive knowledge graph dashboard.
 
+> **⚠️ IMPORTANT: You ARE the LLM.** All analysis steps use you as the LLM. Do NOT call external APIs. When the skill says "dispatch a subagent" — use your platform's delegation mechanism.
+
 ## What It Detects
 
 The **Karpathy LLM wiki pattern** (see https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f):

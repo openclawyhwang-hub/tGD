@@ -8,6 +8,13 @@ argument-hint: ["[path] [--full|--auto-update|--no-auto-update|--review|--langua
 
 Analyze the current codebase and produce a `knowledge-graph.json` file in `.understand-anything/`. This file powers the interactive dashboard for exploring the project's architecture.
 
+> **⚠️ IMPORTANT: You ARE the LLM.**
+> All analysis steps in this skill use **you** (the agent running this skill) as the LLM.
+> - Do NOT call external LLM APIs (OpenAI, Anthropic, etc.)
+> - Do NOT skip LLM-dependent steps thinking "I need an external model"
+> - When the skill says "dispatch a subagent" — use your platform's delegation mechanism (`delegate_task`, subagent spawning, etc.)
+> - The subagent IS another instance of you. You are doing the analysis yourself.
+
 ## Options
 
 - `$ARGUMENTS` may contain:

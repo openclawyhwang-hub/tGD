@@ -8,6 +8,8 @@ argument-hint: [--full]
 
 Extracts business domain knowledge — domains, business flows, and process steps — from a codebase and produces an interactive horizontal flow graph in the dashboard.
 
+> **⚠️ IMPORTANT: You ARE the LLM.** All analysis steps use you as the LLM. Do NOT call external APIs. When the skill says "dispatch a subagent" — use your platform's delegation mechanism.
+
 ## How It Works
 
 - If a knowledge graph already exists (`.understand-anything/knowledge-graph.json`), derives domain knowledge from it (cheap, no file scanning)
