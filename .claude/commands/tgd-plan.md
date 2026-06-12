@@ -36,14 +36,15 @@ Each task should be implementable in isolation with clear success criteria. Orde
 
 After completing the plan, verify the outputs.
 
-**Conditional: Jira Integration Gate** → After TASKS.md is generated, **ALWAYS ask** the user:
-"Do you want to sync these tasks to Jira?"
-If yes → Run the `jira-auto-sync` skill.
-1. Ask for `JIRA_URL`, `JIRA_PROJECT` (key), and `JIRA_TOKEN` (Bearer/PAT) if not provided.
-2. Discover Issue Types & Required Fields. Let user select.
-3. Parse `$TGD_DIR/<feature-name>/TASKS.md` and create issues via Jira REST API v2.
-4. Report created issue keys (e.g., `ENG-1234`).
-If no → Skip silently and proceed to verification.
+**🔗 Mandatory: Jira Integration Gate** → After TASKS.md is generated, check Jira configuration:
+1. Check env vars: `JIRA_URL`, `JIRA_PROJECT`, `JIRA_TOKEN`.
+2. **If ALL configured:** Run the `jira-auto-sync` skill **automatically**. Do NOT ask, do NOT skip.
+   - Discover Issue Types & Required Fields.
+   - Parse `$TGD_DIR/<feature-name>/TASKS.md` and create issues via Jira REST API v2.
+   - Report created issue keys (e.g., `ENG-1234`).
+   - Add issue keys to TASKS.md tasks as `[ENG-1234]`.
+3. **If NOT configured:** 🛑 STOP. Tell user: "Jira is not configured. Set `JIRA_URL`, `JIRA_PROJECT`, and `JIRA_TOKEN` environment variables, then re-run `/tgd-plan`. Alternatively, run `jira-auto-sync` skill manually to configure."
+   - **Do NOT proceed to verification until Jira is synced or user explicitly opts out with: `TGD_SKIP_JIRA=1`**
 
 **Verification Gate:**
 - [ ] `$TGD_DIR/<feature-name>/TASKS.md` exists and is non-empty

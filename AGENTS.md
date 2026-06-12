@@ -37,7 +37,7 @@ This project supports 7 lifecycle commands that work across **OpenCode**, **Clau
 ||---------|-------|----------|
 || `/tgd-map` | Map | `context-engineering` → `codegraph init` → `/understand` (MANDATORY) |
 || `/tgd-define` | Define | `interview-me` → `idea-refine` → `spec-driven-development` → `sketch` (if UI) → **PM Sign-off on PRD.md** |
-|| `/tgd-plan` | Plan | `planning-and-task-breakdown` → **DEV Sign-off on TASKS.md** → **`jira-auto-sync` (conditional)** |
+|| `/tgd-plan` | Plan | `planning-and-task-breakdown` → **DEV Sign-off on TASKS.md** → **`jira-auto-sync` (mandatory if configured)** |
 || `/tgd-develop` | Develop | `context-engineering` → `source-driven-development` → (`subagent-driven-development` OR `incremental-implementation`) → `test-driven-development` → `verification-before-completion` (+ `frontend-ui-engineering`, `api-and-interface-design`, `doubt-driven-development` when relevant) → **DEV Sign-off** |
 || `/tgd-verify` | Verify | `debugging-and-error-recovery` → `test-driven-development` → **TEST-REPORT.md** → **MANDATORY `agent-browser` for Frontend/UI/DOM** → **QA Sign-off on TEST-REPORT** |
 || `/tgd-review` | Review | `code-review-and-quality` → `code-simplification` (+ `security-and-hardening`, `performance-optimization` when relevant) → **QA + DEV Sign-off on REVIEW.md** |

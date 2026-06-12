@@ -69,7 +69,7 @@ const tgdPrompts: Record<string, string> = {
     "2. If .codegraph/ exists, run codegraph impact on core symbols to assess blast radius\n" +
     "3. Break into small, verifiable tasks\n" +
     "4. Create TASKS.md with ordered checklist\n" +
-    "5. If Jira integration available, run jira-auto-sync\n\n" +
+    "5. 🔗 Mandatory Jira Gate: Check JIRA_URL, JIRA_PROJECT, JIRA_TOKEN env vars. If ALL set → run jira-auto-sync automatically (no ask, no skip). If NOT set → STOP: \"Configure Jira env vars or set TGD_SKIP_JIRA=1 to opt out.\"\n\n" +
     "Verification: TASKS.md exists with acceptance criteria per task.\n" +
     "After completing, suggest: /tgd-develop",
 
