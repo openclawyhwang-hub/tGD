@@ -286,74 +286,151 @@ The `tgd` CLI manages installation, updates, and diagnostics:
 
 ## 🧪 Testing Strategy
 
-Testing in tGD isn't a single phase — it's a progressive discipline across three stages, each with a different purpose and role:
+Testing in tGD isn't a single phase — it's a progressive discipline across four stages, each building on the previous:
 
-### 🎭 The Three Testing Roles
-
-| Stage | Role | Purpose | Test Types | What the Agent Does |
-|-------|------|---------|------------|---------------------|
-| **`/tgd-develop`** | 🔨 Builder | **Write tests** alongside code | Unit Tests (TDD) | Red-Green-Refactor cycle: write failing test → implement → pass |
-| **`/tgd-verify`** | 🔍 Inspector | **Run all tests** and fix failures | Integration + E2E | Debug pipeline: reproduce → localize → fix → guard |
-| **`/tgd-review`** | 🕵️ Auditor | **Check test quality** and coverage | Coverage + Strategy | Review test pyramid: 80% unit, 15% integration, 5% E2E |
-
-### 🔐 Why Three Separate Stages?
-
-**Separation prevents "lazy agent" behavior.** If testing were a single stage, the agent would run unit tests, declare "done," and skip the harder integration/E2E tests. By separating stages:
-
-- **Develop** forces the agent to create proof (write tests)
-- **Verify** forces the agent to validate proof (run tests + debug)
-- **Review** forces the agent to challenge proof (audit test quality)
-
-### 🔺 The Test Pyramid
-
-tGD enforces the test pyramid ratio:
 ```
-          ╱╲
-         ╱  ╲         E2E Tests (~5%)      ← Verify stage (agent-browser)
-        ╱    ╲        Full user flows, real browser
-       ╱──────╲
-      ╱        ╲      Integration Tests (~15%)  ← Verify stage
-     ╱          ╲     Component interactions, API boundaries
-    ╱────────────╲
-   ╱              ╲   Unit Tests (~80%)      ← Develop stage
-  ╱                ╲  Pure logic, isolated, milliseconds each
- ╱──────────────────╲
+Plan            Develop           Verify            Review            Ship
+─────           ────────          ──────            ──────            ────
+BDD             TDD               Run ALL tests     Code review       Regression
+(Given-When-    (Red-Green-       Generate          Audit test        Gate
+ Then)           Refactor)         TEST-REPORT       quality           (100% pass)
+  │                │                  │                 │                │
+  ▼                ▼                  ▼                 ▼                ▼
+TASKS.md         code + tests     TEST-REPORT.md    REVIEW.md         CHANGELOG
+DEV signs        DEV signs        QA signs          QA+DEV signs      PM signs
 ```
 
-**E2E Testing Tool:**
-- **`agent-browser`** (Hard Gate): Fast Rust CLI for browser automation via CDP. Verifies UI with screenshots and accessibility trees.
+### 📋 Plan: BDD Defines What to Test
 
-### Example: Building a Login Feature
+Agent reads PRD.md + SPEC.md and writes each task as **BDD acceptance criteria**:
 
-| Stage | Agent Action | Test Type | Problem Found |
-|-------|--------------|-----------|---------------|
-| **Develop** | Write `verify_password()` function + test | Unit Test | Password hashing logic reversed → fix immediately |
-| **Verify** | Start server, run all tests, auto-click browser | Integration/E2E | Database connection fails (env var missing), login button hidden by cookie banner |
-| **Review** | Check test files for coverage gaps | Coverage Audit | Missing edge case tests: empty password, 1000-char password |
+```markdown
+## Task 1: Implement Login API
+- **Acceptance Criteria**:
+  - Given registered user + correct password, When POST /login, Then 200 + JWT token
+  - Given wrong password, When POST /login, Then 401 Unauthorized
+  - Given missing fields, When POST /login, Then 400 + error message
+```
 
-### 📊 TEST-REPORT.md
+BDD quality determines test quality. Vague criteria ("user can login") = agent guesses edge cases. Precise criteria ("wrong password → 401") = agent writes precise tests.
 
-Verify stage auto-generates `TEST-REPORT.md` in the feature folder. Format is language-agnostic:
+BDD does NOT produce test code — it produces acceptance criteria that become test code during Develop.
 
-| Section | Content |
-|---------|---------|
-| Summary | Total / Passed / Failed / Coverage / Regression count |
-| All Test Cases | Auto-generated from test runner output |
-| Failures | Error details + location |
-| Sign-off | QA approval |
+### 🔧 Develop: TDD Builds the Tests
 
-### 🏷️ Regression Markers
+Agent follows **Red-Green-Refactor**:
 
-Acceptance-level tests are marked as regression using stack-appropriate conventions:
+1. **Red** — Write all tests first (they fail — no production code yet)
+2. **Green** — Write production code to make tests pass
+3. **Refactor** — Clean up code, tests still pass
 
-| Stack | Marker |
-|-------|--------|
-| Python | `@pytest.mark.regression` |
-| TypeScript/JS | `*.regression.test.ts` naming or tag |
-| Go | `//go:build regression` or `TestXxxRegression` naming |
-| Java | `@Tag("regression")` |
+Test sources:
+- TASKS.md BDD → happy path tests
+- SPEC.md API contracts → edge case tests (wrong types, missing fields, unauthorized)
+- PRD.md Acceptance Criteria → **regression tests** (marked with stack-specific marker)
 
-Ship gate: regression suite must be 100% pass.
+The agent auto-detects the test runner from SPEC.md tech stack:
+
+| Stack | Test Runner | Regression Marker |
+|-------|------------|-------------------|
+| Python | pytest | `@pytest.mark.regression` |
+| TypeScript/JS | vitest / jest | `*.regression.test.ts` naming or tag |
+| Go | `go test` | `//go:build regression` or `TestXxxRegression` naming |
+| Rust | `cargo test` | Naming convention |
+| Java | junit / mvn test | `@Tag("regression")` |
+| E2E (any) | agent-browser | Separate regression suite |
+
+### 🧪 Verify: Run Tests + Generate Report
+
+Agent runs ALL tests and auto-generates `TEST-REPORT.md`. The format is language-agnostic:
+
+```markdown
+# TEST REPORT: jwt-auth
+Generated: 2026-06-12T10:30:00+08:00
+Stack: Python + pytest
+Command: pytest -v --tb=short
+
+## Summary
+| Metric     | Value |
+|------------|-------|
+| Total      | 24    |
+| Passed     | 23    |
+| Failed     | 1     |
+| Skipped    | 0     |
+| Coverage   | 87%   | ← optional, omit if not configured
+| Regression | 8/8 ✅ |
+
+## All Test Cases (auto-generated from test runner output)
+| Test                      | Module              | Result | Regression |
+|---------------------------|---------------------|--------|------------|
+| test_login_valid_creds    | tests/test_login.py | ✅     | ✅         |
+| test_login_wrong_password | tests/test_login.py | ✅     | ✅         |
+| test_login_missing_field  | tests/test_login.py | ❌     | —          |
+
+## Failures
+| Test                     | Error                    | Location              |
+|--------------------------|--------------------------|-----------------------|
+| test_login_missing_field | assert 500 == 400        | tests/test_login.py:42|
+
+## Sign-off
+- [ ] **QA**: (pending)
+```
+
+TEST-REPORT.md is **auto-generated** from test runner output, NOT hand-maintained.
+
+**Frontend requirement:** If SPEC.md has UI, Verify MUST run `agent-browser` for E2E browser testing.
+
+### 🏷️ Regression: The Safety Net
+
+Regression tests are acceptance-level tests that **must pass before every Ship**. They accumulate across features — each new feature adds its acceptance tests to the regression suite.
+
+**What is regression?**
+- Tests derived from PRD Acceptance Criteria
+- They verify that existing features still work after new code is added
+- Without regression, new features can silently break old ones
+
+**How it accumulates:**
+
+```
+Feature 1 (auth):     8 regression tests   ← Ship gate: 8/8 ✅
+Feature 2 (dashboard): +5 regression tests  ← Ship gate: 13/13 ✅
+Feature 3 (payments):  +6 regression tests  ← Ship gate: 19/19 ✅
+```
+
+Each feature's Ship requires 100% regression pass — not just the new tests, ALL accumulated regression tests.
+
+**How to mark:** Agent marks acceptance-level tests using the stack-appropriate marker (see table above). Not all tests are regression — only tests that verify PRD acceptance criteria or critical user paths.
+
+**When to run:**
+- `/tgd-verify` → runs ALL tests, reports regression separately
+- `/tgd-ship` → hard gate: regression suite must be 100% pass, failures must be 0
+- Anytime → direct command (e.g. `pytest -m regression`), no tGD wrapper needed
+
+### 🔍 Review: Audit Test Quality
+
+Agent produces REVIEW.md, including:
+- Code quality analysis
+- Test quality assessment (missing edge cases?)
+- Security / performance scan (if relevant)
+- Test pyramid check: 80% unit, 15% integration, 5% E2E
+
+Sign-off: **QA + DEV** both sign.
+
+### 🚀 Ship: The Regression Gate
+
+Ship is the only hard gate in tGD. Before executing, agent verifies:
+
+```
+PRD.md        → PM signed?      ✅
+TASKS.md      → DEV signed?     ✅
+TEST-REPORT   → QA signed?      ✅
+              → Regression 100%? ✅
+              → Failed = 0?      ✅
+REVIEW.md     → QA + DEV signed? ✅
+
+All ✅ → proceed to Ship
+Any ❌ → STOP: "X has not approved Y yet"
+```
 
 ---
 

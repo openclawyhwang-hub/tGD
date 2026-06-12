@@ -249,51 +249,151 @@ Die `tgd` CLI verwaltet Installation, Updates und Diagnose:
 
 ## 🧪 Test-Strategie
 
-Testing in tGD ist eine progressive Disziplin über drei Stufen:
+Testen ist in tGD kein einzelner Schritt — es ist eine fortschreitende Disziplin über vier Stufen, die aufeinander aufbauen:
 
-| Stufe | Rolle | Zweck | Testtyp |
-|-------|-------|-------|---------|
-| **`/tgd-develop`** | 🔨 Builder | **Tests schreiben** neben Code | Unit-Tests (TDD) |
-| **`/tgd-verify`** | 🔍 Inspector | **Alle Tests ausführen** und Fehler beheben | Integration + E2E |
-| **`/tgd-review`** | 🕵️ Auditor | **Test-Qualität** prüfen | Coverage + Strategie |
-
-### 🔺 Test-Pyramide
 ```
-          ╱╲
-         ╱  ╲         E2E (~5%)      ← Verify-Stufe
-        ╱    ╲
-       ╱──────╲
-      ╱        ╲      Integration (~15%)  ← Verify-Stufe
-     ╱          ╲
-    ╱────────────╲
-   ╱              ╲   Unit-Tests (~80%)  ← Develop-Stufe
-  ╱                ╲
- ╱──────────────────╲
+Plan            Develop           Verify            Review            Ship
+─────           ────────          ──────            ──────            ────
+BDD             TDD               Run ALL tests     Code review       Regression
+(Given-When-    (Red-Green-       Generate          Audit test        Gate
+ Then)           Refactor)         TEST-REPORT       quality           (100% pass)
+  │                │                  │                 │                │
+  ▼                ▼                  ▼                 ▼                ▼
+TASKS.md         code + tests     TEST-REPORT.md    REVIEW.md         CHANGELOG
+DEV signs        DEV signs        QA signs          QA+DEV signs      PM signs
 ```
 
-### 📊 TEST-REPORT.md
+### 📋 Plan: BDD definiert, was getestet wird
 
-Die Verify-Stufe generiert automatisch `TEST-REPORT.md` im Feature-Ordner. Das Format ist sprachunabhängig:
+Der Agent liest PRD.md + SPEC.md und schreibt jede Aufgabe als **BDD-Akzeptanzkriterien**:
 
-| Abschnitt | Inhalt |
-|-----------|--------|
-| Summary | Total / Passed / Failed / Coverage / Regression-Anzahl |
-| All Test Cases | Automatisch aus Test-Runner-Ausgabe generiert |
-| Failures | Fehlerdetails + Position |
-| Sign-off | QA-Freigabe |
+```markdown
+## Task 1: Login-API implementieren
+- **Acceptance Criteria**:
+  - Given registered user + correct password, When POST /login, Then 200 + JWT token
+  - Given wrong password, When POST /login, Then 401 Unauthorized
+  - Given missing fields, When POST /login, Then 400 + error message
+```
 
-### 🏷️ Regression-Marker
+Die Qualität der BDD-Kriterien bestimmt die Testqualität. Vage Kriterien ("User kann sich einloggen") → Agent muss Grenzfälle raten. Präzise Kriterien ("Falsches Passwort → 401") → Agent schreibt präzise Tests.
 
-Akzeptanz-Level-Tests werden mit stack-spezifischen Konventionen als Regression markiert:
+BDD erzeugt **keinen** Testcode — es liefert Akzeptanzkriterien, die im Develop-Schritt zu Testcode werden.
 
-| Stack | Marker |
-|-------|--------|
-| Python | `@pytest.mark.regression` |
-| TypeScript/JS | `*.regression.test.ts` Benennung oder Tag |
-| Go | `//go:build regression` oder `TestXxxRegression` Benennung |
-| Java | `@Tag("regression")` |
+### 🔧 Develop: TDD baut die Tests
 
-Ship-Gate: Regression-Suite muss 100% bestehen.
+Der Agent folgt **Red-Green-Refactor**:
+
+1. **Red** — Alle Tests zuerst schreiben (sie schlagen fehl — noch kein Produktionscode)
+2. **Green** — Produktionscode schreiben, damit die Tests bestehen
+3. **Refactor** — Code aufräumen, Tests bestehen weiterhin
+
+Testquellen:
+- TASKS.md BDD → Happy-Path-Tests
+- SPEC.md API-Contracts → Grenzfälle (falsche Typen, fehlende Felder, nicht autorisiert)
+- PRD.md Akzeptanzkriterien → **Regressionstests** (markiert mit stack-spezifischem Marker)
+
+Der Agent erkennt den Test-Runner automatisch aus dem SPEC.md Tech-Stack:
+
+| Stack | Test Runner | Regression Marker |
+|-------|------------|-------------------|
+| Python | pytest | `@pytest.mark.regression` |
+| TypeScript/JS | vitest / jest | `*.regression.test.ts` naming or tag |
+| Go | `go test` | `//go:build regression` or `TestXxxRegression` naming |
+| Rust | `cargo test` | Naming convention |
+| Java | junit / mvn test | `@Tag("regression")` |
+| E2E (any) | agent-browser | Separate regression suite |
+
+### 🧪 Verify: Tests ausführen + Report generieren
+
+Agent führt **alle** Tests aus und generiert automatisch `TEST-REPORT.md`. Das Format ist sprachunabhängig:
+
+```markdown
+# TEST REPORT: jwt-auth
+Generated: 2026-06-12T10:30:00+08:00
+Stack: Python + pytest
+Command: pytest -v --tb=short
+
+## Summary
+| Metric     | Value |
+|------------|-------|
+| Total      | 24    |
+| Passed     | 23    |
+| Failed     | 1     |
+| Skipped    | 0     |
+| Coverage   | 87%   | ← optional, omit if not configured
+| Regression | 8/8 ✅ |
+
+## All Test Cases (auto-generated from test runner output)
+| Test                      | Module              | Result | Regression |
+|---------------------------|---------------------|--------|------------|
+| test_login_valid_creds    | tests/test_login.py | ✅     | ✅         |
+| test_login_wrong_password | tests/test_login.py | ✅     | ✅         |
+| test_login_missing_field  | tests/test_login.py | ❌     | —          |
+
+## Failures
+| Test                     | Error                    | Location              |
+|--------------------------|--------------------------|-----------------------|
+| test_login_missing_field | assert 500 == 400        | tests/test_login.py:42|
+
+## Sign-off
+- [ ] **QA**: (pending)
+```
+
+TEST-REPORT.md wird **automatisch** aus der Test-Runner-Ausgabe generiert, nicht manuell gepflegt.
+
+**Frontend-Pflicht:** Wenn SPEC.md UI enthält, MUSS Verify `agent-browser` für E2E-Browser-Tests ausführen.
+
+### 🏷️ Regression: Das Sicherheitsnetz
+
+Regressionstests sind akzeptanznahe Tests, die **vor jedem Ship bestehen müssen**. Sie wachsen mit jedem Feature — jedes neue Feature fügt seine Akzeptanztests zur Regressionssuite hinzu.
+
+**Was ist Regression?**
+- Tests, die aus den Akzeptanzkriterien der PRD abgeleitet werden
+- Sie prüfen, dass bestehende Features nach neuem Code noch funktionieren
+- Ohne Regression können neue Features alte stillschweigend kaputtmachen
+
+**So wächst die Suite:**
+
+```
+Feature 1 (auth):     8 regression tests   ← Ship gate: 8/8 ✅
+Feature 2 (dashboard): +5 regression tests  ← Ship gate: 13/13 ✅
+Feature 3 (payments):  +6 regression tests  ← Ship gate: 19/19 ✅
+```
+
+Das Ship jedes Features erfordert 100% Regression — nicht nur die neuen Tests, **alle** akkumulierten Regressionstests.
+
+**So werden Tests markiert:** Der Agent markiert akzeptanznahe Tests mit dem passenden Stack-Marker (siehe Tabelle oben). Nicht alle Tests sind Regression — nur Tests, die PRD-Akzeptanzkriterien oder kritische User-Pfade prüfen.
+
+**Wann ausführen:**
+- `/tgd-verify` → führt alle Tests aus, Regression separat ausgewiesen
+- `/tgd-ship` → harte Schranke: Regressionssuite muss 100% bestehen, Fehler = 0
+- Jederzeit → direkt (z.B. `pytest -m regression`), ohne tGD-Wrapper
+
+### 🔍 Review: Testqualität prüfen
+
+Agent erstellt REVIEW.md mit:
+- Codequalitäts-Analyse
+- Testqualitäts-Bewertung (fehlende Grenzfälle?)
+- Security- / Performance-Scan (falls relevant)
+- Test-Pyramide prüfen: 80% Unit, 15% Integration, 5% E2E
+
+Sign-off: **QA + DEV** unterschreiben beide.
+
+### 🚀 Ship: Die Regression-Schranke
+
+Ship ist die einzige harte Schranke in tGD. Vor der Ausführung prüft der Agent:
+
+```
+PRD.md        → PM signed?      ✅
+TASKS.md      → DEV signed?     ✅
+TEST-REPORT   → QA signed?      ✅
+              → Regression 100%? ✅
+              → Failed = 0?      ✅
+REVIEW.md     → QA + DEV signed? ✅
+
+All ✅ → proceed to Ship
+Any ❌ → STOP: "X has not approved Y yet"
+```
 
 ---
 

@@ -249,51 +249,151 @@ flowchart LR
 
 ## 🧪 テスト戦略
 
-tGDのテストは単一フェーズではなく、3段階にわたる段階的な規律です：
+tGDのテストは単一フェーズではなく、4段階にわたる段階的な規律です。各段階が前の段階の成果を活かして進みます：
 
-| ステージ | 役割 | 目的 | テスト種別 |
-|----------|------|------|-----------|
-| **`/tgd-develop`** | 🔨 ビルダー | コードとともに**テストを書く** | 単体テスト (TDD) |
-| **`/tgd-verify`** | 🔍 インスペクター | **全テストを実行**し失敗を修正 | 結合 + E2E |
-| **`/tgd-review`** | 🕵️ 監査人 | **テスト品質**とカバレッジを確認 | カバレッジ + 戦略 |
-
-### 🔺 テストピラミッド
 ```
-          ╱╲
-         ╱  ╲         E2E (~5%)      ← Verify段階
-        ╱    ╲
-       ╱──────╲
-      ╱        ╲      結合テスト (~15%)  ← Verify段階
-     ╱          ╲
-    ╱────────────╲
-   ╱              ╲   単体テスト (~80%)  ← Develop段階
-  ╱                ╲
- ╱──────────────────╲
+Plan              Develop            Verify             Review             Ship
+─────             ────────           ──────             ──────             ────
+BDD               TDD                全テスト実行         コードレビュー        リグレッション
+(Given-When-      (Red-Green-        TEST-REPORT        テスト品質           ゲート
+ Then)             Refactor)          自動生成            監査               (100% pass)
+  │                  │                  │                  │                  │
+  ▼                  ▼                  ▼                  ▼                  ▼
+TASKS.md           コード + テスト    TEST-REPORT.md     REVIEW.md          CHANGELOG
+DEV サインオフ      DEV サインオフ     QA サインオフ       QA+DEV サインオフ   PM サインオフ
 ```
 
-### 📊 TEST-REPORT.md
+### 📋 Plan: BDD（Given-When-Then）でテスト対象を定義
 
-Verify段階が`TEST-REPORT.md`を自動生成（feature フォルダ内）。フォーマットは言語非依存：
+エージェントがPRD.mdとSPEC.mdを読み、各タスクを **BDD 受入基準** として記述します：
 
-| セクション | 内容 |
-|-----------|------|
-| Summary | Total / Passed / Failed / Coverage / Regression数 |
-| All Test Cases | テストランナー出力から自動生成 |
-| Failures | エラー詳細 + ロケーション |
-| Sign-off | QA承認 |
+```markdown
+## Task 1: Implement Login API
+- **Acceptance Criteria**:
+  - Given registered user + correct password, When POST /login, Then 200 + JWT token
+  - Given wrong password, When POST /login, Then 401 Unauthorized
+  - Given missing fields, When POST /login, Then 400 + error message
+```
 
-### 🏷️ Regression マーカー
+BDDの品質がテストの品質を決定します。曖昧な基準（「ユーザーはログインできる」）だとエージェントがエッジケースを推測するしかありません。具体的な基準（「間違ったパスワード → 401」）なら正確なテストを書けます。
 
-受入レベルのテストをスタック適切な慣例で regression としてマーク：
+BDDはテストコードを生成しません — Develop段階でテストコードに変換される**受入基準**を作成するだけです。
 
-| スタック | マーカー |
-|---------|---------|
-| Python | `@pytest.mark.regression` |
-| TypeScript/JS | `*.regression.test.ts` 命名または tag |
-| Go | `//go:build regression` または `TestXxxRegression` 命名 |
-| Java | `@Tag("regression")` |
+### 🔧 Develop: TDD（Red-Green-Refactor）でテストを構築
 
-Ship ゲート：regression suite が100% pass 必須。
+エージェントは **Red-Green-Refactor** に従います：
+
+1. **Red** — まずテストを全部書く（まだ本番コードがないので失敗する）
+2. **Green** — テストを通すための本番コードを書く
+3. **Refactor** — コードを整理しつつテストは通し続ける
+
+テストのソース：
+- TASKS.md の BDD → ハッピーパステスト
+- SPEC.md の API 契約 → エッジケーステスト（型の不正、必須フィールド欠落、未認証）
+- PRD.md の受入基準 → **リグレッションテスト**（スタック固有のマーカー付き）
+
+エージェントはSPEC.mdの技術スタックからテストランナーを自動検出します：
+
+| スタック | テストランナー | リグレッションマーカー |
+|---------|---------------|---------------------|
+| Python | pytest | `@pytest.mark.regression` |
+| TypeScript/JS | vitest / jest | `*.regression.test.ts` 命名または tag |
+| Go | `go test` | `//go:build regression` または `TestXxxRegression` 命名 |
+| Rust | `cargo test` | 命名規則 |
+| Java | junit / mvn test | `@Tag("regression")` |
+| E2E（任意） | agent-browser | 独立したリグレッションスイート |
+
+### 🧪 Verify: テスト実行 + レポート生成
+
+エージェントが全テストを実行し、`TEST-REPORT.md` を自動生成します。フォーマットは言語非依存です：
+
+```markdown
+# TEST REPORT: jwt-auth
+Generated: 2026-06-12T10:30:00+08:00
+Stack: Python + pytest
+Command: pytest -v --tb=short
+
+## Summary
+| Metric     | Value |
+|------------|-------|
+| Total      | 24    |
+| Passed     | 23    |
+| Failed     | 1     |
+| Skipped    | 0     |
+| Coverage   | 87%   | ← optional, omit if not configured |
+| Regression | 8/8 ✅ |
+
+## All Test Cases (auto-generated from test runner output)
+| Test                      | Module              | Result | Regression |
+|---------------------------|---------------------|--------|------------|
+| test_login_valid_creds    | tests/test_login.py | ✅     | ✅         |
+| test_login_wrong_password | tests/test_login.py | ✅     | ✅         |
+| test_login_missing_field  | tests/test_login.py | ❌     | —          |
+
+## Failures
+| Test                     | Error                    | Location              |
+|--------------------------|--------------------------|-----------------------|
+| test_login_missing_field | assert 500 == 400        | tests/test_login.py:42|
+
+## Sign-off
+- [ ] **QA**: (pending)
+```
+
+TEST-REPORT.mdはテストランナーの出力から **自動生成** されるもので、手動で管理するものではありません。
+
+**フロントエンドの要件：** SPEC.mdにUIがある場合、Verifyでは必ず `agent-browser` でE2Eブラウザテストを実行します。
+
+### 🏷️ リグレッション: 安全ネット
+
+リグレッションテストは **すべてのShip前にパス必須** の受入レベルテストです。各フィーチャーの受入テストがリグレッションスイートに蓄積されていきます。
+
+**リグレッションとは？**
+- PRDの受入基準から導出されたテスト
+- 新しいコードを追加しても既存機能が動作し続けることを検証
+- リグレッションなしでは、新しいフィーチャーが既存のフィーチャーをこっそり壊す可能性がある
+
+**蓄積の仕組み：**
+
+```
+Feature 1 (auth):     8 regression tests   ← Ship gate: 8/8 ✅
+Feature 2 (dashboard): +5 regression tests  ← Ship gate: 13/13 ✅
+Feature 3 (payments):  +6 regression tests  ← Ship gate: 19/19 ✅
+```
+
+各フィーチャーのShipでは、そのフィーチャーのテストだけでなく **蓄積された全リグレッションテスト** が100%パスしている必要があります。
+
+**マーカーの付け方：** エージェントはスタック適切なマーカーで受入レベルテストをマークします（上記テーブル参照）。すべてのテストがリグレッションになるわけではなく、PRDの受入基準や重要なユーザーパスを検証するテストだけです。
+
+**いつ実行するか：**
+- `/tgd-verify` → 全テストを実行し、リグレッションを個別にレポート
+- `/tgd-ship` → ハードゲート：リグレッションスイートが100%パス、失敗が0件であること
+- いつでも → 直接コマンド（例：`pytest -m regression`）、tGDラッパー不要
+
+### 🔍 Review: テスト品質の監査
+
+エージェントがREVIEW.mdを生成。以下を含みます：
+- コード品質の分析
+- テスト品質の評価（見落としエッジケースがないか）
+- セキュリティ・パフォーマンススキャン（該当する場合）
+- テストピラミッドの確認：80% 単体テスト、15% 結合テスト、5% E2E
+
+サインオフ：**QA + DEV** 両方が署名します。
+
+### 🚀 Ship: リグレッションゲート
+
+ShipはtGD唯一のハードゲートです。実行前にエージェントが以下を確認します：
+
+```
+PRD.md        → PM signed?      ✅
+TASKS.md      → DEV signed?     ✅
+TEST-REPORT   → QA signed?      ✅
+              → Regression 100%? ✅
+              → Failed = 0?      ✅
+REVIEW.md     → QA +DEV signed? ✅
+
+All ✅ → proceed to Ship
+Any ❌ → STOP: "X has not approved Y yet"
+```
 
 ---
 

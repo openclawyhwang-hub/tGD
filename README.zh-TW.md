@@ -299,74 +299,151 @@ flowchart LR
 
 ## 🧪 測試策略
 
-tGD 的測試不是單一階段——它是跨三個階段的漸進紀律，每個階段有不同的目的和角色：
+tGD 的測試不是單一階段——它是跨四個階段的漸進紀律，每個階段建立在前一個之上：
 
-### 🎭 三個測試角色
-
-| 階段 | 角色 | 目的 | 測試類型 | Agent 做什麼 |
-|------|------|------|----------|-------------|
-| **`/tgd-develop`** | 🔨 建造者 | **寫測試** alongside code | 單元測試 (TDD) | Red-Green-Refactor 循環：寫失敗測試 → 實作 → 通過 |
-| **`/tgd-verify`** | 🔍 檢查員 | **跑所有測試** 修復失敗 | 整合 + E2E | 除錯流程：重現 → 定位 → 修復 → 防護 |
-| **`/tgd-review`** | 🕵️ 審計員 | **檢查測試品質** 覆蓋率 | 覆蓋率 + 策略 | 審查測試金字塔：80% 單元、15% 整合、5% E2E |
-
-### 🔐 為什麼分三個階段？
-
-**分離防止「懶 agent」行為。** 如果測試是單一階段，agent 會跑完單元測試就說「完成了」，然後跳過更難的整合/E2E 測試。分離階段：
-
-- **Develop** 強制 agent 建立證明（寫測試）
-- **Verify** 強制 agent 驗證證明（跑測試 + 除錯）
-- **Review** 強制 agent 挑戰證明（審計測試品質）
-
-### 🔺 測試金字塔
-
-tGD 強制執行測試金字塔比例：
 ```
-          ╱╲
-         ╱  ╲         E2E 測試 (~5%)      ← Verify 階段 (agent-browser)
-        ╱    ╲        完整使用者流程，真實瀏覽器
-       ╱──────╲
-      ╱        ╲      整合測試 (~15%)      ← Verify 階段
-     ╱          ╲     元件互動、API 邊界
-    ╱────────────╲
-   ╱              ╲   單元測試 (~80%)      ← Develop 階段
-  ╱                ╲  純邏輯、隔離、每個毫秒級
- ╱──────────────────╲
+Plan            Develop           Verify            Review            Ship
+─────           ────────          ──────            ──────            ────
+BDD             TDD               跑所有測試        Code review       Regression
+(Given-When-    (Red-Green-       產出 TEST-        審查測試          Gate
+ Then)           Refactor)         REPORT            品質              (100% pass)
+  │                │                  │                 │                │
+  ▼                ▼                  ▼                 ▼                ▼
+TASKS.md         code + tests     TEST-REPORT.md    REVIEW.md         CHANGELOG
+DEV 簽           DEV 簽           QA 簽             QA+DEV 簽         PM 簽
 ```
 
-**E2E 測試工具：**
-- **`agent-browser`** (強制關卡)：透過 CDP 協議的高速 Rust CLI。透過截圖與無障礙樹驗證 UI。
+### 📋 Plan：BDD 定義「要測什麼」
 
-### 範例：建造登入功能
+Agent 讀 PRD.md + SPEC.md，把每個任務寫成 **BDD 驗收條件**：
 
-| 階段 | Agent 動作 | 測試類型 | 發現的問題 |
-|------|-----------|----------|-----------|
-| **Develop** | 寫 `verify_password()` 函式 + 測試 | 單元測試 | 密碼雜湊邏輯反了 → 立即修復 |
-| **Verify** | 啟動伺服器、跑所有測試、自動點擊瀏覽器 | 整合/E2E | 資料庫連線失敗（環境變數遺漏）、登入按鈕被 cookie 橫幅遮住 |
-| **Review** | 檢查測試檔案覆蓋率 | 覆蓋率審計 | 缺少邊界案例測試：空密碼、1000 字元密碼 |
+```markdown
+## Task 1: 實作登入 API
+- **Acceptance Criteria**:
+  - Given 註冊用戶 + 正確密碼，When POST /login，Then 200 + JWT token
+  - Given 錯誤密碼，When POST /login，Then 401 Unauthorized
+  - Given 缺少欄位，When POST /login，Then 400 + error message
+```
 
-### 📊 TEST-REPORT.md
+BDD 品質決定測試品質。模糊的條件（「用戶可以登入」）= agent 只能猜 edge case。精確的條件（「錯誤密碼 → 401」）= agent 寫出精準測試。
 
-Verify 階段自動產出 `TEST-REPORT.md`，格式與語言無關：
+BDD **不會**產出測試程式碼——它產出驗收條件，在 Develop 階段才轉化為測試程式碼。
 
-| 區塊 | 內容 |
-|------|------|
-| Summary | Total / Passed / Failed / Coverage / Regression 數量 |
-| All Test Cases | 從 test runner 輸出自動產生 |
-| Failures | 錯誤詳情 + 位置 |
-| Sign-off | QA 簽核 |
+### 🔧 Develop：TDD 建造測試
 
-### 🏷️ Regression 標記
+Agent 按 **Red-Green-Refactor** 循環：
 
-驗收等級的測試用 stack 適當的慣例標記為 regression：
+1. **Red** — 先寫所有測試（全部 fail，因為還沒寫 production code）
+2. **Green** — 寫 production code 讓測試通過
+3. **Refactor** — 清理 code，測試持續通過
 
-| Stack | 標記方式 |
-|-------|----------|
-| Python | `@pytest.mark.regression` |
-| TypeScript/JS | `*.regression.test.ts` 命名或 tag |
-| Go | `//go:build regression` 或 `TestXxxRegression` 命名 |
-| Java | `@Tag("regression")` |
+測試來源：
+- TASKS.md 的 BDD → happy path 測試
+- SPEC.md 的 API contracts → edge case 測試（錯誤輸入、邊界值、未授權存取）
+- PRD.md 的 Acceptance Criteria → **regression 測試**（用 stack 對應的標記方式）
 
-Ship 門檻：regression suite 必須 100% pass。
+Agent 自動從 SPEC.md 的 tech stack 偵測 test runner：
+
+| Stack | Test Runner | Regression 標記方式 |
+|-------|------------|-------------------|
+| Python | pytest | `@pytest.mark.regression` |
+| TypeScript/JS | vitest / jest | `*.regression.test.ts` 命名或 tag |
+| Go | `go test` | `//go:build regression` 或 `TestXxxRegression` 命名 |
+| Rust | `cargo test` | 命名慣例 |
+| Java | junit / mvn test | `@Tag("regression")` |
+| E2E (any) | agent-browser | 獨立 regression suite |
+
+### 🧪 Verify：跑測試 + 產報告
+
+Agent 執行全部測試，自動產出 `TEST-REPORT.md`。格式與語言無關：
+
+```markdown
+# TEST REPORT: jwt-auth
+Generated: 2026-06-12T10:30:00+08:00
+Stack: Python + pytest
+Command: pytest -v --tb=short
+
+## Summary
+| Metric     | Value |
+|------------|-------|
+| Total      | 24    |
+| Passed     | 23    |
+| Failed     | 1     |
+| Skipped    | 0     |
+| Coverage   | 87%   | ← 可選，沒設定就不填
+| Regression | 8/8 ✅ |
+
+## All Test Cases（從 test runner 輸出自動產生）
+| Test                      | Module              | Result | Regression |
+|---------------------------|---------------------|--------|------------|
+| test_login_valid_creds    | tests/test_login.py | ✅     | ✅         |
+| test_login_wrong_password | tests/test_login.py | ✅     | ✅         |
+| test_login_missing_field  | tests/test_login.py | ❌     | —          |
+
+## Failures
+| Test                     | Error                    | Location              |
+|--------------------------|--------------------------|-----------------------|
+| test_login_missing_field | assert 500 == 400        | tests/test_login.py:42|
+
+## Sign-off
+- [ ] **QA**: (pending)
+```
+
+TEST-REPORT.md 是**自動產生**的，不是手寫的。Agent 解析 test runner 輸出（JSON / TAP / plain text）轉成固定格式。
+
+**Frontend 額外要求：** 如果 SPEC.md 有 UI，Verify 階段必須跑 `agent-browser` 做 E2E 瀏覽器測試。
+
+### 🏷️ Regression：安全網
+
+Regression 測試是驗收等級的測試，**每次 Ship 之前都必須通過**。它會隨著功能增加而累積——每個新功能把它的驗收測試加入 regression suite。
+
+**什麼是 regression？**
+- 從 PRD Acceptance Criteria 轉化的測試
+- 驗證「新 code 加進來之後，舊功能還能不能用」
+- 沒有 regression，新功能可能無聲無息地破壞舊功能
+
+**如何累積：**
+
+```
+Feature 1（auth）:      8 個 regression 測試   ← Ship gate: 8/8 ✅
+Feature 2（dashboard）: +5 個 regression 測試  ← Ship gate: 13/13 ✅
+Feature 3（payments）:  +6 個 regression 測試  ← Ship gate: 19/19 ✅
+```
+
+每個功能的 Ship 都要求 100% regression pass——不只是新測試，是**所有累積的 regression 測試**。
+
+**如何標記：** Agent 用 stack 對應的標記方式標記驗收等級的測試（見上表）。不是所有測試都是 regression——只有驗證 PRD 驗收條件或關鍵使用者路徑的才是。
+
+**何時跑：**
+- `/tgd-verify` → 跑所有測試，分開報告 regression
+- `/tgd-ship` → 硬性門檻：regression suite 必須 100% pass，失敗必須為 0
+- 任何時候 → 直接執行（如 `pytest -m regression`），不需要 tGD 包裝
+
+### 🔍 Review：審計測試品質
+
+Agent 產出 REVIEW.md，包含：
+- Code quality 分析
+- 測試品質評估（有沒有漏測的 edge case？）
+- Security / performance 掃描（如果相關）
+- 測試金字塔檢查：80% 單元、15% 整合、5% E2E
+
+Sign-off：**QA + DEV** 都要簽。
+
+### 🚀 Ship：Regression Gate
+
+Ship 是 tGD 唯一的硬性門檻。執行前，Agent 驗證：
+
+```
+PRD.md        → PM 簽了？       ✅
+TASKS.md      → DEV 簽了？      ✅
+TEST-REPORT   → QA 簽了？       ✅
+              → Regression 100%？ ✅
+              → Failed = 0？      ✅
+REVIEW.md     → QA+DEV 都簽了？  ✅
+
+全部 ✅ → 執行 Ship
+任何 ❌ → 🛑 擋住：「X 還沒簽 Y」
+```
 
 ---
 
