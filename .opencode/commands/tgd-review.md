@@ -30,10 +30,16 @@ Run the `code-review-and-quality` skill. This is the REVIEW phase. The full pipe
 
 Improve code health before merge. If the change is larger than ~100 lines, split it into smaller reviews.
 
-After completing the review, verify the outputs.
+After completing the review, create `$TGD_DIR/<feature-name>/REVIEW.md` with:
+- Code review findings (severity: Nit/Optional/FYI/Critical)
+- Security scan results
+- Performance analysis
+- Simplification suggestions applied
+- QA + DEV Sign-off
 
 **Verification Gate:**
 - [ ] Code review feedback addressed
 - [ ] No critical security or performance warnings remain
+- [ ] `$TGD_DIR/<feature-name>/REVIEW.md` exists and is non-empty
 
 If verification passes, suggest the next step: `/tgd-ship` to deploy.

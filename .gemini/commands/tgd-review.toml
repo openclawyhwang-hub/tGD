@@ -23,11 +23,17 @@ Run the code-review-and-quality skill. This is the REVIEW phase. Full pipeline:
 
 Conditional: security-and-hardening, performance-optimization.
 
-After completing the review, verify the outputs.
+After completing the review, create `$TGD_DIR/<feature-name>/REVIEW.md` with:
+- Code review findings (severity: Nit/Optional/FYI/Critical)
+- Security scan results
+- Performance analysis
+- Simplification suggestions applied
+- QA + DEV Sign-off
 
 **Verification Gate:**
 - [ ] Code review feedback addressed
 - [ ] No critical security or performance warnings remain
+- [ ] `$TGD_DIR/<feature-name>/REVIEW.md` exists and is non-empty
 
 If verification passes, suggest the next step: `/tgd-ship` to deploy.
 """

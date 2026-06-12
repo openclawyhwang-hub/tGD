@@ -33,10 +33,14 @@ Run the `shipping-and-launch` skill. This is the SHIP phase. The full pipeline i
 
 Faster is safer. Deploy in stages, confirm monitoring, and have a rollback plan.
 
-After completing the ship process, verify the outputs.
+After shipping, update `$TGD_DIR/CHANGELOG.md` (create if it doesn't exist) with:
+- Version (CalVer: `vYYYY.MM.DD`)
+- Feature name and summary
+- Date shipped
+- Key changes
 
 **Verification Gate:**
 - [ ] Git commit created with clean history
-- [ ] CHANGELOG.md updated
+- [ ] `$TGD_DIR/CHANGELOG.md` exists and is updated
 
 If verification passes, confirm that monitoring is active and the rollback plan is documented.

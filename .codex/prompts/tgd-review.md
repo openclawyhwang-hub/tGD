@@ -17,4 +17,16 @@ Conditional:
 
 If change > ~100 lines, split into smaller reviews.
 
+After completing, create `$TGD_DIR/<feature-name>/REVIEW.md` with:
+- Code review findings (severity: Nit/Optional/FYI/Critical)
+- Security scan results
+- Performance analysis
+- Simplification suggestions applied
+- QA + DEV Sign-off
+
+Verification Gate:
+- [ ] Code review feedback addressed
+- [ ] No critical security or performance warnings remain
+- [ ] `$TGD_DIR/<feature-name>/REVIEW.md` exists and is non-empty
+
 After completing, suggest: /tgd-ship.

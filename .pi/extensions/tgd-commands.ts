@@ -105,6 +105,8 @@ const tgdPrompts: Record<string, string> = {
     "3. Conditional: browser-based? → agent-browser\n" +
     "4. Conditional: want visual impact? → /understand-diff\n\n" +
     "Verification: ALL tests pass, build succeeds.\n" +
+    "After completing, create $TGD_DIR/<feature-name>/TEST-REPORT.md with: test results summary, coverage report, regression status, failures and root causes.\n" +
+    "Verification Gate: Tests pass, TEST-REPORT.md exists.\n" +
     "After completing, suggest: /tgd-review",
 
   "tgd-review":
@@ -116,6 +118,8 @@ const tgdPrompts: Record<string, string> = {
     "4. Conditional: performance concerns? → performance-optimization\n" +
     "5. Conditional: large/unfamiliar changes? → /understand-diff for blast radius visualization\n\n" +
     "Verification: Code review passes, no anti-patterns.\n" +
+    "After completing, create $TGD_DIR/<feature-name>/REVIEW.md with: code review findings, security scan, performance analysis, simplification suggestions, QA + DEV Sign-off.\n" +
+    "Verification Gate: Code review feedback addressed, no critical warnings, REVIEW.md exists.\n" +
     "After completing, suggest: /tgd-ship",
 
 
@@ -127,6 +131,8 @@ const tgdPrompts: Record<string, string> = {
     "3. If CI/CD exists: ci-cd-and-automation\n" +
     "4. If writing docs: documentation-and-adrs\n\n" +
     "Verification: Changes committed, tests pass, deployment successful.\n" +
+    "After shipping, update $TGD_DIR/CHANGELOG.md (create if it doesn't exist) with: version (CalVer), feature name, date shipped, key changes.\n" +
+    "Verification Gate: Git commit created, CHANGELOG.md exists and updated.\n" +
     "After completing, suggest: /tgd-map for the next feature",
 };
 

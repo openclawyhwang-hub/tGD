@@ -18,4 +18,14 @@ Core flow:
 
 Tests are proof. "seems right" is never sufficient.
 
+After completing, create `$TGD_DIR/<feature-name>/TEST-REPORT.md` with:
+- Test results summary (pass/fail counts)
+- Coverage report (if available)
+- Regression test status
+- Any failures and their root causes
+
+Verification Gate:
+- [ ] Tests pass for the implemented feature
+- [ ] `$TGD_DIR/<feature-name>/TEST-REPORT.md` exists and is non-empty
+
 After completing, suggest: /tgd-review for code quality review.

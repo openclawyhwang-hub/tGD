@@ -20,3 +20,13 @@ Conditional:
 - Removing old systems? -> deprecation-and-migration
 
 Faster is safer.
+
+After shipping, update `$TGD_DIR/CHANGELOG.md` (create if it doesn't exist) with:
+- Version (CalVer: `vYYYY.MM.DD`)
+- Feature name and summary
+- Date shipped
+- Key changes
+
+Verification Gate:
+- [ ] Git commit created with clean history
+- [ ] `$TGD_DIR/CHANGELOG.md` exists and is updated

@@ -31,9 +31,14 @@ Run the `debugging-and-error-recovery` skill. This is the VERIFY phase. The full
 
 Verify that the feature works correctly before proceeding to review. Tests are proof — "seems right" is never sufficient.
 
-After completing the verification, verify the outputs.
+After completing the verification, create `$TGD_DIR/<feature-name>/TEST-REPORT.md` with:
+- Test results summary (pass/fail counts)
+- Coverage report (if available)
+- Regression test status
+- Any failures and their root causes
 
 **Verification Gate:**
 - [ ] Tests pass for the implemented feature
+- [ ] `$TGD_DIR/<feature-name>/TEST-REPORT.md` exists and is non-empty
 
 If verification passes, suggest the next step: `/tgd-review` to review the code quality.
