@@ -6,6 +6,21 @@ Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow
 
 ---
 
+## v2026.06.12
+
+### Added
+- **Favicon redesign**: Blue "GD" on dark rounded square — unified across GitHub Pages and Intro page (`f039b46`, `8fe79a9`)
+
+### Changed
+- **Jira Integration Gate in `/tgd-plan`** — 3 iterations to get it right:
+  - Made Jira gate mandatory (auto-sync if configured, block if not) (`c0460c2`)
+  - Moved gate before verification to prevent agent from skipping (`8f427dd`, `be306b5`)
+  - Final: conversational prompt after TASKS.md — asks "要同步到 Jira 嗡？(y/n)", saves credentials to `$TGD_DIR/.env` for future runs (`e25743c`)
+  - Updated across all 5 platforms: Claude, OpenCode, Gemini, Codex, Pi
+
+### Fixed
+- **setup.sh registry safety**: Refuses `npm install -g pnpm` and `pnpm install` when registry is default `registry.npmjs.org` — prompts user to configure their own registry first (`aec19c8`)
+
 ## v2026.06.11
 
 ### ✨ Features
