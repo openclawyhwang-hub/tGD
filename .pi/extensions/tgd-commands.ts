@@ -63,14 +63,16 @@ const tgdPrompts: Record<string, string> = {
 
   "tgd-plan":
     "Run the planning-and-task-breakdown skill. PLAN phase.\n\n" +
-    "Pre-flight: Check $TGD_DIR/<feature>/SPEC.md exists. If missing, suggest /tgd-define first.\n\n" +
+    "Pre-flight:\n" +
+    "- Check $TGD_DIR/<feature>/SPEC.md exists. If missing, suggest /tgd-define first.\n" +
+    "- Check Jira config: JIRA_URL, JIRA_PROJECT, JIRA_TOKEN. If ALL set → mark JIRA_READY=true. If NOT set → STOP and tell user: \"Jira not configured. Set env vars or TGD_SKIP_JIRA=1 to skip.\" Do NOT proceed until resolved.\n\n" +
     "Pipeline:\n" +
     "1. Read the existing SPEC.md (and DESIGN.md if UI)\n" +
     "2. If .codegraph/ exists, run codegraph impact on core symbols to assess blast radius\n" +
     "3. Break into small, verifiable tasks\n" +
     "4. Create TASKS.md with ordered checklist\n" +
-    "5. 🔗 Mandatory Jira Gate: Check JIRA_URL, JIRA_PROJECT, JIRA_TOKEN env vars. If ALL set → run jira-auto-sync automatically (no ask, no skip). If NOT set → STOP: \"Configure Jira env vars or set TGD_SKIP_JIRA=1 to opt out.\"\n\n" +
-    "Verification: TASKS.md exists with acceptance criteria per task.\n" +
+    "5. If JIRA_READY=true → run jira-auto-sync automatically (no ask, no skip). Report created issue keys and add them to TASKS.md.\n\n" +
+    "Verification: TASKS.md exists with acceptance criteria per task. Jira issues created (if configured).\n" +
     "After completing, suggest: /tgd-develop",
 
   "tgd-develop":
