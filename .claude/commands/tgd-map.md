@@ -2,6 +2,38 @@
 description: Map — scan and understand the existing project context before making changes
 ---
 
+**🔑 Step 0: $TGD_DIR Resolution**
+
+$TGD_DIR is where ALL tGD artifacts live. It is a **sibling directory** outside your code repo.
+
+Resolution (in order):
+1. If symlink `tGD/` exists in project root → `readlink tGD` → that's `$TGD_DIR`
+2. If env var `$TGD_DIR` is set → use it, create symlink: `ln -s $TGD_DIR tGD`
+3. Otherwise → auto-create:
+   ```
+   PROJECT_NAME=$(basename $(pwd))
+   TGD_DIR="../${PROJECT_NAME}-tGD"
+   mkdir -p "$TGD_DIR"
+   ln -s "$TGD_DIR" tGD
+   export TGD_DIR=$(realpath tGD)
+   ```
+
+Result:
+```
+~/my-project/              ← your code (current dir)
+├── src/
+├── tGD → ../my-project-tGD/   ← symlink
+
+~/my-project-tGD/          ← $TGD_DIR (all artifacts here)
+├── CONTEXT.md
+├── .scans/
+└── <feature>/
+```
+
+After this step, ALL subsequent commands use `tGD/` (the symlink) to find `$TGD_DIR`.
+
+---
+
 ## Step 1: Context Discovery
 
 Before analyzing anything, ask the user:
@@ -19,7 +51,7 @@ Run the `context-engineering` skill. Analyze the current project: tech stack, ar
 
 ## Step 3: CodeGraph Setup
 
-1. Ensure output directory exists: `mkdir -p tGD/map`
+1. Ensure output directory exists: `mkdir -p tGD/.scans/$(basename $(pwd))`
 2. Create symlink: `rm -rf .codegraph && ln -s $TGD_DIR/.codegraph .codegraph`
 3. Initialize project graph: `codegraph init -i`
 

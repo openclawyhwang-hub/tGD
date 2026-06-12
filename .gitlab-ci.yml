@@ -8,3 +8,5 @@ pages:
       - public
   only:
     - main
+  variables:
+    GIT_STRATEGY: none

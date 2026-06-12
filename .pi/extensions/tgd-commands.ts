@@ -5,6 +5,12 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 const tgdPrompts: Record<string, string> = {
   "tgd-map":
+    "## Step 0: $TGD_DIR Resolution\n\n" +
+    "$TGD_DIR is where ALL tGD artifacts live. It is a sibling directory outside your code repo.\n\n" +
+    "Resolution (in order):\n" +
+    "1. If symlink tGD/ exists in project root → readlink tGD → that's $TGD_DIR\n" +
+    "2. If env var $TGD_DIR is set → use it, create symlink: ln -s $TGD_DIR tGD\n" +
+    "3. Otherwise → auto-create: PROJECT_NAME=$(basename $(pwd)), TGD_DIR=../${PROJECT_NAME}-tGD, mkdir -p $TGD_DIR, ln -s $TGD_DIR tGD, export TGD_DIR=$(realpath tGD)\n\n" +
     "## Step 1: Context Discovery\n\n" +
     "Before analyzing anything, ask the user:\n" +
     "> \"除了當前 repo，還有其他需要參考的 repo 嗎？（local path 或 git URL）\"\n\n" +
@@ -14,7 +20,7 @@ const tgdPrompts: Record<string, string> = {
     "## Step 2: Context Engineering\n\n" +
     "Run the context-engineering skill. Analyze the current project: tech stack, architecture, dependencies, code organization, and existing patterns.\n\n" +
     "## Step 3: CodeGraph Setup\n\n" +
-    "1. mkdir -p tGD/map\n" +
+    "1. mkdir -p tGD/.scans/$(basename $(pwd))\n" +
     "2. rm -rf .codegraph && ln -s $TGD_DIR/.codegraph .codegraph\n" +
     "3. codegraph init -i\n\n" +
     "## Step 4: Understand-Anything (MANDATORY)\n\n" +
@@ -39,7 +45,7 @@ const tgdPrompts: Record<string, string> = {
 
   "tgd-define":
     "Run the spec-driven-development skill. Write a PRD (product requirements document) covering objectives, commands, structure, code style, testing strategy, and boundaries before any code is written. DEFINE phase.\n\n" +
-    "Pre-flight: Check $TGD_DIR/CONTEXT.md exists (or .codegraph/ is present). If missing, STOP and tell user to run /tgd-map first.\n\n" +
+    "Pre-flight: Check $TGD_DIR/CONTEXT.md exists (or .codegraph/ is present). If missing, STOP and tell user to run /tgd-map first. $TGD_DIR: Resolve via tGD/ symlink in project root. If missing, check $TGD_DIR env var. If neither exists: STOP — run /tgd-map first.\n\n" +
     "Pipeline:\n" +
     "1. Feature Name Resolution (Selection Protocol) — **Analyze the user's request first.** Extract core action + object (e.g., 'user login' → action: login, object: user). Propose 3 kebab-case names that **directly reflect intent**: (a) most literal/direct, (b) action-focused, (c) domain-specific. Wait for user to pick by number. Once locked, create $TGD_DIR/<feature-name>/.\n" +
     "2. Git Branch Setup — If on main/master, create and switch to feature/<feature-name> (git checkout -b feature/user-login).\n" +
@@ -63,7 +69,7 @@ const tgdPrompts: Record<string, string> = {
 
   "tgd-plan":
     "Run the planning-and-task-breakdown skill. PLAN phase.\n\n" +
-    "Pre-flight: Check $TGD_DIR/<feature>/SPEC.md exists. If missing, suggest /tgd-define first.\n\n" +
+    "Pre-flight: Check $TGD_DIR/<feature>/SPEC.md exists. If missing, suggest /tgd-define first. $TGD_DIR: Resolve via tGD/ symlink in project root. If missing, check $TGD_DIR env var. If neither exists: STOP — run /tgd-map first.\n\n" +
     "Pipeline:\n" +
     "1. Read the existing SPEC.md (and DESIGN.md if UI)\n" +
     "2. If .codegraph/ exists, run codegraph impact on core symbols to assess blast radius\n" +
@@ -80,7 +86,7 @@ const tgdPrompts: Record<string, string> = {
 
   "tgd-develop":
     "Run the subagent-driven-development or incremental-implementation skill. BUILD phase.\n\n" +
-    "Pre-flight: Check TASKS.md, PRD.md, SPEC.md exist. If missing, suggest /tgd-define or /tgd-plan first.\n\n" +
+    "Pre-flight: Check TASKS.md, PRD.md, SPEC.md exist. If missing, suggest /tgd-define or /tgd-plan first. $TGD_DIR: Resolve via tGD/ symlink in project root. If missing, check $TGD_DIR env var. If neither exists: STOP — run /tgd-map first.\n\n" +
     "Pipeline:\n" +
     "1. context-engineering — before modifying, run codegraph callers <symbol> to ensure backward compatibility\n" +
     "2. source-driven-development\n" +

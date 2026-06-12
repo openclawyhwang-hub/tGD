@@ -5,6 +5,7 @@ description: Verify — prove it works with debugging and test pyramid
 **🛑 Pre-flight: Environment Check**
 - [ ] `$TGD_DIR/CONTEXT.md` exists (or `.codegraph/` is present).
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
+- **$TGD_DIR:** Resolve via `tGD/` symlink in project root. If missing, check `$TGD_DIR` env var. If neither exists: STOP — run `/tgd-map` first.
 
 **🔑 Step 0: Feature Name Resolution**
 1. Scan `tGD/` for subdirectories (e.g., `tGD/user-login/`).

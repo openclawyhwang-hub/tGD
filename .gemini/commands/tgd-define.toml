@@ -4,8 +4,9 @@ prompt = """
 **🛑 Pre-flight: Environment Check**
 - [ ] `$TGD_DIR/CONTEXT.md` exists (or `.codegraph/` is present).
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
+- **$TGD_DIR:** Resolve via `tGD/` symlink in project root. If missing, check `$TGD_DIR` env var. If neither exists: STOP — run `/tgd-map` first.
 
-This is the DEFINE phase. The full pipeline is:
+Run the `spec-driven-development` skill.
 1. **Feature Name Resolution** (Selection Protocol) — **Analyze the user's request first.** Extract the core action + object (e.g., "user login" → action: login, object: user). Then propose 3 distinct kebab-case `<feature-name>` options that **directly reflect the user's intent**:
    - Option 1: Most literal/direct (e.g., `user-login`)
    - Option 2: Action-focused (e.g., `authenticate-user`)

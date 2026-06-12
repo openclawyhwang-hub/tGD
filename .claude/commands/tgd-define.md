@@ -5,6 +5,7 @@ description: Start spec-driven development — write a structured specification 
 **🛑 Pre-flight: Environment Check**
 - [ ] `$TGD_DIR/CONTEXT.md` exists (or `.codegraph/` is present).
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
+- **$TGD_DIR:** Resolve via `tGD/` symlink in project root. If missing, check `$TGD_DIR` env var. If neither exists: STOP — run `/tgd-map` first.
 
 Run the `spec-driven-development` skill. Write a PRD (product requirements document) covering objectives, commands, structure, code style, testing strategy, and boundaries before any code is written.
 
