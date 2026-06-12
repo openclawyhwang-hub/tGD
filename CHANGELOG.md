@@ -6,6 +6,39 @@ Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow
 
 ---
 
+## v2026.06.11
+
+### ✨ Features
+- feat(setup): link tGD skills to OpenCode/Gemini/Pi for faster skill discovery (`dadc955`)
+- feat(dashboard): remove token gate — dashboard opens directly on localhost (`26ad0d3`)
+- docs: add Sign-off + TEST-REPORT + regression markers to intro page outputs (`6161d6d`)
+- docs: add Sign-off format example to zh-TW/JA/DE READMEs (`d9194aa`)
+
+### 🐛 Bug Fixes
+- fix(setup): 7 issues — cd bug, duplicate logic, symlink chain, prereq checks (`71c4214`)
+- fix(setup): uninstall cleanup for ~/.agents/skills/ and case-sensitive tGD pattern (`dadc955`)
+- fix(dashboard): remove unused crypto import and NO_AUTH references (`26ad0d3`)
+
+### 🔧 Chores
+- chore: bump version to v2026.06.11 (`5683984`)
+
+---
+
+## v2026.06.10
+
+### ✨ Features
+- feat: add Human Roles, Sign-off Protocol, and TEST-REPORT to lifecycle (`5fba481`)
+- feat: add TEST-REPORT, regression markers, and Human Roles to all READMEs (`5093c0e`)
+- refactor: Sign-off table→checkbox, coverage optional, test runner config, rejection flow (`ff25035`)
+
+### 🐛 Bug Fixes
+- fix: add padding-bottom to slides to prevent footer overlap (`0b3301a`)
+
+### 🔧 Chores
+- chore: bump version to v2026.06.10
+
+---
+
 ## v2026.06.09
 
 ### ✨ Features
