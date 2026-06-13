@@ -74,6 +74,14 @@ bash setup.sh
 | `tgd --upgrade` (`-u`) | Erneuern: ungültige Symlinks bereinigen und alle Links/Hooks neu erstellen |
 | `tgd --uninstall` | Alle tGD-Installation entfernen, ohne andere Dateien zu beeinträchtigen |
 
+### Auf neueste Version aktualisieren
+
+```bash
+cd ~/tGD && git pull && tgd --upgrade
+```
+
+Lädt den neuesten Source von GitHub und erneuert alle symlinks/hooks. Deine bestehenden Features in `$TGD_DIR/<feature>/` bleiben erhalten.
+
 ### 2. Agent starten
 ```bash
 claude   # Claude Code
@@ -235,7 +243,7 @@ Die `tgd` CLI verwaltet Installation, Updates und Diagnose:
 
 ### Slash Commands
 
-8 Stufen von der Idee bis zur Produktion. Jede Stufe gatekept die nächste.
+7 Stufen von der Idee bis zur Produktion. Jede Stufe gatekept die nächste.
 
 | 🎯 Was | ⌨️ Command | 💡 Prinzip | 🔧 Skills |
 |---|---|---|---|

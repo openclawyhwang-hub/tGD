@@ -70,10 +70,18 @@ bash setup.sh
 | Command | What it does |
 |---------|-------------|
 | `bash setup.sh` | First-time install (run from cloned repo) |
-| `tgd` | Install or refresh tGD (after first install) |
+| `tgd` | Install or update tGD (after first install) |
 | `tgd --version` (`-v`) | Show current version (CalVer: YYYY.M.D) |
 | `tgd --upgrade` (`-u`) | Force refresh: clean broken symlinks and rebuild all links/hooks |
 | `tgd --uninstall` | Remove all tGD symlinks and hooks without touching your other files |
+
+### Updating to Latest
+
+```bash
+cd ~/tGD && git pull && tgd --upgrade
+```
+
+This pulls the latest source from GitHub and rebuilds all symlinks/hooks. Your existing features in `$TGD_DIR/<feature>/` are preserved.
 
 ### 2. Start Your Agent
 ```bash
@@ -268,11 +276,9 @@ The `tgd` CLI manages installation, updates, and diagnostics:
 | `tgd --release` | Create a GitHub release (reads .tgd-version) |
 | `tgd --uninstall` | Remove all tGD installations |
 
-**Update to latest:** `cd ~/tGD && git pull && tgd --upgrade` — one line.
-
 ### Slash Commands
 
-8 slash commands that map to the development lifecycle. Each command chains the relevant skills automatically.
+7 slash commands that map to the development lifecycle. Each command chains the relevant skills automatically.
 
 | 🎯 What you're doing | ⌨️ Command | 💡 Key principle | 🔧 Invokes |
 |---|---|---|---|

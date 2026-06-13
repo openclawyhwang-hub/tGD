@@ -75,7 +75,14 @@ bash setup.sh
 | `tgd --version` (`-v`) | 顯示當前版本（CalVer：YYYY.M.D） |
 | `tgd --upgrade` (`-u`) | 強制重建：清除無效 symlink 並重新建立所有連結和 hooks |
 | `tgd --uninstall` | 移除所有 tGD 部署，不影響其他設定 |
-| `bash setup.sh` | 舊版備用方案 — 等同於 `tgd` |
+
+### 更新到最新版本
+
+```bash
+cd ~/tGD && git pull && tgd --upgrade
+```
+
+從 GitHub 拉最新原始碼並重建所有 symlinks/hooks。`$TGD_DIR/<feature>/` 裡的現有功能不受影響。
 
 ### 2. 啟動你的 Agent
 ```bash
