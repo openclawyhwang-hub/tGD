@@ -281,6 +281,8 @@ flowchart LR
 | `tgd --release` | 建立 GitHub release（讀取 .tgd-version） |
 | `tgd --uninstall` | 移除所有 tGD 部署 |
 
+**更新到最新版本：** `cd ~/tGD && git pull && tgd --upgrade` — 一行搞定。
+
 ### Slash 指令
 
 7 個 slash command 對應開發生命週期。每個指令自動串聯相關的 skills。

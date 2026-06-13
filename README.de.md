@@ -231,6 +231,8 @@ Die `tgd` CLI verwaltet Installation, Updates und Diagnose:
 | `tgd --release` | GitHub-Release erstellt (liest .tgd-version) |
 | `tgd --uninstall` | Alle tGD-Installationen entfernen |
 
+**Auf neueste Version aktualisieren:** `cd ~/tGD && git pull && tgd --upgrade` — einzeiler.
+
 ### Slash Commands
 
 8 Stufen von der Idee bis zur Produktion. Jede Stufe gatekept die nächste.

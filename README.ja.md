@@ -231,6 +231,8 @@ flowchart LR
 | `tgd --release` | GitHub リリースを作成（.tgd-version を読み取り） |
 | `tgd --uninstall` | すべてのtGD配備を削除 |
 
+**最新バージョンへ更新：** `cd ~/tGD && git pull && tgd --upgrade` — ワンライナー。
+
 ### スラッシュコマンド
 
 8つのステージでアイデアから本番環境まで。各ステージが次のステージをゲートキープします。
