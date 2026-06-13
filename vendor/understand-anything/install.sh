@@ -88,15 +88,34 @@ prompt_platform() {
   printf '%s\n' "${ids[$((choice-1))]}"
 }
 
-clone_or_update() {
-  if [[ -d "$REPO_DIR/.git" ]]; then
-    printf -- '→ Updating existing checkout at %s\n' "$REPO_DIR"
-    git -C "$REPO_DIR" pull --ff-only
-  else
-    printf -- '→ Cloning %s → %s\n' "$REPO_URL" "$REPO_DIR"
-    mkdir -p "$(dirname "$REPO_DIR")"
-    git clone "$REPO_URL" "$REPO_DIR"
+# When REPO_DIR is a symlink (tGD-managed), resolve to the real target.
+# When it's a real directory, leave it alone (user's own UA install).
+resolve_repo_dir() {
+  if [[ -L "$REPO_DIR" ]]; then
+    local target
+    target="$(readlink -f "$REPO_DIR" 2>/dev/null || readlink "$REPO_DIR")"
+    if [[ -n "$target" && -d "$target" ]]; then
+      REPO_DIR="$target"
+      printf '   🔗 Using tGD-managed UA at %s\n' "$REPO_DIR"
+    else
+      printf '❌ Broken symlink: %s → %s\n' "$HOME/.understand-anything/repo" "$target" >&2
+      printf '   Fix: rm ~/.understand-anything/repo && re-run tGD setup.sh\n' >&2
+      exit 1
+    fi
   fi
+}
+
+verify_repo() {
+  if [[ ! -d "$REPO_DIR" ]]; then
+    printf '❌ UA repo not found at %s\n' "$REPO_DIR" >&2
+    printf '   Run tGD setup.sh first, or install official UA manually.\n' >&2
+    exit 1
+  fi
+  if [[ ! -d "$REPO_DIR/understand-anything-plugin" ]]; then
+    printf '❌ Invalid UA repo at %s (missing understand-anything-plugin/)\n' "$REPO_DIR" >&2
+    exit 1
+  fi
+  printf '   → Using UA at %s (tGD trusts vendor copy, no clone)\n' "$REPO_DIR"
 }
 
 skills_root() { printf '%s\n' "$REPO_DIR/understand-anything-plugin/skills"; }
@@ -183,7 +202,8 @@ cmd_install() {
   target="$(printf '%s\n' "$row" | cut -d'|' -f2)"
   style="$(printf '%s\n' "$row" | cut -d'|' -f3)"
 
-  clone_or_update
+  resolve_repo_dir
+  verify_repo
   printf -- '→ Linking skills for %s (%s → %s)\n' "$id" "$style" "$target"
   link_skills "$target" "$style"
   printf -- '→ Linking universal plugin root\n'
@@ -217,12 +237,20 @@ cmd_uninstall() {
 }
 
 cmd_update() {
-  if [[ ! -d "$REPO_DIR/.git" ]]; then
+  resolve_repo_dir
+  if [[ ! -d "$REPO_DIR" ]]; then
     printf 'No installation found at %s. Run install first.\n' "$REPO_DIR" >&2
     exit 1
   fi
-  git -C "$REPO_DIR" pull --ff-only
-  printf '✓ Updated.\n'
+  if [[ -L "$HOME/.understand-anything/repo" ]]; then
+    # tGD-managed: pull from tGD instead
+    printf '   🔗 tGD-managed install. Run: cd ~/tGD && git pull && tgd --upgrade\n'
+  elif [[ -d "$REPO_DIR/.git" ]]; then
+    git -C "$REPO_DIR" pull --ff-only
+    printf '✓ Updated.\n'
+  else
+    printf '⚠️  No .git in %s — not a git checkout. Skipping update.\n' "$REPO_DIR"
+  fi
 }
 
 usage() {

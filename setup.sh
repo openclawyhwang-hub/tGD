@@ -752,6 +752,25 @@ UA_SKILLS_DIR="$UA_DIR/understand-anything-plugin/skills"
 if [ -d "$UA_SKILLS_DIR" ]; then
     echo "   ✅ Understand-Anything skills ready."
     install_ua_deps "$UA_DIR"
+
+    # Make ~/.understand-anything/repo a symlink to vendor — single source of truth.
+    # Only act when the target does NOT exist yet. If a real directory is already
+    # there (e.g. user installed the official UA first), leave it alone.
+    UA_REPO_LINK="$HOME/.understand-anything/repo"
+    UA_PLUGIN_TARGET="$UA_DIR/understand-anything-plugin"
+    if [[ -L "$UA_REPO_LINK" && ! -e "$UA_REPO_LINK" ]]; then
+        # Broken symlink — fix it
+        rm "$UA_REPO_LINK"
+    fi
+    if [[ ! -e "$UA_REPO_LINK" ]] && [[ ! -L "$UA_REPO_LINK" ]]; then
+        mkdir -p "$(dirname "$UA_REPO_LINK")"
+        ln -sf "$UA_PLUGIN_TARGET" "$UA_REPO_LINK"
+        echo "   🔗 ~/.understand-anything/repo → vendor (tGD-managed)"
+    elif [[ -L "$UA_REPO_LINK" ]]; then
+        echo "   🔗 ~/.understand-anything/repo already symlinks to vendor."
+    else
+        echo "   ℹ️  ~/.understand-anything/repo exists (not a symlink) — keeping existing UA install."
+    fi
 else
     echo "   ⚠️  Understand-Anything not found at vendor/understand-anything/"
     echo "      Re-clone tGD or manually download from: https://github.com/Lum1104/Understand-Anything"
