@@ -868,12 +868,14 @@ with open('$CONFIG_FILE', 'w') as f:
 fi
 
 echo ""
-echo "📋 Installing tGD rules (standalone files, no config pollution)..."
+echo "📋 Installing tGD rules (project-local only, no global pollution)..."
 echo ""
 
-# Claude Code: ~/.claude/rules/tgd.md (auto-loaded by Claude Code)
-mkdir -p "$HOME/.claude/rules"
-ln -sf "$TGD_DIR/skills/tgd-rules/SKILL.md" "$HOME/.claude/rules/tgd.md" 2>/dev/null && echo "   ✅ Claude Code: ~/.claude/rules/tgd.md → symlink"
+# Claude Code: NO global rules symlink — tgd-rules stays as a project-local skill.
+# Previously: ln -sf ... "$HOME/.claude/rules/tgd.md" (loaded in ALL conversations)
+# Now: rules are loaded via skill system only when in a tGD project context.
+# If you need rules in a specific project, add to .claude/CLAUDE.md:
+#   "Load tgd-rules skill for tGD workflow enforcement."
 
 # Codex CLI: ~/.codex/skills/tgd-rules (auto-discovered)
 mkdir -p "$HOME/.codex/skills"

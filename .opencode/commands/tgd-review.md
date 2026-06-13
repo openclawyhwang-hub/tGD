@@ -37,6 +37,10 @@ After completing the review, create `$TGD_DIR/<feature-name>/REVIEW.md` with:
 - Simplification suggestions applied
 - QA + DEV Sign-off
 
+If any architectural decisions were made during the review, create `$TGD_DIR/<feature-name>/decisions/` with ADR files:
+- `ADR-NNN-<decision>.md` — one file per decision
+- Format: Context, Decision, Consequences
+
 **Verification Gate:**
 - [ ] Code review feedback addressed
 - [ ] No critical security or performance warnings remain

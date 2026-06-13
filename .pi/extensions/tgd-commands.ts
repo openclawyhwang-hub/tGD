@@ -119,6 +119,7 @@ const tgdPrompts: Record<string, string> = {
     "5. Conditional: large/unfamiliar changes? → /understand-diff for blast radius visualization\n\n" +
     "Verification: Code review passes, no anti-patterns.\n" +
     "After completing, create $TGD_DIR/<feature-name>/REVIEW.md with: code review findings, security scan, performance analysis, simplification suggestions, QA + DEV Sign-off.\n" +
+    "If architectural decisions were made, create $TGD_DIR/<feature-name>/decisions/ with ADR files (ADR-NNN-<decision>.md, format: Context, Decision, Consequences).\n" +
     "Verification Gate: Code review feedback addressed, no critical warnings, REVIEW.md exists.\n" +
     "After completing, suggest: /tgd-ship",
 
