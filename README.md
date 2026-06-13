@@ -18,7 +18,7 @@
 
 **Probably not.**
 
-tGD is an 7-stage pipeline that forces agents to follow the same workflow you would:
+tGD is a 7-stage pipeline that forces agents to follow the same workflow you would:
 Map → Define → Plan → Develop → Verify → Review → Ship
 
 No shortcuts. No "should work". Just evidence.
@@ -45,12 +45,9 @@ Works with Claude Code, Codex CLI, Gemini CLI, OpenCode, and Pi Coding Agent.
 
 ## Who is this for?
 
-| If you are... | tGD helps you... |
-|---------------|------------------|
-| **Solo developer** | Ship faster with AI-assisted workflow |
-| **Team lead** | Enforce coding standards across AI-generated code |
-| **Startup** | Move fast without breaking things |
-| **Enterprise** | Maintain quality gates for AI development |
+| | | | |
+|---|---|---|---|
+| 🧑‍💻 **Solo Dev**<br>Ship faster with disciplined AI workflow. Agent handles specs, tests, reviews. | 👥 **Team Lead**<br>Enforce standards across AI-generated code. Every PR follows the same 7-stage pipeline. | 🚀 **Startup**<br>Move fast without breaking things. The harness catches agent mistakes before production. | 🏢 **Enterprise**<br>Quality gates for AI development. Security, performance, and compliance enforced. |
 
 ---
 
