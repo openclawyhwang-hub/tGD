@@ -6,6 +6,31 @@ Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow
 
 ---
 
+## v2026.06.13
+
+### Added
+- **Multi-repo task tagging in `/tgd-define` and `/tgd-plan`** — agents now tag SPEC.md sections and TASKS.md tasks with `[repo-name]` for multi-repo projects (`6fef3d2`)
+- **`$TGD_DIR` resolution in `/tgd-map`** — defines sibling-directory + symlink pattern, prevents agent guesswork (`ca38ed4`)
+- **Centralized scan storage** — `.codegraph/` and `.understand-anything/` moved to `$TGD_DIR/.scans/<repo>/` with symlinks (`cc2fb1a`)
+- **Decisions/ folder in `/tgd-review`** — creates ADRs when architectural decisions are made (`5bf47ff`)
+
+### Changed
+- **`understand-dashboard`** auto-opens browser on launch (`07a678f`)
+- **3 understand skills** now explicitly tell agents they ARE the LLM — prevents accidental external API calls (`6b88f7f`)
+
+### Fixed
+- **HTML pages** — corrected artifact names (`VERIFY.md` → `TEST-REPORT.md`, `SHIP.md` → `CHANGELOG.md`), JA/DE command count (8→7), slide numbering, removed `glow-breathe` animation that broke GitLab Pages rendering (`37f6945`)
+- **commands `verify`/`review`/`ship`** now explicitly create their required artifacts — TEST-REPORT.md, REVIEW.md, CHANGELOG.md, decisions/ (`6442a2f`)
+- **Global rules pollution** — removed `~/.claude/rules/tgd.md` symlink, agents load rules per-project only (`5bf47ff`)
+- **Map step symlinks** point to `.scans/<repo>/` not project root (`cc2fb1a`)
+
+### Docs
+- All 4 READMEs (EN/zh-TW/JA/DE) — added "Updating to Latest" one-liner in Quick Start, fixed command count, consistent terminology (`f6dc091`, `0f5e833`, `226d0fa`, `f3b2fec`)
+- EN README — fixed `an 7-stage` typo, deduped CLI tables, `Who is this for` converted to bullet list (`226d0fa`, `f3b2fec`)
+- All 4 READMEs — added comprehensive testing strategy (BDD, TDD, TEST-REPORT, regression, Ship gate) (`111e290`)
+
+---
+
 ## v2026.06.12
 
 ### Added
