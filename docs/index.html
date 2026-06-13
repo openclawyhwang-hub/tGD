@@ -102,7 +102,6 @@
                 radial-gradient(ellipse 600px 500px at 15% 10%, rgba(59, 130, 246, 0.06) 0%, transparent 100%),
                 radial-gradient(ellipse 500px 600px at 85% 80%, rgba(139, 92, 246, 0.04) 0%, transparent 100%),
                 radial-gradient(ellipse 400px 400px at 50% 50%, rgba(6, 182, 212, 0.03) 0%, transparent 100%);
-            animation: glow-breathe 18s ease-in-out infinite;
         }
         body.light .bg-glow {
             background:
@@ -703,7 +702,6 @@
         .pipeline-track.animate .pipeline-step:nth-child(5) .pipeline-dot { animation-delay: 0.4s; }
         .pipeline-track.animate .pipeline-step:nth-child(6) .pipeline-dot { animation-delay: 0.5s; }
         .pipeline-track.animate .pipeline-step:nth-child(7) .pipeline-dot { animation-delay: 0.6s; }
-        .pipeline-track.animate .pipeline-step:nth-child(8) .pipeline-dot { animation-delay: 0.7s; }
 
         /* Pipeline info stagger */
         .pipeline-track.animate .pipeline-step-info {
@@ -717,7 +715,6 @@
         .pipeline-track.animate .pipeline-step:nth-child(5) .pipeline-step-info { animation-delay: 0.55s; }
         .pipeline-track.animate .pipeline-step:nth-child(6) .pipeline-step-info { animation-delay: 0.65s; }
         .pipeline-track.animate .pipeline-step:nth-child(7) .pipeline-step-info { animation-delay: 0.75s; }
-        .pipeline-track.animate .pipeline-step:nth-child(8) .pipeline-step-info { animation-delay: 0.85s; }
 
         @keyframes fade-up {
             from { opacity: 0; transform: translateY(12px); }
@@ -747,7 +744,6 @@
         .pipeline-track.animate .pipeline-step:nth-child(5) .pipeline-step-num { animation-delay: 0.45s; }
         .pipeline-track.animate .pipeline-step:nth-child(6) .pipeline-step-num { animation-delay: 0.55s; }
         .pipeline-track.animate .pipeline-step:nth-child(7) .pipeline-step-num { animation-delay: 0.65s; }
-        .pipeline-track.animate .pipeline-step:nth-child(8) .pipeline-step-num { animation-delay: 0.75s; }
 
         /* Card hover lift */
         .example-card, .skill-card, .who-card {
@@ -775,13 +771,6 @@
         .fade-stagger.visible > *:nth-child(4) { transition-delay: 0.24s; opacity: 1; transform: none; }
         .fade-stagger.visible > *:nth-child(5) { transition-delay: 0.32s; opacity: 1; transform: none; }
         .fade-stagger.visible > *:nth-child(6) { transition-delay: 0.40s; opacity: 1; transform: none; }
-
-        /* Background glow breathing */
-        @keyframes glow-breathe {
-            0%   { opacity: 1; transform: scale(1); }
-            50%  { opacity: 0.35; transform: scale(1.05); }
-            100% { opacity: 0.8; transform: scale(0.97); }
-        }
 
         /* Reduced motion */
         @media (prefers-reduced-motion: reduce) {
@@ -1279,8 +1268,8 @@
                 <span data-lang="ja">コマンド</span>
                 <span data-lang="de">Befehle</span></h2>
             <p class="section-subtitle fade-in"><span data-lang="en">7 slash commands that map to the development lifecycle.</span><span data-lang="zh">7 個 slash command 對應開發生命週期。</span>
-                <span data-lang="ja">開発ライフサイクルに対応する8つのスラッシュコマンド。</span>
-                <span data-lang="de">8 Slash Commands für den Entwicklungs-Lebenszyklus.</span></p>
+                <span data-lang="ja">開発ライフサイクルに対応する7つのスラッシュコマンド。</span>
+                <span data-lang="de">7 Slash Commands für den Entwicklungs-Lebenszyklus.</span></p>
             
                         <div class="fade-in" style="overflow-x: auto;">
                 <table class="commands-table">
@@ -1574,6 +1563,7 @@
     ├── <span class="file">DESIGN.md</span>              <span class="desc"># UI (if applicable)</span>
     ├── <span class="dir">prototype/</span>             <span class="desc"># HTML mockups</span>
     ├── <span class="file">TASKS.md</span>               <span class="desc"># BDD tasks (tagged)</span>
+    ├── <span class="file">TEST-REPORT.md</span>         <span class="desc"># Test evidence</span>
     ├── <span class="file">REVIEW.md</span>              <span class="desc"># Code review</span>
     └── <span class="dir">decisions/</span>             <span class="desc"># ADRs (any phase)</span>
         └── <span class="file">ADR-001.md</span>
