@@ -20,15 +20,19 @@ const tgdPrompts: Record<string, string> = {
     "## Step 2: Context Engineering\n\n" +
     "Run the context-engineering skill. Analyze the current project: tech stack, architecture, dependencies, code organization, and existing patterns.\n\n" +
     "## Step 3: CodeGraph Setup\n\n" +
-    "1. mkdir -p tGD/.scans/$(basename $(pwd))\n" +
-    "2. rm -rf .codegraph && ln -s $TGD_DIR/.scans/$(basename $(pwd))/.codegraph .codegraph\n" +
-    "3. codegraph init -i\n\n" +
+    "For each repo to map (primary + all additional repos from Step 1):\n\n" +
+    "1. mkdir -p $TGD_DIR/.scans/<repo-name>\n" +
+    "2. rm -rf <repo-path>/.codegraph && ln -s $TGD_DIR/.scans/<repo-name>/.codegraph <repo-path>/.codegraph\n" +
+    "3. cd into the repo and run codegraph init -i\n\n" +
     "## Step 4: Understand-Anything (MANDATORY)\n\n" +
     "This step is required, not optional.\n\n" +
-    "1. rm -rf .understand-anything && ln -s $TGD_DIR/.scans/$(basename $(pwd))/.understand-anything .understand-anything\n" +
-    "2. Run /understand to build knowledge graph → produces $TGD_DIR/.scans/$(basename $(pwd))/.understand-anything/knowledge-graph.json\n" +
-    "3. Run /understand-dashboard to launch interactive visualization\n" +
-    "4. If additional repos were provided in Step 1, run /understand on each of them as well\n\n" +
+    "For each repo to map (primary + all additional repos from Step 1):\n\n" +
+    "1. rm -rf <repo-path>/.understand-anything && ln -s $TGD_DIR/.scans/<repo-name>/.understand-anything <repo-path>/.understand-anything\n" +
+    "2. cd into the repo and run /understand to build a full knowledge graph\n" +
+    "3. Produces $TGD_DIR/.scans/<repo-name>/.understand-anything/knowledge-graph.json\n" +
+    "4. After ALL repos are mapped, run /understand-dashboard from the primary repo to launch the interactive visualization\n" +
+    "5. If unfamiliar with any repo, run /understand-onboard for a guided tour\n\n" +
+    "Dashboard is launched only once from the primary repo. To inspect additional repos visually, run /understand-dashboard from each repo path separately.\n\n" +
     "## Step 5: Produce CONTEXT.md\n\n" +
     "CONTEXT.md must include:\n" +
     "1. Primary Repository — path, name, structure, key files, summary, code entry points\n" +

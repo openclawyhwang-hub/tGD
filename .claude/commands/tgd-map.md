@@ -51,21 +51,25 @@ Run the `context-engineering` skill. Analyze the current project: tech stack, ar
 
 ## Step 3: CodeGraph Setup
 
-1. Ensure output directory exists: `mkdir -p tGD/.scans/$(basename $(pwd))`
-2. Create symlink: `rm -rf .codegraph && ln -s $TGD_DIR/.scans/$(basename $(pwd))/.codegraph .codegraph`
-3. Initialize project graph: `codegraph init -i`
+For each repo to map (primary + all additional repos from Step 1):
+
+1. Ensure output dir exists: `mkdir -p $TGD_DIR/.scans/<repo-name>`
+2. Create symlink: `rm -rf <repo-path>/.codegraph && ln -s $TGD_DIR/.scans/<repo-name>/.codegraph <repo-path>/.codegraph`
+3. cd into the repo and run: `codegraph init -i`
 
 ## Step 4: Understand-Anything (MANDATORY)
 
 This step is **required**, not optional.
 
-1. Create symlink: `rm -rf .understand-anything && ln -s $TGD_DIR/.scans/$(basename $(pwd))/.understand-anything .understand-anything`
-2. Run `/understand` to build a full knowledge graph of the codebase
-3. This produces `$TGD_DIR/.scans/$(basename $(pwd))/.understand-anything/knowledge-graph.json`
-4. After graph is built, run `/understand-dashboard` to launch interactive web visualization
-5. If unfamiliar with the project, also run `/understand-onboard` for a guided tour
+For each repo to map (primary + all additional repos from Step 1):
 
-If additional repos were provided in Step 1, run `/understand` on each of them as well.
+1. Create symlink: `rm -rf <repo-path>/.understand-anything && ln -s $TGD_DIR/.scans/<repo-name>/.understand-anything <repo-path>/.understand-anything`
+2. cd into the repo and run `/understand` to build a full knowledge graph
+3. This produces `$TGD_DIR/.scans/<repo-name>/.understand-anything/knowledge-graph.json`
+4. After ALL repos are mapped, run `/understand-dashboard` from the primary repo to launch the interactive visualization
+5. If unfamiliar with any repo, run `/understand-onboard` for a guided tour
+
+Dashboard is launched only once from the primary repo — it reads the primary's knowledge graph. To inspect additional repos visually, run `/understand-dashboard` from each repo path separately.
 
 ## Step 5: Produce CONTEXT.md
 

@@ -2,6 +2,38 @@
 description: Map — scan and understand the existing project context before making changes
 ---
 
+**🔑 Step 0: $TGD_DIR Resolution**
+
+$TGD_DIR is where ALL tGD artifacts live. It is a **sibling directory** outside your code repo.
+
+Resolution (in order):
+1. If symlink `tGD/` exists in project root → `readlink tGD` → that's `$TGD_DIR`
+2. If env var `$TGD_DIR` is set → use it, create symlink: `ln -s $TGD_DIR tGD`
+3. Otherwise → auto-create:
+   ```
+   PROJECT_NAME=$(basename $(pwd))
+   TGD_DIR="../${PROJECT_NAME}-tGD"
+   mkdir -p "$TGD_DIR"
+   ln -s "$TGD_DIR" tGD
+   export TGD_DIR=$(realpath tGD)
+   ```
+
+Result:
+```
+~/my-project/              ← your code (current dir)
+├── src/
+├── tGD → ../my-project-tGD/   ← symlink
+
+~/my-project-tGD/          ← $TGD_DIR (all artifacts here)
+├── CONTEXT.md
+├── .scans/
+└── <feature>/
+```
+
+After this step, ALL subsequent commands use `tGD/` (the symlink) to find `$TGD_DIR`.
+
+---
+
 ## Step 1: Context Discovery
 
 Before analyzing anything, ask the user:
@@ -19,29 +51,33 @@ Run the `context-engineering` skill. Analyze the current project: tech stack, ar
 
 ## Step 3: CodeGraph Setup
 
-1. Ensure output directory exists: `mkdir -p tGD/.scans/$(basename $(pwd))`
-2. Create symlink: `rm -rf .codegraph && ln -s $TGD_DIR/.scans/$(basename $(pwd))/.codegraph .codegraph`
-3. Initialize project graph: `codegraph init -i`
+For each repo to map (primary + all additional repos from Step 1):
+
+1. Ensure output dir exists: `mkdir -p $TGD_DIR/.scans/<repo-name>`
+2. Create symlink: `rm -rf <repo-path>/.codegraph && ln -s $TGD_DIR/.scans/<repo-name>/.codegraph <repo-path>/.codegraph`
+3. cd into the repo and run: `codegraph init -i`
 
 ## Step 4: Understand-Anything (MANDATORY)
 
 This step is **required**, not optional.
 
-1. Create symlink: `rm -rf .understand-anything && ln -s $TGD_DIR/.scans/$(basename $(pwd))/.understand-anything .understand-anything`
-2. Run `/understand` to build a full knowledge graph of the codebase
-3. This produces `$TGD_DIR/.scans/$(basename $(pwd))/.understand-anything/knowledge-graph.json`
-4. After graph is built, run `/understand-dashboard` to launch interactive web visualization
-5. If unfamiliar with the project, also run `/understand-onboard` for a guided tour
+For each repo to map (primary + all additional repos from Step 1):
 
-If additional repos were provided in Step 1, run `/understand` on each of them as well.
+1. Create symlink: `rm -rf <repo-path>/.understand-anything && ln -s $TGD_DIR/.scans/<repo-name>/.understand-anything <repo-path>/.understand-anything`
+2. cd into the repo and run `/understand` to build a full knowledge graph
+3. This produces `$TGD_DIR/.scans/<repo-name>/.understand-anything/knowledge-graph.json`
+4. After ALL repos are mapped, run `/understand-dashboard` from the primary repo to launch the interactive visualization
+5. If unfamiliar with any repo, run `/understand-onboard` for a guided tour
+
+Dashboard is launched only once from the primary repo — it reads the primary's knowledge graph. To inspect additional repos visually, run `/understand-dashboard` from each repo path separately.
 
 ## Step 5: Produce CONTEXT.md
 
 **Outputs (all under `$TGD_DIR/`):**
 - `CONTEXT.md` — project structure analysis (MUST reference CodeGraph/UA data)
-- `.codegraph/codegraph.db` — symbol index (via symlink)
-- `.understand-anything/knowledge-graph.json` — full knowledge graph (via symlink)
-- `.understand-anything/config.json` — UA configuration
+- `.scans/<repo>/.codegraph/codegraph.db` — symbol index (via symlink)
+- `.scans/<repo>/.understand-anything/knowledge-graph.json` — full knowledge graph (via symlink)
+- `.scans/<repo>/.understand-anything/config.json` — UA configuration
 - **Interactive dashboard** — launched via `/understand-dashboard` (localhost)
 
 **CONTEXT.md Structure:**
@@ -90,7 +126,6 @@ Synthesize data from the tools:
 
 ### Open Questions
 - <unresolved questions>
-
 ## See Also
 - Interactive Dashboard: http://localhost:<port>
 ```
