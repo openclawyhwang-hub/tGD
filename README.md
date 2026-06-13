@@ -45,9 +45,10 @@ Works with Claude Code, Codex CLI, Gemini CLI, OpenCode, and Pi Coding Agent.
 
 ## Who is this for?
 
-| | | | |
-|---|---|---|---|
-| 🧑‍💻 **Solo Dev**<br>Ship faster with disciplined AI workflow. Agent handles specs, tests, reviews. | 👥 **Team Lead**<br>Enforce standards across AI-generated code. Every PR follows the same 7-stage pipeline. | 🚀 **Startup**<br>Move fast without breaking things. The harness catches agent mistakes before production. | 🏢 **Enterprise**<br>Quality gates for AI development. Security, performance, and compliance enforced. |
+- 🧑‍💻 **Solo Dev** — Ship faster with disciplined AI workflow. Agent handles specs, tests, reviews.
+- 👥 **Team Lead** — Enforce standards across AI-generated code. Every PR follows the same 7-stage pipeline.
+- 🚀 **Startup** — Move fast without breaking things. The harness catches agent mistakes before production.
+- 🏢 **Enterprise** — Quality gates for AI development. Security, performance, and compliance enforced.
 
 ---
 
