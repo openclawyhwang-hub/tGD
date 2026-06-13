@@ -32,6 +32,18 @@ Run the `planning-and-task-breakdown` skill. Decompose the specification into sm
 
 Each task should be implementable in isolation with clear success criteria. Order tasks by dependencies so they can be executed in the right sequence.
 
+**Multi-Repo Tagging:** If CONTEXT.md lists multiple repos, each task in TASKS.md MUST be prefixed with `[repo-name]`:
+```markdown
+### Task 1: [my-project-backend] Create auth endpoint
+**Description:** POST /api/auth/login
+**Files Touched:** `src/routes/auth.js`
+
+### Task 2: [my-project-frontend] Login form component
+**Description:** React login form with email/password
+**Files Touched:** `src/components/LoginForm.tsx`
+```
+This ensures each task is assigned to the correct repo and can be executed in the right context.
+
 **If UI feature:** Read `DESIGN.md` to understand Component Tree, Design Tokens, Responsive Breakpoints, and Interaction Patterns. Use these to inform task breakdown.
 
 **🔗 Jira Integration Gate** → IMMEDIATELY after TASKS.md is written. Do NOT skip this step.

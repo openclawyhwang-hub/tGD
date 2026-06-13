@@ -17,6 +17,13 @@ Steps:
 4. Decompose into small, verifiable tasks with acceptance criteria.
 5. Order by dependencies.
 6. Write `$TGD_DIR/<feature-name>/TASKS.md`.
+
+**Multi-Repo Tagging:** If CONTEXT.md lists multiple repos, prefix each task with `[repo-name]`:
+```markdown
+### Task 1: [my-project-backend] Create auth endpoint
+### Task 2: [my-project-frontend] Login form component
+```
+
 7. **🔗 Jira Integration Gate** → IMMEDIATELY after TASKS.md is written. Do NOT skip.
    - Check env vars: `JIRA_URL`, `JIRA_PROJECT`, `JIRA_TOKEN`.
    - **If ALL configured:** Run `jira-auto-sync` automatically. Parse TASKS.md, create issues, report keys, add `[ENG-1234]` to TASKS.md.

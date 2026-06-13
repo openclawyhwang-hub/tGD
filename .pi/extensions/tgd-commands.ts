@@ -52,6 +52,7 @@ const tgdPrompts: Record<string, string> = {
     "3. interview-me — if the ask is underspecified, extract what the user actually wants\n" +
     "4. idea-refine — if the concept is vague, stress-test and expand options\n" +
     "5. spec-driven-development — write the structured spec (PRD + SPEC)\n\n" +
+    "Multi-Repo Tagging: If CONTEXT.md lists multiple repos, SPEC.md MUST be tagged by repo. Use ## <repo-name> as section headers (e.g., ## Backend (my-project-backend), ## Frontend (my-project-frontend)).\n\n" +
     "Phase 1.5: UI Design Gate (MANDATORY CHECK via Selection Protocol)\n" +
     "After writing SPEC.md, ask: 'Does this feature have a UI component requiring DESIGN.md? 1. Yes (Generate design) 2. No (Backend only)'\n" +
     "If YES → (1) Run sketch skill to generate 2-3 HTML prototype variants in $TGD_DIR/<feature-name>/prototype/, (2) Present comparison table → user picks one by letter (or requests iteration), (3) Write DESIGN.md documenting the chosen design decisions and component tree, (4) Wait for user confirmation before proceeding\n" +
@@ -75,6 +76,7 @@ const tgdPrompts: Record<string, string> = {
     "2. If .codegraph/ exists, run codegraph impact on core symbols to assess blast radius\n" +
     "3. Break into small, verifiable tasks\n" +
     "4. Create TASKS.md with ordered checklist\n" +
+    "   Multi-Repo Tagging: If CONTEXT.md lists multiple repos, prefix each task with [repo-name] (e.g., [my-project-backend] Create auth endpoint).\n" +
     "5. 🔗 Jira Integration Gate (IMMEDIATELY after TASKS.md, do NOT skip):\n" +
     "   - Check JIRA_URL, JIRA_PROJECT, JIRA_TOKEN.\n" +
     "   - If ALL set → run jira-auto-sync automatically. Report keys, add to TASKS.md.\n" +

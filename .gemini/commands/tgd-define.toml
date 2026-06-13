@@ -18,6 +18,18 @@ Run the `spec-driven-development` skill.
 4. idea-refine — if the concept is vague, stress-test and expand options
 5. spec-driven-development — write the structured spec (PRD + SPEC)
 
+**Multi-Repo Tagging:** If CONTEXT.md lists multiple repos, SPEC.md MUST be tagged by repo:
+```markdown
+## Backend (my-project-backend)
+### API Contracts
+- POST /api/auth/login → ...
+
+## Frontend (my-project-frontend)
+### Components
+- LoginForm.tsx → ...
+```
+Each section header uses `## <repo-name>` so tasks can be traced to their target repo.
+
 **Phase 1.5: UI Design Gate (MANDATORY CHECK via Selection Protocol)**
 After writing SPEC.md, you MUST ask the user: "Does this feature have a UI component requiring DESIGN.md?"
 **Format:** "1. Yes (Generate design) 2. No (Backend only)"
