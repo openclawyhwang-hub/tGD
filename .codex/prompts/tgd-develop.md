@@ -2,10 +2,12 @@
 
 Build — implement with isolated worktree and task-based execution mode.
 
-Pre-flight:
-- Check $TGD_DIR/CONTEXT.md exists. If missing, /tgd-map first.
+**🛑 Pre-flight: Environment Check**
+- [ ] `$TGD_DIR/CONTEXT.md` exists (or `.codegraph/` is present).
+- **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
 - **$TGD_DIR:** Resolve via `tGD/` symlink in project root. If missing, check `$TGD_DIR` env var. If neither exists: STOP — run `/tgd-map` first.
-- Check $TGD_DIR/<feature-name>/TASKS.md exists. If missing, /tgd-plan first.
+
+Run the subagent-driven-development or incremental-implementation skill. This is the BUILD phase.
 
 **🌳 Step 1: Worktree Isolation (Mandatory)**
 1. Create: `git worktree add ../project-<feature-name> feature/<feature-name>`

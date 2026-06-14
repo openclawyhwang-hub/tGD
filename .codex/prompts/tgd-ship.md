@@ -2,14 +2,12 @@
 
 Ship — deploy with confidence
 
-Run the shipping-and-launch skill. This is the SHIP phase.
-
-Pre-flight:
-- Check review passed (no critical issues)
-- Check $TGD_DIR/<feature>/REVIEW.md exists
+**🛑 Pre-flight: Environment Check**
+- [ ] `$TGD_DIR/CONTEXT.md` exists (or `.codegraph/` is present).
+- **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
 - **$TGD_DIR:** Resolve via `tGD/` symlink in project root. If missing, check `$TGD_DIR` env var. If neither exists: STOP — run `/tgd-map` first.
-- Check tests/ exists and passes
-If missing, /tgd-review first.
+
+Run the shipping-and-launch skill. This is the SHIP phase.
 
 Core flow:
 1. git-workflow-and-versioning — clean commit history, trunk-based development

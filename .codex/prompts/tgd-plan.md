@@ -2,13 +2,12 @@
 
 Plan — decompose specs into atomic tasks with acceptance criteria
 
-Run the planning-and-task-breakdown skill. This is the PLAN phase.
-
-Pre-flight:
-- Check $TGD_DIR/CONTEXT.md exists. If missing, /tgd-map first.
+**🛑 Pre-flight: Environment Check**
+- [ ] `$TGD_DIR/CONTEXT.md` exists (or `.codegraph/` is present).
+- **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
 - **$TGD_DIR:** Resolve via `tGD/` symlink in project root. If missing, check `$TGD_DIR` env var. If neither exists: STOP — run `/tgd-map` first.
-- Scan tGD/ for feature subdirectories. If none, /tgd-define first.
-- Check $TGD_DIR/<feature-name>/PRD.md and SPEC.md exist. If missing, /tgd-define first.
+
+Run the planning-and-task-breakdown skill. This is the PLAN phase.
 
 Steps:
 1. **Read `$TGD_DIR/CONTEXT.md`**: Understand existing project structure.

@@ -2,10 +2,12 @@
 
 Review — improve code health before merge
 
-Run the code-review-and-quality skill. This is the REVIEW phase.
+**🛑 Pre-flight: Environment Check**
+- [ ] `$TGD_DIR/CONTEXT.md` exists (or `.codegraph/` is present).
+- **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
+- **$TGD_DIR:** Resolve via `tGD/` symlink in project root. If missing, check `$TGD_DIR` env var. If neither exists: STOP — run `/tgd-map` first.
 
-Pre-flight:
-- Check test files exist in tests/. If missing, /tgd-verify first.
+Run the code-review-and-quality skill. This is the REVIEW phase.
 
 Core flow:
 1. code-review-and-quality — five-axis review with severity labels (Nit/Optional/FYI)

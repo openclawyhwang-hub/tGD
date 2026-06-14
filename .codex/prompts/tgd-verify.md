@@ -2,11 +2,12 @@
 
 Verify — prove it works with debugging and test pyramid
 
-Run the debugging-and-error-recovery skill. This is the VERIFY phase.
+**🛑 Pre-flight: Environment Check**
+- [ ] `$TGD_DIR/CONTEXT.md` exists (or `.codegraph/` is present).
+- **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
+- **$TGD_DIR:** Resolve via `tGD/` symlink in project root. If missing, check `$TGD_DIR` env var. If neither exists: STOP — run `/tgd-map` first.
 
-Pre-flight:
-- Check source code exists in src/. If missing, /tgd-develop first.
-- Check test files exist in tests/. If missing, /tgd-develop first.
+Run the debugging-and-error-recovery skill. This is the VERIFY phase.
 
 Core flow:
 1. debugging-and-error-recovery — five-step triage: reproduce -> localize -> reduce -> fix -> guard
