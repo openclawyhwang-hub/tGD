@@ -63,6 +63,8 @@ jobs:
 
       - name: Run setup.sh
         run: bash setup.sh
+        env:
+          CI: "true"
 
       - name: Verify symlinks exist
         run: |
@@ -84,3 +86,5 @@ jobs:
 
       - name: Run setup.sh again (idempotency)
         run: bash setup.sh
+        env:
+          CI: "true"
