@@ -54,3 +54,33 @@ jobs:
 
       - name: Install plugin
         run: claude plugin install tGD@addy-tGD --scope user
+
+  test-setup:
+    name: Test setup.sh
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run setup.sh
+        run: bash setup.sh
+
+      - name: Verify symlinks exist
+        run: |
+          PASS=true
+          for link in \
+            "$HOME/.claude/commands/tgd-verify.md" \
+            "$HOME/.claude/commands/tgd-plan.md" \
+            "$HOME/.claude/commands/tgd-develop.md" \
+            "$HOME/.codex/prompts/tgd-verify.md" \
+          ; do
+            if [ ! -L "$link" ] && [ ! -f "$link" ]; then
+              echo "❌ Missing: $link"
+              PASS=false
+            else
+              echo "✅ Found: $link"
+            fi
+          done
+          $PASS || exit 1
+
+      - name: Run setup.sh again (idempotency)
+        run: bash setup.sh

@@ -1,0 +1,72 @@
+name: Lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  shellcheck:
+    name: Shell lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run shellcheck
+        run: |
+          SHELL_SCRIPTS=$(find . -name "*.sh" -not -path "./vendor/*" -not -path "./node_modules/*")
+          if [ -n "$SHELL_SCRIPTS" ]; then
+            shellcheck -x -s bash --severity=error $SHELL_SCRIPTS
+          else
+            echo "No shell scripts found"
+          fi
+
+  commitlint:
+    name: Conventional Commits
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install commitlint
+        run: npm install -g @commitlint/cli @commitlint/config-conventional
+
+      - name: Create commitlint config
+        run: |
+          cat > .commitlint.config.js << 'EOF'
+          module.exports = {
+            extends: ['@commitlint/config-conventional'],
+            rules: {
+              'type-enum': [2, 'always', [
+                'feat', 'fix', 'docs', 'style', 'refactor',
+                'test', 'chore', 'ci', 'perf', 'build', 'revert'
+              ]],
+              'subject-max-length': [2, 'always', 120],
+            },
+          };
+          EOF
+
+      - name: Lint PR commits
+        run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
+
+  links:
+    name: Link check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --exclude-loopback
+            --exclude "https://opencode.ai"
+            --exclude "https://pi.dev"
+            --exclude-mail
+            --no-progress
+            "**/*.md"
+          fail: false
