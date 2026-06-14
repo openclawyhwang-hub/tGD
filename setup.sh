@@ -276,7 +276,7 @@ fi
 
 # ─── Version marker ──────────────────────────────────────────────────────────
 # Version is derived from git tags (semver). To bump: git tag v1.4.0
-TGD_VERSION="2026-06-11"
+TGD_VERSION=$(cat "$TGD_DIR/.tgd-version" 2>/dev/null || echo "unknown")
 VERSION_FILE="$TGD_DIR/.tgd-version"
 
 if [[ "$MODE" == "install" ]] && [[ -f "$VERSION_FILE" ]]; then

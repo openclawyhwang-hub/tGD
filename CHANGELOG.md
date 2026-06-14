@@ -89,8 +89,8 @@ Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow
 - feat: add phase-specific Tone Guide to AGENTS.md|0331de7`)
 - feat(define): improve Feature Name Resolution to analyze user intent first|cc6b9f4`)
 - feat(map): add Context Discovery step and make Understand-Anything mandatory|dde3f3b`)
-- feat: tGD Web Dashboard — 8-phase pipeline visualization with theme toggle|8bfc825`)
-- feat: tGD Web Dashboard MVP — 8-phase pipeline visualization|86a4bdf`)
+- feat: tGD Web Dashboard — 8-phase pipeline visualization with theme toggle|8bfc825`) *(historical — pipeline is now 7-phase)*
+- feat: tGD Web Dashboard MVP — 8-phase pipeline visualization|86a4bdf`) *(historical — pipeline is now 7-phase)*
 - feat: tgd CLI with CalVer versioning|0e344a7`)
 - feat: sync Pi extension with all other platforms|887d733`)
 - feat: enforce 'Selection Protocol' across all platforms|9a9d3c1`)

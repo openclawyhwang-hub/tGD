@@ -1,4 +1,4 @@
-# Contributing to Agent Skills
+# Contributing to tGD
 
 Thanks for your interest in contributing! This project is a collection of production-grade engineering skills for AI coding agents.
 
@@ -89,4 +89,4 @@ Open an issue if you find:
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the MIT License.
+By contributing, you agree that your contributions will be licensed under the Apache License 2.0.
