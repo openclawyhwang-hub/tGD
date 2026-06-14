@@ -36,11 +36,14 @@ SOURCES = [
 
 
 def resolve(obj) -> None:
-    """Replace ${CLAUDE_PLUGIN_ROOT} with TGD_ABS in any 'command' field."""
+    """Replace ${CLAUDE_PLUGIN_ROOT} and ${TGD_DIR} with TGD_ABS in any 'command' field."""
     if isinstance(obj, dict):
         for k, v in list(obj.items()):
-            if k == 'command' and isinstance(v, str) and '${CLAUDE_PLUGIN_ROOT}' in v:
-                obj[k] = v.replace('${CLAUDE_PLUGIN_ROOT}', TGD_ABS)
+            if k == 'command' and isinstance(v, str):
+                if '${CLAUDE_PLUGIN_ROOT}' in v:
+                    obj[k] = v.replace('${CLAUDE_PLUGIN_ROOT}', TGD_ABS)
+                if '${TGD_DIR}' in v:
+                    obj[k] = obj[k].replace('${TGD_DIR}', TGD_ABS)
             else:
                 resolve(v)
     elif isinstance(obj, list):

@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$(git rev-parse --show-toplevel)/hooks/codex/session-start.sh\"",
+            "command": "bash \"${TGD_DIR}/hooks/codex/session-start.sh\"",
             "statusMessage": "Loading tGD meta-skill"
           }
         ]
