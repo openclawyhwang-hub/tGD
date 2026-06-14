@@ -70,10 +70,10 @@ jobs:
         run: |
           PASS=true
           for link in \
-            "$HOME/.claude/commands/tgd-verify.md" \
-            "$HOME/.claude/commands/tgd-plan.md" \
-            "$HOME/.claude/commands/tgd-develop.md" \
-            "$HOME/.codex/prompts/tgd-verify.md" \
+            "$HOME/.codex/skills/tgd-rules" \
+            "$HOME/.config/opencode/skills/tgd-rules" \
+            "$HOME/.gemini/skills/tgd-rules" \
+            "$HOME/.pi/agent/skills/tgd-rules" \
           ; do
             if [ ! -L "$link" ] && [ ! -f "$link" ]; then
               echo "❌ Missing: $link"
