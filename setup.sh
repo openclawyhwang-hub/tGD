@@ -588,71 +588,14 @@ if command -v codex &> /dev/null; then
         echo "   ✅ Prompts linked (7 tgd-* commands)."
     fi
     # Install hooks (Codex only reads ~/.codex/hooks.json — plugin-local hooks don't work)
-    if [ -f "$TGD_DIR/hooks/hooks.json" ]; then
+    # We merge TWO sources: hooks/hooks.json (Claude-style) and hooks/codex/hooks.json
+    # (Codex-style). The merge is idempotent and dedups by command string.
+    # See scripts/merge-codex-hooks.py for details and the Codex contract ref.
+    if [ -f "$TGD_DIR/hooks/hooks.json" ] || [ -f "$TGD_DIR/hooks/codex/hooks.json" ]; then
         HOOKS_DST="$HOME/.codex/hooks.json"
         TGD_ABS="$TGD_DIR"
-        if [ -f "$HOOKS_DST" ]; then
-            echo "   ⚠️  ~/.codex/hooks.json exists. Merging tGD hooks..."
-            python3 -c "
-import json
-TGD_ABS = '$TGD_ABS'
-HOOKS_DST = '$HOOKS_DST'
-with open(HOOKS_DST) as f:
-    user = json.load(f)
-with open('hooks/hooks.json') as f:
-    tgd = json.load(f)
-def resolve(obj, key='command'):
-    if isinstance(obj, dict):
-        for k, v in list(obj.items()):
-            if k == key and isinstance(v, str) and '$' + '{CLAUDE_PLUGIN_ROOT}' in v:
-                obj[k] = v.replace('$' + '{CLAUDE_PLUGIN_ROOT}', TGD_ABS)
-            else:
-                resolve(v, key)
-    elif isinstance(obj, list):
-        for item in obj:
-            resolve(item, key)
-resolve(tgd)
-user_hooks = user.setdefault('hooks', {})
-for event, hook_list in tgd.get('hooks', {}).items():
-    existing = user_hooks.get(event, [])
-    existing_cmds = set()
-    for h in existing:
-        for sub in h.get('hooks', []):
-            existing_cmds.add(sub.get('command', ''))
-    for entry in hook_list:
-        for sub in entry.get('hooks', []):
-            if sub.get('command', '') not in existing_cmds:
-                existing.append(entry)
-                break
-    user_hooks[event] = existing
-with open(HOOKS_DST, 'w') as f:
-    json.dump(user, f, indent=2)
-print('   ✅ tGD hooks merged into ~/.codex/hooks.json.')
-print('   ℹ️  Codex requires hook trust: run /hooks in Codex to trust new hooks.')
-" 2>/dev/null || echo "   ⚠️  Hooks merge failed (python3 required)."
-        else
-            python3 -c "
-import json
-TGD_ABS = '$TGD_ABS'
-with open('hooks/hooks.json') as f:
-    cfg = json.load(f)
-def resolve(obj, key='command'):
-    if isinstance(obj, dict):
-        for k, v in list(obj.items()):
-            if k == key and isinstance(v, str) and '$' + '{CLAUDE_PLUGIN_ROOT}' in v:
-                obj[k] = v.replace('$' + '{CLAUDE_PLUGIN_ROOT}', TGD_ABS)
-            else:
-                resolve(v, key)
-    elif isinstance(obj, list):
-        for item in obj:
-            resolve(item, key)
-resolve(cfg)
-with open('$HOOKS_DST', 'w') as f:
-    json.dump(cfg, f, indent=2)
-print('   ✅ Hooks installed to ~/.codex/hooks.json.')
-print('   ℹ️  Codex requires hook trust: run /hooks in Codex to trust new hooks.')
-" 2>/dev/null || echo "   ⚠️  Hooks install failed (python3 required)."
-        fi
+        export TGD_ABS HOOKS_DST
+        python3 "$TGD_DIR/scripts/merge-codex-hooks.py" 2>/dev/null || echo "   ⚠️  Hooks install/merge failed (python3 required)."
     fi
 fi
 
