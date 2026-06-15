@@ -94,6 +94,7 @@ Before writing any code, operate in read-only mode to gather context from all av
 - **When** [event happens]
 - **Then** [expected outcome]
 - **Regression**: [Yes `[R]` / No] — mark as `[R]` if this criterion verifies a PRD acceptance criterion or critical user path
+  - **If `[R]`**: Ensure a corresponding test is created during `/tgd-develop` (TDD) that verifies this criterion. This test will be added to `$TGD_DIR/REGRESSION-CATALOG.md` during `/tgd-ship`.
 
 ### 4. Files Likely Touched
 - `path/to/file.ts`

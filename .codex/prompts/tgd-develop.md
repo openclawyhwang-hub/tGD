@@ -1,39 +1,66 @@
 # /tgd-develop
 
-Build — implement with isolated worktree and task-based execution mode.
+Develop — implement with fresh subagents per task and two-stage review
 
 **🛑 Pre-flight: Environment Check**
 - [ ] `$TGD_DIR/CONTEXT.md` exists (or `.codegraph/` is present).
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
 - **$TGD_DIR:** Resolve via `tGD/` symlink in project root. If missing, check `$TGD_DIR` env var. If neither exists: STOP — run `/tgd-map` first.
 
-Run the subagent-driven-development or incremental-implementation skill. This is the BUILD phase.
+**🔑 Step 0: Feature Name Resolution**
+1. Scan `tGD/` for subdirectories (e.g., `tGD/user-login/`).
+2. If none found: 🛑 STOP. "No features defined. Run `/tgd-define` first."
+3. If exactly one found: Lock it as `<feature-name>`.
+4. If multiple found: List them and ask user to specify.
+5. **Verify**: `$TGD_DIR/<feature-name>/SPEC.md` exists (defines scope).
+
+**🔒 Pre-flight: Artifact Check**
+- [ ] `$TGD_DIR/<feature-name>/TASKS.md` exists and is non-empty.
+- [ ] `$TGD_DIR/<feature-name>/PRD.md` exists and is non-empty.
+- [ ] `$TGD_DIR/<feature-name>/SPEC.md` exists and is non-empty.
+- **If missing:** STOP. Tell user: "Specs are missing. Please run `/tgd-define` first."
+
+This is the BUILD phase. The pipeline operates in an isolated environment.
 
 **🌳 Step 1: Worktree Isolation (Mandatory)**
-1. Create: `git worktree add ../project-<feature-name> feature/<feature-name>`
-2. Action: All coding/testing MUST happen inside `../project-<feature-name>/`.
+Before writing any code, create an isolated workspace. This keeps `tGD/` artifacts safe and prevents code mess from polluting the planning directory.
+1. **Create**: `git worktree add ../project-<feature-name> feature/<feature-name>`
+2. **Action**: All coding, testing, and commits MUST happen inside `../project-<feature-name>/`.
 
 **⚡ Step 2: Execution Mode Routing**
-- **< 3 tasks**: `incremental-implementation` (Main agent implements directly in worktree).
-- **≥ 3 tasks**: `subagent-driven-development` (Subagents implement and review in worktree).
+Check the number of tasks in `TASKS.md`:
+- **< 3 tasks** (Simple/Fast): `incremental-implementation`. The main agent switches to the worktree directory and implements directly.
+- **≥ 3 tasks** (Complex/Quality): `subagent-driven-development`. Dispatch subagents to implement and review within the worktree directory.
 
-Core flow:
-1. `context-engineering` — load spec/context
-2. `source-driven-development` — ground decisions in docs
-3. Implement tasks in worktree
-4. `test-driven-development` — write tests
-5. `verification-before-completion` — run tests, show output
+**Core flow (both modes):**
+1. `context-engineering` — load the right spec sections and source files for the current task
+   - Before modifying a file, run `codegraph callers <symbol>` to ensure backward compatibility.
+2. `source-driven-development` — ground framework decisions in official docs, verify and cite
+3. `subagent-driven-development` OR `incremental-implementation` — execute tasks in worktree
+4. `test-driven-development` — Red-Green-Refactor, write tests alongside each task
+5. `verification-before-completion` — evidence before claims, no exceptions
+
+**Conditional (apply when relevant):**
+- Working with unfamiliar code? → `/understand` to clarify architectural boundaries.
+- Touching UI? → `frontend-ui-engineering`
+- Designing APIs? → `api-and-interface-design`
+- High-stakes decision? → `doubt-driven-development`
 
 **🧹 Step 3: Cleanup**
-1. Return to main project directory.
-2. Merge `feature/<feature-name>` to `main`.
-3. Remove worktree: `git worktree remove ../project-<feature-name>`.
+After all tasks pass verification:
+1. Return to the main project directory.
+2. Merge `feature/<feature-name>` back to `main`.
+3. Remove the worktree: `git worktree remove ../project-<feature-name>`.
 
-Conditional:
-- Frontend? -> frontend-ui-engineering
-- API? -> api-and-interface-design
-- High stakes? -> doubt-driven-development
+Use feature flags for incomplete features, safe defaults, and rollback-friendly changes.
 
-One slice at a time. Never implement multiple tasks at once.
+**Do not pause between tasks.** Execute all tasks from the plan without stopping unless BLOCKED.
 
-After completing, suggest: /tgd-verify to prove it works.
+After completing the implementation, verify the outputs.
+
+**Verification Gate:**
+- [ ] Source code files created/modified in `src/`
+- [ ] Tests written AND passing for new logic in `tests/`
+- [ ] Verification commands run and output confirmed (no "should work")
+
+If verification passes, suggest the next step: `/tgd-verify` to prove it works.

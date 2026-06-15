@@ -17,34 +17,37 @@ const tgdPrompts: Record<string, string> = {
     "- Accept local paths (e.g. ~/Projects/wayflow) — resolve to absolute path\n" +
     "- Accept git URLs (e.g. github.com/CopilotKit/CopilotKit) — clone to /tmp/tgd-context/<repo-name>\n" +
     "- If user says \"no\" or provides nothing, proceed with primary repo only\n\n" +
-    "## Step 2: Context Engineering\n\n" +
-    "Run the context-engineering skill. Analyze the current project: tech stack, architecture, dependencies, code organization, and existing patterns.\n\n" +
+    "## Step 2: Context Engineering\\n\\n" +
+    "Run the context-engineering skill. Analyze the current project: tech stack, architecture, dependencies, code organization, and existing patterns.\\n\\n" +
+    "⚠️ This is only Step 2. You MUST continue to Step 3 (CodeGraph) and Step 4 (Understand-Anything) before producing CONTEXT.md.\\n\\n" +
     "## Step 3: CodeGraph Setup\n\n" +
     "For each repo to map (primary + all additional repos from Step 1):\n\n" +
     "1. mkdir -p $TGD_DIR/.scans/<repo-name>\n" +
     "2. rm -rf <repo-path>/.codegraph && ln -s $TGD_DIR/.scans/<repo-name>/.codegraph <repo-path>/.codegraph\n" +
     "3. cd into the repo and run codegraph init -i\n\n" +
-    "## Step 4: Understand-Anything (MANDATORY)\n\n" +
-    "This step is required, not optional.\n\n" +
-    "For each repo to map (primary + all additional repos from Step 1):\n\n" +
+    "## Step 4: Understand-Anything (MANDATORY)\\n\\n" +
+    "This step is required, not optional.\\n\\n" +
+    "You MAY use subagent delegation to execute this step. If context is getting long, spawn a fresh subagent to run /understand on each repo.\\n\\n" +
+    "For each repo to map (primary + all additional repos from Step 1):\\n\\n" +
     "1. rm -rf <repo-path>/.understand-anything && ln -s $TGD_DIR/.scans/<repo-name>/.understand-anything <repo-path>/.understand-anything\n" +
     "2. cd into the repo and run /understand to build a full knowledge graph\n" +
     "3. Produces $TGD_DIR/.scans/<repo-name>/.understand-anything/knowledge-graph.json\n" +
-    "4. After ALL repos are mapped, run /understand-dashboard from the primary repo to launch the interactive visualization\n" +
-    "5. If unfamiliar with any repo, run /understand-onboard for a guided tour\n\n" +
-    "Dashboard is launched only once from the primary repo. To inspect additional repos visually, run /understand-dashboard from each repo path separately.\n\n" +
+    "4. After ALL repos are mapped, run /understand-dashboard from EACH repo to launch the interactive visualization\\n" +
+    "5. If unfamiliar with any repo, run /understand-onboard for a guided tour\\n\\n" +
+    "⚠️ Do NOT skip the dashboard. It is a required deliverable of tgd-map for EVERY repo.\\n\\n" +
     "## Step 5: Produce CONTEXT.md\n\n" +
     "CONTEXT.md must include:\n" +
     "1. Primary Repository — path, name, structure, key files, summary, code entry points\n" +
     "2. Additional Context Repositories — for each: source, resolved path, summary, key insights, relevance\n" +
     "3. Synthesis — integration points, architecture decisions, open questions\n" +
     "4. See Also — dashboard URL\n\n" +
-    "## Step 6: Verification Gate\n\n" +
-    "- [ ] $TGD_DIR/CONTEXT.md exists and is non-empty\n" +
-    "- [ ] $TGD_DIR/.scans/<repo>/.codegraph symlink exists\n" +
-    "- [ ] $TGD_DIR/.scans/<repo>/.understand-anything symlink exists\n" +
-    "- [ ] $TGD_DIR/.scans/<repo>/.understand-anything/knowledge-graph.json exists\n" +
-    "- [ ] If additional repos were provided, their summaries appear in CONTEXT.md\n\n" +
+    "## Step 6: Verification Gate\\n\\n" +
+    "- [ ] $TGD_DIR/CONTEXT.md exists and is non-empty\\n" +
+    "- [ ] $TGD_DIR/.scans/<repo>/.codegraph symlink exists\\n" +
+    "- [ ] $TGD_DIR/.scans/<repo>/.understand-anything symlink exists\\n" +
+    "- [ ] $TGD_DIR/.scans/<repo>/.understand-anything/knowledge-graph.json exists\\n" +
+    "- [ ] Dashboard is running for EVERY repo (localhost URLs confirmed)\\n" +
+    "- [ ] If additional repos were provided, their summaries appear in CONTEXT.md\\n\\n" +
     "After completing, suggest: /tgd-define",
 
   "tgd-define":
@@ -106,13 +109,21 @@ const tgdPrompts: Record<string, string> = {
   "tgd-verify":
     "Run the debugging-and-error-recovery skill. VERIFY phase.\n\n" +
     "Pipeline:\n" +
-    "1. debugging-and-error-recovery if anything fails\n" +
-    "2. test-driven-development — use codegraph affected <changed-files> to prioritize relevant tests\n" +
-    "3. Conditional: browser-based? → agent-browser\n" +
+    "1. debugging-and-error-recovery — reproduce → localize → reduce → fix → guard\n" +
+    "2. test-driven-development — verify with the test pyramid (80% unit, 15% integration, 5% E2E)\n" +
+    "   - Use codegraph affected <changed-files> to identify which tests to prioritize based on actual dependency paths.\n" +
+    "3. Conditional: Frontend/UI/DOM? → MUST run agent-browser. Use agent-browser (preferred) to open the browser, perform the user action, and verify the DOM state.\n" +
+    "   - Verification Gate Failure: If the feature touches frontend code but agent-browser did not run, the verification is FAILED.\n" +
     "4. Conditional: want visual impact? → /understand-diff\n\n" +
+    "Verify that the feature works correctly before proceeding to review. Tests are proof — 'seems right' is never sufficient.\n" +
     "Verification: ALL tests pass, build succeeds.\n" +
     "After completing, create $TGD_DIR/<feature-name>/TEST-REPORT.md with: test results summary, coverage report, regression status, failures and root causes.\n" +
-    "Verification Gate: Tests pass, TEST-REPORT.md exists.\n" +
+    "Cross-Feature Regression Gate (MANDATORY if $TGD_DIR/REGRESSION-CATALOG.md exists):\n" +
+    "1. Read $TGD_DIR/REGRESSION-CATALOG.md.\n" +
+    "2. For EACH entry: locate the test file, run it, confirm it passes.\n" +
+    "3. If ANY regression test fails: STOP. Report which prior feature's regression test broke.\n" +
+    "   A broken regression test means your feature broke a previously shipped critical path. Hard fail.\n" +
+    "Verification Gate: Tests pass, TEST-REPORT.md exists, all REGRESSION-CATALOG.md entries still pass (if catalog exists).\n" +
     "After completing, suggest: /tgd-review",
 
   "tgd-review":
@@ -139,7 +150,15 @@ const tgdPrompts: Record<string, string> = {
     "4. If writing docs: documentation-and-adrs\n\n" +
     "Verification: Changes committed, tests pass, deployment successful.\n" +
     "After shipping, update $TGD_DIR/CHANGELOG.md (create if it doesn't exist) with: version (CalVer), feature name, date shipped, key changes.\n" +
-    "Verification Gate: Git commit created, CHANGELOG.md exists and updated.\n" +
+    "Regression Catalog Update: After shipping, scan $TGD_DIR/<feature-name>/TASKS.md for [R] marked Acceptance Criteria.\n" +
+    "For EACH [R] criterion: extract the BDD criterion (Given/When/Then), identify the actual test file from tests/,\n" +
+    "append to $TGD_DIR/REGRESSION-CATALOG.md (create if needed):\n" +
+    "  ### [<feature-name>] Short description — Criterion: Given X, When Y, Then Z — Test: tests/path/to/test.ts — Shipped: vYYYY.MM.DD\n" +
+    "This catalog is cumulative. Future features will re-run ALL entries during /tgd-verify.\n" +
+    "Regression Catalog Audit (MANDATORY if REGRESSION-CATALOG.md exists): Before finalizing ship, audit for staleness.\n" +
+    "1. Read every entry. 2. Check: test file exists? Run it, passes? Feature deprecated? 3. If broken path: remove entry, log in CHANGELOG.md Catalog Cleanup section.\n" +
+    "4. If test fails: STOP (regression). 5. If feature deprecated this cycle: remove entries. After audit, catalog contains ONLY passing, existing entries.\n" +
+    "Verification Gate: Git commit created, CHANGELOG.md updated, REGRESSION-CATALOG.md updated with [R] entries (if any), Catalog Audit completed (all entries exist and pass).\n" +
     "After completing, suggest: /tgd-map for the next feature",
 };
 

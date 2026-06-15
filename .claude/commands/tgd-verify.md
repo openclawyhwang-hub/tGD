@@ -39,8 +39,15 @@ After completing the verification, create `$TGD_DIR/<feature-name>/TEST-REPORT.m
 - Regression test status
 - Any failures and their root causes
 
+**🛡️ Cross-Feature Regression Gate (MANDATORY if `$TGD_DIR/REGRESSION-CATALOG.md` exists)**
+1. Read `$TGD_DIR/REGRESSION-CATALOG.md`.
+2. For EACH entry: locate the test file, run it, confirm it passes.
+3. If ANY regression test fails: 🛑 STOP. Report which prior feature's regression test broke. Do NOT proceed to review.
+- **Verification Gate Failure**: A broken regression test means your feature broke a previously shipped critical path. This is a hard fail — no exceptions.
+
 **Verification Gate:**
 - [ ] Tests pass for the implemented feature
 - [ ] `$TGD_DIR/<feature-name>/TEST-REPORT.md` exists and is non-empty
+- [ ] All regression tests in `$TGD_DIR/REGRESSION-CATALOG.md` still pass (if catalog exists)
 
 If verification passes, suggest the next step: `/tgd-review` to review the code quality.

@@ -33,9 +33,35 @@ After shipping, update `$TGD_DIR/CHANGELOG.md` (create if it doesn't exist) with
 - Date shipped
 - Key changes
 
+**📦 Regression Catalog Update**
+After shipping, scan `$TGD_DIR/<feature-name>/TASKS.md` for Acceptance Criteria marked `[R]` (Regression). For EACH `[R]` criterion:
+1. Extract the BDD criterion (Given/When/Then).
+2. Identify the actual test file that verifies this criterion (from `tests/` in the shipped code).
+3. Append an entry to `$TGD_DIR/REGRESSION-CATALOG.md` (create if it doesn't exist):
+   ```markdown
+   ### [<feature-name>] Short description
+   - **Criterion:** Given X, When Y, Then Z
+   - **Test:** `tests/path/to/test.ts`
+   - **Shipped:** vYYYY.MM.DD
+   ```
+This catalog is cumulative — every shipped feature's `[R]` tests are preserved for future regression checks. Future features will re-run ALL catalog entries during `/tgd-verify`.
+
+**🧹 Regression Catalog Audit (MANDATORY if `$TGD_DIR/REGRESSION-CATALOG.md` exists)**
+Before finalizing the ship, audit the existing catalog for staleness:
+1. Read every entry in `$TGD_DIR/REGRESSION-CATALOG.md`.
+2. For EACH existing entry (not just the current feature's new ones):
+   - **Test file exists?** If the path is broken (file deleted, moved, or renamed): remove the entry. Log the removal in `$TGD_DIR/CHANGELOG.md` under a `## Catalog Cleanup` subsection.
+   - **Test still passes?** Run it. If it fails: 🛑 STOP — this is a regression. Fix before shipping.
+   - **Feature deprecated?** If the feature's code was removed or deprecated in this cycle (`deprecation-and-migration` ran): remove its entries from the catalog.
+3. After audit, the catalog must contain ONLY entries whose test files exist and pass.
+
+This prevents the catalog from becoming a zombie file full of dead references. Every entry should be runnable.
+
 **Verification Gate:**
 - [ ] Git commit created with clean history
 - [ ] `$TGD_DIR/CHANGELOG.md` exists and is updated
+- [ ] `$TGD_DIR/REGRESSION-CATALOG.md` updated with new `[R]` entries (if any)
+- [ ] Regression Catalog Audit completed — all entries point to existing, passing test files
 
 If verification passes, confirm that monitoring is active and the rollback plan is documented.
 """

@@ -17,6 +17,8 @@ Before analyzing anything, ask the user:
 
 Run the context-engineering skill. Analyze the current project: tech stack, architecture, dependencies, code organization, and existing patterns.
 
+**⚠️ This is only Step 2. You MUST continue to Step 3 (CodeGraph) and Step 4 (Understand-Anything) before producing CONTEXT.md.**
+
 ## Step 3: CodeGraph Setup
 
 For each repo to map (primary + all additional repos from Step 1):
@@ -29,17 +31,31 @@ For each repo to map (primary + all additional repos from Step 1):
 
 This step is required, not optional.
 
+**You MAY use subagent delegation to execute this step.** If context is getting long, spawn a fresh subagent to run `/understand` on each repo.
+
 For each repo to map (primary + all additional repos from Step 1):
 
 1. Create symlink: rm -rf <repo-path>/.understand-anything && ln -s $TGD_DIR/.scans/<repo-name>/.understand-anything <repo-path>/.understand-anything
 2. cd into the repo and run /understand to build a full knowledge graph
 3. Produces $TGD_DIR/.scans/<repo-name>/.understand-anything/knowledge-graph.json
-4. After ALL repos are mapped, run /understand-dashboard from the primary repo to launch the interactive visualization
-5. If unfamiliar with any repo, run /understand-onboard for a guided tour
+4. If unfamiliar with any repo, run /understand-onboard for a guided tour
 
-Dashboard is launched only once from the primary repo — it reads the primary's knowledge graph. To inspect additional repos visually, run /understand-dashboard from each repo path separately.
+## Step 5: Launch Dashboard (MANDATORY)
 
-## Step 5: Produce CONTEXT.md
+After ALL repos are mapped (Step 4 complete), you MUST launch the interactive dashboard for EACH repo.
+
+**You MAY use subagent delegation to execute this step.**
+
+For each repo to map (primary + all additional repos from Step 1):
+
+1. cd into the repo
+2. Run `/understand-dashboard` to launch the dashboard
+3. Verify the dashboard is running (check for localhost URL in output)
+4. Report the dashboard URL to the user
+
+**⚠️ Do NOT skip this step. The dashboard is a required deliverable of tgd-map for EVERY repo.**
+
+## Step 6: Produce CONTEXT.md
 
 Outputs (all under $TGD_DIR/):
 - CONTEXT.md — project structure analysis (MUST reference CodeGraph/UA data)
@@ -97,12 +113,13 @@ Synthesize data from the tools:
   ## See Also
   - Interactive Dashboard: http://localhost:<port>
 
-## Step 6: Verification Gate
+## Step 7: Verification Gate
 
 - [ ] $TGD_DIR/CONTEXT.md exists and is non-empty
 - [ ] $TGD_DIR/.scans/<repo>/.codegraph symlink exists
 - [ ] $TGD_DIR/.scans/<repo>/.understand-anything symlink exists
 - [ ] $TGD_DIR/.scans/<repo>/.understand-anything/knowledge-graph.json exists
+- [ ] **Dashboard is running** (localhost URL confirmed)
 - [ ] If additional repos were provided, their summaries appear in CONTEXT.md
 
 If verification passes, suggest: /tgd-define to start defining what to build.

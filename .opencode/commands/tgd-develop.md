@@ -34,21 +34,23 @@ Check the number of tasks in `TASKS.md`:
 
 **Core flow (both modes):**
 1. `context-engineering` — load the right spec sections and source files for the current task
+   - Before modifying a file, run `codegraph callers <symbol>` to ensure backward compatibility.
 2. `source-driven-development` — ground framework decisions in official docs, verify and cite
 3. `subagent-driven-development` OR `incremental-implementation` — execute tasks in worktree
 4. `test-driven-development` — Red-Green-Refactor, write tests alongside each task
 5. `verification-before-completion` — evidence before claims, no exceptions
+
+**Conditional (apply when relevant):**
+- Working with unfamiliar code? → `/understand` to clarify architectural boundaries.
+- Touching UI? → `frontend-ui-engineering`
+- Designing APIs? → `api-and-interface-design`
+- High-stakes decision? → `doubt-driven-development`
 
 **🧹 Step 3: Cleanup**
 After all tasks pass verification:
 1. Return to the main project directory.
 2. Merge `feature/<feature-name>` back to `main`.
 3. Remove the worktree: `git worktree remove ../project-<feature-name>`.
-
-**Conditional (apply when relevant):**
-- Touching UI? → `frontend-ui-engineering`
-- Designing APIs? → `api-and-interface-design`
-- High-stakes decision? → `doubt-driven-development`
 
 Use feature flags for incomplete features, safe defaults, and rollback-friendly changes.
 
