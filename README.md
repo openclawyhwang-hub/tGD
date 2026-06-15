@@ -284,9 +284,9 @@ The `tgd` CLI manages installation, updates, and diagnostics:
 | Define what to build | `/tgd-define` | 3-option naming + Product + Spec | `interview-me` → `idea-refine` → `spec-driven-development` |
 | Plan how to build it | `/tgd-plan` | Read CONTEXT + PRD + SPEC → atomic tasks | `planning-and-task-breakdown` → `jira-auto-sync` |
 | Develop in sandbox | `/tgd-develop` | **Mandatory Worktree** + smart routing | `source-driven-development` → (`subagent` OR `incremental`) → `test-driven-development` |
-| Prove it works | `/tgd-verify` | Tests are proof | `debugging-and-error-recovery` → `test-driven-development` |
+| Prove it works | `/tgd-verify` | Tests are proof | `debugging-and-error-recovery` → `test-driven-development` → **Cross-Feature Regression Gate** |
 | Review before merge | `/tgd-review` | Improve code health | `code-review-and-quality` → `code-simplification` |
-| Ship to production | `/tgd-ship` | Faster is safer | `git-workflow-and-versioning` → `shipping-and-launch` |
+| Ship to production | `/tgd-ship` | Faster is safer | `git-workflow-and-versioning` → `shipping-and-launch` → **Regression Catalog Update + Audit** |
 
 ---
 
@@ -298,12 +298,13 @@ Testing in tGD isn't a single phase — it's a progressive discipline across fou
 Plan            Develop           Verify            Review            Ship
 ─────           ────────          ──────            ──────            ────
 BDD             TDD               Run ALL tests     Code review       Regression
-(Given-When-    (Red-Green-       Generate          Audit test        Gate
- Then)           Refactor)         TEST-REPORT       quality           (100% pass)
+(Given-When-    (Red-Green-       Generate          Audit test        Catalog
+ Then)           Refactor)         TEST-REPORT       quality           Update + Audit
   │                │                  │                 │                │
   ▼                ▼                  ▼                 ▼                ▼
 TASKS.md         code + tests     TEST-REPORT.md    REVIEW.md         CHANGELOG
 DEV signs        DEV signs        QA signs          QA+DEV signs      PM signs
+                                                                  + CATALOG
 ```
 
 ### 📋 Plan: BDD Defines What to Test
@@ -388,28 +389,36 @@ TEST-REPORT.md is **auto-generated** from test runner output, NOT hand-maintaine
 
 ### 🏷️ Regression: The Safety Net
 
-Regression tests are acceptance-level tests that **must pass before every Ship**. They accumulate across features — each new feature adds its acceptance tests to the regression suite.
+Regression tests are acceptance-level tests that **must pass before every Ship**. They accumulate across features — each new feature adds its acceptance tests to `REGRESSION-CATALOG.md`.
 
 **What is regression?**
-- Tests derived from PRD Acceptance Criteria
+- Tests derived from PRD Acceptance Criteria (marked `[R]` in TASKS.md)
 - They verify that existing features still work after new code is added
 - Without regression, new features can silently break old ones
 
 **How it accumulates:**
 
 ```
-Feature 1 (auth):     8 regression tests   ← Ship gate: 8/8 ✅
-Feature 2 (dashboard): +5 regression tests  ← Ship gate: 13/13 ✅
-Feature 3 (payments):  +6 regression tests  ← Ship gate: 19/19 ✅
+Feature 1 (auth):     8 regression tests   ← Ship writes to REGRESSION-CATALOG.md
+Feature 2 (dashboard): +5 regression tests  ← Catalog now has 13 entries
+Feature 3 (payments):  +6 regression tests  ← Catalog now has 19 entries
 ```
 
-Each feature's Ship requires 100% regression pass — not just the new tests, ALL accumulated regression tests.
+Each feature's Ship requires 100% regression pass — not just the new tests, ALL accumulated regression tests from the catalog.
+
+**The REGRESSION-CATALOG lifecycle:**
+
+1. **Plan** — Mark acceptance criteria with `[R]` in TASKS.md
+2. **Develop** — TDD creates the actual test files for each `[R]` criterion
+3. **Ship** — Scans TASKS.md for `[R]` entries, appends to `REGRESSION-CATALOG.md` (cumulative)
+4. **Ship (Catalog Audit)** — Every entry checked: test file exists? Passes? Feature deprecated? Stale entries pruned
+5. **Verify** — Reads `REGRESSION-CATALOG.md`, re-runs ALL entries. Any failure = hard stop
 
 **How to mark:** Agent marks acceptance-level tests using the stack-appropriate marker (see table above). Not all tests are regression — only tests that verify PRD acceptance criteria or critical user paths.
 
 **When to run:**
-- `/tgd-verify` → runs ALL tests, reports regression separately
-- `/tgd-ship` → hard gate: regression suite must be 100% pass, failures must be 0
+- `/tgd-verify` → runs ALL tests + reads `REGRESSION-CATALOG.md`, re-runs every catalog entry
+- `/tgd-ship` → writes new `[R]` entries to catalog + audits existing entries for staleness
 - Anytime → direct command (e.g. `pytest -m regression`), no tGD wrapper needed
 
 ### 🔍 Review: Audit Test Quality

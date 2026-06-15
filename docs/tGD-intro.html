@@ -318,7 +318,8 @@ Agent: Scanning project...
           <div>2. Debug any failures: reproduce → localize → fix → guard</div>
           <div>3. Launch <b>agent-browser</b> for UI E2E verification</div>
           <div>4. Capture screenshot as visual evidence</div>
-          <div>5. <b>BLOCK</b> if anything fails</div>
+          <div>5. <b>Cross-Feature Regression Gate</b> — read <code>REGRESSION-CATALOG.md</code>, re-run ALL prior entries</div>
+          <div>6. <b>BLOCK</b> if anything fails</div>
         </div>
       </div>
       <div>
@@ -331,6 +332,7 @@ Agent: Scanning project...
         ## Summary
         Total: 12  Passed: 12  Failed: 0
         Regression: 5/5 ✓
+        Catalog: 19/19 ✓ (cross-feature gate)
 
         ## All Test Cases
         [R] test_valid_jwt         ✅
@@ -435,8 +437,9 @@ Agent: Scanning project...
           <div>1. <b>Atomic commits</b> — one logical change per commit</div>
           <div>2. <b>CI/CD</b> — ensure pipeline passes</div>
           <div>3. <b>ADR</b> — document architectural decisions</div>
-          <div>4. <b>Rollout</b> — staged deployment strategy</div>
-          <div>5. <b>Monitoring</b> — post-deploy health checks</div>
+          <div>4. <b>Regression Catalog</b> — write <code>[R]</code> tests to catalog, audit stale entries</div>
+          <div>5. <b>Rollout</b> — staged deployment strategy</div>
+          <div>6. <b>Monitoring</b> — post-deploy health checks</div>
         </div>
       </div>
       <div>
@@ -444,11 +447,15 @@ Agent: Scanning project...
         <div class="terminal">
           <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>Output Structure</span></div>
 <pre>$TGD_DIR/
-├── CHANGELOG.md         ← Unified release notes
-│   v1.0.0 - auth feature shipped
+├── CHANGELOG.md             ← Unified release notes
+│   v2026.06.15 - auth feature shipped
+├── REGRESSION-CATALOG.md    ← Cumulative regression tests
+│   ### [auth] valid JWT token
+│   - Test: tests/auth.test.ts
+│   - Shipped: v2026.06.15
 └── &lt;feature-name&gt;/
     └── decisions/
-        └── ADR.md       ← Architecture Decision
+        └── ADR.md           ← Architecture Decision
 
 <span style="color:var(--text-3)">Ship Gate (all must be [x]):</span>
   PRD.md        → - [x] PM ✓
@@ -474,9 +481,9 @@ Agent: Scanning project...
       <div class="phase"><div class="p-icon">📋</div><div><div class="p-name">2. DEFINE</div><div class="p-desc">Interview → PRD + SPEC</div><div class="p-skills">interview-me → spec-driven</div></div></div>
       <div class="phase"><div class="p-icon">📐</div><div><div class="p-name">3. PLAN</div><div class="p-desc">Triple-source → TASKS.md</div><div class="p-skills">planning → jira-sync</div></div></div>
       <div class="phase"><div class="p-icon">⚡</div><div><div class="p-name">4. DEVELOP</div><div class="p-desc">Worktree → src/ + tests/</div><div class="p-skills">source-driven → TDD</div></div></div>
-      <div class="phase gate"><div class="p-icon">🧪</div><div><div class="p-name">5. VERIFY</div><div class="p-desc">Tests + browser → TEST-REPORT.md</div><div class="p-skills">debugging → agent-browser</div></div></div>
+      <div class="phase gate"><div class="p-icon">🧪</div><div><div class="p-name">5. VERIFY</div><div class="p-desc">Tests + browser → TEST-REPORT.md</div><div class="p-skills">debugging → regression gate</div></div></div>
       <div class="phase"><div class="p-icon">🔎</div><div><div class="p-name">6. REVIEW</div><div class="p-desc">5-axis → REVIEW.md</div><div class="p-skills">code-review → simplification</div></div></div>
-      <div class="phase"><div class="p-icon">🚀</div><div><div class="p-name">7. SHIP</div><div class="p-desc">Commit + CI + ADR → CHANGELOG.md</div><div class="p-skills">git-workflow → shipping</div></div></div>
+      <div class="phase"><div class="p-icon">🚀</div><div><div class="p-name">7. SHIP</div><div class="p-desc">Commit + CI + catalog → CHANGELOG.md</div><div class="p-skills">git-workflow → catalog</div></div></div>
     </div>
     <div class="deck-footer"><span>Full Pipeline</span><span class="slide-number" data-current="11" data-total="15"></span></div>
   </section>

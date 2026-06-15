@@ -6,6 +6,34 @@ Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow
 
 ---
 
+## v2026.06.15
+
+### Added
+- **REGRESSION-CATALOG mechanism** — cumulative cross-feature regression tracking across shipped features (`c0e2a63`)
+  - `/tgd-plan`: `[R]` marks ensure a corresponding test is created during `/tgd-develop` (TDD)
+  - `/tgd-ship`: writes `[R]` entries to `REGRESSION-CATALOG.md` (cumulative — every shipped feature preserved)
+  - `/tgd-ship`: **Catalog Audit** — prunes stale/missing/deprecated entries on each ship, prevents zombie catalog
+  - `/tgd-verify`: **Cross-Feature Regression Gate** — reads catalog, re-runs ALL entries before approve, hard fail on any regression
+
+### Fixed
+- **5-platform parity** — 19 files synced across Claude / OpenCode / Codex / Gemini / Pi (`c0e2a63`)
+  - `tgd-map`: dashboard per repo, subagent allowance, Step 5 verification
+  - `tgd-verify`: Cross-Feature Regression Gate + Catalog Audit
+  - `tgd-ship`: Regression Catalog Update + Audit
+  - Codex 4 commands: add Step 0 + Pre-flight + codegraph
+  - OpenCode 3 commands: add codegraph + /understand-diff
+  - Gemini verify: webwright → agent-browser
+  - Pi verify: test pyramid + agent-browser gate
+
+### Docs
+- README (EN/zh-TW/JA/DE) — updated regression section + pipeline table to reflect REGRESSION-CATALOG
+- docs/tGD-intro.html — verify slide adds Cross-Feature Regression Gate, ship slide adds Catalog Update + Audit
+- docs/web/js/phases.js — verify + ship phase definitions updated
+- docs/index.html — pipeline table + regression section updated
+- docs/getting-started.md — pipeline table updated
+
+---
+
 ## v2026.06.13
 
 ### Added
