@@ -8,20 +8,19 @@ const tgdPrompts: Record<string, string> = {
     "## Step 0: $TGD_DIR Resolution\n\n" +
     "$TGD_DIR is where ALL tGD artifacts live. It is a sibling directory outside your code repo.\n\n" +
     "**Step 0a: Resolve candidate path** (in order):\n" +
-    "1. If symlink tGD/ exists → readlink tGD → candidate = resolved path\n" +
-    "2. If env var $TGD_DIR is set → candidate = $TGD_DIR\n" +
-    "3. Otherwise → candidate = ../<project-name>-tGD/\n\n" +
+    "1. If env var $TGD_DIR is set → candidate = $TGD_DIR\n" +
+    "2. Otherwise → candidate = ../<project-name>-tGD/\n\n" +
     "**Step 0b: Confirm $TGD_DIR with user:**\n\n" +
-    "- Symlink already existed → Inform: Using existing $TGD_DIR: <resolved path>. Proceed.\n" +
-    "- First-time setup (no symlink, no env var) → MUST ask:\n" +
+    "- $TGD_DIR already set (env var) → Inform: Using $TGD_DIR: $TGD_DIR. Proceed.\n" +
+    "- First-time setup (no env var) → MUST ask:\n" +
     "> 📂 tGD artifacts will be stored at: <candidate path>\n" +
     ">\n" +
     "> 1. Use this path (Enter)\n" +
     "> 2. Use a different path (enter an absolute path)\n" +
     ">\n" +
     "> Choose one (default 1):\n\n" +
-    "- Choice 1 (or Enter) → mkdir -p $TGD_DIR && ln -s $TGD_DIR tGD && export TGD_DIR=$(realpath tGD)\n" +
-    "- Choice 2 → user-provided path: TGD_DIR=<path>, mkdir -p $TGD_DIR, ln -sf $TGD_DIR tGD, export TGD_DIR=$(realpath tGD)\n\n" +
+    "- Choice 1 (or Enter) → mkdir -p $TGD_DIR && export TGD_DIR=$TGD_DIR\n" +
+    "- Choice 2 → user-provided path: TGD_DIR=<path>, mkdir -p $TGD_DIR, export TGD_DIR=$TGD_DIR\n\n" +
     "- Non-interactive mode (CI, subagent, no TTY) → Skip confirmation, proceed with candidate. Log: Using $TGD_DIR: <candidate path> (non-interactive)\n\n" +
     "## Step 1: Context Discovery\n\n" +
     "Before analyzing anything, ask the user:\n" +

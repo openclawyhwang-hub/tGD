@@ -7,14 +7,13 @@ Map — scan and understand the existing project context before making changes
 $TGD_DIR is where ALL tGD artifacts live. It is a **sibling directory** outside your code repo.
 
 **Step 0a: Resolve candidate path** (in order):
-1. If symlink `tGD/` exists → `readlink tGD` → candidate = resolved path
-2. If env var `$TGD_DIR` is set → candidate = `$TGD_DIR`
-3. Otherwise → candidate = `../<project-name>-tGD/`
+1. If env var `$TGD_DIR` is set → candidate = `$TGD_DIR`
+2. Otherwise → candidate = `../<project-name>-tGD/`
 
 **Step 0b: Confirm $TGD_DIR with user:**
 
-- **Symlink already existed** → Inform user: "📂 Using existing $TGD_DIR: `<resolved path>`" and proceed. No need to block.
-- **First-time setup** (no symlink, no env var) → **MUST ask:**
+- **$TGD_DIR already set (env var)** → Inform user: "📂 Using $TGD_DIR: `$TGD_DIR`" and proceed. No need to block.
+- **First-time setup** (no env var) → **MUST ask:**
 
   > 📂 tGD artifacts will be stored at: `<candidate path>`
   >
@@ -23,18 +22,17 @@ $TGD_DIR is where ALL tGD artifacts live. It is a **sibling directory** outside 
   >
   > Choose one (default 1):
 
-  - **Choice 1 (or Enter)** → `mkdir -p "$TGD_DIR" && ln -s "$TGD_DIR" tGD && export TGD_DIR=$(realpath tGD)`
+  - **Choice 1 (or Enter)** → `mkdir -p "$TGD_DIR" && export TGD_DIR="$TGD_DIR"`
   - **Choice 2** →
     ```
     TGD_DIR="<user-provided-path>"
     mkdir -p "$TGD_DIR"
-    ln -sf "$TGD_DIR" tGD
-    export TGD_DIR=$(realpath tGD)
+    export TGD_DIR="$TGD_DIR"
     ```
 
 - **Non-interactive mode** (CI, subagent delegation, no TTY) → Skip confirmation, proceed with candidate. Log: "📂 Using $TGD_DIR: `<candidate path>` (non-interactive)"
 
-After this step, ALL subsequent commands use `tGD/` (the symlink) to find `$TGD_DIR`.
+After this step, ALL subsequent commands use `$TGD_DIR` env var.
 
 ---
 
