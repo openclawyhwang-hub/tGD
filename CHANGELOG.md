@@ -6,6 +6,20 @@ Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow
 
 ---
 
+## v2026.06.16
+
+### Changed
+- **`$TGD_DIR` symlink → env var + sibling fallback** — removed `tGD/` symlink, all commands now resolve via `$TGD_DIR` env var or `../<project>-tGD/` sibling (`1d78056`)
+  - `tgd-map`: env var first → sibling fallback → first-time user confirmation → CI silent skip
+  - 28 skills: all hardcoded `tGD/` paths replaced with `$TGD_DIR`
+  - `.codegraph` / `.understand-anything` symlinks point directly to `$TGD_DIR/.scans/<repo>/`
+- **Skill name syntax** — bare name `` `understand` `` instead of `/understand` (slash is Claude-only) across all 5 platforms + skills + READMEs (`e5ae16b`)
+- **AC format** — BDD (Given/When/Then) recommended but not mandatory; bullet points acceptable (`23a7d69`)
+
+### Fixed
+- **Pre-flight stale references** — all lifecycle commands (define through ship) still referenced removed `tGD/` symlink for resolution and feature scanning (`1a7dd50`)
+- **README + GitHub Pages** — 4-language READMEs, `index.html`, and `web/` dashboard updated to reflect direct symlink architecture (`c49d3c3`, `3d643d0`)
+
 ## v2026.06.15
 
 ### Added
