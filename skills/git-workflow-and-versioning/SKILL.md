@@ -146,7 +146,7 @@ refactor/<short-description>  → refactor/auth-module
 
 ## Working with Worktrees
 
-For isolated AI agent work, use git worktrees to keep `tGD/` planning files clean.
+For isolated AI agent work, use git worktrees to keep `$TGD_DIR/` planning files clean.
 
 **tGD Integration Rule:**
 When `/tgd-develop` is triggered:
@@ -155,7 +155,7 @@ When `/tgd-develop` is triggered:
 3. **Cleanup**: After completion, merge the branch and run `git worktree remove ../project-<feature-name>`.
 
 Benefits:
-- `tGD/` artifacts are never polluted by code
+- `$TGD_DIR/` artifacts are never polluted by code
 - If an experiment fails, delete the worktree — plans are safe
 - Agents work in a sandbox with a clean branch
 

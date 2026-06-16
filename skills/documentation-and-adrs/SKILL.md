@@ -28,7 +28,7 @@ ADRs capture the reasoning behind significant technical decisions. They're the h
 Before writing ADRs, determine `<feature-name>`:
 1. **Derive**: Use kebab-case from the feature (e.g., `user-login`).
 2. **Verify**: Ensure `$TGD_DIR/<feature-name>/SPEC.md` exists.
-3. **Path**: All ADRs go in `tGD/decisions/<feature-name>/`. If it affects multiple features, use `tGD/shared/decisions/`.
+3. **Path**: All ADRs go in `$TGD_DIR/decisions/<feature-name>/`. If it affects multiple features, use `$TGD_DIR/shared/decisions/`.
 
 ### When to Write an ADR
 
@@ -41,9 +41,9 @@ Before writing ADRs, determine `<feature-name>`:
 
 ### ADR Template
 
-Store ADRs in `tGD/decisions/<feature-name>/` with sequential numbering:
+Store ADRs in `$TGD_DIR/decisions/<feature-name>/` with sequential numbering:
 
-**Cross-feature decisions** go in `tGD/shared/decisions/`:
+**Cross-feature decisions** go in `$TGD_DIR/shared/decisions/`:
 
 ```markdown
 # ADR-001: Use PostgreSQL for primary database
