@@ -216,7 +216,7 @@ flowchart LR
 
 ## 🔑 Hauptfunktionen
 
-- **🏖️ Pflicht-Worktree-Isolierung**: Alle Code-Implementierungen laufen in einer isolierten Git-Worktree-Sandbox. `tGD/`-Planungsdateien bleiben unberührt.
+- **🏖️ Pflicht-Worktree-Isolierung**: Alle Code-Implementierungen laufen in einer isolierten Git-Worktree-Sandbox. `$TGD_DIR/`-Planungsdateien bleiben unberührt.
 - **🚦 Intelligentes Routing**: `/tgd-develop` routet je nach Task-Anzahl (<3 Tasks: Haupt-Agent, ≥3 Tasks: Subagent + Zwei-Stufen-Review).
 - **🧠 Drei-Quellen-Planung**: `/tgd-plan` integriert `CONTEXT.md` + `PRD.md` + `SPEC.md` bevor Tasks erstellt werden.
 - **🎯 3-Option Feature-Naming**: `/tgd-define` schlägt 3 Namen vor und wartet auf die Auswahl.
@@ -507,10 +507,8 @@ Beispiel: SaaS-Anwendung mit Express-Backend + React-Frontend, zwei Features in 
 ```
 workspace/
 ├── my-project-backend/                           # Backend repo (Express + Prisma)
-│   ├── .codegraph → tGD/.codegraph     # symlink for CodeGraph CLI
-│   ├── tGD/
-│   │   ├── .codegraph/                 # Symbol index (auto-generated)
-│   │   └── .understand-anything/       # Knowledge graph (auto-generated)
+│   ├── .codegraph → ../my-project-tGD/.scans/my-project-backend/.codegraph
+│   ├── .understand-anything → ../my-project-tGD/.scans/my-project-backend/.understand-anything
 │   ├── src/
 │   │   ├── routes/
 │   │   │   ├── auth.ts                 # ← user-auth feature
@@ -526,8 +524,8 @@ workspace/
 │       └── payment.test.ts
 │
 ├── my-project-frontend/                           # Frontend repo (React + Vite)
-│   ├── .codegraph → tGD/.codegraph
-│   ├── tGD/
+│   ├── .codegraph → ../my-project-tGD/.scans/my-project-frontend/.codegraph
+│   ├── .understand-anything → ../my-project-tGD/.scans/my-project-frontend/.understand-anything
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── LoginForm.tsx           # ← user-auth feature
@@ -580,12 +578,12 @@ workspace/
 - **Geschwister**: `my-project-backend/`, `my-project-frontend/`, `my-project-tGD/` sind auf gleicher Ebene — tGD ist NICHT in den Code-Repos
 - **Feature-first**: jedes Feature (`user-auth/`, `payment-flow/`) hat eigenen Ordner mit allen Artefakten
 - **Multi-Repo**: SPEC.md und TASKS.md taggen Einträge nach Repo-Name (z.B. `[my-project-backend]`, `[my-project-frontend]`)
-- **Saubere Code-Repos**: an der Wurzel nur `tGD/` Symlink-Ordner + `src/` + `tests/`
+- **Saubere Code-Repos**: an der Wurzel nur `.codegraph` + `.understand-anything` Symlinks + `src/` + `tests/`
 - **Einheitliches Changelog**: CHANGELOG.md im tGD-Root protokolliert alle Features über alle Repos
 
 **Symlink-Kette** (wie Scan-Daten fließen):
 ```
-my-project-backend/.codegraph → my-project-backend/tGD/.codegraph → my-project-tGD/.scans/my-project-backend/.codegraph
+my-project-backend/.codegraph → my-project-tGD/.scans/my-project-backend/.codegraph
 ```
 
 **Phase → Artefakt-Zuordnung:**

@@ -228,7 +228,7 @@ flowchart LR
 
 ### 🏖️ Mandatory Worktree Isolation
 When you run `/tgd-develop`, tGD **automatically creates a Git Worktree** sandbox (`../project-<feature>/`) before writing any code. This ensures:
-- Your `tGD/` planning files (PRD, SPEC, TASKS) stay clean and untouched.
+- Your `$TGD_DIR/` planning files (PRD, SPEC, TASKS) stay clean and untouched.
 - If an experiment fails, the worktree is simply removed — your plans are safe.
 - The sandbox is automatically merged and cleaned up after verification passes.
 
@@ -545,10 +545,8 @@ Example: SaaS app with Express backend + React frontend, two features at differe
 ```
 workspace/
 ├── my-project-backend/                           # Backend repo (Express + Prisma)
-│   ├── .codegraph → tGD/.codegraph     # symlink for CodeGraph CLI
-│   ├── tGD/
-│   │   ├── .codegraph/                 # Symbol index (auto-generated)
-│   │   └── .understand-anything/       # Knowledge graph (auto-generated)
+│   ├── .codegraph → ../my-project-tGD/.scans/my-project-backend/.codegraph
+│   ├── .understand-anything → ../my-project-tGD/.scans/my-project-backend/.understand-anything
 │   ├── src/
 │   │   ├── routes/
 │   │   │   ├── auth.ts                 # ← user-auth feature
@@ -564,8 +562,8 @@ workspace/
 │       └── payment.test.ts
 │
 ├── my-project-frontend/                           # Frontend repo (React + Vite)
-│   ├── .codegraph → tGD/.codegraph
-│   ├── tGD/
+│   ├── .codegraph → ../my-project-tGD/.scans/my-project-frontend/.codegraph
+│   ├── .understand-anything → ../my-project-tGD/.scans/my-project-frontend/.understand-anything
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── LoginForm.tsx           # ← user-auth feature
@@ -618,12 +616,12 @@ workspace/
 - **Siblings**: `my-project-backend/`, `my-project-frontend/`, `my-project-tGD/` are at the same level — tGD is NOT inside the code repos
 - **Feature-first**: each feature (`user-auth/`, `payment-flow/`) has its own folder with all artifacts
 - **Multi-repo**: SPEC.md and TASKS.md tag items by repo name (e.g., `[my-project-backend]`, `[my-project-frontend]`)
-- **Clean code repos**: only `tGD/` symlink folder + `src/` + `tests/` at root
+- **Clean code repos**: only `.codegraph` + `.understand-anything` symlinks + `src/` + `tests/` at root
 - **Unified changelog**: CHANGELOG.md at tGD root tracks all features across all repos
 
 **Symlink chain** (how scan data flows):
 ```
-my-project-backend/.codegraph → my-project-backend/tGD/.codegraph → my-project-tGD/.scans/my-project-backend/.codegraph
+my-project-backend/.codegraph → my-project-tGD/.scans/my-project-backend/.codegraph
 ```
 
 **Phase → Artifact mapping:**
