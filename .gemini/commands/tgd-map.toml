@@ -10,26 +10,28 @@ $TGD_DIR is where ALL tGD artifacts live. It is a **sibling directory** outside 
 2. If env var `$TGD_DIR` is set → candidate = `$TGD_DIR`
 3. Otherwise → candidate = `../<project-name>-tGD/`
 
-**Step 0b: ⚠️ ALWAYS confirm with user — even if symlink or env var already exists:**
+**Step 0b: Confirm $TGD_DIR with user:**
 
-> 📂 tGD artifacts will be stored at: `<candidate path>`
->
-> 1. Use this path (Enter)
-> 2. Use a different path (enter an absolute path)
->
-> Choose one (default 1):
+- **Symlink already existed** → Inform user: "📂 Using existing $TGD_DIR: `<resolved path>`" and proceed. No need to block.
+- **First-time setup** (no symlink, no env var) → **MUST ask:**
 
-- **Choice 1 (or Enter)** → use candidate:
-  - If symlink already existed: proceed ✓
-  - If env var: `ln -s $TGD_DIR tGD`
-  - If new default: `mkdir -p "$TGD_DIR" && ln -s "$TGD_DIR" tGD && export TGD_DIR=$(realpath tGD)`
-- **Choice 2** → use user-provided path:
-  ```
-  TGD_DIR="<user-provided-path>"
-  mkdir -p "$TGD_DIR"
-  ln -sf "$TGD_DIR" tGD
-  export TGD_DIR=$(realpath tGD)
-  ```
+  > 📂 tGD artifacts will be stored at: `<candidate path>`
+  >
+  > 1. Use this path (Enter)
+  > 2. Use a different path (enter an absolute path)
+  >
+  > Choose one (default 1):
+
+  - **Choice 1 (or Enter)** → `mkdir -p "$TGD_DIR" && ln -s "$TGD_DIR" tGD && export TGD_DIR=$(realpath tGD)`
+  - **Choice 2** →
+    ```
+    TGD_DIR="<user-provided-path>"
+    mkdir -p "$TGD_DIR"
+    ln -sf "$TGD_DIR" tGD
+    export TGD_DIR=$(realpath tGD)
+    ```
+
+- **Non-interactive mode** (CI, subagent delegation, no TTY) → Skip confirmation, proceed with candidate. Log: "📂 Using $TGD_DIR: `<candidate path>` (non-interactive)"
 
 After this step, ALL subsequent commands use `tGD/` (the symlink) to find `$TGD_DIR`.
 

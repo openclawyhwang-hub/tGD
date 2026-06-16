@@ -11,15 +11,18 @@ const tgdPrompts: Record<string, string> = {
     "1. If symlink tGD/ exists → readlink tGD → candidate = resolved path\n" +
     "2. If env var $TGD_DIR is set → candidate = $TGD_DIR\n" +
     "3. Otherwise → candidate = ../<project-name>-tGD/\n\n" +
-    "**Step 0b: ⚠️ ALWAYS confirm with user — even if symlink or env var already exists:**\n\n" +
+    "**Step 0b: Confirm $TGD_DIR with user:**\n\n" +
+    "- Symlink already existed → Inform: Using existing $TGD_DIR: <resolved path>. Proceed.\n" +
+    "- First-time setup (no symlink, no env var) → MUST ask:\n" +
     "> 📂 tGD artifacts will be stored at: <candidate path>\n" +
     ">\n" +
     "> 1. Use this path (Enter)\n" +
     "> 2. Use a different path (enter an absolute path)\n" +
     ">\n" +
     "> Choose one (default 1):\n\n" +
-    "- Choice 1 (or Enter) → use candidate: If symlink existed: proceed | If env var: ln -s $TGD_DIR tGD | If new default: mkdir -p $TGD_DIR && ln -s $TGD_DIR tGD && export TGD_DIR=$(realpath tGD)\n" +
+    "- Choice 1 (or Enter) → mkdir -p $TGD_DIR && ln -s $TGD_DIR tGD && export TGD_DIR=$(realpath tGD)\n" +
     "- Choice 2 → user-provided path: TGD_DIR=<path>, mkdir -p $TGD_DIR, ln -sf $TGD_DIR tGD, export TGD_DIR=$(realpath tGD)\n\n" +
+    "- Non-interactive mode (CI, subagent, no TTY) → Skip confirmation, proceed with candidate. Log: Using $TGD_DIR: <candidate path> (non-interactive)\n\n" +
     "## Step 1: Context Discovery\n\n" +
     "Before analyzing anything, ask the user:\n" +
     "> \"除了當前 repo，還有其他需要參考的 repo 嗎？（local path 或 git URL）\"\n\n" +
