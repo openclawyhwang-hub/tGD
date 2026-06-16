@@ -28,37 +28,37 @@ const tgdPrompts: Record<string, string> = {
     "- Accept local paths (e.g. ~/Projects/wayflow) — resolve to absolute path\n" +
     "- Accept git URLs (e.g. github.com/CopilotKit/CopilotKit) — clone to /tmp/tgd-context/<repo-name>\n" +
     "- If user says \"no\" or provides nothing, proceed with primary repo only\n\n" +
-    "## Step 2: Context Engineering\\n\\n" +
-    "Run the context-engineering skill. Analyze the current project: tech stack, architecture, dependencies, code organization, and existing patterns.\\n\\n" +
-    "⚠️ This is only Step 2. You MUST continue to Step 3 (CodeGraph) and Step 4 (Understand-Anything) before producing CONTEXT.md.\\n\\n" +
+    "## Step 2: Context Engineering\n\n" +
+    "Run the context-engineering skill. Analyze the current project: tech stack, architecture, dependencies, code organization, and existing patterns.\n\n" +
+    "⚠️ This is only Step 2. You MUST continue to Step 3 (CodeGraph) and Step 4 (Understand-Anything) before producing CONTEXT.md.\n\n" +
     "## Step 3: CodeGraph Setup\n\n" +
     "For each repo to map (primary + all additional repos from Step 1):\n\n" +
     "1. mkdir -p $TGD_DIR/.scans/<repo-name>\n" +
     "2. rm -rf <repo-path>/.codegraph && ln -s $TGD_DIR/.scans/<repo-name>/.codegraph <repo-path>/.codegraph\n" +
     "3. cd into the repo and run codegraph init -i\n\n" +
-    "## Step 4: Understand-Anything (MANDATORY)\\n\\n" +
-    "This step is required, not optional.\\n\\n" +
-    "You MAY use subagent delegation to execute this step. If context is getting long, spawn a fresh subagent to run the `understand` skill on each repo.\\n\\n" +
-    "For each repo to map (primary + all additional repos from Step 1):\\n\\n" +
+    "## Step 4: Understand-Anything (MANDATORY)\n\n" +
+    "This step is required, not optional.\n\n" +
+    "You MAY use subagent delegation to execute this step. If context is getting long, spawn a fresh subagent to run the `understand` skill on each repo.\n\n" +
+    "For each repo to map (primary + all additional repos from Step 1):\n\n" +
     "1. rm -rf <repo-path>/.understand-anything && ln -s $TGD_DIR/.scans/<repo-name>/.understand-anything <repo-path>/.understand-anything\n" +
     "2. load and execute the `understand` skill to build a full knowledge graph\n" +
     "3. Produces $TGD_DIR/.scans/<repo-name>/.understand-anything/knowledge-graph.json\n" +
-    "4. After ALL repos are mapped, load the `understand-dashboard` skill from EACH repo to launch the interactive visualization\\n" +
-    "5. If unfamiliar with any repo, load the `understand-onboard` skill for a guided tour\\n\\n" +
-    "⚠️ Do NOT skip the dashboard. It is a required deliverable of tgd-map for EVERY repo.\\n\\n" +
+    "4. After ALL repos are mapped, load the `understand-dashboard` skill from EACH repo to launch the interactive visualization\n" +
+    "5. If unfamiliar with any repo, load the `understand-onboard` skill for a guided tour\n\n" +
+    "⚠️ Do NOT skip the dashboard. It is a required deliverable of tgd-map for EVERY repo.\n\n" +
     "## Step 5: Produce CONTEXT.md\n\n" +
     "CONTEXT.md must include:\n" +
     "1. Primary Repository — path, name, structure, key files, summary, code entry points\n" +
     "2. Additional Context Repositories — for each: source, resolved path, summary, key insights, relevance\n" +
     "3. Synthesis — integration points, architecture decisions, open questions\n" +
     "4. See Also — dashboard URL\n\n" +
-    "## Step 6: Verification Gate\\n\\n" +
-    "- [ ] $TGD_DIR/CONTEXT.md exists and is non-empty\\n" +
-    "- [ ] $TGD_DIR/.scans/<repo>/.codegraph symlink exists\\n" +
-    "- [ ] $TGD_DIR/.scans/<repo>/.understand-anything symlink exists\\n" +
-    "- [ ] $TGD_DIR/.scans/<repo>/.understand-anything/knowledge-graph.json exists\\n" +
-    "- [ ] Dashboard is running for EVERY repo (localhost URLs confirmed)\\n" +
-    "- [ ] If additional repos were provided, their summaries appear in CONTEXT.md\\n\\n" +
+    "## Step 6: Verification Gate\n\n" +
+    "- [ ] $TGD_DIR/CONTEXT.md exists and is non-empty\n" +
+    "- [ ] $TGD_DIR/.scans/<repo>/.codegraph symlink exists\n" +
+    "- [ ] $TGD_DIR/.scans/<repo>/.understand-anything symlink exists\n" +
+    "- [ ] $TGD_DIR/.scans/<repo>/.understand-anything/knowledge-graph.json exists\n" +
+    "- [ ] Dashboard is running for EVERY repo (localhost URLs confirmed)\n" +
+    "- [ ] If additional repos were provided, their summaries appear in CONTEXT.md\n\n" +
     "After completing, suggest: /tgd-define",
 
   "tgd-define":
@@ -145,12 +145,12 @@ const tgdPrompts: Record<string, string> = {
     "After completing, suggest: /tgd-review",
 
   "tgd-review":
-    "Run the code-review-and-quality skill. REVIEW phase.\n\n" +
+    "Run the `code-review-and-quality` skill. REVIEW phase.\n\n" +
     "Pipeline:\n" +
-    "1. code-review-and-quality (5-axis review) — run codegraph callers + affected to verify impact coverage\n" +
-    "2. code-simplification\n" +
-    "3. Conditional: security concerns? → security-and-hardening\n" +
-    "4. Conditional: performance concerns? → performance-optimization\n" +
+    "1. `code-review-and-quality` (5-axis review) — run `codegraph callers` + `codegraph affected` to verify impact coverage\n" +
+    "2. `code-simplification` — apply Chesterton's Fence, reduce complexity while preserving exact behavior\n" +
+    "3. Conditional: security concerns? → `security-and-hardening`\n" +
+    "4. Conditional: performance concerns? → `performance-optimization`\n" +
     "5. Conditional: large/unfamiliar changes? → the `understand-diff` skill for blast radius visualization\n\n" +
     "Verification: Code review passes, no anti-patterns.\n" +
     "REVIEW.md template (save to $TGD_DIR/<feature-name>/REVIEW.md):\n" +
