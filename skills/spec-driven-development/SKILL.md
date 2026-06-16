@@ -64,7 +64,7 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 
 **Map existing code first.** If `.codegraph/` exists, run `codegraph context "<feature>" --no-code` to find entry points and related symbols before writing the spec. This prevents speccing features that conflict with existing architecture.
 
-**Map business domain.** Run the understand-domain skill to map code structures to business processes — essential for writing a PRD that reflects real-world workflows, not just technical components.
+**Map business domain.** Run the `understand-domain` skill to map code structures to business processes — essential for writing a PRD that reflects real-world workflows, not just technical components.
 
 **Write a PRD document covering these product areas:**
 

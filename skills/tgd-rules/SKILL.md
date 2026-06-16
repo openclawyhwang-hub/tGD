@@ -114,18 +114,18 @@ If the project has a `.codegraph/` directory, **USE IT**. These commands are fas
 
 If `.codegraph/` does NOT exist, skip silently. Do not suggest installing it unprompted.
 
-## Understand-Anything (if the understand skill is available)
+## Understand-Anything (if the `understand` skill is available)
 
 For deeper architectural understanding, especially on unfamiliar codebases:
 
 | PDLC Phase | Situation | Command | Why |
 |---|---|---|---|
-| 🗺️ Map | First time exploring a project | understand skill | Build full knowledge graph + dashboard |
-| 📐 Define | Need business domain mapping | understand-domain skill | Map code to business processes |
-| 📋 Plan | Planning a large refactor | understand-diff skill | Visualize impact of proposed changes |
-| 🔨 Develop | Working on unfamiliar code | understand skill | Understand before you modify |
-| 🔍 Verify | Confirming change impact | understand-diff skill | Verify no missed dependencies |
-| 👀 Review | Reviewing large changes | understand-diff skill | Full blast radius before approval |
-| 🗺️ Map | Onboarding a new team member | understand-onboard skill | Guided tour of the architecture |
+| 🗺️ Map | First time exploring a project | `understand` skill | Build full knowledge graph + dashboard |
+| 📐 Define | Need business domain mapping | `understand-domain` skill | Map code to business processes |
+| 📋 Plan | Planning a large refactor | `understand-diff` skill | Visualize impact of proposed changes |
+| 🔨 Develop | Working on unfamiliar code | `understand` skill | Understand before you modify |
+| 🔍 Verify | Confirming change impact | `understand-diff` skill | Verify no missed dependencies |
+| 👀 Review | Reviewing large changes | `understand-diff` skill | Full blast radius before approval |
+| 🗺️ Map | Onboarding a new team member | `understand-onboard` skill | Guided tour of the architecture |
 
 Use CodeGraph for fast symbol queries, Understand-Anything for deep comprehension. They complement each other.

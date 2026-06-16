@@ -35,7 +35,7 @@ Build in thin vertical slices — implement one piece, test it, verify it, then 
 
 For each slice:
 
-1. **Scope** — if `.codegraph/` exists, run `codegraph callers "<function>"` on any function you're about to modify to know who depends on it. If working on unfamiliar code, run the understand skill first to build a knowledge graph.
+1. **Scope** — if `.codegraph/` exists, run `codegraph callers "<function>"` on any function you're about to modify to know who depends on it. If working on unfamiliar code, run the `understand` skill first to build a knowledge graph.
 2. **Implement** the smallest complete piece of functionality
 3. **Test** — run the test suite (or write a test if none exists)
 4. **Verify** — confirm the slice works as expected (tests pass, build succeeds, manual check)

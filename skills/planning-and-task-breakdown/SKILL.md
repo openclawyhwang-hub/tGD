@@ -56,7 +56,7 @@ Before writing any code, operate in read-only mode to gather context from all av
 - **Read `$TGD_DIR/<feature-name>/SPEC.md`**: Analyze technical requirements, API contracts, and database schemas.
 - **Read `$TGD_DIR/<feature-name>/DESIGN.md` (if present)**: Review component trees and UI flows.
 
-**Synthesis:** Map dependencies between existing code and new requirements. Note risks and unknowns. If `.codegraph/` exists, run `codegraph impact "<core-symbol>"` on any symbol the feature will modify to assess blast radius and inform task ordering. If planning a large refactor, run the understand-diff skill to visualize the impact of proposed changes before breaking down tasks.
+**Synthesis:** Map dependencies between existing code and new requirements. Note risks and unknowns. If `.codegraph/` exists, run `codegraph impact "<core-symbol>"` on any symbol the feature will modify to assess blast radius and inform task ordering. If planning a large refactor, run the `understand-diff` skill to visualize the impact of proposed changes before breaking down tasks.
 
 **Do NOT write code during planning.** Write a plan document at `$TGD_DIR/<feature-name>/TASKS.md` covering: dependency graph, ordered task list with acceptance criteria, verification checkpoints, and risks with mitigations.
 

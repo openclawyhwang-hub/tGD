@@ -41,7 +41,7 @@ Check the number of tasks in `TASKS.md`:
 5. `verification-before-completion` — evidence before claims, no exceptions
 
 **Conditional (apply when relevant):**
-- Working with unfamiliar code? → the understand skill to clarify architectural boundaries.
+- Working with unfamiliar code? → the `understand` skill to clarify architectural boundaries.
 - Touching UI? → `frontend-ui-engineering`
 - Designing APIs? → `api-and-interface-design`
 - High-stakes decision? → `doubt-driven-development`
