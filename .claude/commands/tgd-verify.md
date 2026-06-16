@@ -5,10 +5,10 @@ description: Verify — prove it works with debugging and test pyramid
 **🛑 Pre-flight: Environment Check**
 - [ ] `$TGD_DIR/CONTEXT.md` exists (or `.codegraph/` is present).
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
-- **$TGD_DIR:** Resolve via `tGD/` symlink in project root. If missing, check `$TGD_DIR` env var. If neither exists: STOP — run `/tgd-map` first.
+- **$TGD_DIR:** Check env var `$TGD_DIR` first. If not set, check sibling `../<project-name>-tGD/`. If neither exists: STOP — run `/tgd-map` first.
 
 **🔑 Step 0: Feature Name Resolution**
-1. Scan `tGD/` for subdirectories (e.g., `tGD/user-login/`).
+1. Scan `$TGD_DIR/` for subdirectories (e.g., `$TGD_DIR/user-login/`).
 2. If none found: 🛑 STOP. "No features defined. Run `/tgd-define` first."
 3. If exactly one found: Lock it as `<feature-name>`.
 4. If multiple found: List them and ask user to specify.
@@ -33,11 +33,40 @@ Run the `debugging-and-error-recovery` skill. This is the VERIFY phase. The full
 
 Verify that the feature works correctly before proceeding to review. Tests are proof — "seems right" is never sufficient.
 
-After completing the verification, create `$TGD_DIR/<feature-name>/TEST-REPORT.md` with:
-- Test results summary (pass/fail counts)
-- Coverage report (if available)
-- Regression test status
-- Any failures and their root causes
+After completing the verification, create `$TGD_DIR/<feature-name>/TEST-REPORT.md` using this template:
+ 
+```markdown
+# TEST-REPORT: [Feature Name]
+ 
+> **Date**: YYYY-MM-DD
+ 
+## 1. Test Summary
+| Suite | Passed | Failed | Skipped |
+|-------|--------|--------|---------|
+| Unit | | | |
+| Integration | | | |
+| E2E | | | |
+ 
+Exit code: `0` (PASS) / `1` (FAIL)
+ 
+## 2. Coverage
+| Metric | Value |
+|--------|-------|
+| Lines | |
+| Branches | |
+| Functions | |
+ 
+## 3. Failures & Root Causes
+| Test | Error | Root Cause | Fix Applied |
+|------|-------|------------|-------------|
+ 
+## 4. Regression Status
+- [ ] All entries in `$TGD_DIR/REGRESSION-CATALOG.md` pass (if catalog exists)
+- [ ] No cross-feature regressions introduced
+ 
+## Sign-off
+- [ ] **QA**: (pending)
+```
 
 **🛡️ Cross-Feature Regression Gate (MANDATORY if `$TGD_DIR/REGRESSION-CATALOG.md` exists)**
 1. Read `$TGD_DIR/REGRESSION-CATALOG.md`.

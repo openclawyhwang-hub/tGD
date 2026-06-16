@@ -2,10 +2,10 @@
 **🛑 Pre-flight: Environment Check**
 - [ ] `$TGD_DIR/CONTEXT.md` exists (or `.codegraph/` is present).
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
-- **$TGD_DIR:** Resolve via `tGD/` symlink in project root. If missing, check `$TGD_DIR` env var. If neither exists: STOP — run `/tgd-map` first.
+- **$TGD_DIR:** Check env var `$TGD_DIR` first. If not set, check sibling `../<project-name>-tGD/`. If neither exists: STOP — run `/tgd-map` first.
 
 **🔑 Step 0: Feature Name Resolution**
-1. Scan `tGD/` for subdirectories (e.g., `tGD/user-login/`).
+1. Scan `$TGD_DIR/` for subdirectories (e.g., `$TGD_DIR/user-login/`).
 2. If none found: 🛑 STOP. "No features defined. Run `/tgd-define` first."
 3. If exactly one found: Lock it as `<feature-name>`.
 4. If multiple found: List them and ask user to specify.
@@ -40,7 +40,18 @@ After shipping, update `$TGD_DIR/CHANGELOG.md` (create if it doesn't exist) with
 After shipping, scan `$TGD_DIR/<feature-name>/TASKS.md` for Acceptance Criteria marked `[R]` (Regression). For EACH `[R]` criterion:
 1. Extract the BDD criterion (Given/When/Then).
 2. Identify the actual test file that verifies this criterion (from `tests/` in the shipped code).
-3. Append an entry to `$TGD_DIR/REGRESSION-CATALOG.md` (create if it doesn't exist):
+3. Append entries to `$TGD_DIR/REGRESSION-CATALOG.md` (create if it doesn't exist):
+   If creating for the first time, start with this header:
+   ```markdown
+   # Regression Catalog
+ 
+   > Cumulative catalog of `[R]` regression tests across all shipped features.
+   > Every entry must point to an existing, passing test file.
+   > Last audited: YYYY-MM-DD
+ 
+   ---
+   ```
+   Then append each `[R]` criterion as an entry:
    ```markdown
    ### [<feature-name>] Short description
    - **Criterion:** Given X, When Y, Then Z

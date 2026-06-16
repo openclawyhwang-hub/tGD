@@ -63,7 +63,7 @@ const tgdPrompts: Record<string, string> = {
 
   "tgd-define":
     "Run the spec-driven-development skill. Write a PRD (product requirements document) covering objectives, commands, structure, code style, testing strategy, and boundaries before any code is written. DEFINE phase.\n\n" +
-    "Pre-flight: Check $TGD_DIR/CONTEXT.md exists (or .codegraph/ is present). If missing, STOP and tell user to run /tgd-map first. $TGD_DIR: Resolve via tGD/ symlink in project root. If missing, check $TGD_DIR env var. If neither exists: STOP — run /tgd-map first.\n\n" +
+    "Pre-flight: Check $TGD_DIR/CONTEXT.md exists (or .codegraph/ is present). If missing, STOP and tell user to run /tgd-map first. $TGD_DIR: Check env var $TGD_DIR first. If not set, check sibling ../<project-name>-tGD/\n\n" +
     "Pipeline:\n" +
     "1. Feature Name Resolution (Selection Protocol) — **Analyze the user's request first.** Extract core action + object (e.g., 'user login' → action: login, object: user). Propose 3 kebab-case names that **directly reflect intent**: (a) most literal/direct, (b) action-focused, (c) domain-specific. Wait for user to pick by number. Once locked, create $TGD_DIR/<feature-name>/.\n" +
     "2. Git Branch Setup — If on main/master, create and switch to feature/<feature-name> (git checkout -b feature/user-login).\n" +
@@ -88,7 +88,7 @@ const tgdPrompts: Record<string, string> = {
 
   "tgd-plan":
     "Run the planning-and-task-breakdown skill. PLAN phase.\n\n" +
-    "Pre-flight: Check $TGD_DIR/<feature>/SPEC.md exists. If missing, suggest /tgd-define first. $TGD_DIR: Resolve via tGD/ symlink in project root. If missing, check $TGD_DIR env var. If neither exists: STOP — run /tgd-map first.\n\n" +
+    "Pre-flight: Check $TGD_DIR/<feature>/SPEC.md exists. If missing, suggest /tgd-define first. $TGD_DIR: Check env var $TGD_DIR first. If not set, check sibling ../<project-name>-tGD/\n\n" +
     "Pipeline:\n" +
     "1. Read the existing SPEC.md (and DESIGN.md if UI)\n" +
     "2. If .codegraph/ exists, run codegraph impact on core symbols to assess blast radius\n" +
@@ -106,7 +106,7 @@ const tgdPrompts: Record<string, string> = {
 
   "tgd-develop":
     "Run the subagent-driven-development or incremental-implementation skill. BUILD phase.\n\n" +
-    "Pre-flight: Check TASKS.md, PRD.md, SPEC.md exist. If missing, suggest /tgd-define or /tgd-plan first. $TGD_DIR: Resolve via tGD/ symlink in project root. If missing, check $TGD_DIR env var. If neither exists: STOP — run /tgd-map first.\n\n" +
+    "Pre-flight: Check TASKS.md, PRD.md, SPEC.md exist. If missing, suggest /tgd-define or /tgd-plan first. $TGD_DIR: Check env var $TGD_DIR first. If not set, check sibling ../<project-name>-tGD/\n\n" +
     "Pipeline:\n" +
     "1. context-engineering — before modifying, run codegraph callers <symbol> to ensure backward compatibility\n" +
     "2. source-driven-development\n" +
@@ -128,7 +128,14 @@ const tgdPrompts: Record<string, string> = {
     "4. Conditional: want visual impact? → the `understand-diff` skill\n\n" +
     "Verify that the feature works correctly before proceeding to review. Tests are proof — 'seems right' is never sufficient.\n" +
     "Verification: ALL tests pass, build succeeds.\n" +
-    "After completing, create $TGD_DIR/<feature-name>/TEST-REPORT.md with: test results summary, coverage report, regression status, failures and root causes.\n" +
+    "After completing, create $TGD_DIR/<feature-name>/TEST-REPORT.md using this template:\n" +
+    "# TEST-REPORT: [Feature Name]\n" +
+    "> Date: YYYY-MM-DD\n" +
+    "## 1. Test Summary — table: Suite/Passed/Failed/Skipped, exit code\n" +
+    "## 2. Coverage — table: Lines/Branches/Functions\n" +
+    "## 3. Failures & Root Causes — table: Test/Error/Root Cause/Fix Applied\n" +
+    "## 4. Regression Status — checkboxes: REGRESSION-CATALOG.md entries pass, no regressions\n" +
+    "## Sign-off — QA (pending)\n" +
     "Cross-Feature Regression Gate (MANDATORY if $TGD_DIR/REGRESSION-CATALOG.md exists):\n" +
     "1. Read $TGD_DIR/REGRESSION-CATALOG.md.\n" +
     "2. For EACH entry: locate the test file, run it, confirm it passes.\n" +
@@ -146,8 +153,15 @@ const tgdPrompts: Record<string, string> = {
     "4. Conditional: performance concerns? → performance-optimization\n" +
     "5. Conditional: large/unfamiliar changes? → the `understand-diff` skill for blast radius visualization\n\n" +
     "Verification: Code review passes, no anti-patterns.\n" +
-    "After completing, create $TGD_DIR/<feature-name>/REVIEW.md with: code review findings, security scan, performance analysis, simplification suggestions, QA + DEV Sign-off.\n" +
-    "If architectural decisions were made, create $TGD_DIR/<feature-name>/decisions/ with ADR files (ADR-NNN-<decision>.md, format: Context, Decision, Consequences).\n" +
+    "REVIEW.md template (save to $TGD_DIR/<feature-name>/REVIEW.md):\n" +
+    "# REVIEW: [Feature Name]\n" +
+    "> Date: YYYY-MM-DD\n" +
+    "## 1. Code Review Findings — table: #/Severity/File:Line/Issue/Recommendation (🔴 Critical · 🟡 Optional · 🟢 Nit)\n" +
+    "## 2. Security Scan — tool, findings, status (Pass/Warnings/Fail)\n" +
+    "## 3. Performance Analysis — concerns, status\n" +
+    "## 4. Simplification — applied, lines reduced\n" +
+    "## Sign-off — QA (pending), DEV (pending)\n" +
+    "If architectural decisions: create $TGD_DIR/<feature-name>/decisions/ADR-NNN-<decision>.md — sections: Date, Status, Context, Decision, Consequences (Positive/Negative/Risks).\n" +
     "Verification Gate: Code review feedback addressed, no critical warnings, REVIEW.md exists.\n" +
     "After completing, suggest: /tgd-ship",
 
@@ -163,8 +177,9 @@ const tgdPrompts: Record<string, string> = {
     "After shipping, update $TGD_DIR/CHANGELOG.md (create if it doesn't exist) with: version (CalVer), feature name, date shipped, key changes.\n" +
     "Regression Catalog Update: After shipping, scan $TGD_DIR/<feature-name>/TASKS.md for [R] marked Acceptance Criteria.\n" +
     "For EACH [R] criterion: extract the BDD criterion (Given/When/Then), identify the actual test file from tests/,\n" +
-    "append to $TGD_DIR/REGRESSION-CATALOG.md (create if needed):\n" +
-    "  ### [<feature-name>] Short description — Criterion: Given X, When Y, Then Z — Test: tests/path/to/test.ts — Shipped: vYYYY.MM.DD\n" +
+    "append to $TGD_DIR/REGRESSION-CATALOG.md (create if needed).\n" +
+    "If creating fresh, add header: # Regression Catalog — cumulative [R] tests, every entry must point to existing passing test, last audited date.\n" +
+    "Each entry: ### [<feature-name>] Short description — Criterion: Given X, When Y, Then Z — Test: tests/path/to/test.ts — Shipped: vYYYY.MM.DD\n" +
     "This catalog is cumulative. Future features will re-run ALL entries during /tgd-verify.\n" +
     "Regression Catalog Audit (MANDATORY if REGRESSION-CATALOG.md exists): Before finalizing ship, audit for staleness.\n" +
     "1. Read every entry. 2. Check: test file exists? Run it, passes? Feature deprecated? 3. If broken path: remove entry, log in CHANGELOG.md Catalog Cleanup section.\n" +

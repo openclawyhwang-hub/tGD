@@ -5,10 +5,10 @@ Develop — implement with fresh subagents per task and two-stage review
 **🛑 Pre-flight: Environment Check**
 - [ ] `$TGD_DIR/CONTEXT.md` exists (or `.codegraph/` is present).
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
-- **$TGD_DIR:** Resolve via `tGD/` symlink in project root. If missing, check `$TGD_DIR` env var. If neither exists: STOP — run `/tgd-map` first.
+- **$TGD_DIR:** Check env var `$TGD_DIR` first. If not set, check sibling `../<project-name>-tGD/`. If neither exists: STOP — run `/tgd-map` first.
 
 **🔑 Step 0: Feature Name Resolution**
-1. Scan `tGD/` for subdirectories (e.g., `tGD/user-login/`).
+1. Scan `$TGD_DIR/` for subdirectories (e.g., `$TGD_DIR/user-login/`).
 2. If none found: 🛑 STOP. "No features defined. Run `/tgd-define` first."
 3. If exactly one found: Lock it as `<feature-name>`.
 4. If multiple found: List them and ask user to specify.
@@ -23,7 +23,7 @@ Develop — implement with fresh subagents per task and two-stage review
 This is the BUILD phase. The pipeline operates in an isolated environment.
 
 **🌳 Step 1: Worktree Isolation (Mandatory)**
-Before writing any code, create an isolated workspace. This keeps `tGD/` artifacts safe and prevents code mess from polluting the planning directory.
+Before writing any code, create an isolated workspace. This keeps `$TGD_DIR/` artifacts safe and prevents code mess from polluting the planning directory.
 1. **Create**: `git worktree add ../project-<feature-name> feature/<feature-name>`
 2. **Action**: All coding, testing, and commits MUST happen inside `../project-<feature-name>/`.
 
