@@ -127,7 +127,7 @@ Before looking at code, understand the intent:
 - What is the expected behavior change?
 ```
 
-If `.codegraph/` exists, run `codegraph callers "<modified-function>"` to verify the change doesn't miss any dependent code. Run `codegraph affected <changed-files>` to confirm all impacted tests are included. For large or unfamiliar changes, run `/understand-diff` to visualize the full blast radius before approving.
+If `.codegraph/` exists, run `codegraph callers "<modified-function>"` to verify the change doesn't miss any dependent code. Run `codegraph affected <changed-files>` to confirm all impacted tests are included. For large or unfamiliar changes, run the understand-diff skill to visualize the full blast radius before approving.
 
 ### Step 2: Review the Tests First
 
