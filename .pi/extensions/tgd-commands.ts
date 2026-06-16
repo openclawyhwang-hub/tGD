@@ -1,4 +1,4 @@
-// tGD Pi Extension — Registers 8 lifecycle slash commands
+// tGD Pi Extension — Registers 7 lifecycle slash commands
 // Compatible with pi-coding-agent 0.75.x
 
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
@@ -29,13 +29,13 @@ const tgdPrompts: Record<string, string> = {
     "- Accept git URLs (e.g. github.com/CopilotKit/CopilotKit) — clone to /tmp/tgd-context/<repo-name>\n" +
     "- If user says \"no\" or provides nothing, proceed with primary repo only\n\n" +
     "## Step 2: Context Engineering\n\n" +
-    "Run the context-engineering skill. Analyze the current project: tech stack, architecture, dependencies, code organization, and existing patterns.\n\n" +
+    "Run the `context-engineering` skill. Analyze the current project: tech stack, architecture, dependencies, code organization, and existing patterns.\n\n" +
     "⚠️ This is only Step 2. You MUST continue to Step 3 (CodeGraph) and Step 4 (Understand-Anything) before producing CONTEXT.md.\n\n" +
     "## Step 3: CodeGraph Setup\n\n" +
     "For each repo to map (primary + all additional repos from Step 1):\n\n" +
     "1. mkdir -p $TGD_DIR/.scans/<repo-name>\n" +
     "2. rm -rf <repo-path>/.codegraph && ln -s $TGD_DIR/.scans/<repo-name>/.codegraph <repo-path>/.codegraph\n" +
-    "3. cd into the repo and run codegraph init -i\n\n" +
+    "3. cd into the repo and run `codegraph init -i`\n\n" +
     "## Step 4: Understand-Anything (MANDATORY)\n\n" +
     "This step is required, not optional.\n\n" +
     "You MAY use subagent delegation to execute this step. If context is getting long, spawn a fresh subagent to run the `understand` skill on each repo.\n\n" +
@@ -62,20 +62,20 @@ const tgdPrompts: Record<string, string> = {
     "After completing, suggest: /tgd-define",
 
   "tgd-define":
-    "Run the spec-driven-development skill. Write a PRD (product requirements document) covering objectives, commands, structure, code style, testing strategy, and boundaries before any code is written. DEFINE phase.\n\n" +
+    "Run the `spec-driven-development` skill. Write a PRD (product requirements document) covering objectives, commands, structure, code style, testing strategy, and boundaries before any code is written. DEFINE phase.\n\n" +
     "Pre-flight: Check $TGD_DIR/CONTEXT.md exists (or .codegraph/ is present). If missing, STOP and tell user to run /tgd-map first. $TGD_DIR: Check env var $TGD_DIR first. If not set, check sibling ../<project-name>-tGD/\n\n" +
     "Pipeline:\n" +
     "1. Feature Name Resolution (Selection Protocol) — **Analyze the user's request first.** Extract core action + object (e.g., 'user login' → action: login, object: user). Propose 3 kebab-case names that **directly reflect intent**: (a) most literal/direct, (b) action-focused, (c) domain-specific. Wait for user to pick by number. Once locked, create $TGD_DIR/<feature-name>/.\n" +
-    "2. Git Branch Setup — If on main/master, create and switch to feature/<feature-name> (git checkout -b feature/user-login).\n" +
-    "3. interview-me — if the ask is underspecified, extract what the user actually wants\n" +
-    "4. idea-refine — if the concept is vague, stress-test and expand options\n" +
-    "5. spec-driven-development — write the structured spec (PRD + SPEC)\n\n" +
+    "2. 🌿 Git Branch Setup — If on main/master, create and switch to feature/<feature-name> (git checkout -b feature/user-login).\n" +
+    "3. `interview-me` — if the ask is underspecified, extract what the user actually wants\n" +
+    "4. `idea-refine` — if the concept is vague, stress-test and expand options\n" +
+    "5. `spec-driven-development` — write the structured spec (PRD + SPEC)\n\n" +
     "Multi-Repo Tagging: If CONTEXT.md lists multiple repos, SPEC.md MUST be tagged by repo. Use ## <repo-name> as section headers (e.g., ## Backend (my-project-backend), ## Frontend (my-project-frontend)).\n\n" +
     "Phase 1.5: UI Design Gate (MANDATORY CHECK via Selection Protocol)\n" +
     "After writing SPEC.md, ask: 'Does this feature have a UI component requiring DESIGN.md? 1. Yes (Generate design) 2. No (Backend only)'\n" +
-    "If YES → (1) Run sketch skill to generate 2-3 HTML prototype variants in $TGD_DIR/<feature-name>/prototype/, (2) Present comparison table → user picks one by letter (or requests iteration), (3) Write DESIGN.md documenting the chosen design decisions and component tree, (4) Wait for user confirmation before proceeding\n" +
+    "If YES → (1) Run `sketch` skill to generate 2-3 HTML prototype variants in $TGD_DIR/<feature-name>/prototype/, (2) Present comparison table → user picks one by letter (or requests iteration), (3) Write DESIGN.md documenting the chosen design decisions and component tree, (4) Wait for user confirmation before proceeding\n" +
     "If NO → skip DESIGN.md and prototype. You cannot skip this step without explicit user approval.\n\n" +
-    "Use interview-me first if the ask is underspecified. Use idea-refine if you have a rough concept but it's not concrete yet.\n\n" +
+    "Use `interview-me` first if the ask is underspecified. Use `idea-refine` if you have a rough concept but it's not concrete yet.\n\n" +
     "After completing the spec, verify the outputs.\n\n" +
     "Verification Gate:\n" +
     "- [ ] $TGD_DIR/ directory exists\n" +
@@ -87,44 +87,54 @@ const tgdPrompts: Record<string, string> = {
     "After completing, suggest: /tgd-plan",
 
   "tgd-plan":
-    "Run the planning-and-task-breakdown skill. PLAN phase.\n\n" +
+    "Run the `planning-and-task-breakdown` skill. PLAN phase.\n\n" +
     "Pre-flight: Check $TGD_DIR/<feature>/SPEC.md exists. If missing, suggest /tgd-define first. $TGD_DIR: Check env var $TGD_DIR first. If not set, check sibling ../<project-name>-tGD/\n\n" +
+    "Feature Name Resolution: Scan $TGD_DIR/ for subdirectories. If none: STOP, run /tgd-define. If one: lock as <feature-name>. If multiple: ask user to pick.\n\n" +
     "Pipeline:\n" +
     "1. Read the existing SPEC.md (and DESIGN.md if UI)\n" +
-    "2. If .codegraph/ exists, run codegraph impact on core symbols to assess blast radius\n" +
+    "2. If .codegraph/ exists, run `codegraph impact` on core symbols to assess blast radius\n" +
     "3. Break into small, verifiable tasks\n" +
     "4. Create TASKS.md with ordered checklist\n" +
     "   Multi-Repo Tagging: If CONTEXT.md lists multiple repos, prefix each task with [repo-name] (e.g., [my-project-backend] Create auth endpoint).\n" +
     "5. 🔗 Jira Integration Gate (IMMEDIATELY after TASKS.md, do NOT skip):\n" +
     "   - Check JIRA_URL, JIRA_PROJECT, JIRA_TOKEN.\n" +
-    "   - If ALL set → run jira-auto-sync automatically. Report keys, add to TASKS.md.\n" +
+    "   - If ALL set → run `jira-auto-sync` automatically. Report keys, add to TASKS.md.\n" +
     "   - If NOT set → ask: \"📋 TASKS.md 已完成。🔗 要同步到 Jira 嗡？(y/n)\"\n" +
-    "     - Yes → ask for JIRA_URL, JIRA_PROJECT, JIRA_TOKEN one at a time. Save to $TGD_DIR/.env. Then run jira-auto-sync.\n" +
+    "     - Yes → ask for JIRA_URL, JIRA_PROJECT, JIRA_TOKEN one at a time. Save to $TGD_DIR/.env. Then run `jira-auto-sync`.\n" +
     "     - No → skip.\n\n" +
     "Verification: TASKS.md exists with acceptance criteria per task.\n" +
     "After completing, suggest: /tgd-develop",
 
   "tgd-develop":
-    "Run the subagent-driven-development or incremental-implementation skill. BUILD phase.\n\n" +
+    "Run the `subagent-driven-development` or `incremental-implementation` skill. BUILD phase.\n\n" +
     "Pre-flight: Check TASKS.md, PRD.md, SPEC.md exist. If missing, suggest /tgd-define or /tgd-plan first. $TGD_DIR: Check env var $TGD_DIR first. If not set, check sibling ../<project-name>-tGD/\n\n" +
+    "Feature Name Resolution: Scan $TGD_DIR/ for subdirectories. If none: STOP, run /tgd-define. If one: lock as <feature-name>. If multiple: ask user to pick.\n\n" +
     "Pipeline:\n" +
-    "1. context-engineering — before modifying, run codegraph callers <symbol> to ensure backward compatibility\n" +
-    "2. source-driven-development\n" +
-    "3. Execute tasks in worktree (subagent-driven if >= 3 tasks, incremental if < 3)\n" +
-    "4. test-driven-development — Red-Green-Refactor\n" +
-    "5. verification-before-completion\n\n" +
+    "1. `context-engineering` — before modifying, run `codegraph callers` <symbol> to ensure backward compatibility\n" +
+    "2. `source-driven-development`\n" +
+    "3. Execute tasks in worktree (`subagent-driven-development` if >= 3 tasks, `incremental-implementation` if < 3)\n" +
+    "4. `test-driven-development` — Red-Green-Refactor\n" +
+    "5. `verification-before-completion`\n\n" +
     "Conditional: If unfamiliar code → the `understand` skill for architectural guidance.\n" +
-    "Verification: All tasks checked off, tests pass.\n" +
+    "Conditional: Touching UI? → `frontend-ui-engineering`\n" +
+    "Conditional: Designing APIs? → `api-and-interface-design`\n" +
+    "Conditional: High-stakes decision? → `doubt-driven-development`\n\n" +
+    "Verification Gate:\n" +
+    "- [ ] Source code files created/modified in src/\n" +
+    "- [ ] Tests written AND passing for new logic in tests/\n" +
+    "- [ ] Verification commands run and output confirmed\n" +
     "After completing, suggest: /tgd-verify",
 
   "tgd-verify":
-    "Run the debugging-and-error-recovery skill. VERIFY phase.\n\n" +
+    "Run the `debugging-and-error-recovery` skill. VERIFY phase.\n\n" +
+    "Pre-flight: Check $TGD_DIR/CONTEXT.md exists (or .codegraph/ is present). If missing, STOP and tell user to run /tgd-map first. Source code files must exist in src/ and test files in tests/. If missing, suggest /tgd-develop first. $TGD_DIR: Check env var $TGD_DIR first. If not set, check sibling ../<project-name>-tGD/\n\n" +
+    "Feature Name Resolution: Scan $TGD_DIR/ for subdirectories. If none: STOP, run /tgd-define. If one: lock as <feature-name>. If multiple: ask user to pick.\n\n" +
     "Pipeline:\n" +
-    "1. debugging-and-error-recovery — reproduce → localize → reduce → fix → guard\n" +
-    "2. test-driven-development — verify with the test pyramid (80% unit, 15% integration, 5% E2E)\n" +
-    "   - Use codegraph affected <changed-files> to identify which tests to prioritize based on actual dependency paths.\n" +
-    "3. Conditional: Frontend/UI/DOM? → MUST run agent-browser. Use agent-browser (preferred) to open the browser, perform the user action, and verify the DOM state.\n" +
-    "   - Verification Gate Failure: If the feature touches frontend code but agent-browser did not run, the verification is FAILED.\n" +
+    "1. `debugging-and-error-recovery` — reproduce → localize → reduce → fix → guard\n" +
+    "2. `test-driven-development` — verify with the test pyramid (80% unit, 15% integration, 5% E2E)\n" +
+    "   - Use `codegraph affected` <changed-files> to identify which tests to prioritize based on actual dependency paths.\n" +
+    "3. Conditional: Frontend/UI/DOM? → MUST run `agent-browser`. Use `agent-browser` (preferred) to open the browser, perform the user action, and verify the DOM state.\n" +
+    "   - Verification Gate Failure: If the feature touches frontend code but `agent-browser` did not run, the verification is FAILED.\n" +
     "4. Conditional: want visual impact? → the `understand-diff` skill\n\n" +
     "Verify that the feature works correctly before proceeding to review. Tests are proof — 'seems right' is never sufficient.\n" +
     "Verification: ALL tests pass, build succeeds.\n" +
@@ -146,6 +156,8 @@ const tgdPrompts: Record<string, string> = {
 
   "tgd-review":
     "Run the `code-review-and-quality` skill. REVIEW phase.\n\n" +
+    "Pre-flight: Check $TGD_DIR/CONTEXT.md exists (or .codegraph/ is present). If missing, STOP and tell user to run /tgd-map first. Test files must exist in tests/. If missing, suggest /tgd-verify first. $TGD_DIR: Check env var $TGD_DIR first. If not set, check sibling ../<project-name>-tGD/\n\n" +
+    "Feature Name Resolution: Scan $TGD_DIR/ for subdirectories. If none: STOP, run /tgd-define. If one: lock as <feature-name>. If multiple: ask user to pick.\n\n" +
     "Pipeline:\n" +
     "1. `code-review-and-quality` (5-axis review) — run `codegraph callers` + `codegraph affected` to verify impact coverage\n" +
     "2. `code-simplification` — apply Chesterton's Fence, reduce complexity while preserving exact behavior\n" +
@@ -165,14 +177,15 @@ const tgdPrompts: Record<string, string> = {
     "Verification Gate: Code review feedback addressed, no critical warnings, REVIEW.md exists.\n" +
     "After completing, suggest: /tgd-ship",
 
-
   "tgd-ship":
-    "Run the shipping-and-launch skill. SHIP phase.\n\n" +
+    "Run the `shipping-and-launch` skill. SHIP phase.\n\n" +
+    "Pre-flight: Check $TGD_DIR/CONTEXT.md exists (or .codegraph/ is present). If missing, STOP and tell user to run /tgd-map first. Review passed (no critical issues) and $TGD_DIR/<feature>/REVIEW.md exists. If missing, suggest /tgd-review first. $TGD_DIR: Check env var $TGD_DIR first. If not set, check sibling ../<project-name>-tGD/\n\n" +
+    "Feature Name Resolution: Scan $TGD_DIR/ for subdirectories. If none: STOP, run /tgd-define. If one: lock as <feature-name>. If multiple: ask user to pick.\n\n" +
     "Pipeline:\n" +
-    "1. git-workflow-and-versioning\n" +
-    "2. shipping-and-launch\n" +
-    "3. If CI/CD exists: ci-cd-and-automation\n" +
-    "4. If writing docs: documentation-and-adrs\n\n" +
+    "1. `git-workflow-and-versioning`\n" +
+    "2. `shipping-and-launch`\n" +
+    "3. If CI/CD exists: `ci-cd-and-automation`\n" +
+    "4. If writing docs: `documentation-and-adrs`\n\n" +
     "Verification: Changes committed, tests pass, deployment successful.\n" +
     "After shipping, update $TGD_DIR/CHANGELOG.md (create if it doesn't exist) with: version (CalVer), feature name, date shipped, key changes.\n" +
     "Regression Catalog Update: After shipping, scan $TGD_DIR/<feature-name>/TASKS.md for [R] marked Acceptance Criteria.\n" +
@@ -202,7 +215,6 @@ export default function (pi: ExtensionAPI) {
     ["tgd-develop", "Build — implement thin vertical slices with tests"],
     ["tgd-verify", "Verify — debug, test, and prove it works"],
     ["tgd-review", "Review — code review, quality gates, simplification"],
-    
     ["tgd-ship", "Ship — clean git history, deploy safely"],
   ] as [string, string][]) {
     pi.registerCommand(name, {
