@@ -7,17 +7,19 @@ const tgdPrompts: Record<string, string> = {
   "tgd-map":
     "## Step 0: $TGD_DIR Resolution\n\n" +
     "$TGD_DIR is where ALL tGD artifacts live. It is a sibling directory outside your code repo.\n\n" +
-    "Resolution (in order):\n" +
-    "1. If symlink tGD/ exists in project root → readlink tGD → that's $TGD_DIR\n" +
-    "2. If env var $TGD_DIR is set → use it, create symlink: ln -s $TGD_DIR tGD\n" +
-    "3. Otherwise → ask the user where to store tGD artifacts:\n\n" +
-    "   📂 tGD needs a directory for planning artifacts (CONTEXT.md, PRD.md, TASKS.md, etc.).\n" +
-    "   It lives outside your code repo to keep it clean.\n\n" +
-    "   1. Default: ../<project-name>-tGD/ (sibling to repo, recommended)\n" +
-    "   2. Custom path (enter an absolute path)\n\n" +
-    "   Choose one (default 1):\n\n" +
-    "   - Choice 1 (or Enter) → auto-create: PROJECT_NAME=$(basename $(pwd)), TGD_DIR=../${PROJECT_NAME}-tGD, mkdir -p $TGD_DIR, ln -s $TGD_DIR tGD, export TGD_DIR=$(realpath tGD)\n" +
-    "   - Choice 2 → use user-provided path: TGD_DIR=<user-provided-path>, mkdir -p $TGD_DIR, ln -s $TGD_DIR tGD, export TGD_DIR=$(realpath tGD)\n\n" +
+    "**Step 0a: Resolve candidate path** (in order):\n" +
+    "1. If symlink tGD/ exists → readlink tGD → candidate = resolved path\n" +
+    "2. If env var $TGD_DIR is set → candidate = $TGD_DIR\n" +
+    "3. Otherwise → candidate = ../<project-name>-tGD/\n\n" +
+    "**Step 0b: ⚠️ ALWAYS confirm with user — even if symlink or env var already exists:**\n\n" +
+    "> 📂 tGD artifacts will be stored at: <candidate path>\n" +
+    ">\n" +
+    "> 1. Use this path (Enter)\n" +
+    "> 2. Use a different path (enter an absolute path)\n" +
+    ">\n" +
+    "> Choose one (default 1):\n\n" +
+    "- Choice 1 (or Enter) → use candidate: If symlink existed: proceed | If env var: ln -s $TGD_DIR tGD | If new default: mkdir -p $TGD_DIR && ln -s $TGD_DIR tGD && export TGD_DIR=$(realpath tGD)\n" +
+    "- Choice 2 → user-provided path: TGD_DIR=<path>, mkdir -p $TGD_DIR, ln -sf $TGD_DIR tGD, export TGD_DIR=$(realpath tGD)\n\n" +
     "## Step 1: Context Discovery\n\n" +
     "Before analyzing anything, ask the user:\n" +
     "> \"除了當前 repo，還有其他需要參考的 repo 嗎？（local path 或 git URL）\"\n\n" +

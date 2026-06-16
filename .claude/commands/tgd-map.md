@@ -6,34 +6,31 @@ description: Map — scan and understand the existing project context before mak
 
 $TGD_DIR is where ALL tGD artifacts live. It is a **sibling directory** outside your code repo.
 
-Resolution (in order):
-1. If symlink `tGD/` exists in project root → `readlink tGD` → that's `$TGD_DIR`
-2. If env var `$TGD_DIR` is set → use it, create symlink: `ln -s $TGD_DIR tGD`
-3. Otherwise → **ask the user** where to store tGD artifacts:
+**Step 0a: Resolve candidate path** (in order):
+1. If symlink `tGD/` exists → `readlink tGD` → candidate = resolved path
+2. If env var `$TGD_DIR` is set → candidate = `$TGD_DIR`
+3. Otherwise → candidate = `../<project-name>-tGD/`
 
-   > 📂 tGD needs a directory for planning artifacts (CONTEXT.md, PRD.md, TASKS.md, etc.).
-   > It lives outside your code repo to keep it clean.
-   >
-   > 1. Default: `../<project-name>-tGD/` (sibling to repo, recommended)
-   > 2. Custom path (enter an absolute path)
-   >
-   > Choose one (default 1):
+**Step 0b: ⚠️ ALWAYS confirm with user — even if symlink or env var already exists:**
 
-   - **Choice 1 (or Enter)** → auto-create:
-     ```
-     PROJECT_NAME=$(basename $(pwd))
-     TGD_DIR="../${PROJECT_NAME}-tGD"
-     mkdir -p "$TGD_DIR"
-     ln -s "$TGD_DIR" tGD
-     export TGD_DIR=$(realpath tGD)
-     ```
-   - **Choice 2** → use user-provided path:
-     ```
-     TGD_DIR="<user-provided-path>"
-     mkdir -p "$TGD_DIR"
-     ln -s "$TGD_DIR" tGD
-     export TGD_DIR=$(realpath tGD)
-     ```
+> 📂 tGD artifacts will be stored at: `<candidate path>`
+>
+> 1. Use this path (Enter)
+> 2. Use a different path (enter an absolute path)
+>
+> Choose one (default 1):
+
+- **Choice 1 (or Enter)** → use candidate:
+  - If symlink already existed: proceed ✓
+  - If env var: `ln -s $TGD_DIR tGD`
+  - If new default: `mkdir -p "$TGD_DIR" && ln -s "$TGD_DIR" tGD && export TGD_DIR=$(realpath tGD)`
+- **Choice 2** → use user-provided path:
+  ```
+  TGD_DIR="<user-provided-path>"
+  mkdir -p "$TGD_DIR"
+  ln -sf "$TGD_DIR" tGD
+  export TGD_DIR=$(realpath tGD)
+  ```
 
 Result:
 ```
