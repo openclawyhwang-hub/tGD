@@ -210,7 +210,7 @@ function initScan() {
   $('#scanBtn').addEventListener('click', () => {
     const path = $('#projectPath').value.trim();
     if (!path) {
-      alert('Enter a project path with a tGD/ directory');
+      alert('Enter a project path with a $TGD_DIR/ directory');
       return;
     }
     // TODO: Connect to backend API
