@@ -65,14 +65,14 @@ For each repo to map (primary + all additional repos from Step 1):
 
 This step is required, not optional.
 
-**You MAY use subagent delegation to execute this step.** If context is getting long, spawn a fresh subagent to run `/understand` on each repo.
+**You MAY use subagent delegation to execute this step.** If context is getting long, spawn a fresh subagent to run the understand skill on each repo.
 
 For each repo to map (primary + all additional repos from Step 1):
 
 1. Create symlink: rm -rf <repo-path>/.understand-anything && ln -s $TGD_DIR/.scans/<repo-name>/.understand-anything <repo-path>/.understand-anything
-2. cd into the repo and run /understand to build a full knowledge graph
+2. load and execute the understand skill to build a full knowledge graph
 3. Produces $TGD_DIR/.scans/<repo-name>/.understand-anything/knowledge-graph.json
-4. If unfamiliar with any repo, run /understand-onboard for a guided tour
+4. If unfamiliar with any repo, load the understand-onboard skill for a guided tour
 
 ## Step 5: Launch Dashboard (MANDATORY)
 
@@ -83,7 +83,7 @@ After ALL repos are mapped (Step 4 complete), you MUST launch the interactive da
 For each repo to map (primary + all additional repos from Step 1):
 
 1. cd into the repo
-2. Run `/understand-dashboard` to launch the dashboard
+2. Load the understand-dashboard skill to launch the dashboard
 3. Verify the dashboard is running (check for localhost URL in output)
 4. Report the dashboard URL to the user
 
@@ -96,7 +96,7 @@ Outputs (all under $TGD_DIR/):
 - .codegraph/codegraph.db — symbol index (via symlink)
 - .understand-anything/knowledge-graph.json — knowledge graph (via symlink)
 - .understand-anything/config.json — UA config
-- Interactive dashboard — launched via /understand-dashboard (localhost)
+- Interactive dashboard — launched via the understand-dashboard skill (localhost)
 
 CONTEXT.md Structure:
 When writing CONTEXT.md, DO NOT rely solely on visual inspection of code.

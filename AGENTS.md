@@ -35,7 +35,7 @@ This project supports 7 lifecycle commands that work across **OpenCode**, **Clau
 
 || Command | Phase | Pipeline |
 ||---------|-------|----------|
-|| `/tgd-map` | Map | `context-engineering` → `codegraph init` → `/understand` (MANDATORY) |
+|| `/tgd-map` | Map | `context-engineering` → `codegraph init` → understand skill (MANDATORY) |
 || `/tgd-define` | Define | `interview-me` → `idea-refine` → `spec-driven-development` → `sketch` (if UI) → **PM Sign-off on PRD.md** |
 || `/tgd-plan` | Plan | `planning-and-task-breakdown` → **DEV Sign-off on TASKS.md** → **`jira-auto-sync` (mandatory if configured)** |
 || `/tgd-develop` | Develop | `context-engineering` → `source-driven-development` → (`subagent-driven-development` OR `incremental-implementation`) → `test-driven-development` → `verification-before-completion` (+ `frontend-ui-engineering`, `api-and-interface-design`, `doubt-driven-development` when relevant) → **DEV Sign-off** |
@@ -53,7 +53,7 @@ If the user types a command, invoke it. If they use natural language instead, ma
 
 - DEFINE → `spec-driven-development`
 - PLAN → `planning-and-task-breakdown`
-- MAP → `context-engineering` → `/understand` (MANDATORY)
+- MAP → `context-engineering` → understand skill (MANDATORY)
 - DEVELOP → `context-engineering` + `incremental-implementation` + `test-driven-development`
 - VERIFY → `debugging-and-error-recovery`
 - REVIEW → `code-review-and-quality`

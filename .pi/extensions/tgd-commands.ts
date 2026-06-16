@@ -38,13 +38,13 @@ const tgdPrompts: Record<string, string> = {
     "3. cd into the repo and run codegraph init -i\n\n" +
     "## Step 4: Understand-Anything (MANDATORY)\\n\\n" +
     "This step is required, not optional.\\n\\n" +
-    "You MAY use subagent delegation to execute this step. If context is getting long, spawn a fresh subagent to run /understand on each repo.\\n\\n" +
+    "You MAY use subagent delegation to execute this step. If context is getting long, spawn a fresh subagent to run the understand skill on each repo.\\n\\n" +
     "For each repo to map (primary + all additional repos from Step 1):\\n\\n" +
     "1. rm -rf <repo-path>/.understand-anything && ln -s $TGD_DIR/.scans/<repo-name>/.understand-anything <repo-path>/.understand-anything\n" +
-    "2. cd into the repo and run /understand to build a full knowledge graph\n" +
+    "2. load and execute the understand skill to build a full knowledge graph\n" +
     "3. Produces $TGD_DIR/.scans/<repo-name>/.understand-anything/knowledge-graph.json\n" +
-    "4. After ALL repos are mapped, run /understand-dashboard from EACH repo to launch the interactive visualization\\n" +
-    "5. If unfamiliar with any repo, run /understand-onboard for a guided tour\\n\\n" +
+    "4. After ALL repos are mapped, load the understand-dashboard skill from EACH repo to launch the interactive visualization\\n" +
+    "5. If unfamiliar with any repo, load the understand-onboard skill for a guided tour\\n\\n" +
     "⚠️ Do NOT skip the dashboard. It is a required deliverable of tgd-map for EVERY repo.\\n\\n" +
     "## Step 5: Produce CONTEXT.md\n\n" +
     "CONTEXT.md must include:\n" +
@@ -113,7 +113,7 @@ const tgdPrompts: Record<string, string> = {
     "3. Execute tasks in worktree (subagent-driven if >= 3 tasks, incremental if < 3)\n" +
     "4. test-driven-development — Red-Green-Refactor\n" +
     "5. verification-before-completion\n\n" +
-    "Conditional: If unfamiliar code → /understand for architectural guidance.\n" +
+    "Conditional: If unfamiliar code → the understand skill for architectural guidance.\n" +
     "Verification: All tasks checked off, tests pass.\n" +
     "After completing, suggest: /tgd-verify",
 
@@ -125,7 +125,7 @@ const tgdPrompts: Record<string, string> = {
     "   - Use codegraph affected <changed-files> to identify which tests to prioritize based on actual dependency paths.\n" +
     "3. Conditional: Frontend/UI/DOM? → MUST run agent-browser. Use agent-browser (preferred) to open the browser, perform the user action, and verify the DOM state.\n" +
     "   - Verification Gate Failure: If the feature touches frontend code but agent-browser did not run, the verification is FAILED.\n" +
-    "4. Conditional: want visual impact? → /understand-diff\n\n" +
+    "4. Conditional: want visual impact? → the understand-diff skill\n\n" +
     "Verify that the feature works correctly before proceeding to review. Tests are proof — 'seems right' is never sufficient.\n" +
     "Verification: ALL tests pass, build succeeds.\n" +
     "After completing, create $TGD_DIR/<feature-name>/TEST-REPORT.md with: test results summary, coverage report, regression status, failures and root causes.\n" +
@@ -144,7 +144,7 @@ const tgdPrompts: Record<string, string> = {
     "2. code-simplification\n" +
     "3. Conditional: security concerns? → security-and-hardening\n" +
     "4. Conditional: performance concerns? → performance-optimization\n" +
-    "5. Conditional: large/unfamiliar changes? → /understand-diff for blast radius visualization\n\n" +
+    "5. Conditional: large/unfamiliar changes? → the understand-diff skill for blast radius visualization\n\n" +
     "Verification: Code review passes, no anti-patterns.\n" +
     "After completing, create $TGD_DIR/<feature-name>/REVIEW.md with: code review findings, security scan, performance analysis, simplification suggestions, QA + DEV Sign-off.\n" +
     "If architectural decisions were made, create $TGD_DIR/<feature-name>/decisions/ with ADR files (ADR-NNN-<decision>.md, format: Context, Decision, Consequences).\n" +
