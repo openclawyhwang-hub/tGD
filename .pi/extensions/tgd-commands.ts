@@ -10,7 +10,14 @@ const tgdPrompts: Record<string, string> = {
     "Resolution (in order):\n" +
     "1. If symlink tGD/ exists in project root → readlink tGD → that's $TGD_DIR\n" +
     "2. If env var $TGD_DIR is set → use it, create symlink: ln -s $TGD_DIR tGD\n" +
-    "3. Otherwise → auto-create: PROJECT_NAME=$(basename $(pwd)), TGD_DIR=../${PROJECT_NAME}-tGD, mkdir -p $TGD_DIR, ln -s $TGD_DIR tGD, export TGD_DIR=$(realpath tGD)\n\n" +
+    "3. Otherwise → ask the user where to store tGD artifacts:\n\n" +
+    "   📂 tGD needs a directory for planning artifacts (CONTEXT.md, PRD.md, TASKS.md, etc.).\n" +
+    "   It lives outside your code repo to keep it clean.\n\n" +
+    "   1. Default: ../<project-name>-tGD/ (sibling to repo, recommended)\n" +
+    "   2. Custom path (enter an absolute path)\n\n" +
+    "   Choose one (default 1):\n\n" +
+    "   - Choice 1 (or Enter) → auto-create: PROJECT_NAME=$(basename $(pwd)), TGD_DIR=../${PROJECT_NAME}-tGD, mkdir -p $TGD_DIR, ln -s $TGD_DIR tGD, export TGD_DIR=$(realpath tGD)\n" +
+    "   - Choice 2 → use user-provided path: TGD_DIR=<user-provided-path>, mkdir -p $TGD_DIR, ln -s $TGD_DIR tGD, export TGD_DIR=$(realpath tGD)\n\n" +
     "## Step 1: Context Discovery\n\n" +
     "Before analyzing anything, ask the user:\n" +
     "> \"除了當前 repo，還有其他需要參考的 repo 嗎？（local path 或 git URL）\"\n\n" +
