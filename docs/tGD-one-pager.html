@@ -18,9 +18,13 @@
   .stage-card .sc-cmd { font-size: 10px; font-family: 'SF Mono','Menlo',monospace; color: var(--accent); opacity: .8; margin-bottom: 10px; }
   .stage-card .sc-io { font-size: 11px; color: var(--text-2); line-height: 1.45; margin-bottom: 3px; }
   .stage-card .sc-io b { font-size: 9px; text-transform: uppercase; letter-spacing: .08em; display: block; margin-bottom: 2px; }
-  .stage-card .sc-io .in { color: #3b82f6; }
-  .stage-card .sc-io .out { color: var(--accent); }
+  .stage-card .sc-io .in { color: #3b82f6; font-weight: 700; }
+  .stage-card .sc-io .out { color: var(--accent); font-weight: 700; }
   .stage-card .sc-io code { font-size: 10px; padding: 1px 4px; }
+  /* IO highlight blocks */
+  .sc-io { padding: 5px 8px; border-radius: 6px; margin-bottom: 4px; }
+  .sc-io:has(.in) { background: rgba(59,130,246,.06); border-left: 2px solid #3b82f6; }
+  .sc-io:has(.out) { background: rgba(22,163,74,.06); border-left: 2px solid var(--accent); }
   .stage-card .sc-roles { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); font-size: 10px; line-height: 1.5; color: var(--text-3); }
   .stage-card .sc-roles .r-agent { color: #3b82f6; font-weight: 600; }
   .stage-card .sc-roles .r-human { color: #8b5cf6; font-weight: 600; }
