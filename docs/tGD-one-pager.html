@@ -1,361 +1,167 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-themes="tgd-light,tgd-dark">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>tGD — The Agentic PDLC Harness</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>tGD — Pipeline Overview</title>
+<link rel="icon" type="image/svg+xml" href="favicon-gd.svg">
+<link rel="stylesheet" href="html-ppt/assets/fonts.css">
+<link rel="stylesheet" href="html-ppt/assets/base.css">
+<link rel="stylesheet" href="html-ppt/tgd-pitch.css">
+<link rel="stylesheet" href="html-ppt/tgd-light.css" id="theme-link">
 <style>
-  @page { size: A4 landscape; margin: 0; }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --green: #16a34a; --teal: #0d9488; --cyan: #0891b2;
-    --blue: #3b82f6; --purple: #8b5cf6; --amber: #f59e0b;
-    --bg: #ffffff; --bg-soft: #f6f7fb; --surface: #f2f4fa;
-    --text-1: #0d1130; --text-2: #4a5070; --text-3: #8a90ad;
-    --border: rgba(0,0,0,.06); --border-strong: rgba(0,0,0,.12);
-    --grad: linear-gradient(135deg, #16a34a 0%, #0d9488 55%, #0891b2 100%);
-  }
-
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
-    background: var(--bg); color: var(--text-1);
-    width: 297mm; height: 210mm; margin: 0 auto;
-    padding: 12mm 14mm 10mm;
-    font-size: 7.5pt; line-height: 1.4;
-    -webkit-print-color-adjust: exact; print-color-adjust: exact;
-    display: flex; flex-direction: column;
-  }
-
-  /* ── Header ── */
-  .header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6pt; }
-  .header-left { flex: 1; }
-  .brand { font-size: 18pt; font-weight: 800; letter-spacing: -0.5pt; display: flex; align-items: center; gap: 6pt; }
-  .brand-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--grad); }
-  .tagline { font-size: 8pt; color: var(--text-2); margin-top: 2pt; }
-  .tagline b { color: var(--green); }
-  .header-right { text-align: right; font-size: 7pt; color: var(--text-3); line-height: 1.5; }
-  .header-right a { color: var(--green); text-decoration: none; }
-  .pills { display: flex; gap: 4pt; margin-top: 3pt; justify-content: flex-end; }
-  .pill {
-    display: inline-block; padding: 1.5pt 5pt;
-    border: 1px solid rgba(22,163,74,.25); border-radius: 8pt;
-    font-size: 5.5pt; color: var(--green); font-weight: 600;
-  }
-
-  /* ── Intro ── */
-  .intro {
-    text-align: center; margin-bottom: 7pt; padding: 6pt 16pt;
+  /* 7-column grid for this slide */
+  .g7 { grid-template-columns: repeat(7, 1fr); gap: 12px; }
+  /* compact stage cards */
+  .stage-card { padding: 16px 14px; border-radius: 12px; }
+  .stage-card .sc-icon { font-size: 1.6rem; margin-bottom: 6px; }
+  .stage-card .sc-name { font-size: 14px; font-weight: 800; letter-spacing: -.01em; margin-bottom: 2px; }
+  .stage-card .sc-cmd { font-size: 10px; font-family: 'SF Mono','Menlo',monospace; color: var(--accent); opacity: .8; margin-bottom: 10px; }
+  .stage-card .sc-io { font-size: 11px; color: var(--text-2); line-height: 1.45; margin-bottom: 3px; }
+  .stage-card .sc-io b { font-size: 9px; text-transform: uppercase; letter-spacing: .08em; display: block; margin-bottom: 2px; }
+  .stage-card .sc-io .in { color: #3b82f6; }
+  .stage-card .sc-io .out { color: var(--accent); }
+  .stage-card .sc-io code { font-size: 10px; padding: 1px 4px; }
+  .stage-card .sc-roles { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); font-size: 10px; line-height: 1.5; color: var(--text-3); }
+  .stage-card .sc-roles .r-agent { color: #3b82f6; font-weight: 600; }
+  .stage-card .sc-roles .r-human { color: #8b5cf6; font-weight: 600; }
+  /* intro bar */
+  .intro-bar {
+    text-align: center; padding: 14px 40px; margin-bottom: 20px;
+    border-radius: 12px; font-size: 15px; color: var(--text-2); line-height: 1.55;
     background: linear-gradient(135deg, rgba(22,163,74,.04), rgba(96,165,250,.02));
-    border: 1px solid rgba(22,163,74,.12); border-radius: 6pt;
-    font-size: 7.5pt; color: var(--text-2);
+    border: 1px solid rgba(22,163,74,.12);
   }
-  .intro strong { color: var(--text-1); }
-
-  /* ── Pipeline Grid ── */
-  .pipeline { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5pt; flex: 1; }
-
-  .stage {
-    border: 1px solid var(--border); border-radius: 6pt;
-    padding: 6pt 5pt 5pt; background: var(--bg);
-    display: flex; flex-direction: column;
-    box-shadow: 0 1px 2px rgba(0,0,0,.04);
-  }
-
-  /* Stage Header */
-  .stage-head { text-align: center; margin-bottom: 4pt; }
-  .stage-icon {
-    width: 24pt; height: 24pt; border-radius: 50%;
-    background: var(--grad); display: flex; align-items: center; justify-content: center;
-    font-size: 13pt; margin: 0 auto 2pt;
-  }
-  .stage-name { font-size: 9pt; font-weight: 700; color: var(--text-1); }
-  .stage-cmd {
-    font-family: 'SF Mono', 'Fira Code', monospace;
-    font-size: 5.5pt; color: var(--green); margin-top: 1pt;
-  }
-
-  /* Divider */
-  .stage-divider { height: 1px; background: var(--border); margin: 0 0 4pt; }
-
-  /* IO */
-  .io-block { margin-bottom: 3pt; }
-  .io-label {
-    font-size: 5pt; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.7pt; margin-bottom: 1.5pt;
-  }
-  .io-label.input { color: var(--blue); }
-  .io-label.output { color: var(--green); }
-  .io-items { font-size: 6.5pt; color: var(--text-2); line-height: 1.35; }
-  .io-items code {
-    font-family: 'SF Mono', 'Fira Code', monospace;
-    font-size: 5.5pt; background: var(--surface); padding: 0.5pt 2pt;
-    border-radius: 2pt; color: var(--green);
-  }
-
-  /* Roles */
-  .roles {
-    margin-top: auto; padding-top: 3pt;
-    border-top: 1px dashed rgba(0,0,0,.06);
-    display: flex; flex-direction: column; gap: 2pt;
-  }
-  .role-row { display: flex; align-items: center; gap: 3pt; }
-  .role-tag {
-    display: inline-flex; align-items: center; gap: 1.5pt;
-    padding: 1pt 3pt; border-radius: 2pt; font-size: 5pt;
-    font-weight: 600; white-space: nowrap; flex-shrink: 0;
-  }
-  .role-agent { background: rgba(59,130,246,.1); color: var(--blue); }
-  .role-human { background: rgba(139,92,246,.1); color: var(--purple); }
-  .role-desc { font-size: 5.5pt; color: var(--text-3); line-height: 1.25; }
-
-  /* ── Footer ── */
-  .footer {
-    margin-top: 6pt; padding-top: 4pt;
-    border-top: 1px solid var(--border);
-    display: flex; justify-content: space-between; align-items: center;
-    font-size: 6pt; color: var(--text-3);
-  }
-  .footer a { color: var(--green); text-decoration: none; }
-
-  /* ── Print ── */
-  @media print {
-    body { width: 297mm; height: 210mm; padding: 10mm 12mm 8mm; }
-  }
+  .intro-bar b { color: var(--text-1); }
 </style>
 </head>
-<body>
+<body class="tpl-tgd-pitch single" data-theme="tgd-light">
+<div class="deck">
 
-<!-- ═══ Header ═══ -->
-<div class="header">
-  <div class="header-left">
-    <div class="brand"><span class="brand-dot"></span>tGD</div>
-    <div class="tagline"><b>Your AI agents can code. tGD makes them ship.</b> — 7-stage pipeline, every output feeds the next.</div>
-  </div>
-  <div class="header-right">
-    <a href="https://github.com/openclawyhwang-hub/tGD">github.com/openclawyhwang-hub/tGD</a><br>
-    MIT License · CalVer 2026
-    <div class="pills">
-      <span class="pill">🏗️ 28 Skills</span>
-      <span class="pill">🔄 7 Stages</span>
-      <span class="pill">👤 3 Roles</span>
-      <span class="pill">🖥️ 5 Platforms</span>
+  <section class="slide is-active" data-title="Pipeline Overview">
+    <!-- Brand -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="brand-dot"></span><span class="brand">tGD</span>
+        <span style="font-size:14px;color:var(--text-3);margin-left:8px">The Agentic PDLC Harness</span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <span class="pill pill-accent">🏗️ 28 Skills</span>
+        <span class="pill pill-accent">🔄 7 Stages</span>
+        <span class="pill pill-accent">👤 3 Roles</span>
+        <span class="pill pill-accent">🖥️ 5 Platforms</span>
+      </div>
     </div>
-  </div>
-</div>
 
-<!-- ═══ Intro ═══ -->
-<div class="intro">
-  A <strong>7-stage PDLC pipeline</strong> that forces agents to read before writing, spec before coding, test before claiming done.<br>
-  Built on <strong>Loop Engineering</strong> — self-correcting agent loops with worktree isolation, reusable skills, sub-agents, and persistent memory — with human sign-off gates at every stage.
-</div>
+    <!-- Intro -->
+    <div class="intro-bar">
+      A <b>7-stage PDLC pipeline</b> that forces agents to read before writing, spec before coding, test before claiming done.<br>
+      Built on <b>Loop Engineering</b> — self-correcting agent loops with worktree isolation, reusable skills, sub-agents, and persistent memory — with human sign-off gates at every stage.
+    </div>
 
-<!-- ═══ Pipeline ═══ -->
-<div class="pipeline">
+    <!-- 7-Stage Grid -->
+    <div class="grid g7">
 
-  <!-- 1. Map -->
-  <div class="stage">
-    <div class="stage-head">
-      <div class="stage-icon">🗺️</div>
-      <div class="stage-name">Map</div>
-      <div class="stage-cmd">/tgd-map</div>
-    </div>
-    <div class="stage-divider"></div>
-    <div class="io-block">
-      <div class="io-label input">📥 Input</div>
-      <div class="io-items">Project source code</div>
-    </div>
-    <div class="io-block">
-      <div class="io-label output">📤 Output</div>
-      <div class="io-items"><code>CONTEXT.md</code> — tech stack, architecture, deps</div>
-    </div>
-    <div class="roles">
-      <div class="role-row">
-        <span class="role-tag role-agent">🤖 Agent</span>
-        <span class="role-desc">Scans codebase, builds CodeGraph</span>
+      <!-- 1. Map -->
+      <div class="card card-hover stage-card">
+        <div class="sc-icon">🗺️</div>
+        <div class="sc-name">Map</div>
+        <div class="sc-cmd">/tgd-map</div>
+        <div class="sc-io"><b class="in">📥 Input</b>Project source code</div>
+        <div class="sc-io"><b class="out">📤 Output</b><code>CONTEXT.md</code></div>
+        <div class="sc-roles">
+          <span class="r-agent">🤖 Agent</span> Scans, builds CodeGraph<br>
+          <span class="r-human">👤 DEV</span> Reviews CONTEXT.md
+        </div>
       </div>
-      <div class="role-row">
-        <span class="role-tag role-human">👤 DEV</span>
-        <span class="role-desc">Reviews CONTEXT.md</span>
-      </div>
-    </div>
-  </div>
 
-  <!-- 2. Define -->
-  <div class="stage">
-    <div class="stage-head">
-      <div class="stage-icon">📋</div>
-      <div class="stage-name">Define</div>
-      <div class="stage-cmd">/tgd-define</div>
-    </div>
-    <div class="stage-divider"></div>
-    <div class="io-block">
-      <div class="io-label input">📥 Input</div>
-      <div class="io-items"><code>CONTEXT.md</code> + user intent</div>
-    </div>
-    <div class="io-block">
-      <div class="io-label output">📤 Output</div>
-      <div class="io-items"><code>PRD.md</code> <code>SPEC.md</code> <code>DESIGN.md</code></div>
-    </div>
-    <div class="roles">
-      <div class="role-row">
-        <span class="role-tag role-agent">🤖 Agent</span>
-        <span class="role-desc">Interviews PM, drafts specs</span>
+      <!-- 2. Define -->
+      <div class="card card-hover stage-card">
+        <div class="sc-icon">📋</div>
+        <div class="sc-name">Define</div>
+        <div class="sc-cmd">/tgd-define</div>
+        <div class="sc-io"><b class="in">📥 Input</b><code>CONTEXT.md</code> + intent</div>
+        <div class="sc-io"><b class="out">📤 Output</b><code>PRD</code> <code>SPEC</code> <code>DESIGN</code></div>
+        <div class="sc-roles">
+          <span class="r-agent">🤖 Agent</span> Interviews, drafts specs<br>
+          <span class="r-human">👤 PM</span> Signs off PRD + SPEC
+        </div>
       </div>
-      <div class="role-row">
-        <span class="role-tag role-human">👤 PM</span>
-        <span class="role-desc">Signs off PRD + SPEC</span>
-      </div>
-    </div>
-  </div>
 
-  <!-- 3. Plan -->
-  <div class="stage">
-    <div class="stage-head">
-      <div class="stage-icon">📐</div>
-      <div class="stage-name">Plan</div>
-      <div class="stage-cmd">/tgd-plan</div>
-    </div>
-    <div class="stage-divider"></div>
-    <div class="io-block">
-      <div class="io-label input">📥 Input</div>
-      <div class="io-items"><code>CONTEXT</code> <code>PRD</code> <code>SPEC</code></div>
-    </div>
-    <div class="io-block">
-      <div class="io-label output">📤 Output</div>
-      <div class="io-items"><code>TASKS.md</code> — atomic tasks + AC</div>
-    </div>
-    <div class="roles">
-      <div class="role-row">
-        <span class="role-tag role-agent">🤖 Agent</span>
-        <span class="role-desc">Triple-source decomposition</span>
+      <!-- 3. Plan -->
+      <div class="card card-hover stage-card">
+        <div class="sc-icon">📐</div>
+        <div class="sc-name">Plan</div>
+        <div class="sc-cmd">/tgd-plan</div>
+        <div class="sc-io"><b class="in">📥 Input</b><code>CONTEXT</code> <code>PRD</code> <code>SPEC</code></div>
+        <div class="sc-io"><b class="out">📤 Output</b><code>TASKS.md</code> + AC</div>
+        <div class="sc-roles">
+          <span class="r-agent">🤖 Agent</span> Triple-source decomposition<br>
+          <span class="r-human">👤 DEV</span> Signs off TASKS.md
+        </div>
       </div>
-      <div class="role-row">
-        <span class="role-tag role-human">👤 DEV</span>
-        <span class="role-desc">Reviews, signs off TASKS.md</span>
-      </div>
-    </div>
-  </div>
 
-  <!-- 4. Develop -->
-  <div class="stage">
-    <div class="stage-head">
-      <div class="stage-icon">⚡</div>
-      <div class="stage-name">Develop</div>
-      <div class="stage-cmd">/tgd-develop</div>
-    </div>
-    <div class="stage-divider"></div>
-    <div class="io-block">
-      <div class="io-label input">📥 Input</div>
-      <div class="io-items"><code>TASKS.md</code> <code>SPEC.md</code></div>
-    </div>
-    <div class="io-block">
-      <div class="io-label output">📤 Output</div>
-      <div class="io-items"><code>src/</code> + <code>tests/</code> (worktree)</div>
-    </div>
-    <div class="roles">
-      <div class="role-row">
-        <span class="role-tag role-agent">🤖 Agent</span>
-        <span class="role-desc">TDD in worktree sandbox</span>
+      <!-- 4. Develop -->
+      <div class="card card-hover stage-card">
+        <div class="sc-icon">⚡</div>
+        <div class="sc-name">Develop</div>
+        <div class="sc-cmd">/tgd-develop</div>
+        <div class="sc-io"><b class="in">📥 Input</b><code>TASKS</code> <code>SPEC</code> + codebase</div>
+        <div class="sc-io"><b class="out">📤 Output</b><code>src/</code> + <code>tests/</code></div>
+        <div class="sc-roles">
+          <span class="r-agent">🤖 Agent</span> TDD in worktree sandbox<br>
+          <span class="r-human">👤 DEV</span> Reviews code, signs off
+        </div>
       </div>
-      <div class="role-row">
-        <span class="role-tag role-human">👤 DEV</span>
-        <span class="role-desc">Reviews code, signs off</span>
-      </div>
-    </div>
-  </div>
 
-  <!-- 5. Verify -->
-  <div class="stage">
-    <div class="stage-head">
-      <div class="stage-icon">🧪</div>
-      <div class="stage-name">Verify</div>
-      <div class="stage-cmd">/tgd-verify</div>
-    </div>
-    <div class="stage-divider"></div>
-    <div class="io-block">
-      <div class="io-label input">📥 Input</div>
-      <div class="io-items"><code>src/</code> <code>tests/</code> + catalog</div>
-    </div>
-    <div class="io-block">
-      <div class="io-label output">📤 Output</div>
-      <div class="io-items"><code>TEST-REPORT.md</code></div>
-    </div>
-    <div class="roles">
-      <div class="role-row">
-        <span class="role-tag role-agent">🤖 Agent</span>
-        <span class="role-desc">All tests + E2E + regression</span>
+      <!-- 5. Verify -->
+      <div class="card card-hover stage-card">
+        <div class="sc-icon">🧪</div>
+        <div class="sc-name">Verify</div>
+        <div class="sc-cmd">/tgd-verify</div>
+        <div class="sc-io"><b class="in">📥 Input</b><code>src/</code> <code>tests/</code> + catalog</div>
+        <div class="sc-io"><b class="out">📤 Output</b><code>TEST-REPORT.md</code></div>
+        <div class="sc-roles">
+          <span class="r-agent">🤖 Agent</span> All tests + E2E + regression<br>
+          <span class="r-human">👤 QA</span> Signs off or blocks
+        </div>
       </div>
-      <div class="role-row">
-        <span class="role-tag role-human">👤 QA</span>
-        <span class="role-desc">Signs off or blocks</span>
-      </div>
-    </div>
-  </div>
 
-  <!-- 6. Review -->
-  <div class="stage">
-    <div class="stage-head">
-      <div class="stage-icon">🔎</div>
-      <div class="stage-name">Review</div>
-      <div class="stage-cmd">/tgd-review</div>
-    </div>
-    <div class="stage-divider"></div>
-    <div class="io-block">
-      <div class="io-label input">📥 Input</div>
-      <div class="io-items"><code>src/</code> <code>TEST-REPORT</code></div>
-    </div>
-    <div class="io-block">
-      <div class="io-label output">📤 Output</div>
-      <div class="io-items"><code>REVIEW.md</code> — 5-axis report</div>
-    </div>
-    <div class="roles">
-      <div class="role-row">
-        <span class="role-tag role-agent">🤖 Agent</span>
-        <span class="role-desc">5-axis code review</span>
+      <!-- 6. Review -->
+      <div class="card card-hover stage-card">
+        <div class="sc-icon">🔎</div>
+        <div class="sc-name">Review</div>
+        <div class="sc-cmd">/tgd-review</div>
+        <div class="sc-io"><b class="in">📥 Input</b><code>src/</code> <code>TEST-REPORT</code></div>
+        <div class="sc-io"><b class="out">📤 Output</b><code>REVIEW.md</code> 5-axis</div>
+        <div class="sc-roles">
+          <span class="r-agent">🤖 Agent</span> 5-axis code review<br>
+          <span class="r-human">👤 QA+DEV</span> Signs off REVIEW
+        </div>
       </div>
-      <div class="role-row">
-        <span class="role-tag role-human">👤 QA+DEV</span>
-        <span class="role-desc">Signs off REVIEW.md</span>
-      </div>
-    </div>
-  </div>
 
-  <!-- 7. Ship -->
-  <div class="stage">
-    <div class="stage-head">
-      <div class="stage-icon">🚀</div>
-      <div class="stage-name">Ship</div>
-      <div class="stage-cmd">/tgd-ship</div>
-    </div>
-    <div class="stage-divider"></div>
-    <div class="io-block">
-      <div class="io-label input">📥 Input</div>
-      <div class="io-items">All signed-off artifacts</div>
-    </div>
-    <div class="io-block">
-      <div class="io-label output">📤 Output</div>
-      <div class="io-items"><code>CHANGELOG</code> <code>ADR</code> + deploy</div>
-    </div>
-    <div class="roles">
-      <div class="role-row">
-        <span class="role-tag role-agent">🤖 Agent</span>
-        <span class="role-desc">Commit → CI → deploy</span>
+      <!-- 7. Ship -->
+      <div class="card card-hover stage-card">
+        <div class="sc-icon">🚀</div>
+        <div class="sc-name">Ship</div>
+        <div class="sc-cmd">/tgd-ship</div>
+        <div class="sc-io"><b class="in">📥 Input</b>All signed-off artifacts</div>
+        <div class="sc-io"><b class="out">📤 Output</b><code>CHANGELOG</code> + deploy</div>
+        <div class="sc-roles">
+          <span class="r-agent">🤖 Agent</span> Commit → CI → deploy<br>
+          <span class="r-human">👤 PM</span> Final sign-off gate
+        </div>
       </div>
-      <div class="role-row">
-        <span class="role-tag role-human">👤 PM</span>
-        <span class="role-desc">Final sign-off gate</span>
-      </div>
+
     </div>
-  </div>
+
+    <!-- Footer -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;font-size:12px;color:var(--text-3)">
+      <div><a href="https://github.com/openclawyhwang-hub/tGD" style="color:var(--accent)">github.com/openclawyhwang-hub/tGD</a> · MIT · CalVer 2026</div>
+      <div style="font-weight:600;color:var(--text-2)">The loop runs itself. Humans decide when to ship.</div>
+    </div>
+  </section>
 
 </div>
-
-<!-- ═══ Footer ═══ -->
-<div class="footer">
-  <div>© 2026 tGD · MIT · <a href="https://github.com/openclawyhwang-hub/tGD">GitHub</a> · <a href="https://openclawyhwang-hub.github.io/tGD/tGD-intro.html">Full Presentation</a></div>
-  <div style="font-weight:600;color:var(--text-2)">The loop runs itself. Humans decide when to ship.</div>
-</div>
-
+<script src="html-ppt/assets/runtime.js"></script>
 </body>
 </html>
