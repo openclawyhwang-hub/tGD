@@ -49,7 +49,7 @@
   .pb-step .pb-icon { font-size: 12pt; }
   .pb-step .pb-name { font-size: 7pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5pt; color: var(--green); }
   .pb-step .pb-cmd { font-size: 6pt; color: var(--text-3); font-family: 'SF Mono', 'Fira Code', monospace; }
-  .pb-step.gate .pb-name { color: var(--red); }
+
   .pb-arrow { color: var(--text-3); font-size: 8pt; }
 
   /* ── Intro ── */
@@ -81,7 +81,7 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 8pt; font-weight: 700; flex-shrink: 0;
   }
-  .stage.gate .stage-num { background: var(--red); }
+
   .stage-title { font-size: 9pt; font-weight: 700; }
   .stage-cmd { font-size: 7pt; font-family: 'SF Mono', 'Fira Code', monospace; color: var(--text-3); margin-left: auto; }
 
@@ -114,7 +114,7 @@
   }
   .role-human { background: rgba(139,92,246,.1); color: var(--purple); }
   .role-agent { background: rgba(59,130,246,.1); color: var(--blue); }
-  .role-gate { background: rgba(239,68,68,.08); color: var(--red); }
+
   .interaction-text { color: var(--text-3); line-height: 1.35; }
 
   /* Full-width stage */
@@ -188,7 +188,7 @@
   <span class="pb-arrow">→</span>
   <div class="pb-step"><span class="pb-icon">⚡</span><span class="pb-name">Develop</span><span class="pb-cmd">/tgd-develop</span></div>
   <span class="pb-arrow">→</span>
-  <div class="pb-step gate"><span class="pb-icon">🧪</span><span class="pb-name">Verify</span><span class="pb-cmd">/tgd-verify</span></div>
+  <div class="pb-step"><span class="pb-icon">🧪</span><span class="pb-name">Verify</span><span class="pb-cmd">/tgd-verify</span></div>
   <span class="pb-arrow">→</span>
   <div class="pb-step"><span class="pb-icon">🔎</span><span class="pb-name">Review</span><span class="pb-cmd">/tgd-review</span></div>
   <span class="pb-arrow">→</span>
@@ -299,10 +299,10 @@
   </div>
 
   <!-- 5. Verify (Hard Gate) -->
-  <div class="stage gate">
+  <div class="stage">
     <div class="stage-header">
       <div class="stage-num">5</div>
-      <div class="stage-title">🧪 Verify <span style="font-size:7pt;color:var(--red);font-weight:400">HARD GATE</span></div>
+      <div class="stage-title">🧪 Verify</div>
       <div class="stage-cmd">/tgd-verify</div>
     </div>
     <div class="io-row">
@@ -317,9 +317,7 @@
     </div>
     <div class="interaction">
       <span class="role-tag role-agent">🤖 Agent</span>
-      <span class="interaction-text">Runs ALL tests + browser E2E verification</span>
-      <span class="role-tag role-gate" style="margin-left:4pt">🚫 Gate</span>
-      <span class="interaction-text">ANY failure → pipeline blocked. No merge, no exceptions.</span>
+      <span class="interaction-text">Runs ALL tests + browser E2E + cross-feature regression. ANY failure → pipeline blocked.</span>
     </div>
   </div>
 
@@ -376,20 +374,20 @@
 <!-- ═══ Bottom ═══ -->
 <div class="bottom">
   <div class="bottom-card">
+    <h3>🔄 tGD vs Loop Engineering</h3>
+    <ul>
+      <li><strong>Same foundation</strong> — worktrees, skills, sub-agents, persistent memory</li>
+      <li><strong>tGD adds Hard Gates</strong> — Verify blocks if ANY test fails, no exceptions</li>
+      <li><strong>tGD enforces Sign-off</strong> — PM · DEV · QA must approve before Ship</li>
+      <li><strong>tGD is auditable</strong> — full artifact trail: CONTEXT → PRD → SPEC → TASKS → TEST-REPORT → REVIEW → CHANGELOG</li>
+    </ul>
+  </div>
+  <div class="bottom-card">
     <h3>🧪 Three-Stage Testing</h3>
     <ul>
       <li><strong>Builder</strong> (Develop) — Write tests alongside code, Red → Green → Refactor</li>
       <li><strong>Inspector</strong> (Verify) — Run ALL tests + browser E2E, block on failure</li>
       <li><strong>Auditor</strong> (Review) — Audit quality: 80% unit / 15% integration / 5% E2E</li>
-    </ul>
-  </div>
-  <div class="bottom-card">
-    <h3>🔑 Key Differentiators</h3>
-    <ul>
-      <li><strong>Worktree Isolation</strong> — failed experiment? Just remove it</li>
-      <li><strong>Regression Gate</strong> — Verify blocks if ANY test fails, period</li>
-      <li><strong>Sign-off Protocol</strong> — PM · DEV · QA roles with async approval</li>
-      <li><strong>5 Platforms</strong> — Claude Code · Codex · Gemini · OpenCode · Pi</li>
     </ul>
   </div>
   <div class="bottom-card">
