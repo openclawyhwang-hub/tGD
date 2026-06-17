@@ -223,7 +223,9 @@
     </div>
     <div class="interaction">
       <span class="role-tag role-agent">🤖 Agent</span>
-      <span class="interaction-text">Scans codebase, initializes CodeGraph knowledge graph, maps patterns</span>
+      <span class="interaction-text">Scans codebase, initializes CodeGraph, maps patterns</span>
+      <span class="role-tag role-human" style="margin-left:4pt">👤 DEV</span>
+      <span class="interaction-text">Initiates scan, reviews CONTEXT.md</span>
     </div>
   </div>
 
@@ -246,7 +248,9 @@
     </div>
     <div class="interaction">
       <span class="role-tag role-human">👤 PM</span>
-      <span class="interaction-text">Interviewed by agent → picks feature name → reviews & signs off PRD + SPEC</span>
+      <span class="interaction-text">Defines intent, picks feature name, signs off PRD + SPEC</span>
+      <span class="role-tag role-agent" style="margin-left:4pt">🤖 Agent</span>
+      <span class="interaction-text">Interviews PM, drafts PRD · SPEC · DESIGN.md</span>
     </div>
   </div>
 
@@ -269,9 +273,9 @@
     </div>
     <div class="interaction">
       <span class="role-tag role-agent">🤖 Agent</span>
-      <span class="interaction-text">Triple-source decomposition (CONTEXT + PRD + SPEC)</span>
+      <span class="interaction-text">Triple-source decomposition → TASKS.md with acceptance criteria</span>
       <span class="role-tag role-human" style="margin-left:4pt">👤 DEV</span>
-      <span class="interaction-text">Reviews & signs off task breakdown</span>
+      <span class="interaction-text">Reviews task breakdown, signs off TASKS.md</span>
     </div>
   </div>
 
@@ -294,7 +298,9 @@
     </div>
     <div class="interaction">
       <span class="role-tag role-agent">🤖 Agent</span>
-      <span class="interaction-text">Implements in Git Worktree sandbox. &lt;3 tasks → fast mode, ≥3 → parallel subagents</span>
+      <span class="interaction-text">Implements in Worktree sandbox. &lt;3 tasks fast, ≥3 parallel subagents</span>
+      <span class="role-tag role-human" style="margin-left:4pt">👤 DEV</span>
+      <span class="interaction-text">Reviews code per task, signs off implementation</span>
     </div>
   </div>
 
@@ -317,7 +323,9 @@
     </div>
     <div class="interaction">
       <span class="role-tag role-agent">🤖 Agent</span>
-      <span class="interaction-text">Runs ALL tests + browser E2E + cross-feature regression. ANY failure → pipeline blocked.</span>
+      <span class="interaction-text">Runs ALL tests + browser E2E + cross-feature regression</span>
+      <span class="role-tag role-human" style="margin-left:4pt">👤 QA</span>
+      <span class="interaction-text">Reviews TEST-REPORT, signs off or blocks</span>
     </div>
   </div>
 
@@ -340,7 +348,9 @@
     </div>
     <div class="interaction">
       <span class="role-tag role-agent">🤖 Agent</span>
-      <span class="interaction-text">5-axis code review (Correctness · Maintainability · Security · Performance · Coverage)</span>
+      <span class="interaction-text">5-axis review: Correctness · Maintainability · Security · Perf · Coverage</span>
+      <span class="role-tag role-human" style="margin-left:4pt">👤 QA + DEV</span>
+      <span class="interaction-text">Reviews findings, signs off REVIEW.md</span>
     </div>
   </div>
 
