@@ -15,14 +15,11 @@
   <a href="https://openclawyhwang-hub.github.io/tGD/">🌐 GitHub Pages</a> &nbsp;|&nbsp; <a href="https://openclawyhwang-hub.github.io/tGD/tGD-intro.html">🎬 Intro</a>
 </p>
 
-**你的 AI agent 寫了 500 行 code。但它跑測試了嗎？讀過你的 codebase 嗎？寫了 spec 嗎？**
+**你的 PDLC 是為人類設計的。現在 agent 來做事。**
 
-**大概沒有。**
+tGD 把你現有的工作流程轉變成 **agentic PDLC pipeline** — 同樣的關卡、同樣的問責，10 倍速度。
 
-tGD 是一個 7 階段 pipeline，強迫 agent 遵循你也會遵循的工作流程：
 Map → Define → Plan → Develop → Verify → Review → Ship
-
-沒有捷徑。沒有「應該可以」。只有證據。
 
 支援 Claude Code、Codex CLI、Gemini CLI、OpenCode、Pi Coding Agent。
 

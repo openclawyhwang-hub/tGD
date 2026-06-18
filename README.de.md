@@ -15,14 +15,11 @@
   <a href="https://openclawyhwang-hub.github.io/tGD/">🌐 GitHub Pages</a> &nbsp;|&nbsp; <a href="https://openclawyhwang-hub.github.io/tGD/tGD-intro.html">🎬 Intro</a>
 </p>
 
-**Ihr KI-Agent hat 500 Zeilen Code geschrieben. Hat er die Tests ausgeführt? Ihre Codebase gelesen? Ein Spec geschrieben?**
+**Ihr PDLC wurde für Menschen entwickelt. Jetzt erledigen Agenten die Arbeit.**
 
-**Wahrscheinlich nicht.**
+tGD verwandelt Ihren bestehenden Workflow in eine **agentic PDLC Pipeline** — gleiche Gates, gleiche Verantwortung, 10× Geschwindigkeit.
 
-tGD ist eine 7-Stufen-Pipeline, die Agenten zwingt, denselben Workflow zu befolgen wie Sie:
 Map → Define → Plan → Develop → Verify → Review → Ship
-
-Keine Abkürzungen. Kein "sollte funktionieren". Nur Beweise.
 
 Funktioniert mit Claude Code, Codex CLI, Gemini CLI, OpenCode und Pi Coding Agent.
 
