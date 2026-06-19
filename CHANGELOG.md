@@ -14,7 +14,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow
   - 28 skills: all hardcoded `tGD/` paths replaced with `$TGD_DIR`
   - `.codegraph` / `.understand-anything` symlinks point directly to `$TGD_DIR/.scans/<repo>/`
 - **Skill name syntax** — bare name `` `understand` `` instead of `/understand` (slash is Claude-only) across all 5 platforms + skills + READMEs (`e5ae16b`)
-- **AC format** — BDD (Given/When/Then) recommended but not mandatory; bullet points acceptable (`23a7d69`)
+- **AC format** — BDD (Given/When/Then) mandatory for all tasks, ensuring consistency between TASKS.md and REGRESSION-CATALOG.md (`23a7d69`, reverted `de3e80d`)
 
 ### Fixed
 - **Pre-flight stale references** — all lifecycle commands (define through ship) still referenced removed `tGD/` symlink for resolution and feature scanning (`1a7dd50`)

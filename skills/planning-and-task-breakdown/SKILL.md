@@ -89,8 +89,8 @@ Before writing any code, operate in read-only mode to gather context from all av
 - **Input**: `{ ... }`
 - **Output**: `Status Code { ... }`
 
-### 3. Acceptance Criteria
-- Use **BDD** (Given/When/Then) for user-facing features with clear scenarios, or **bullet points** for simpler tasks (refactoring, config, bug fixes). The goal is concrete, verifiable criteria — not a specific format.
+### 3. Acceptance Criteria (BDD)
+- Every task must use **BDD** (Given/When/Then) format — this ensures all criteria are behavior-level, testable, and consistent with REGRESSION-CATALOG entries.
 - **Given** [initial context]
 - **When** [event happens]
 - **Then** [expected outcome]
