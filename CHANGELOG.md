@@ -6,6 +6,19 @@ Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow
 
 ---
 
+## v2026.06.20
+
+### Changed
+- **AC format — BDD mandatory** — reverted flexible AC policy; all acceptance criteria must use BDD (Given/When/Then) for consistency between TASKS.md and REGRESSION-CATALOG.md (`f49c3a9`)
+
+### Fixed
+- **Cross-platform parity** — Pi tgd-commands aligned with all 4 other platforms; tgd-review content unified across Gemini and Pi (`4ee6b10`, `3764e3a`)
+
+### Docs
+- **One-pager redesign** — rebuilt as html-ppt single slide with agentic PDLC narrative, human roles per stage, light theme with tGD design language (`4ece9f8`, `81a94f0`, `b9b98db`, `532ee64`, `8bdedf5`)
+- **Agentic PDLC narrative** — unified messaging across README (4 languages), intro slides, and GitHub Pages: "Your PDLC was built for humans. Now agents do the work." (`de3e80d`, `c8a4140`, `f27eef0`)
+- **A4 marketing overview** — added one-page A4 layout for at-a-glance summary (`3737ccf`, `f936a52`)
+
 ## v2026.06.16
 
 ### Changed
