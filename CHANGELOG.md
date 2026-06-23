@@ -6,6 +6,22 @@ Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow
 
 ---
 
+## v2026.06.23
+
+### Fixed
+- **setup.sh CWD assumption** — relative paths in hooks install (`hooks/hooks.json`, `.gemini/settings.json`) and agent-browser detection silently failed when setup.sh was invoked from outside the repo directory; added `cd "$TGD_DIR"` after directory resolution (`5a5ba84`)
+- **Version comparison dead code** — `TGD_VERSION` and `INSTALLED_VERSION` both read `.tgd-version` (git-tracked), making upgrade detection always equal; `VERSION_FILE` now points to `~/.tgd-installed-version` (local-only) (`5a5ba84`)
+- **`--version` output** — `setup.sh --version` returned `0.0.0` due to grep/cut parsing itself; now reads `.tgd-version` directly, consistent with `tgd -v` (`5a5ba84`)
+- **Misleading error messages** — hooks install failures reported "python3 required" regardless of actual cause (usually path-related); messages now point to the correct source file (`5a5ba84`)
+- **Chrome path typo** — `/user/bin/google-chrome` (nonexistent path) removed; `/usr/bin/google-chrome` already handled above (`5a5ba84`)
+
+### Changed
+- **tgd-rules symlinks** — added `command -v` guards for Codex, OpenCode, Gemini, and Pi to avoid creating empty directories for uninstalled tools (`5a5ba84`)
+- **Uninstall cleanup** — `~/.tgd-installed-version` is now removed during uninstall (`5a5ba84`)
+
+### Fixed
+- **validate-skills.js false positives** — vendor (Understand-Anything) skills now included in `knownSkills`, eliminating 10 spurious dead-reference warnings for `understand`, `understand-domain`, `understand-diff`, `understand-onboard`, `understand-dashboard` (`5a5ba84`)
+
 ## v2026.06.20
 
 ### Changed
