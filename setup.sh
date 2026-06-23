@@ -845,7 +845,7 @@ echo ""
 #   "Load tgd-rules skill for tGD workflow enforcement."
 
 # Codex CLI: ~/.codex/skills/tgd-rules (auto-discovered)
-if command -v codex &> /dev/null; then
+if command -v codex &> /dev/null || [ -n "$CI" ]; then
     mkdir -p "$HOME/.codex/skills"
     if [ -d "$HOME/.codex/skills/tgd-rules" ] && [ ! -L "$HOME/.codex/skills/tgd-rules" ]; then
         rm -rf "$HOME/.codex/skills/tgd-rules"
@@ -854,7 +854,7 @@ if command -v codex &> /dev/null; then
 fi
 
 # OpenCode: ~/.config/opencode/skills/tgd-rules
-if command -v opencode &> /dev/null; then
+if command -v opencode &> /dev/null || [ -n "$CI" ]; then
     mkdir -p "$HOME/.config/opencode/skills"
     if [ -d "$HOME/.config/opencode/skills/tgd-rules" ] && [ ! -L "$HOME/.config/opencode/skills/tgd-rules" ]; then
         rm -rf "$HOME/.config/opencode/skills/tgd-rules"
@@ -863,7 +863,7 @@ if command -v opencode &> /dev/null; then
 fi
 
 # Gemini CLI: ~/.gemini/skills/tgd-rules
-if command -v gemini &> /dev/null; then
+if command -v gemini &> /dev/null || [ -n "$CI" ]; then
     mkdir -p "$HOME/.gemini/skills"
     if [ -d "$HOME/.gemini/skills/tgd-rules" ] && [ ! -L "$HOME/.gemini/skills/tgd-rules" ]; then
         rm -rf "$HOME/.gemini/skills/tgd-rules"
@@ -872,7 +872,7 @@ if command -v gemini &> /dev/null; then
 fi
 
 # Pi: ~/.pi/agent/skills/tgd-rules
-if command -v pi &> /dev/null; then
+if command -v pi &> /dev/null || [ -n "$CI" ]; then
     mkdir -p "$HOME/.pi/agent/skills"
     if [ -d "$HOME/.pi/agent/skills/tgd-rules" ] && [ ! -L "$HOME/.pi/agent/skills/tgd-rules" ]; then
         rm -rf "$HOME/.pi/agent/skills/tgd-rules"
