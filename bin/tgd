@@ -24,11 +24,11 @@ fi
 # Dispatch
 case "${1:-}" in
     --version|-v)
-        # Read from .tgd-version (single source of truth)
-        if [[ -f "$TGD_DIR/.tgd-version" ]]; then
-            echo "tGD $(cat "$TGD_DIR/.tgd-version")"
+        # Read from VERSION (single source of truth)
+        if [[ -f "$TGD_DIR/VERSION" ]]; then
+            echo "tGD $(cat "$TGD_DIR/VERSION")"
         else
-            echo "tGD (unknown — .tgd-version not found)"
+            echo "tGD (unknown — VERSION not found)"
         fi
         ;;
     --upgrade|-u)

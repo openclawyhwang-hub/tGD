@@ -16,10 +16,10 @@ elif [[ "$1" == "--uninstall" || "$1" == "--remove" ]]; then
     MODE="uninstall"
 elif [[ "$1" == "--version" || "$1" == "-v" ]]; then
     TGD_DIR="$(cd "$(dirname "$0")" && pwd)"
-    if [[ -f "$TGD_DIR/.tgd-version" ]]; then
-        echo "tGD $(cat "$TGD_DIR/.tgd-version")"
+    if [[ -f "$TGD_DIR/VERSION" ]]; then
+        echo "tGD $(cat "$TGD_DIR/VERSION")"
     else
-        echo "tGD (unknown — .tgd-version not found)"
+        echo "tGD (unknown — VERSION not found)"
     fi
     exit 0
 fi
@@ -243,9 +243,9 @@ PYEOF
     done
 
     # 5. Remove version marker
-    if [[ -f "$TGD_DIR/.tgd-version" ]]; then
-        echo "   🗑️  Removing version marker: $TGD_DIR/.tgd-version"
-        rm -f "$TGD_DIR/.tgd-version"
+    if [[ -f "$TGD_DIR/VERSION" ]]; then
+        echo "   🗑️  Removing version marker: $TGD_DIR/VERSION"
+        rm -f "$TGD_DIR/VERSION"
     fi
     if [[ -f "$HOME/.tgd-installed-version" ]]; then
         echo "   🗑️  Removing installed version marker: $HOME/.tgd-installed-version"
@@ -266,7 +266,7 @@ PYEOF
     echo "  • All tGD symlinks (skills, commands, prompts, rules, extensions)"
     echo "  • All tGD hooks from config files"
     echo "  • tgd CLI binary"
-    echo "  • Version marker (.tgd-version)"
+    echo "  • Version marker (VERSION)"
     echo ""
     echo "Your ~/.claude/skills/ (and other dirs) are untouched — only tGD items were removed."
     exit 0
@@ -283,7 +283,7 @@ fi
 
 # ─── Version marker ──────────────────────────────────────────────────────────
 # Version is derived from git tags (semver). To bump: git tag v1.4.0
-TGD_VERSION=$(cat "$TGD_DIR/.tgd-version" 2>/dev/null || echo "unknown")
+TGD_VERSION=$(cat "$TGD_DIR/VERSION" 2>/dev/null || echo "unknown")
 VERSION_FILE="$HOME/.tgd-installed-version"
 
 if [[ "$MODE" == "install" ]] && [[ -f "$VERSION_FILE" ]]; then

@@ -268,7 +268,7 @@ The `tgd` CLI manages installation, updates, and diagnostics:
 | `tgd` | Install or update tGD (after first install) |
 | `tgd --version` (`-v`) | Show current version (CalVer: YYYY.M.D) |
 | `tgd --upgrade` (`-u`) | Force refresh links and hooks |
-| `tgd --release` | Create a GitHub release (reads .tgd-version) |
+| `tgd --release` | Create a GitHub release (reads VERSION) |
 | `tgd --uninstall` | Remove all tGD installations |
 
 ### Slash Commands
@@ -736,10 +736,10 @@ Want to add a skill or improve tGD? See [CONTRIBUTING.md](CONTRIBUTING.md).
 ## 🏷️ Release
 
 ### Automated (recommended)
-When `.tgd-version` is updated and pushed to `main`, GitHub Actions automatically creates a tag and release with changelog.
+When `VERSION` is updated and pushed to `main`, GitHub Actions automatically creates a tag and release with changelog.
 
 **To release a new version:**
-1. Update `.tgd-version` with the new version (e.g., `v2026.06.09`)
+1. Update `VERSION` with the new version (e.g., `v2026.06.09`)
 2. Update `TGD_VERSION` in `setup.sh` (CalVer format, e.g., `2026-06-09`)
 3. Commit and push to `main`
 4. GitHub Actions creates the release automatically
@@ -747,7 +747,7 @@ When `.tgd-version` is updated and pushed to `main`, GitHub Actions automaticall
 ### Manual
 ```bash
 # Using the release script
-bash scripts/release.sh          # reads version from .tgd-version
+bash scripts/release.sh          # reads version from VERSION
 bash scripts/release.sh v2026.06.09   # or specify version
 
 # Or manually

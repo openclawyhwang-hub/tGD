@@ -16,7 +16,7 @@ if [ "$1" == "--help" ] || [ "$1" == "-h" ]; then
     echo "Create a GitHub release for tGD with categorized changelog."
     echo ""
     echo "If version is not provided, uses today's date (CalVer)."
-    echo "Syncs .tgd-version, setup.sh, and CHANGELOG.md."
+    echo "Syncs VERSION, setup.sh, and CHANGELOG.md."
     echo ""
     echo "Commit message convention (Conventional Commits):"
     echo "  feat:     → ✨ Features"
@@ -62,9 +62,9 @@ fi
 # Derive date format for setup.sh (e.g. v2026.06.09 → 2026-06-09)
 SETUP_DATE=$(echo "$VERSION" | sed 's/^v//' | tr '.' '-')
 
-# Sync .tgd-version
-echo "$VERSION" > .tgd-version
-echo "📝 Updated .tgd-version → $VERSION"
+# Sync VERSION
+echo "$VERSION" > VERSION
+echo "📝 Updated VERSION → $VERSION"
 
 # Sync setup.sh TGD_VERSION
 if grep -q '^TGD_VERSION=' setup.sh; then
@@ -215,7 +215,7 @@ git tag -a "$VERSION" -m "Release $VERSION" || git tag "$VERSION"
 git push origin "$VERSION"
 
 # Commit CHANGELOG.md update
-git add CHANGELOG.md .tgd-version setup.sh
+git add CHANGELOG.md VERSION setup.sh
 git commit -m "docs: update CHANGELOG.md for $VERSION" || echo "⚠️  No CHANGELOG changes to commit"
 git push origin main
 

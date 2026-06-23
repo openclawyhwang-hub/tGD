@@ -282,7 +282,7 @@ flowchart LR
 | `tgd` | 安裝或更新 tGD（首次安裝後使用） |
 | `tgd --version` (`-v`) | 顯示版本（CalVer 格式） |
 | `tgd --upgrade` (`-u`) | 強制重建連結和 hooks |
-| `tgd --release` | 建立 GitHub release（讀取 .tgd-version） |
+| `tgd --release` | 建立 GitHub release（讀取 VERSION） |
 | `tgd --uninstall` | 移除所有 tGD 部署 |
 
 **更新到最新版本：** `cd ~/tGD && git pull && tgd --upgrade` — 一行搞定。

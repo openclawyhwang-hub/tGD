@@ -233,7 +233,7 @@ flowchart LR
 | `tgd` | tGD のインストールまたは更新（初回インストール後に使用） |
 | `tgd --version` (`-v`) | バージョン表示（CalVer形式） |
 | `tgd --upgrade` (`-u`) | リンクとフックの強制再構築 |
-| `tgd --release` | GitHub リリースを作成（.tgd-version を読み取り） |
+| `tgd --release` | GitHub リリースを作成（VERSION を読み取り） |
 | `tgd --uninstall` | すべてのtGD配備を削除 |
 
 **最新バージョンへ更新：** `cd ~/tGD && git pull && tgd --upgrade` — ワンライナー。
@@ -718,10 +718,10 @@ tGD/
 ## 🏷️ リリース
 
 ### 自動（推奨）
-`.tgd-version` を更新して `main` にプッシュすると、GitHub Actions が自動的にタグとリリースを作成します。
+`VERSION` を更新して `main` にプッシュすると、GitHub Actions が自動的にタグとリリースを作成します。
 
 **新しいバージョンをリリースするには：**
-1. `.tgd-version` を新しいバージョンに更新（例：`v2026.06.09`）
+1. `VERSION` を新しいバージョンに更新（例：`v2026.06.09`）
 2. `setup.sh` の `TGD_VERSION` を更新（CalVer形式、例：`2026-06-09`）
 3. コミットして `main` にプッシュ
 4. GitHub Actions が自動的にリリースを作成
@@ -729,7 +729,7 @@ tGD/
 ### 手動
 ```bash
 # リリーススクリプトを使用
-bash scripts/release.sh          # .tgd-version からバージョンを読み取り
+bash scripts/release.sh          # VERSION からバージョンを読み取り
 bash scripts/release.sh v2026.06.09   # またはバージョンを指定
 
 # または手動で
