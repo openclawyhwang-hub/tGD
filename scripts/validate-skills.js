@@ -190,7 +190,17 @@ function main() {
     .filter(d => fs.statSync(path.join(SKILLS_DIR, d)).isDirectory())
     .sort();
 
+  // Collect vendor (Understand-Anything) skill names so cross-references
+  // to bundled skills are not flagged as dead references.
+  const vendorSkillsDir = path.resolve(__dirname, '..', 'vendor', 'understand-anything', 'understand-anything-plugin', 'skills');
   const knownSkills = new Set(skillDirs);
+  if (fs.existsSync(vendorSkillsDir)) {
+    for (const d of fs.readdirSync(vendorSkillsDir)) {
+      if (fs.statSync(path.join(vendorSkillsDir, d)).isDirectory()) {
+        knownSkills.add(d);
+      }
+    }
+  }
 
   let totalErrors   = 0;
   let totalWarnings = 0;

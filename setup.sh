@@ -1,5 +1,5 @@
 #!/bin/bash
-# tGD (tGD) One-Click Installer
+# tGD One-Click Installer
 # Usage: bash setup.sh [--upgrade|--uninstall|--version]
 #
 # --upgrade:  先掃描並清除舊版殘留的 stale symlink / hooks，再重新部署。
@@ -16,13 +16,16 @@ elif [[ "$1" == "--uninstall" || "$1" == "--remove" ]]; then
     MODE="uninstall"
 elif [[ "$1" == "--version" || "$1" == "-v" ]]; then
     TGD_DIR="$(cd "$(dirname "$0")" && pwd)"
-    TGD_VERSION=$(grep '^TGD_VERSION=' "$TGD_DIR/setup.sh" 2>/dev/null | cut -d'"' -f2)
-    DISPLAY_VERSION=$(echo "$TGD_VERSION" | awk -F'-' '{printf "%d.%d.%d", $1, $2+0, $3+0}')
-    echo "tGD $DISPLAY_VERSION"
+    if [[ -f "$TGD_DIR/.tgd-version" ]]; then
+        echo "tGD $(cat "$TGD_DIR/.tgd-version")"
+    else
+        echo "tGD (unknown — .tgd-version not found)"
+    fi
     exit 0
 fi
 
 TGD_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$TGD_DIR"
 
 # ─── Prerequisite checks ─────────────────────────────────────────────────────
 missing_deps=()
@@ -239,13 +242,17 @@ PYEOF
         fi
     done
 
-    # 4. Remove version marker
+    # 5. Remove version marker
     if [[ -f "$TGD_DIR/.tgd-version" ]]; then
         echo "   🗑️  Removing version marker: $TGD_DIR/.tgd-version"
         rm -f "$TGD_DIR/.tgd-version"
     fi
+    if [[ -f "$HOME/.tgd-installed-version" ]]; then
+        echo "   🗑️  Removing installed version marker: $HOME/.tgd-installed-version"
+        rm -f "$HOME/.tgd-installed-version"
+    fi
 
-    # 5. Clean UA build artifacts (node_modules)
+    # 6. Clean UA build artifacts (node_modules)
     if [[ -d "$TGD_DIR/vendor/understand-anything/node_modules" ]]; then
         echo "   🗑️  Removing UA build artifacts (vendor/understand-anything/node_modules)..."
         rm -rf "$TGD_DIR/vendor/understand-anything/node_modules"
@@ -277,7 +284,7 @@ fi
 # ─── Version marker ──────────────────────────────────────────────────────────
 # Version is derived from git tags (semver). To bump: git tag v1.4.0
 TGD_VERSION=$(cat "$TGD_DIR/.tgd-version" 2>/dev/null || echo "unknown")
-VERSION_FILE="$TGD_DIR/.tgd-version"
+VERSION_FILE="$HOME/.tgd-installed-version"
 
 if [[ "$MODE" == "install" ]] && [[ -f "$VERSION_FILE" ]]; then
     INSTALLED_VERSION=$(cat "$VERSION_FILE" 2>/dev/null || echo "unknown")
@@ -447,7 +454,7 @@ for event, hook_list in tgd.get('hooks', {}).items():
 with open(SETTINGS, 'w') as f:
     json.dump(user, f, indent=2)
 print('   ✅ Hooks merged into ~/.claude/settings.json.')
-" 2>/dev/null || echo "   ⚠️  Hooks install failed (python3 required)."
+" 2>/dev/null || echo "   ⚠️  Hooks install failed. Check hooks/hooks.json exists."
         fi
     fi
 fi
@@ -565,7 +572,7 @@ for event, hook_list in cfg.get('hooks', {}).items():
 with open('$HOME/.gemini/settings.json', 'w') as f:
     json.dump(cfg, f, indent=2)
 print('   ✅ Hooks installed to ~/.gemini/settings.json.')
-" 2>/dev/null || echo "   ⚠️  Hooks install failed (python3 required)."
+" 2>/dev/null || echo "   ⚠️  Hooks install failed. Check .gemini/settings.json exists."
         fi
     fi
 fi
@@ -595,7 +602,7 @@ if command -v codex &> /dev/null; then
         HOOKS_DST="$HOME/.codex/hooks.json"
         TGD_ABS="$TGD_DIR"
         export TGD_ABS HOOKS_DST
-        python3 "$TGD_DIR/scripts/merge-codex-hooks.py" 2>/dev/null || echo "   ⚠️  Hooks install/merge failed (python3 required)."
+        python3 "$TGD_DIR/scripts/merge-codex-hooks.py" 2>/dev/null || echo "   ⚠️  Hooks install/merge failed. Check scripts/merge-codex-hooks.py."
     fi
 fi
 
@@ -789,8 +796,6 @@ if [ -d "skills/agent-browser" ]; then
             CHROME_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
         elif [ -x "/usr/bin/google-chrome" ]; then
             CHROME_BIN="/usr/bin/google-chrome"
-        elif [ -x "/user/bin/google-chrome" ]; then
-            CHROME_BIN="/user/bin/google-chrome"
         fi
         
         mkdir -p "$CONFIG_DIR"
@@ -840,31 +845,40 @@ echo ""
 #   "Load tgd-rules skill for tGD workflow enforcement."
 
 # Codex CLI: ~/.codex/skills/tgd-rules (auto-discovered)
-mkdir -p "$HOME/.codex/skills"
-if [ -d "$HOME/.codex/skills/tgd-rules" ] && [ ! -L "$HOME/.codex/skills/tgd-rules" ]; then
-    rm -rf "$HOME/.codex/skills/tgd-rules"
+if command -v codex &> /dev/null; then
+    mkdir -p "$HOME/.codex/skills"
+    if [ -d "$HOME/.codex/skills/tgd-rules" ] && [ ! -L "$HOME/.codex/skills/tgd-rules" ]; then
+        rm -rf "$HOME/.codex/skills/tgd-rules"
+    fi
+    ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.codex/skills/tgd-rules" 2>/dev/null && echo "   ✅ Codex CLI: ~/.codex/skills/tgd-rules → symlink"
 fi
-ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.codex/skills/tgd-rules" 2>/dev/null && echo "   ✅ Codex CLI: ~/.codex/skills/tgd-rules → symlink"
 
-mkdir -p "$HOME/.config/opencode/skills"
-if [ -d "$HOME/.config/opencode/skills/tgd-rules" ] && [ ! -L "$HOME/.config/opencode/skills/tgd-rules" ]; then
-    rm -rf "$HOME/.config/opencode/skills/tgd-rules"
+# OpenCode: ~/.config/opencode/skills/tgd-rules
+if command -v opencode &> /dev/null; then
+    mkdir -p "$HOME/.config/opencode/skills"
+    if [ -d "$HOME/.config/opencode/skills/tgd-rules" ] && [ ! -L "$HOME/.config/opencode/skills/tgd-rules" ]; then
+        rm -rf "$HOME/.config/opencode/skills/tgd-rules"
+    fi
+    ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.config/opencode/skills/tgd-rules" 2>/dev/null && echo "   ✅ OpenCode: ~/.config/opencode/skills/tgd-rules → symlink"
 fi
-ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.config/opencode/skills/tgd-rules" 2>/dev/null && echo "   ✅ OpenCode: ~/.config/opencode/skills/tgd-rules → symlink"
 
 # Gemini CLI: ~/.gemini/skills/tgd-rules
-mkdir -p "$HOME/.gemini/skills"
-if [ -d "$HOME/.gemini/skills/tgd-rules" ] && [ ! -L "$HOME/.gemini/skills/tgd-rules" ]; then
-    rm -rf "$HOME/.gemini/skills/tgd-rules"
+if command -v gemini &> /dev/null; then
+    mkdir -p "$HOME/.gemini/skills"
+    if [ -d "$HOME/.gemini/skills/tgd-rules" ] && [ ! -L "$HOME/.gemini/skills/tgd-rules" ]; then
+        rm -rf "$HOME/.gemini/skills/tgd-rules"
+    fi
+    ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.gemini/skills/tgd-rules" 2>/dev/null && echo "   ✅ Gemini CLI: ~/.gemini/skills/tgd-rules → symlink"
 fi
-ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.gemini/skills/tgd-rules" 2>/dev/null && echo "   ✅ Gemini CLI: ~/.gemini/skills/tgd-rules → symlink"
 
 # Pi: ~/.pi/agent/skills/tgd-rules
-mkdir -p "$HOME/.pi/agent/skills"
-if [ -d "$HOME/.pi/agent/skills/tgd-rules" ] && [ ! -L "$HOME/.pi/agent/skills/tgd-rules" ]; then
-    rm -rf "$HOME/.pi/agent/skills/tgd-rules"
+if command -v pi &> /dev/null; then
+    mkdir -p "$HOME/.pi/agent/skills"
+    if [ -d "$HOME/.pi/agent/skills/tgd-rules" ] && [ ! -L "$HOME/.pi/agent/skills/tgd-rules" ]; then
+        rm -rf "$HOME/.pi/agent/skills/tgd-rules"
+    fi
+    ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.pi/agent/skills/tgd-rules" 2>/dev/null && echo "   ✅ Pi: ~/.pi/agent/skills/tgd-rules → symlink"
 fi
-ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.pi/agent/skills/tgd-rules" 2>/dev/null && echo "   ✅ Pi: ~/.pi/agent/skills/tgd-rules → symlink"
 
 echo ""
 echo "===================================="
