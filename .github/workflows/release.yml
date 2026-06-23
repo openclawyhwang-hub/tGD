@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     paths:
-      - '.tgd-version'
+      - 'VERSION'
     branches:
       - main
 
@@ -22,7 +22,7 @@ jobs:
       - name: Read version
         id: version
         run: |
-          VERSION=$(cat .tgd-version)
+          VERSION=$(cat VERSION)
           # Ensure version starts with 'v'
           if [[ ! "$VERSION" =~ ^v ]]; then
             VERSION="v$VERSION"
