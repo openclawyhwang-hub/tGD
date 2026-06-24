@@ -2,7 +2,7 @@
 <html lang="en" data-themes="tgd-light,tgd-dark">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="tGD — The Agentic PDLC Harness. Transform your human workflow into an agent-driven pipeline. Same gates, 10× velocity.">
+<meta name="description" content="tGD — The Agentic PDLC Harness. Same gates, 10× velocity.">
 <title>tGD — Pipeline Overview</title>
 <link rel="icon" type="image/svg+xml" href="favicon-gd.svg">
 <link rel="stylesheet" href="html-ppt/assets/fonts.css">
@@ -10,348 +10,244 @@
 <link rel="stylesheet" href="html-ppt/tgd-pitch.css">
 <link rel="stylesheet" href="html-ppt/tgd-light.css" id="theme-link">
 <style>
-  /* ===== One-pager overrides ===== */
+  /* === Single-page one-pager — everything fits in 100vh === */
+  body.single .slide { padding: 28px 40px 20px; justify-content: flex-start; }
+  .deck { overflow: hidden; }
 
-  /* Responsive 7-column grid */
-  .g7 { grid-template-columns: repeat(7, 1fr); gap: 14px; }
-  @media (max-width: 1200px) { .g7 { grid-template-columns: repeat(4, 1fr); } }
-  @media (max-width: 768px)  { .g7 { grid-template-columns: repeat(2, 1fr); } }
+  /* Brand row */
+  .brand-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:6px; }
+  .brand-row .brand { font-weight:800; font-size:18px; }
+  .brand-row .tagline { font-size:14px; font-weight:700; margin-left:4px; }
+  .brand-pills { display:flex; gap:6px; }
+  .brand-pills .pill { font-size:11px; padding:3px 10px; }
 
-  /* Compact stage cards — bumped font sizes */
-  .stage-card { padding: 18px 16px; border-radius: 12px; }
-  .stage-card .sc-icon { font-size: 1.8rem; margin-bottom: 8px; }
-  .stage-card .sc-name { font-size: 16px; font-weight: 800; letter-spacing: -.01em; margin-bottom: 3px; }
-  .stage-card .sc-cmd  { font-size: 11px; font-family: 'SF Mono','Menlo',monospace; color: var(--accent); opacity: .8; margin-bottom: 12px; }
-  .stage-card .sc-io   { font-size: 12.5px; color: var(--text-2); line-height: 1.5; margin-bottom: 4px; }
-  .stage-card .sc-io b { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; display: block; margin-bottom: 2px; }
-  .stage-card .sc-io .in  { color: #3b82f6; }
-  .stage-card .sc-io .out { color: var(--accent); }
-  .stage-card .sc-io code { font-size: 11px; padding: 1px 4px; }
-  .stage-card .sc-roles { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); font-size: 11px; line-height: 1.6; color: var(--text-3); }
-  .stage-card .sc-roles .r-agent { color: #3b82f6; font-weight: 600; }
-  .stage-card .sc-roles .r-human { color: #8b5cf6; font-weight: 600; }
-
-  /* Intro bar */
+  /* Intro — single line */
   .intro-bar {
-    text-align: center; padding: 20px 48px; margin-bottom: 24px;
-    border-radius: 12px; font-size: 18px; color: var(--text-2); line-height: 1.6;
-    background: linear-gradient(135deg, rgba(22,163,74,.06), rgba(13,148,136,.04), rgba(8,145,178,.03));
-    border: 1px solid rgba(22,163,74,.15);
+    text-align:center; padding:10px 32px; margin-bottom:12px; border-radius:10px;
+    font-size:15px; color:var(--text-2); line-height:1.5;
+    background: linear-gradient(135deg, rgba(22,163,74,.06), rgba(13,148,136,.04));
+    border: 1px solid rgba(22,163,74,.12);
   }
-  .intro-bar b { color: var(--text-1); }
-  .intro-bar .highlight {
-    background: var(--grad); -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent; font-weight: 800; font-size: 20px;
+  .intro-bar .hl {
+    background:var(--grad); -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; font-weight:800;
   }
 
-  /* Arrow connectors — fixed overlap */
-  .g7 { position: relative; }
-  .stage-card { position: relative; }
-  @media (min-width: 1201px) {
-    .stage-card:not(:last-child)::after {
-      content: '→'; position: absolute; right: -16px; top: 50%;
-      transform: translateY(-50%); font-size: 18px; color: var(--accent);
-      font-weight: 700; z-index: 2;
+  /* 7-column pipeline grid */
+  .pipe-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; margin-bottom:12px; }
+  @media (max-width:1200px) { .pipe-grid { grid-template-columns:repeat(4,1fr); } }
+  @media (max-width:768px)  { .pipe-grid { grid-template-columns:repeat(2,1fr); } }
+  .sc { padding:12px 10px; border-radius:10px; background:#fff; border:1px solid rgba(0,0,0,.06);
+        box-shadow:0 1px 2px rgba(0,0,0,.04); transition:transform .2s,box-shadow .2s; }
+  .sc:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(22,163,74,.1); }
+  .sc .sc-icon { font-size:1.3rem; margin-bottom:4px; }
+  .sc .sc-name { font-size:13px; font-weight:800; color:var(--text-1); margin-bottom:1px; }
+  .sc .sc-cmd  { font-size:10px; font-family:'SF Mono','Menlo',monospace; color:var(--accent); margin-bottom:6px; }
+  .sc .sc-io   { font-size:10px; color:var(--text-2); line-height:1.4; }
+  .sc .sc-io b { font-size:8px; text-transform:uppercase; letter-spacing:.06em; display:block; margin-bottom:1px; }
+  .sc .sc-io .in { color:#3b82f6; }
+  .sc .sc-io .out { color:var(--accent); }
+  .sc .sc-io code { font-size:9px; padding:0 3px; }
+  .sc .sc-roles { margin-top:6px; padding-top:5px; border-top:1px solid var(--border); font-size:9px; color:var(--text-3); line-height:1.5; }
+  .sc .sc-roles .ra { color:#3b82f6; font-weight:600; }
+  .sc .sc-roles .rh { color:#8b5cf6; font-weight:600; }
+
+  /* Arrow connectors (desktop only) */
+  @media (min-width:1201px) {
+    .pipe-grid { position:relative; }
+    .sc { position:relative; }
+    .sc:not(:last-child)::after {
+      content:'→'; position:absolute; right:-12px; top:50%; transform:translateY(-50%);
+      font-size:14px; color:var(--accent); font-weight:700; z-index:2;
     }
   }
 
-  /* ===== KPI Impact Section ===== */
-  .kpi-section {
-    margin-top: 28px; padding: 28px 32px; border-radius: 14px;
-    background: #fff; border: 1px solid rgba(0,0,0,.06);
-    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  /* === KPI Bar — horizontal layout, all in one row === */
+  .kpi-bar {
+    display:flex; align-items:center; gap:16px;
+    padding:14px 18px; border-radius:12px;
+    background:#fff; border:1px solid rgba(0,0,0,.06); box-shadow:0 1px 3px rgba(0,0,0,.05);
+    margin-bottom:10px;
   }
-  .kpi-section h3 {
-    font-size: 18px; font-weight: 800; margin: 0 0 6px; color: var(--text-1);
+  .kpi-bar .kpi-title {
+    font-size:11px; font-weight:700; color:var(--text-2); text-transform:uppercase;
+    letter-spacing:.05em; white-space:nowrap; min-width:100px;
   }
-  .kpi-section .kpi-sub {
-    font-size: 13px; color: var(--text-3); margin-bottom: 20px;
+  .kpi-bar .kpi-chart-wrap { flex:1; max-width:340px; }
+  .kpi-bar .kpi-chart-wrap svg { display:block; width:100%; height:auto; }
+  .kpi-bar .kpi-metrics {
+    display:flex; gap:14px; flex:1; justify-content:flex-end;
   }
-  .kpi-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start;
+  .kpi-bar .km { text-align:center; min-width:80px; }
+  .kpi-bar .km .km-n {
+    font-size:22px; font-weight:900; letter-spacing:-.03em;
+    background:var(--grad); -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; line-height:1;
   }
-  @media (max-width: 900px) { .kpi-grid { grid-template-columns: 1fr; } }
-
-  /* Bar chart */
-  .kpi-chart { position: relative; }
-  .kpi-chart .chart-title {
-    font-size: 13px; font-weight: 700; color: var(--text-2); text-transform: uppercase;
-    letter-spacing: .06em; margin-bottom: 14px;
-  }
-  .bar-chart {
-    display: flex; align-items: flex-end; gap: 6px; height: 140px;
-    padding-bottom: 28px; position: relative; border-bottom: 1px solid var(--border);
-  }
-  .bar-chart .bar-group {
-    flex: 1; display: flex; flex-direction: column; align-items: center; position: relative;
-  }
-  .bar-chart .bar {
-    width: 100%; max-width: 32px; border-radius: 4px 4px 0 0;
-    background: var(--grad); transition: height .6s var(--ease);
-    position: relative;
-  }
-  .bar-chart .bar.baseline { background: var(--surface-2); border: 1px solid var(--border); }
-  .bar-chart .bar-label {
-    position: absolute; top: -20px; font-size: 11px; font-weight: 800;
-    color: var(--text-1); white-space: nowrap;
-  }
-  .bar-chart .bar-label .mult {
-    font-size: 9px; color: var(--accent); display: block; font-weight: 600;
-  }
-  .bar-chart .x-label {
-    position: absolute; bottom: -24px; font-size: 9px; color: var(--text-3);
-    white-space: nowrap; text-align: center; width: 100%;
-  }
-  .bar-chart .baseline-label {
-    position: absolute; left: 0; right: 0; border-top: 1.5px dashed var(--border-strong);
-    pointer-events: none; z-index: 1;
-  }
-  .bar-chart .baseline-label span {
-    position: absolute; top: -16px; left: 0; font-size: 9px; color: var(--text-3);
-    font-weight: 600; letter-spacing: .04em;
+  .kpi-bar .km .km-l { font-size:10px; color:var(--text-2); margin-top:2px; }
+  .kpi-bar .km .km-t {
+    display:inline-block; font-size:8px; font-weight:700; text-transform:uppercase;
+    letter-spacing:.06em; color:var(--accent); margin-top:2px;
+    background:rgba(22,163,74,.08); padding:1px 5px; border-radius:3px;
   }
 
-  /* KPI metric cards */
-  .kpi-metrics { display: flex; flex-direction: column; gap: 12px; }
-  .kpi-card {
-    padding: 16px 18px; border-radius: 10px;
-    background: var(--bg-soft, #f6f7fb); border: 1px solid rgba(0,0,0,.04);
-  }
-  .kpi-card .kpi-num {
-    font-size: 28px; font-weight: 900; letter-spacing: -.03em;
-    background: var(--grad); -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent; line-height: 1;
-  }
-  .kpi-card .kpi-desc {
-    font-size: 12px; color: var(--text-2); margin-top: 4px; line-height: 1.4;
-  }
-  .kpi-card .kpi-tag {
-    display: inline-block; font-size: 9px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: .08em; color: var(--accent); margin-top: 4px;
-    background: rgba(22,163,74,.08); padding: 2px 6px; border-radius: 4px;
-  }
+  /* Divider */
+  .kpi-divider { width:1px; align-self:stretch; background:var(--border); margin:0 4px; }
 
   /* Footer */
   .footer-row {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-top: 20px; font-size: 13px; color: var(--text-3);
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:12px; color:var(--text-3);
   }
-  .footer-row a { color: var(--accent); }
+  .footer-row a { color:var(--accent); }
   .cta-btn {
-    display: inline-block; padding: 8px 20px; border-radius: 8px;
-    background: var(--grad); color: #fff; font-weight: 700; font-size: 13px;
-    text-decoration: none; transition: transform .2s, box-shadow .2s;
+    display:inline-block; padding:6px 16px; border-radius:7px;
+    background:var(--grad); color:#fff; font-weight:700; font-size:12px;
+    text-decoration:none; transition:transform .2s,box-shadow .2s;
   }
-  .cta-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(22,163,74,.25); text-decoration: none; }
+  .cta-btn:hover { transform:translateY(-1px); box-shadow:0 4px 14px rgba(22,163,74,.25); text-decoration:none; }
 </style>
 </head>
 <body class="tpl-tgd-pitch single" data-theme="tgd-light">
 <div class="deck">
+<section class="slide is-active" data-title="Pipeline Overview">
 
-  <section class="slide is-active" data-title="Pipeline Overview">
-    <!-- Brand -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
-      <div style="display:flex;align-items:center;gap:10px">
-        <span class="brand-dot"></span><span class="brand">tGD</span>
-        <span class="gradient-text" style="font-size:18px;font-weight:700;margin-left:4px">The Agentic PDLC Harness</span>
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <span class="pill pill-accent">🏗️ 28 Skills</span>
-        <span class="pill pill-accent">🔄 7 Stages</span>
-        <span class="pill pill-accent">👤 3 Roles</span>
-        <span class="pill pill-accent">🖥️ 5 Platforms</span>
-      </div>
+  <!-- Brand -->
+  <div class="brand-row">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="brand-dot"></span><span class="brand">tGD</span>
+      <span class="gradient-text tagline">The Agentic PDLC Harness</span>
+    </div>
+    <div class="brand-pills">
+      <span class="pill pill-accent">🏗️ 28 Skills</span>
+      <span class="pill pill-accent">🔄 7 Stages</span>
+      <span class="pill pill-accent">👤 3 Roles</span>
+      <span class="pill pill-accent">🖥️ 5 Platforms</span>
+    </div>
+  </div>
+
+  <!-- Intro -->
+  <div class="intro-bar">
+    <span class="hl">Your PDLC was built for humans. Now agents do the work.</span>
+    tGD transforms your workflow into an <b>agentic PDLC pipeline</b> — same gates, same accountability, 10× the velocity.
+  </div>
+
+  <!-- 7-Stage Pipeline -->
+  <div class="pipe-grid">
+    <div class="sc">
+      <div class="sc-icon">🗺️</div><div class="sc-name">Map</div><div class="sc-cmd">/tgd-map</div>
+      <div class="sc-io"><b class="in">📥 In</b>Source code</div>
+      <div class="sc-io"><b class="out">📤 Out</b><code>CONTEXT.md</code></div>
+      <div class="sc-roles"><span class="ra">🤖</span> Scan + CodeGraph · <span class="rh">👤 DEV</span> Review</div>
+    </div>
+    <div class="sc">
+      <div class="sc-icon">📋</div><div class="sc-name">Define</div><div class="sc-cmd">/tgd-define</div>
+      <div class="sc-io"><b class="in">📥 In</b><code>CONTEXT</code> + intent</div>
+      <div class="sc-io"><b class="out">📤 Out</b><code>PRD</code> <code>SPEC</code> <code>DESIGN</code></div>
+      <div class="sc-roles"><span class="ra">🤖</span> Interview + spec · <span class="rh">👤 PM</span> Sign-off</div>
+    </div>
+    <div class="sc">
+      <div class="sc-icon">📐</div><div class="sc-name">Plan</div><div class="sc-cmd">/tgd-plan</div>
+      <div class="sc-io"><b class="in">📥 In</b><code>CONTEXT</code> · <code>PRD</code> · <code>SPEC</code></div>
+      <div class="sc-io"><b class="out">📤 Out</b><code>TASKS.md</code> + BDD AC</div>
+      <div class="sc-roles"><span class="ra">🤖</span> Decompose · <span class="rh">👤 DEV</span> Sign-off</div>
+    </div>
+    <div class="sc">
+      <div class="sc-icon">⚡</div><div class="sc-name">Develop</div><div class="sc-cmd">/tgd-develop</div>
+      <div class="sc-io"><b class="in">📥 In</b><code>TASKS</code> · <code>SPEC</code> + code</div>
+      <div class="sc-io"><b class="out">📤 Out</b><code>src/</code> + <code>tests/</code></div>
+      <div class="sc-roles"><span class="ra">🤖</span> TDD sandbox · <span class="rh">👤 DEV</span> Review</div>
+    </div>
+    <div class="sc">
+      <div class="sc-icon">🧪</div><div class="sc-name">Verify</div><div class="sc-cmd">/tgd-verify</div>
+      <div class="sc-io"><b class="in">📥 In</b><code>src/</code> <code>tests/</code> + catalog</div>
+      <div class="sc-io"><b class="out">📤 Out</b><code>TEST-REPORT.md</code></div>
+      <div class="sc-roles"><span class="ra">🤖</span> E2E + regression · <span class="rh">👤 QA</span> Sign-off</div>
+    </div>
+    <div class="sc">
+      <div class="sc-icon">🔎</div><div class="sc-name">Review</div><div class="sc-cmd">/tgd-review</div>
+      <div class="sc-io"><b class="in">📥 In</b><code>src/</code> <code>TEST-REPORT</code></div>
+      <div class="sc-io"><b class="out">📤 Out</b><code>REVIEW.md</code> 5-axis</div>
+      <div class="sc-roles"><span class="ra">🤖</span> 5-axis review · <span class="rh">👤 QA+DEV</span> Sign-off</div>
+    </div>
+    <div class="sc">
+      <div class="sc-icon">🚀</div><div class="sc-name">Ship</div><div class="sc-cmd">/tgd-ship</div>
+      <div class="sc-io"><b class="in">📥 In</b>All signed-off</div>
+      <div class="sc-io"><b class="out">📤 Out</b><code>CHANGELOG</code> + deploy</div>
+      <div class="sc-roles"><span class="ra">🤖</span> CI + deploy · <span class="rh">👤 PM</span> Final gate</div>
+    </div>
+  </div>
+
+  <!-- KPI Impact Bar -->
+  <div class="kpi-bar">
+    <div class="kpi-title">📈 Projected<br>Impact</div>
+
+    <div class="kpi-chart-wrap">
+      <svg viewBox="0 0 340 110" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#16a34a"/><stop offset="100%" stop-color="#0d9488"/>
+          </linearGradient>
+        </defs>
+        <!-- baseline -->
+        <line x1="20" y1="52" x2="320" y2="52" stroke="#d0d3dc" stroke-width=".8" stroke-dasharray="4,3"/>
+        <text x="22" y="48" font-size="7" fill="#8a90ad" font-weight="600" font-family="Inter,sans-serif">PRE-tGD</text>
+        <!-- bars: y=10 (top=15) to y=90 (bottom=0), height=80px -->
+        <!-- Before: 2.5/15*80=13 -->
+        <rect x="35" y="77" width="36" height="13" rx="2" fill="#e8eaf0" stroke="#d0d3dc" stroke-width=".5"/>
+        <text x="53" y="74" text-anchor="middle" font-size="9" font-weight="800" fill="#4a5070" font-family="Inter,sans-serif">2-3</text>
+        <text x="53" y="100" text-anchor="middle" font-size="7" fill="#8a90ad" font-family="Inter,sans-serif">Before</text>
+        <!-- M1: 4.5/15*80=24 -->
+        <rect x="95" y="66" width="36" height="24" rx="2" fill="url(#bg)"/>
+        <text x="113" y="63" text-anchor="middle" font-size="9" font-weight="800" fill="#0d1130" font-family="Inter,sans-serif">4-5</text>
+        <text x="113" y="100" text-anchor="middle" font-size="7" fill="#8a90ad" font-family="Inter,sans-serif">Month 1</text>
+        <!-- M3: 7/15*80=37 -->
+        <rect x="155" y="53" width="36" height="37" rx="2" fill="url(#bg)"/>
+        <text x="173" y="50" text-anchor="middle" font-size="9" font-weight="800" fill="#0d1130" font-family="Inter,sans-serif">6-8</text>
+        <text x="173" y="100" text-anchor="middle" font-size="7" fill="#8a90ad" font-family="Inter,sans-serif">Month 3</text>
+        <!-- M6: 11/15*80=59 -->
+        <rect x="215" y="31" width="36" height="59" rx="2" fill="url(#bg)"/>
+        <text x="233" y="28" text-anchor="middle" font-size="9" font-weight="800" fill="#0d1130" font-family="Inter,sans-serif">10-12</text>
+        <text x="233" y="100" text-anchor="middle" font-size="7" fill="#8a90ad" font-family="Inter,sans-serif">Month 6</text>
+        <!-- SS: 15/15*80=80 -->
+        <rect x="275" y="10" width="36" height="80" rx="2" fill="url(#bg)"/>
+        <text x="293" y="7" text-anchor="middle" font-size="9" font-weight="800" fill="#0d1130" font-family="Inter,sans-serif">15+</text>
+        <text x="293" y="-2" text-anchor="middle" font-size="8" font-weight="700" fill="#16a34a" font-family="Inter,sans-serif">~5×</text>
+        <text x="293" y="100" text-anchor="middle" font-size="7" fill="#8a90ad" font-family="Inter,sans-serif">Steady</text>
+      </svg>
     </div>
 
-    <!-- Intro -->
-    <div class="intro-bar">
-      <span class="highlight">Your PDLC was built for humans. Now agents do the work.</span><br>
-      tGD transforms your existing workflow into an <b>agentic PDLC pipeline</b> — same gates, same accountability, 10× the velocity.
-    </div>
+    <div class="kpi-divider"></div>
 
-    <!-- 7-Stage Grid -->
-    <div class="grid g7">
-
-      <!-- 1. Map -->
-      <div class="card card-hover stage-card">
-        <div class="sc-icon">🗺️</div>
-        <div class="sc-name">Map</div>
-        <div class="sc-cmd">/tgd-map</div>
-        <div class="sc-io"><b class="in">📥 Input</b>Project source code</div>
-        <div class="sc-io"><b class="out">📤 Output</b><code>CONTEXT.md</code></div>
-        <div class="sc-roles">
-          <span class="r-agent">🤖 Agent</span> Scans, builds CodeGraph<br>
-          <span class="r-human">👤 DEV</span> Reviews CONTEXT.md
-        </div>
+    <div class="kpi-metrics">
+      <div class="km">
+        <div class="km-n">5×</div>
+        <div class="km-l">Throughput</div>
+        <div class="km-t">Features / Sprint</div>
       </div>
-
-      <!-- 2. Define -->
-      <div class="card card-hover stage-card">
-        <div class="sc-icon">📋</div>
-        <div class="sc-name">Define</div>
-        <div class="sc-cmd">/tgd-define</div>
-        <div class="sc-io"><b class="in">📥 Input</b><code>CONTEXT.md</code> + intent</div>
-        <div class="sc-io"><b class="out">📤 Output</b><code>PRD</code> <code>SPEC</code> <code>DESIGN</code> <i style="font-size:9px;color:var(--text-3)">(if UI)</i></div>
-        <div class="sc-roles">
-          <span class="r-agent">🤖 Agent</span> Interviews, drafts specs<br>
-          <span class="r-human">👤 PM</span> Signs off PRD + SPEC
-        </div>
+      <div class="km">
+        <div class="km-n">80%</div>
+        <div class="km-l">Quality</div>
+        <div class="km-t">Less Regressions</div>
       </div>
-
-      <!-- 3. Plan -->
-      <div class="card card-hover stage-card">
-        <div class="sc-icon">📐</div>
-        <div class="sc-name">Plan</div>
-        <div class="sc-cmd">/tgd-plan</div>
-        <div class="sc-io"><b class="in">📥 Input</b><code>CONTEXT</code> · <code>PRD</code> · <code>SPEC</code></div>
-        <div class="sc-io"><b class="out">📤 Output</b><code>TASKS.md</code> + BDD AC</div>
-        <div class="sc-roles">
-          <span class="r-agent">🤖 Agent</span> Triple-source decomposition<br>
-          <span class="r-human">👤 DEV</span> Signs off TASKS.md
-        </div>
-      </div>
-
-      <!-- 4. Develop -->
-      <div class="card card-hover stage-card">
-        <div class="sc-icon">⚡</div>
-        <div class="sc-name">Develop</div>
-        <div class="sc-cmd">/tgd-develop</div>
-        <div class="sc-io"><b class="in">📥 Input</b><code>TASKS</code> · <code>SPEC</code> + codebase</div>
-        <div class="sc-io"><b class="out">📤 Output</b><code>src/</code> + <code>tests/</code></div>
-        <div class="sc-roles">
-          <span class="r-agent">🤖 Agent</span> TDD in worktree sandbox<br>
-          <span class="r-human">👤 DEV</span> Reviews code, signs off
-        </div>
-      </div>
-
-      <!-- 5. Verify -->
-      <div class="card card-hover stage-card">
-        <div class="sc-icon">🧪</div>
-        <div class="sc-name">Verify</div>
-        <div class="sc-cmd">/tgd-verify</div>
-        <div class="sc-io"><b class="in">📥 Input</b><code>src/</code> <code>tests/</code> + catalog</div>
-        <div class="sc-io"><b class="out">📤 Output</b><code>TEST-REPORT.md</code></div>
-        <div class="sc-roles">
-          <span class="r-agent">🤖 Agent</span> All tests + E2E + regression<br>
-          <span class="r-human">👤 QA</span> Signs off or blocks
-        </div>
-      </div>
-
-      <!-- 6. Review -->
-      <div class="card card-hover stage-card">
-        <div class="sc-icon">🔎</div>
-        <div class="sc-name">Review</div>
-        <div class="sc-cmd">/tgd-review</div>
-        <div class="sc-io"><b class="in">📥 Input</b><code>src/</code> <code>TEST-REPORT</code></div>
-        <div class="sc-io"><b class="out">📤 Output</b><code>REVIEW.md</code> 5-axis</div>
-        <div class="sc-roles">
-          <span class="r-agent">🤖 Agent</span> 5-axis code review<br>
-          <span class="r-human">👤 QA+DEV</span> Signs off REVIEW
-        </div>
-      </div>
-
-      <!-- 7. Ship -->
-      <div class="card card-hover stage-card">
-        <div class="sc-icon">🚀</div>
-        <div class="sc-name">Ship</div>
-        <div class="sc-cmd">/tgd-ship</div>
-        <div class="sc-io"><b class="in">📥 Input</b>All signed-off artifacts</div>
-        <div class="sc-io"><b class="out">📤 Output</b><code>CHANGELOG</code> + deploy</div>
-        <div class="sc-roles">
-          <span class="r-agent">🤖 Agent</span> Commit → CI → deploy<br>
-          <span class="r-human">👤 PM</span> Final sign-off gate
-        </div>
-      </div>
-
-    </div>
-
-    <!-- KPI Impact Section -->
-    <div class="kpi-section">
-      <h3>📈 Projected Impact: Before vs. After tGD</h3>
-      <p class="kpi-sub">Estimated PDLC efficiency gains when a team adopts tGD for agent-driven development. Based on industry benchmarks for AI-augmented engineering workflows.</p>
-
-      <div class="kpi-grid">
-        <!-- SVG Bar Chart -->
-        <div class="kpi-chart">
-          <svg viewBox="0 0 400 220" width="100%" style="max-width:420px">
-            <defs>
-              <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#16a34a"/>
-                <stop offset="100%" stop-color="#0d9488"/>
-              </linearGradient>
-            </defs>
-            <!-- Chart title -->
-            <text x="0" y="16" font-size="12" font-weight="700" fill="#4a5070" letter-spacing=".06em" text-transform="uppercase" font-family="Inter,sans-serif">FEATURES SHIPPED PER SPRINT</text>
-            <!-- Baseline dashed line -->
-            <line x1="30" y1="72" x2="380" y2="72" stroke="#c9cdd8" stroke-width="1" stroke-dasharray="5,4"/>
-            <text x="32" y="67" font-size="9" fill="#8a90ad" font-weight="600" font-family="Inter,sans-serif">PRE-tGD BASELINE</text>
-            <!-- Y-axis labels -->
-            <text x="0" y="42" font-size="9" fill="#8a90ad" font-family="Inter,sans-serif">15</text>
-            <text x="0" y="80" font-size="9" fill="#8a90ad" font-family="Inter,sans-serif">3</text>
-            <text x="0" y="195" font-size="9" fill="#8a90ad" font-family="Inter,sans-serif">0</text>
-            <!-- Grid lines -->
-            <line x1="30" y1="40" x2="380" y2="40" stroke="#eee" stroke-width="0.5"/>
-            <line x1="30" y1="110" x2="380" y2="110" stroke="#eee" stroke-width="0.5"/>
-            <line x1="30" y1="180" x2="380" y2="180" stroke="#eee" stroke-width="0.5"/>
-            <!-- Bars — baseline = 3/15 = 20% height from bottom (y=190) -->
-            <!-- Bar area: y=30 (top, 15) to y=190 (bottom, 0). Height = 160px -->
-            <!-- Before (2.5 → 2.5/15 * 160 = 27px) -->
-            <rect x="55" y="163" width="42" height="27" rx="3" fill="#e8eaf0" stroke="#d0d3dc" stroke-width="0.5"/>
-            <text x="76" y="158" text-anchor="middle" font-size="12" font-weight="800" fill="#4a5070" font-family="Inter,sans-serif">2-3</text>
-            <text x="76" y="208" text-anchor="middle" font-size="9" fill="#8a90ad" font-family="Inter,sans-serif">Before</text>
-            <!-- Month 1 (4.5 → 48px) -->
-            <rect x="120" y="142" width="42" height="48" rx="3" fill="url(#barGrad)"/>
-            <text x="141" y="137" text-anchor="middle" font-size="12" font-weight="800" fill="#0d1130" font-family="Inter,sans-serif">4-5</text>
-            <text x="141" y="208" text-anchor="middle" font-size="9" fill="#8a90ad" font-family="Inter,sans-serif">Month 1</text>
-            <!-- Month 3 (7 → 75px) -->
-            <rect x="185" y="115" width="42" height="75" rx="3" fill="url(#barGrad)"/>
-            <text x="206" y="110" text-anchor="middle" font-size="12" font-weight="800" fill="#0d1130" font-family="Inter,sans-serif">6-8</text>
-            <text x="206" y="208" text-anchor="middle" font-size="9" fill="#8a90ad" font-family="Inter,sans-serif">Month 3</text>
-            <!-- Month 6 (11 → 117px) -->
-            <rect x="250" y="73" width="42" height="117" rx="3" fill="url(#barGrad)"/>
-            <text x="271" y="68" text-anchor="middle" font-size="12" font-weight="800" fill="#0d1130" font-family="Inter,sans-serif">10-12</text>
-            <text x="271" y="208" text-anchor="middle" font-size="9" fill="#8a90ad" font-family="Inter,sans-serif">Month 6</text>
-            <!-- Steady State (15 → 160px) -->
-            <rect x="315" y="30" width="42" height="160" rx="3" fill="url(#barGrad)"/>
-            <text x="336" y="25" text-anchor="middle" font-size="12" font-weight="800" fill="#0d1130" font-family="Inter,sans-serif">15+</text>
-            <text x="336" y="14" text-anchor="middle" font-size="10" font-weight="700" fill="#16a34a" font-family="Inter,sans-serif">~5×</text>
-            <text x="336" y="208" text-anchor="middle" font-size="9" fill="#8a90ad" font-family="Inter,sans-serif">Steady State</text>
-          </svg>
-        </div>
-
-        <!-- KPI Metric Cards -->
-        <div class="kpi-metrics">
-          <div class="kpi-card">
-            <div class="kpi-num">5×</div>
-            <div class="kpi-desc">More features shipped per sprint — agents handle spec → code → test → review, humans set direction and sign off</div>
-            <span class="kpi-tag">Throughput</span>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-num">80%</div>
-            <div class="kpi-desc">Reduction in regression escapes — BDD acceptance criteria + automated regression catalog catch defects before merge</div>
-            <span class="kpi-tag">Quality</span>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-num">10×</div>
-            <div class="kpi-desc">Faster spec-to-deploy cycle — from weeks to days with full audit trail (PRD → TASKS → CHANGELOG)</div>
-            <span class="kpi-tag">Velocity</span>
-          </div>
-        </div>
+      <div class="km">
+        <div class="km-n">10×</div>
+        <div class="km-l">Velocity</div>
+        <div class="km-t">Spec → Deploy</div>
       </div>
     </div>
+  </div>
 
-    <!-- Footer -->
-    <div class="footer-row">
-      <div>
-        <a href="https://github.com/openclawyhwang-hub/tGD" target="_blank" rel="noopener">github.com/openclawyhwang-hub/tGD</a> · MIT · CalVer 2026
-      </div>
-      <div style="display:flex;align-items:center;gap:16px">
-        <span style="font-weight:600;color:var(--text-2)">From human workflow to agentic PDLC. Same gates. 10× velocity.</span>
-        <a href="https://github.com/openclawyhwang-hub/tGD#getting-started" class="cta-btn" target="_blank" rel="noopener">Get Started →</a>
-      </div>
+  <!-- Footer -->
+  <div class="footer-row">
+    <div><a href="https://github.com/openclawyhwang-hub/tGD" target="_blank" rel="noopener">github.com/openclawyhwang-hub/tGD</a> · MIT · CalVer 2026</div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span style="font-weight:600;color:var(--text-2)">Same gates. 10× velocity.</span>
+      <a href="https://github.com/openclawyhwang-hub/tGD#getting-started" class="cta-btn" target="_blank" rel="noopener">Get Started →</a>
     </div>
-  </section>
+  </div>
 
+</section>
 </div>
 <script src="html-ppt/assets/runtime.js"></script>
 </body>
