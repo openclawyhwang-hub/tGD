@@ -24,7 +24,7 @@
   html{scroll-behavior:smooth}
   body{font-family:var(--font);background:var(--bg);color:var(--text-1);line-height:1.6;-webkit-font-smoothing:antialiased}
   a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
-  code{font-family:'SF Mono','Menlo','Consolas',monospace;font-size:11px;background:var(--bg-soft);border:1px solid var(--border);padding:1px 5px;border-radius:4px;color:var(--accent)}
+  code{font-family:'SF Mono','Menlo','Consolas',monospace;font-size:13px;background:var(--bg-soft);border:1px solid var(--border);padding:1px 5px;border-radius:4px;color:var(--accent)}
 
   /* ===================== LAYOUT ===================== */
   .container{max-width:1200px;margin:0 auto;padding:0 32px}
@@ -56,33 +56,38 @@
   @media(max-width:1100px){.stage-grid{grid-template-columns:repeat(4,1fr)}}
   @media(max-width:700px){.stage-grid{grid-template-columns:repeat(2,1fr)}}
   .stage-card{
-    padding:20px 14px;border-radius:var(--radius);background:var(--surface);
+    padding:22px 16px;border-radius:var(--radius);background:var(--surface);
     border:1px solid var(--border);box-shadow:var(--shadow);
     transition:transform .2s,box-shadow .2s;min-width:0;
   }
   .stage-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
-  .stage-card .sc-header{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:14px;text-align:center}
-  .stage-card .sc-icon{font-size:1.8rem}
-  .stage-card .sc-name{font-size:17px;font-weight:800}
-  .stage-card .sc-cmd{font-size:11px;font-family:'SF Mono','Menlo',monospace;color:var(--accent);background:rgba(22,163,74,.06);padding:3px 8px;border-radius:6px}
-  /* I/O Flow — vertical compact */
-  .stage-card .sc-flow{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
-  .stage-card .sc-flow-box{padding:8px 10px;border-radius:8px;background:var(--bg-soft);border:1px solid var(--border);text-align:center}
+  .stage-card .sc-header{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:16px;text-align:center}
+  .stage-card .sc-icon{font-size:2.2rem}
+  .stage-card .sc-name{font-size:20px;font-weight:800}
+  .stage-card .sc-cmd{font-size:12px;font-family:'SF Mono','Menlo',monospace;color:var(--accent);background:rgba(22,163,74,.06);padding:3px 10px;border-radius:6px}
+  /* I/O Flow */
+  .stage-card .sc-flow{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+  .stage-card .sc-flow-box{padding:10px 12px;border-radius:8px;background:var(--bg-soft);border:1px solid var(--border);text-align:center}
   .stage-card .sc-flow-box.in{border-left:3px solid var(--blue)}
   .stage-card .sc-flow-box.out{border-left:3px solid var(--accent)}
-  .stage-card .sc-flow-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+  .stage-card .sc-flow-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
   .stage-card .sc-flow-box.in .sc-flow-label{color:var(--blue)}
   .stage-card .sc-flow-box.out .sc-flow-label{color:var(--accent)}
-  .stage-card .sc-flow-items{font-size:12px;color:var(--text-2);line-height:1.4}
-  .stage-card .sc-flow-arrow{text-align:center;font-size:16px;color:var(--accent);font-weight:700;line-height:1}
-  /* Roles — badge style */
-  .stage-card .sc-roles{border-top:1px solid var(--border);padding-top:10px;display:flex;flex-direction:column;gap:5px}
-  .stage-card .sc-role{font-size:11px;display:flex;align-items:center;gap:5px;line-height:1.4}
-  .stage-card .sc-role .r-icon{font-size:13px;flex-shrink:0}
-  .stage-card .sc-role .r-label{font-weight:700;white-space:nowrap;border-radius:5px;padding:2px 7px;font-size:10px}
-  .stage-card .sc-role .r-label.agent{background:rgba(59,130,246,.1);color:var(--blue)}
-  .stage-card .sc-role .r-label.human{background:rgba(139,92,246,.1);color:var(--purple)}
-  .stage-card .sc-role .r-desc{color:var(--text-2)}
+  .stage-card .sc-flow-items{font-size:14px;color:var(--text-2);line-height:1.5}
+  .stage-card .sc-flow-arrow{text-align:center;font-size:18px;color:var(--accent);font-weight:700;line-height:1}
+  /* Roles — strong visual blocks */
+  .stage-card .sc-roles{border-top:1px solid var(--border);padding-top:12px;display:flex;flex-direction:column;gap:6px}
+  .stage-card .sc-role{
+    display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;
+    font-size:13px;line-height:1.4;
+  }
+  .stage-card .sc-role.agent{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.15)}
+  .stage-card .sc-role.human{background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.15)}
+  .stage-card .sc-role .r-icon{font-size:16px;flex-shrink:0}
+  .stage-card .sc-role .r-label{font-weight:800;white-space:nowrap;font-size:12px;text-transform:uppercase;letter-spacing:.03em}
+  .stage-card .sc-role.agent .r-label{color:var(--blue)}
+  .stage-card .sc-role.human .r-label{color:var(--purple)}
+  .stage-card .sc-role .r-desc{color:var(--text-2);font-size:13px}
 
   /* ===================== KPI ===================== */
   .kpi-section{background:var(--bg-soft)}
@@ -155,8 +160,8 @@
           <div class="sc-flow-box out"><div class="sc-flow-label">📤 Output</div><div class="sc-flow-items"><code>CONTEXT.md</code></div></div>
         </div>
         <div class="sc-roles">
-          <div class="sc-role"><span class="r-icon">🤖</span><span class="r-label agent">Agent</span><span class="r-desc">Scans, CodeGraph</span></div>
-          <div class="sc-role"><span class="r-icon">👤</span><span class="r-label human">DEV</span><span class="r-desc">Reviews CONTEXT</span></div>
+          <div class="sc-role agent"><span class="r-icon">🤖</span><span class="r-label">Agent</span><span class="r-desc">Scans, CodeGraph</span></div>
+          <div class="sc-role human"><span class="r-icon">👤</span><span class="r-label">DEV</span><span class="r-desc">Reviews CONTEXT</span></div>
         </div>
       </div>
 
@@ -172,8 +177,8 @@
           <div class="sc-flow-box out"><div class="sc-flow-label">📤 Output</div><div class="sc-flow-items"><code>PRD</code> · <code>SPEC</code> · <code>DESIGN</code></div></div>
         </div>
         <div class="sc-roles">
-          <div class="sc-role"><span class="r-icon">🤖</span><span class="r-label agent">Agent</span><span class="r-desc">Interviews, specs</span></div>
-          <div class="sc-role"><span class="r-icon">👤</span><span class="r-label human">PM</span><span class="r-desc">Signs off PRD</span></div>
+          <div class="sc-role agent"><span class="r-icon">🤖</span><span class="r-label">Agent</span><span class="r-desc">Interviews, specs</span></div>
+          <div class="sc-role human"><span class="r-icon">👤</span><span class="r-label">PM</span><span class="r-desc">Signs off PRD</span></div>
         </div>
       </div>
 
@@ -189,8 +194,8 @@
           <div class="sc-flow-box out"><div class="sc-flow-label">📤 Output</div><div class="sc-flow-items"><code>TASKS.md</code> + BDD</div></div>
         </div>
         <div class="sc-roles">
-          <div class="sc-role"><span class="r-icon">🤖</span><span class="r-label agent">Agent</span><span class="r-desc">Decompose tasks</span></div>
-          <div class="sc-role"><span class="r-icon">👤</span><span class="r-label human">DEV</span><span class="r-desc">Signs off TASKS</span></div>
+          <div class="sc-role agent"><span class="r-icon">🤖</span><span class="r-label">Agent</span><span class="r-desc">Decompose tasks</span></div>
+          <div class="sc-role human"><span class="r-icon">👤</span><span class="r-label">DEV</span><span class="r-desc">Signs off TASKS</span></div>
         </div>
       </div>
 
@@ -206,8 +211,8 @@
           <div class="sc-flow-box out"><div class="sc-flow-label">📤 Output</div><div class="sc-flow-items"><code>src/</code> + <code>tests/</code></div></div>
         </div>
         <div class="sc-roles">
-          <div class="sc-role"><span class="r-icon">🤖</span><span class="r-label agent">Agent</span><span class="r-desc">TDD sandbox</span></div>
-          <div class="sc-role"><span class="r-icon">👤</span><span class="r-label human">DEV</span><span class="r-desc">Reviews code</span></div>
+          <div class="sc-role agent"><span class="r-icon">🤖</span><span class="r-label">Agent</span><span class="r-desc">TDD sandbox</span></div>
+          <div class="sc-role human"><span class="r-icon">👤</span><span class="r-label">DEV</span><span class="r-desc">Reviews code</span></div>
         </div>
       </div>
 
@@ -223,8 +228,8 @@
           <div class="sc-flow-box out"><div class="sc-flow-label">📤 Output</div><div class="sc-flow-items"><code>TEST-REPORT</code></div></div>
         </div>
         <div class="sc-roles">
-          <div class="sc-role"><span class="r-icon">🤖</span><span class="r-label agent">Agent</span><span class="r-desc">E2E + regression</span></div>
-          <div class="sc-role"><span class="r-icon">👤</span><span class="r-label human">QA</span><span class="r-desc">Signs off / blocks</span></div>
+          <div class="sc-role agent"><span class="r-icon">🤖</span><span class="r-label">Agent</span><span class="r-desc">E2E + regression</span></div>
+          <div class="sc-role human"><span class="r-icon">👤</span><span class="r-label">QA</span><span class="r-desc">Signs off / blocks</span></div>
         </div>
       </div>
 
@@ -240,8 +245,8 @@
           <div class="sc-flow-box out"><div class="sc-flow-label">📤 Output</div><div class="sc-flow-items"><code>REVIEW.md</code> 5-axis</div></div>
         </div>
         <div class="sc-roles">
-          <div class="sc-role"><span class="r-icon">🤖</span><span class="r-label agent">Agent</span><span class="r-desc">5-axis review</span></div>
-          <div class="sc-role"><span class="r-icon">👤</span><span class="r-label human">QA+DEV</span><span class="r-desc">Signs off REVIEW</span></div>
+          <div class="sc-role agent"><span class="r-icon">🤖</span><span class="r-label">Agent</span><span class="r-desc">5-axis review</span></div>
+          <div class="sc-role human"><span class="r-icon">👤</span><span class="r-label">QA+DEV</span><span class="r-desc">Signs off REVIEW</span></div>
         </div>
       </div>
 
@@ -257,8 +262,8 @@
           <div class="sc-flow-box out"><div class="sc-flow-label">📤 Output</div><div class="sc-flow-items"><code>CHANGELOG</code> + deploy</div></div>
         </div>
         <div class="sc-roles">
-          <div class="sc-role"><span class="r-icon">🤖</span><span class="r-label agent">Agent</span><span class="r-desc">CI + deploy</span></div>
-          <div class="sc-role"><span class="r-icon">👤</span><span class="r-label human">PM</span><span class="r-desc">Final gate</span></div>
+          <div class="sc-role agent"><span class="r-icon">🤖</span><span class="r-label">Agent</span><span class="r-desc">CI + deploy</span></div>
+          <div class="sc-role human"><span class="r-icon">👤</span><span class="r-label">PM</span><span class="r-desc">Final gate</span></div>
         </div>
       </div>
 
