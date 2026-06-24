@@ -10,35 +10,39 @@
 <link rel="stylesheet" href="html-ppt/tgd-pitch.css">
 <link rel="stylesheet" href="html-ppt/tgd-light.css" id="theme-link">
 <style>
-  /* Force single-slide viewport fit */
-  .tpl-tgd-pitch .slide { padding: 32px 56px 24px; justify-content: flex-start; overflow: hidden; }
+  /* Tighten slide padding to fit 100vh */
+  .tpl-tgd-pitch .slide { padding: 28px 56px 20px; justify-content: flex-start; }
   .deck { overflow: hidden; }
 
-  /* KPI row: chart left, 3 metrics right */
+  /* Pipeline step detail: I/O + roles inline */
+  .pipeline .step .detail {
+    display: block; font-size: 9px; color: var(--text-3); line-height: 1.4; margin-top: 4px;
+  }
+  .pipeline .step .detail code { font-size: 8px; }
+
+  /* KPI row */
   .kpi-row {
     display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: center;
-    margin-top: 18px; padding: 16px 24px; border-radius: 14px;
+    margin-top: 20px; padding: 18px 24px; border-radius: 14px;
     background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
   }
   .kpi-row .chart-wrap { max-width: 360px; }
   .kpi-row .chart-wrap svg { display: block; width: 100%; height: auto; }
   .kpi-row .kpi-divider { width: 1px; align-self: stretch; background: var(--border); }
-  .kpi-metrics { display: flex; gap: 24px; justify-content: center; }
+  .kpi-metrics { display: flex; gap: 28px; justify-content: center; }
   .kpi-metrics .km { text-align: center; }
   .kpi-metrics .km-n {
-    font-size: 32px; font-weight: 900; letter-spacing: -.03em;
+    font-size: 36px; font-weight: 900; letter-spacing: -.03em;
     background: var(--grad); -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent; line-height: 1;
   }
-  .kpi-metrics .km-l { font-size: 11px; color: var(--text-2); margin-top: 4px; font-weight: 600; }
+  .kpi-metrics .km-l { font-size: 12px; color: var(--text-2); margin-top: 4px; font-weight: 600; }
   .kpi-metrics .km-t {
     display: inline-block; font-size: 9px; font-weight: 700; text-transform: uppercase;
     letter-spacing: .06em; color: var(--accent); margin-top: 4px;
     background: rgba(22,163,74,.08); padding: 2px 8px; border-radius: 4px;
   }
-
-  /* Source note */
-  .source-note { font-size: 10px; color: var(--text-3); margin-top: 8px; text-align: center; }
+  .source-note { font-size: 10px; color: var(--text-3); margin-top: 6px; }
 </style>
 </head>
 <body class="tpl-tgd-pitch" data-theme="tgd-light">
@@ -46,7 +50,7 @@
 
   <section class="slide is-active" data-title="Pipeline Overview">
     <!-- Brand + pills -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
       <div style="display:flex;align-items:center;gap:10px">
         <span class="brand-dot"></span><span class="brand">tGD</span>
         <span class="gradient-text" style="font-size:16px;font-weight:700;margin-left:4px">The Agentic PDLC Harness</span>
@@ -60,64 +64,53 @@
     </div>
 
     <!-- Tagline -->
-    <p style="text-align:center;font-size:17px;color:var(--text-2);margin:0 0 16px;line-height:1.5">
-      <span class="gradient-text" style="font-weight:800;font-size:19px">Your PDLC was built for humans. Now agents do the work.</span><br>
+    <p style="text-align:center;font-size:16px;color:var(--text-2);margin:0 0 14px;line-height:1.5">
+      <span class="gradient-text" style="font-weight:800;font-size:18px">Your PDLC was built for humans. Now agents do the work.</span><br>
       tGD transforms your existing workflow into an <b>agentic PDLC pipeline</b> — same gates, same accountability, 10× the velocity.
     </p>
 
     <!-- 7-Step Pipeline -->
-    <div class="pipeline" style="justify-content:center;margin-top:12px">
-      <div class="step"><span class="icon">🗺️</span><span class="name">Map</span><span class="cmd">/tgd-map</span></div>
-      <span class="arrow">→</span>
-      <div class="step"><span class="icon">📋</span><span class="name">Define</span><span class="cmd">/tgd-define</span></div>
-      <span class="arrow">→</span>
-      <div class="step"><span class="icon">📐</span><span class="name">Plan</span><span class="cmd">/tgd-plan</span></div>
-      <span class="arrow">→</span>
-      <div class="step"><span class="icon">⚡</span><span class="name">Develop</span><span class="cmd">/tgd-develop</span></div>
-      <span class="arrow">→</span>
-      <div class="step gate"><span class="icon">🧪</span><span class="name">Verify</span><span class="cmd">/tgd-verify</span></div>
-      <span class="arrow">→</span>
-      <div class="step"><span class="icon">🔎</span><span class="name">Review</span><span class="cmd">/tgd-review</span></div>
-      <span class="arrow">→</span>
-      <div class="step"><span class="icon">🚀</span><span class="name">Ship</span><span class="cmd">/tgd-ship</span></div>
-    </div>
-
-    <!-- I/O Detail Grid -->
-    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:14px">
-      <div class="card" style="padding:10px 8px;text-align:center">
-        <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px">📥 → 📤</div>
-        <div style="font-size:10px;color:var(--text-2)">Source code<br>→ <code style="font-size:9px">CONTEXT.md</code></div>
+    <div class="pipeline" style="justify-content:center;margin-top:8px">
+      <div class="step">
+        <span class="icon">🗺️</span><span class="name">Map</span><span class="cmd">/tgd-map</span>
+        <span class="detail"><code>CONTEXT.md</code></span>
       </div>
-      <div class="card" style="padding:10px 8px;text-align:center">
-        <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px">📥 → 📤</div>
-        <div style="font-size:10px;color:var(--text-2)"><code style="font-size:9px">CONTEXT</code> + intent<br>→ <code style="font-size:9px">PRD</code> <code style="font-size:9px">SPEC</code> <code style="font-size:9px">DESIGN</code></div>
+      <span class="arrow">→</span>
+      <div class="step">
+        <span class="icon">📋</span><span class="name">Define</span><span class="cmd">/tgd-define</span>
+        <span class="detail"><code>PRD</code> <code>SPEC</code> <code>DESIGN</code></span>
       </div>
-      <div class="card" style="padding:10px 8px;text-align:center">
-        <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px">📥 → 📤</div>
-        <div style="font-size:10px;color:var(--text-2)"><code style="font-size:9px">CONTEXT</code>·<code style="font-size:9px">PRD</code>·<code style="font-size:9px">SPEC</code><br>→ <code style="font-size:9px">TASKS.md</code> + BDD</div>
+      <span class="arrow">→</span>
+      <div class="step">
+        <span class="icon">📐</span><span class="name">Plan</span><span class="cmd">/tgd-plan</span>
+        <span class="detail"><code>TASKS.md</code> + BDD</span>
       </div>
-      <div class="card" style="padding:10px 8px;text-align:center">
-        <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px">📥 → 📤</div>
-        <div style="font-size:10px;color:var(--text-2)"><code style="font-size:9px">TASKS</code>·<code style="font-size:9px">SPEC</code> + code<br>→ <code style="font-size:9px">src/</code> + <code style="font-size:9px">tests/</code></div>
+      <span class="arrow">→</span>
+      <div class="step">
+        <span class="icon">⚡</span><span class="name">Develop</span><span class="cmd">/tgd-develop</span>
+        <span class="detail"><code>src/</code> <code>tests/</code></span>
       </div>
-      <div class="card" style="padding:10px 8px;text-align:center;border-color:rgba(239,68,68,.2)">
-        <div style="font-size:11px;font-weight:700;color:#ef4444;margin-bottom:4px">📥 → 📤</div>
-        <div style="font-size:10px;color:var(--text-2)"><code style="font-size:9px">src/</code> <code style="font-size:9px">tests/</code> + catalog<br>→ <code style="font-size:9px">TEST-REPORT</code></div>
+      <span class="arrow">→</span>
+      <div class="step gate">
+        <span class="icon">🧪</span><span class="name">Verify</span><span class="cmd">/tgd-verify</span>
+        <span class="detail"><code>TEST-REPORT</code></span>
       </div>
-      <div class="card" style="padding:10px 8px;text-align:center">
-        <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px">📥 → 📤</div>
-        <div style="font-size:10px;color:var(--text-2)"><code style="font-size:9px">src/</code> <code style="font-size:9px">TEST-REPORT</code><br>→ <code style="font-size:9px">REVIEW.md</code> 5-axis</div>
+      <span class="arrow">→</span>
+      <div class="step">
+        <span class="icon">🔎</span><span class="name">Review</span><span class="cmd">/tgd-review</span>
+        <span class="detail"><code>REVIEW.md</code></span>
       </div>
-      <div class="card" style="padding:10px 8px;text-align:center">
-        <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px">📥 → 📤</div>
-        <div style="font-size:10px;color:var(--text-2)">All signed-off<br>→ <code style="font-size:9px">CHANGELOG</code> + deploy</div>
+      <span class="arrow">→</span>
+      <div class="step">
+        <span class="icon">🚀</span><span class="name">Ship</span><span class="cmd">/tgd-ship</span>
+        <span class="detail"><code>CHANGELOG</code></span>
       </div>
     </div>
 
     <!-- KPI Impact Row -->
     <div class="kpi-row">
       <div style="text-align:center">
-        <div style="font-size:12px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">📈 Projected Impact</div>
+        <div style="font-size:12px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">📈 Projected Impact: Features Shipped per Sprint</div>
         <div class="chart-wrap">
           <svg viewBox="0 0 340 100" preserveAspectRatio="xMidYMid meet">
             <defs>
@@ -125,10 +118,8 @@
                 <stop offset="0%" stop-color="#16a34a"/><stop offset="100%" stop-color="#0d9488"/>
               </linearGradient>
             </defs>
-            <!-- baseline -->
             <line x1="20" y1="48" x2="320" y2="48" stroke="#d0d3dc" stroke-width=".8" stroke-dasharray="4,3"/>
             <text x="22" y="44" font-size="7" fill="#8a90ad" font-weight="600" font-family="Inter,sans-serif">PRE-tGD</text>
-            <!-- bars: y=8 (top) to y=88 (bottom), range=80px -->
             <rect x="35" y="75" width="36" height="13" rx="2" fill="#e8eaf0" stroke="#d0d3dc" stroke-width=".5"/>
             <text x="53" y="72" text-anchor="middle" font-size="9" font-weight="800" fill="#4a5070" font-family="Inter,sans-serif">2-3</text>
             <text x="53" y="96" text-anchor="middle" font-size="7" fill="#8a90ad" font-family="Inter,sans-serif">Before</text>
@@ -147,7 +138,7 @@
             <text x="293" y="96" text-anchor="middle" font-size="7" fill="#8a90ad" font-family="Inter,sans-serif">Steady State</text>
           </svg>
         </div>
-        <div class="source-note">Features shipped per sprint · Estimated from AI-augmented engineering benchmarks</div>
+        <div class="source-note">Estimated from AI-augmented engineering benchmarks · <a href="https://www.anthropic.com/institute/recursive-self-improvement" style="color:var(--accent)" target="_blank" rel="noopener">Anthropic Research</a></div>
       </div>
 
       <div class="kpi-divider"></div>
@@ -175,12 +166,11 @@
     <div class="deck-footer" style="display:flex;justify-content:space-between;align-items:center">
       <div>
         <a href="https://github.com/openclawyhwang-hub/tGD" style="color:var(--accent)">github.com/openclawyhwang-hub/tGD</a>
-        <span style="margin:0 8px">·</span> MIT
-        <span style="margin:0 8px">·</span> CalVer 2026
+        · MIT · CalVer 2026
       </div>
       <div style="display:flex;align-items:center;gap:12px">
         <span style="font-weight:600">Same gates. 10× velocity.</span>
-        <a href="https://github.com/openclawyhwang-hub/tGD#getting-started" class="cta-btn" style="padding:6px 16px;border-radius:7px;background:var(--grad);color:#fff;font-weight:700;font-size:12px;text-decoration:none" target="_blank" rel="noopener">Get Started →</a>
+        <a href="https://github.com/openclawyhwang-hub/tGD#getting-started" style="padding:6px 16px;border-radius:7px;background:var(--grad);color:#fff;font-weight:700;font-size:12px;text-decoration:none" target="_blank" rel="noopener">Get Started →</a>
       </div>
     </div>
   </section>
