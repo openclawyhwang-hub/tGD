@@ -65,36 +65,38 @@
   .pipeline-flow .step.gate{border-color:rgba(239,68,68,.3)}
   .pipeline-flow .step.gate .name{color:var(--red)}
 
-  /* Stage Cards Grid */
-  .stage-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+  /* Stage Cards Grid — 7 in a row */
+  .stage-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;overflow-x:auto}
+  @media(max-width:1100px){.stage-grid{grid-template-columns:repeat(4,1fr)}}
+  @media(max-width:700px){.stage-grid{grid-template-columns:repeat(2,1fr)}}
   .stage-card{
-    padding:20px;border-radius:var(--radius);background:var(--surface);
+    padding:16px 12px;border-radius:var(--radius);background:var(--surface);
     border:1px solid var(--border);box-shadow:var(--shadow);
-    transition:transform .2s,box-shadow .2s;
+    transition:transform .2s,box-shadow .2s;min-width:0;
   }
   .stage-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
-  .stage-card .sc-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-  .stage-card .sc-icon{font-size:1.6rem}
-  .stage-card .sc-name{font-size:18px;font-weight:800}
-  .stage-card .sc-cmd{font-size:11px;font-family:'SF Mono','Menlo',monospace;color:var(--accent);background:rgba(22,163,74,.06);padding:2px 8px;border-radius:6px;margin-left:auto}
-  /* I/O Flow — horizontal layout */
-  .stage-card .sc-flow{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-  .stage-card .sc-flow-box{flex:1;padding:8px 10px;border-radius:8px;background:var(--bg-soft);border:1px solid var(--border)}
+  .stage-card .sc-header{display:flex;flex-direction:column;align-items:center;gap:4px;margin-bottom:10px;text-align:center}
+  .stage-card .sc-icon{font-size:1.4rem}
+  .stage-card .sc-name{font-size:15px;font-weight:800}
+  .stage-card .sc-cmd{font-size:10px;font-family:'SF Mono','Menlo',monospace;color:var(--accent);background:rgba(22,163,74,.06);padding:2px 6px;border-radius:5px}
+  /* I/O Flow — vertical compact */
+  .stage-card .sc-flow{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+  .stage-card .sc-flow-box{padding:6px 8px;border-radius:6px;background:var(--bg-soft);border:1px solid var(--border);text-align:center}
   .stage-card .sc-flow-box.in{border-left:3px solid var(--blue)}
   .stage-card .sc-flow-box.out{border-left:3px solid var(--accent)}
-  .stage-card .sc-flow-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+  .stage-card .sc-flow-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
   .stage-card .sc-flow-box.in .sc-flow-label{color:var(--blue)}
   .stage-card .sc-flow-box.out .sc-flow-label{color:var(--accent)}
-  .stage-card .sc-flow-items{font-size:13px;color:var(--text-2);line-height:1.5}
-  .stage-card .sc-flow-arrow{font-size:16px;color:var(--accent);font-weight:700;flex-shrink:0}
-  /* Roles */
-  .stage-card .sc-roles{border-top:1px solid var(--border);padding-top:10px}
-  .stage-card .sc-role{font-size:12px;color:var(--text-3);line-height:1.6;display:flex;align-items:baseline;gap:4px}
-  .stage-card .sc-role .ra{color:var(--blue);font-weight:600;white-space:nowrap}
-  .stage-card .sc-role .rh{color:var(--purple);font-weight:600;white-space:nowrap}
-  .stage-card .sc-role .rd{color:var(--text-2)}
-  .stage-card.gate{border-color:rgba(239,68,68,.2)}
-  .stage-card.gate .sc-name{color:var(--red)}
+  .stage-card .sc-flow-items{font-size:11px;color:var(--text-2);line-height:1.4}
+  .stage-card .sc-flow-arrow{text-align:center;font-size:14px;color:var(--accent);font-weight:700;line-height:1}
+  /* Roles — badge style */
+  .stage-card .sc-roles{border-top:1px solid var(--border);padding-top:8px;display:flex;flex-direction:column;gap:4px}
+  .stage-card .sc-role{font-size:10px;display:flex;align-items:center;gap:4px;line-height:1.4}
+  .stage-card .sc-role .r-icon{font-size:12px;flex-shrink:0}
+  .stage-card .sc-role .r-label{font-weight:700;white-space:nowrap;border-radius:4px;padding:1px 5px;font-size:9px}
+  .stage-card .sc-role .r-label.agent{background:rgba(59,130,246,.1);color:var(--blue)}
+  .stage-card .sc-role .r-label.human{background:rgba(139,92,246,.1);color:var(--purple)}
+  .stage-card .sc-role .r-desc{color:var(--text-2)}
 
   /* ===================== KPI ===================== */
   .kpi-section{background:var(--bg-soft)}
@@ -184,8 +186,8 @@
           <div class="sc-flow-box out"><div class="sc-flow-label">📤 Output</div><div class="sc-flow-items"><code>CONTEXT.md</code></div></div>
         </div>
         <div class="sc-roles">
-          <div class="sc-role"><span class="ra">🤖 Agent</span> <span class="rd">Scans codebase, builds CodeGraph</span></div>
-          <div class="sc-role"><span class="rh">👤 DEV</span> <span class="rd">Reviews CONTEXT.md</span></div>
+          <div class="sc-role"><span class="r-icon">🤖</span><span class="r-label agent">Agent</span><span class="r-desc">Scans, CodeGraph</span></div>
+          <div class="sc-role"><span class="r-icon">👤</span><span class="r-label human">DEV</span><span class="r-desc">Reviews CONTEXT</span></div>
         </div>
       </div>
 
@@ -198,11 +200,11 @@
         <div class="sc-flow">
           <div class="sc-flow-box in"><div class="sc-flow-label">📥 Input</div><div class="sc-flow-items"><code>CONTEXT.md</code> + intent</div></div>
           <div class="sc-flow-arrow">→</div>
-          <div class="sc-flow-box out"><div class="sc-flow-label">📤 Output</div><div class="sc-flow-items"><code>PRD.md</code> · <code>SPEC.md</code> · <code>DESIGN.md</code> <span style="font-size:10px;color:var(--text-3)">(if UI)</span></div></div>
+          <div class="sc-flow-box out"><div class="sc-flow-label">📤 Output</div><div class="sc-flow-items"><code>PRD</code> · <code>SPEC</code> · <code>DESIGN</code></div></div>
         </div>
         <div class="sc-roles">
-          <div class="sc-role"><span class="ra">🤖 Agent</span> <span class="rd">Interviews user, drafts specs</span></div>
-          <div class="sc-role"><span class="rh">👤 PM</span> <span class="rd">Signs off PRD + SPEC</span></div>
+          <div class="sc-role"><span class="r-icon">🤖</span><span class="r-label agent">Agent</span><span class="r-desc">Interviews, specs</span></div>
+          <div class="sc-role"><span class="r-icon">👤</span><span class="r-label human">PM</span><span class="r-desc">Signs off PRD</span></div>
         </div>
       </div>
 
@@ -215,11 +217,11 @@
         <div class="sc-flow">
           <div class="sc-flow-box in"><div class="sc-flow-label">📥 Input</div><div class="sc-flow-items"><code>CONTEXT</code> · <code>PRD</code> · <code>SPEC</code></div></div>
           <div class="sc-flow-arrow">→</div>
-          <div class="sc-flow-box out"><div class="sc-flow-label">📤 Output</div><div class="sc-flow-items"><code>TASKS.md</code> + BDD AC</div></div>
+          <div class="sc-flow-box out"><div class="sc-flow-label">📤 Output</div><div class="sc-flow-items"><code>TASKS.md</code> + BDD</div></div>
         </div>
         <div class="sc-roles">
-          <div class="sc-role"><span class="ra">🤖 Agent</span> <span class="rd">Triple-source decomposition</span></div>
-          <div class="sc-role"><span class="rh">👤 DEV</span> <span class="rd">Signs off TASKS.md</span></div>
+          <div class="sc-role"><span class="r-icon">🤖</span><span class="r-label agent">Agent</span><span class="r-desc">Decompose tasks</span></div>
+          <div class="sc-role"><span class="r-icon">👤</span><span class="r-label human">DEV</span><span class="r-desc">Signs off TASKS</span></div>
         </div>
       </div>
 
@@ -230,13 +232,13 @@
           <span class="sc-cmd">/tgd-develop</span>
         </div>
         <div class="sc-flow">
-          <div class="sc-flow-box in"><div class="sc-flow-label">📥 Input</div><div class="sc-flow-items"><code>TASKS</code> · <code>SPEC</code> + codebase</div></div>
+          <div class="sc-flow-box in"><div class="sc-flow-label">📥 Input</div><div class="sc-flow-items"><code>TASKS</code> · <code>SPEC</code> + code</div></div>
           <div class="sc-flow-arrow">→</div>
           <div class="sc-flow-box out"><div class="sc-flow-label">📤 Output</div><div class="sc-flow-items"><code>src/</code> + <code>tests/</code></div></div>
         </div>
         <div class="sc-roles">
-          <div class="sc-role"><span class="ra">🤖 Agent</span> <span class="rd">TDD in worktree sandbox</span></div>
-          <div class="sc-role"><span class="rh">👤 DEV</span> <span class="rd">Reviews code, signs off</span></div>
+          <div class="sc-role"><span class="r-icon">🤖</span><span class="r-label agent">Agent</span><span class="r-desc">TDD sandbox</span></div>
+          <div class="sc-role"><span class="r-icon">👤</span><span class="r-label human">DEV</span><span class="r-desc">Reviews code</span></div>
         </div>
       </div>
 
@@ -249,11 +251,11 @@
         <div class="sc-flow">
           <div class="sc-flow-box in"><div class="sc-flow-label">📥 Input</div><div class="sc-flow-items"><code>src/</code> · <code>tests/</code> + catalog</div></div>
           <div class="sc-flow-arrow">→</div>
-          <div class="sc-flow-box out"><div class="sc-flow-label">📤 Output</div><div class="sc-flow-items"><code>TEST-REPORT.md</code></div></div>
+          <div class="sc-flow-box out"><div class="sc-flow-label">📤 Output</div><div class="sc-flow-items"><code>TEST-REPORT</code></div></div>
         </div>
         <div class="sc-roles">
-          <div class="sc-role"><span class="ra">🤖 Agent</span> <span class="rd">All tests + E2E + regression</span></div>
-          <div class="sc-role"><span class="rh">👤 QA</span> <span class="rd">Signs off or blocks</span></div>
+          <div class="sc-role"><span class="r-icon">🤖</span><span class="r-label agent">Agent</span><span class="r-desc">E2E + regression</span></div>
+          <div class="sc-role"><span class="r-icon">👤</span><span class="r-label human">QA</span><span class="r-desc">Signs off / blocks</span></div>
         </div>
       </div>
 
@@ -264,13 +266,13 @@
           <span class="sc-cmd">/tgd-review</span>
         </div>
         <div class="sc-flow">
-          <div class="sc-flow-box in"><div class="sc-flow-label">📥 Input</div><div class="sc-flow-items"><code>src/</code> · <code>TEST-REPORT.md</code></div></div>
+          <div class="sc-flow-box in"><div class="sc-flow-label">📥 Input</div><div class="sc-flow-items"><code>src/</code> · <code>TEST-REPORT</code></div></div>
           <div class="sc-flow-arrow">→</div>
-          <div class="sc-flow-box out"><div class="sc-flow-label">📤 Output</div><div class="sc-flow-items"><code>REVIEW.md</code> — 5-axis</div></div>
+          <div class="sc-flow-box out"><div class="sc-flow-label">📤 Output</div><div class="sc-flow-items"><code>REVIEW.md</code> 5-axis</div></div>
         </div>
         <div class="sc-roles">
-          <div class="sc-role"><span class="ra">🤖 Agent</span> <span class="rd">5-axis code review</span></div>
-          <div class="sc-role"><span class="rh">👤 QA + DEV</span> <span class="rd">Signs off REVIEW</span></div>
+          <div class="sc-role"><span class="r-icon">🤖</span><span class="r-label agent">Agent</span><span class="r-desc">5-axis review</span></div>
+          <div class="sc-role"><span class="r-icon">👤</span><span class="r-label human">QA+DEV</span><span class="r-desc">Signs off REVIEW</span></div>
         </div>
       </div>
 
@@ -281,13 +283,13 @@
           <span class="sc-cmd">/tgd-ship</span>
         </div>
         <div class="sc-flow">
-          <div class="sc-flow-box in"><div class="sc-flow-label">📥 Input</div><div class="sc-flow-items">All signed-off artifacts</div></div>
+          <div class="sc-flow-box in"><div class="sc-flow-label">📥 Input</div><div class="sc-flow-items">All signed-off</div></div>
           <div class="sc-flow-arrow">→</div>
-          <div class="sc-flow-box out"><div class="sc-flow-label">📤 Output</div><div class="sc-flow-items"><code>CHANGELOG.md</code> + deploy</div></div>
+          <div class="sc-flow-box out"><div class="sc-flow-label">📤 Output</div><div class="sc-flow-items"><code>CHANGELOG</code> + deploy</div></div>
         </div>
         <div class="sc-roles">
-          <div class="sc-role"><span class="ra">🤖 Agent</span> <span class="rd">Commit → CI → deploy</span></div>
-          <div class="sc-role"><span class="rh">👤 PM</span> <span class="rd">Final sign-off gate</span></div>
+          <div class="sc-role"><span class="r-icon">🤖</span><span class="r-label agent">Agent</span><span class="r-desc">CI + deploy</span></div>
+          <div class="sc-role"><span class="r-icon">👤</span><span class="r-label human">PM</span><span class="r-desc">Final gate</span></div>
         </div>
       </div>
 
