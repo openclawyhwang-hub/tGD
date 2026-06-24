@@ -10,244 +10,181 @@
 <link rel="stylesheet" href="html-ppt/tgd-pitch.css">
 <link rel="stylesheet" href="html-ppt/tgd-light.css" id="theme-link">
 <style>
-  /* === Single-page one-pager — everything fits in 100vh === */
-  body.single .slide { padding: 28px 40px 20px; justify-content: flex-start; }
+  /* Force single-slide viewport fit */
+  .tpl-tgd-pitch .slide { padding: 32px 56px 24px; justify-content: flex-start; overflow: hidden; }
   .deck { overflow: hidden; }
 
-  /* Brand row */
-  .brand-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:6px; }
-  .brand-row .brand { font-weight:800; font-size:18px; }
-  .brand-row .tagline { font-size:14px; font-weight:700; margin-left:4px; }
-  .brand-pills { display:flex; gap:6px; }
-  .brand-pills .pill { font-size:11px; padding:3px 10px; }
-
-  /* Intro — single line */
-  .intro-bar {
-    text-align:center; padding:10px 32px; margin-bottom:12px; border-radius:10px;
-    font-size:15px; color:var(--text-2); line-height:1.5;
-    background: linear-gradient(135deg, rgba(22,163,74,.06), rgba(13,148,136,.04));
-    border: 1px solid rgba(22,163,74,.12);
+  /* KPI row: chart left, 3 metrics right */
+  .kpi-row {
+    display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: center;
+    margin-top: 18px; padding: 16px 24px; border-radius: 14px;
+    background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
   }
-  .intro-bar .hl {
-    background:var(--grad); -webkit-background-clip:text; background-clip:text;
-    -webkit-text-fill-color:transparent; font-weight:800;
+  .kpi-row .chart-wrap { max-width: 360px; }
+  .kpi-row .chart-wrap svg { display: block; width: 100%; height: auto; }
+  .kpi-row .kpi-divider { width: 1px; align-self: stretch; background: var(--border); }
+  .kpi-metrics { display: flex; gap: 24px; justify-content: center; }
+  .kpi-metrics .km { text-align: center; }
+  .kpi-metrics .km-n {
+    font-size: 32px; font-weight: 900; letter-spacing: -.03em;
+    background: var(--grad); -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; line-height: 1;
   }
-
-  /* 7-column pipeline grid */
-  .pipe-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; margin-bottom:12px; }
-  @media (max-width:1200px) { .pipe-grid { grid-template-columns:repeat(4,1fr); } }
-  @media (max-width:768px)  { .pipe-grid { grid-template-columns:repeat(2,1fr); } }
-  .sc { padding:12px 10px; border-radius:10px; background:#fff; border:1px solid rgba(0,0,0,.06);
-        box-shadow:0 1px 2px rgba(0,0,0,.04); transition:transform .2s,box-shadow .2s; }
-  .sc:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(22,163,74,.1); }
-  .sc .sc-icon { font-size:1.3rem; margin-bottom:4px; }
-  .sc .sc-name { font-size:13px; font-weight:800; color:var(--text-1); margin-bottom:1px; }
-  .sc .sc-cmd  { font-size:10px; font-family:'SF Mono','Menlo',monospace; color:var(--accent); margin-bottom:6px; }
-  .sc .sc-io   { font-size:10px; color:var(--text-2); line-height:1.4; }
-  .sc .sc-io b { font-size:8px; text-transform:uppercase; letter-spacing:.06em; display:block; margin-bottom:1px; }
-  .sc .sc-io .in { color:#3b82f6; }
-  .sc .sc-io .out { color:var(--accent); }
-  .sc .sc-io code { font-size:9px; padding:0 3px; }
-  .sc .sc-roles { margin-top:6px; padding-top:5px; border-top:1px solid var(--border); font-size:9px; color:var(--text-3); line-height:1.5; }
-  .sc .sc-roles .ra { color:#3b82f6; font-weight:600; }
-  .sc .sc-roles .rh { color:#8b5cf6; font-weight:600; }
-
-  /* Arrow connectors (desktop only) */
-  @media (min-width:1201px) {
-    .pipe-grid { position:relative; }
-    .sc { position:relative; }
-    .sc:not(:last-child)::after {
-      content:'→'; position:absolute; right:-12px; top:50%; transform:translateY(-50%);
-      font-size:14px; color:var(--accent); font-weight:700; z-index:2;
-    }
+  .kpi-metrics .km-l { font-size: 11px; color: var(--text-2); margin-top: 4px; font-weight: 600; }
+  .kpi-metrics .km-t {
+    display: inline-block; font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--accent); margin-top: 4px;
+    background: rgba(22,163,74,.08); padding: 2px 8px; border-radius: 4px;
   }
 
-  /* === KPI Bar — horizontal layout, all in one row === */
-  .kpi-bar {
-    display:flex; align-items:center; gap:16px;
-    padding:14px 18px; border-radius:12px;
-    background:#fff; border:1px solid rgba(0,0,0,.06); box-shadow:0 1px 3px rgba(0,0,0,.05);
-    margin-bottom:10px;
-  }
-  .kpi-bar .kpi-title {
-    font-size:11px; font-weight:700; color:var(--text-2); text-transform:uppercase;
-    letter-spacing:.05em; white-space:nowrap; min-width:100px;
-  }
-  .kpi-bar .kpi-chart-wrap { flex:1; max-width:340px; }
-  .kpi-bar .kpi-chart-wrap svg { display:block; width:100%; height:auto; }
-  .kpi-bar .kpi-metrics {
-    display:flex; gap:14px; flex:1; justify-content:flex-end;
-  }
-  .kpi-bar .km { text-align:center; min-width:80px; }
-  .kpi-bar .km .km-n {
-    font-size:22px; font-weight:900; letter-spacing:-.03em;
-    background:var(--grad); -webkit-background-clip:text; background-clip:text;
-    -webkit-text-fill-color:transparent; line-height:1;
-  }
-  .kpi-bar .km .km-l { font-size:10px; color:var(--text-2); margin-top:2px; }
-  .kpi-bar .km .km-t {
-    display:inline-block; font-size:8px; font-weight:700; text-transform:uppercase;
-    letter-spacing:.06em; color:var(--accent); margin-top:2px;
-    background:rgba(22,163,74,.08); padding:1px 5px; border-radius:3px;
-  }
-
-  /* Divider */
-  .kpi-divider { width:1px; align-self:stretch; background:var(--border); margin:0 4px; }
-
-  /* Footer */
-  .footer-row {
-    display:flex; justify-content:space-between; align-items:center;
-    font-size:12px; color:var(--text-3);
-  }
-  .footer-row a { color:var(--accent); }
-  .cta-btn {
-    display:inline-block; padding:6px 16px; border-radius:7px;
-    background:var(--grad); color:#fff; font-weight:700; font-size:12px;
-    text-decoration:none; transition:transform .2s,box-shadow .2s;
-  }
-  .cta-btn:hover { transform:translateY(-1px); box-shadow:0 4px 14px rgba(22,163,74,.25); text-decoration:none; }
+  /* Source note */
+  .source-note { font-size: 10px; color: var(--text-3); margin-top: 8px; text-align: center; }
 </style>
 </head>
-<body class="tpl-tgd-pitch single" data-theme="tgd-light">
+<body class="tpl-tgd-pitch" data-theme="tgd-light">
 <div class="deck">
-<section class="slide is-active" data-title="Pipeline Overview">
 
-  <!-- Brand -->
-  <div class="brand-row">
-    <div style="display:flex;align-items:center;gap:8px">
-      <span class="brand-dot"></span><span class="brand">tGD</span>
-      <span class="gradient-text tagline">The Agentic PDLC Harness</span>
-    </div>
-    <div class="brand-pills">
-      <span class="pill pill-accent">🏗️ 28 Skills</span>
-      <span class="pill pill-accent">🔄 7 Stages</span>
-      <span class="pill pill-accent">👤 3 Roles</span>
-      <span class="pill pill-accent">🖥️ 5 Platforms</span>
-    </div>
-  </div>
-
-  <!-- Intro -->
-  <div class="intro-bar">
-    <span class="hl">Your PDLC was built for humans. Now agents do the work.</span>
-    tGD transforms your workflow into an <b>agentic PDLC pipeline</b> — same gates, same accountability, 10× the velocity.
-  </div>
-
-  <!-- 7-Stage Pipeline -->
-  <div class="pipe-grid">
-    <div class="sc">
-      <div class="sc-icon">🗺️</div><div class="sc-name">Map</div><div class="sc-cmd">/tgd-map</div>
-      <div class="sc-io"><b class="in">📥 In</b>Source code</div>
-      <div class="sc-io"><b class="out">📤 Out</b><code>CONTEXT.md</code></div>
-      <div class="sc-roles"><span class="ra">🤖</span> Scan + CodeGraph · <span class="rh">👤 DEV</span> Review</div>
-    </div>
-    <div class="sc">
-      <div class="sc-icon">📋</div><div class="sc-name">Define</div><div class="sc-cmd">/tgd-define</div>
-      <div class="sc-io"><b class="in">📥 In</b><code>CONTEXT</code> + intent</div>
-      <div class="sc-io"><b class="out">📤 Out</b><code>PRD</code> <code>SPEC</code> <code>DESIGN</code></div>
-      <div class="sc-roles"><span class="ra">🤖</span> Interview + spec · <span class="rh">👤 PM</span> Sign-off</div>
-    </div>
-    <div class="sc">
-      <div class="sc-icon">📐</div><div class="sc-name">Plan</div><div class="sc-cmd">/tgd-plan</div>
-      <div class="sc-io"><b class="in">📥 In</b><code>CONTEXT</code> · <code>PRD</code> · <code>SPEC</code></div>
-      <div class="sc-io"><b class="out">📤 Out</b><code>TASKS.md</code> + BDD AC</div>
-      <div class="sc-roles"><span class="ra">🤖</span> Decompose · <span class="rh">👤 DEV</span> Sign-off</div>
-    </div>
-    <div class="sc">
-      <div class="sc-icon">⚡</div><div class="sc-name">Develop</div><div class="sc-cmd">/tgd-develop</div>
-      <div class="sc-io"><b class="in">📥 In</b><code>TASKS</code> · <code>SPEC</code> + code</div>
-      <div class="sc-io"><b class="out">📤 Out</b><code>src/</code> + <code>tests/</code></div>
-      <div class="sc-roles"><span class="ra">🤖</span> TDD sandbox · <span class="rh">👤 DEV</span> Review</div>
-    </div>
-    <div class="sc">
-      <div class="sc-icon">🧪</div><div class="sc-name">Verify</div><div class="sc-cmd">/tgd-verify</div>
-      <div class="sc-io"><b class="in">📥 In</b><code>src/</code> <code>tests/</code> + catalog</div>
-      <div class="sc-io"><b class="out">📤 Out</b><code>TEST-REPORT.md</code></div>
-      <div class="sc-roles"><span class="ra">🤖</span> E2E + regression · <span class="rh">👤 QA</span> Sign-off</div>
-    </div>
-    <div class="sc">
-      <div class="sc-icon">🔎</div><div class="sc-name">Review</div><div class="sc-cmd">/tgd-review</div>
-      <div class="sc-io"><b class="in">📥 In</b><code>src/</code> <code>TEST-REPORT</code></div>
-      <div class="sc-io"><b class="out">📤 Out</b><code>REVIEW.md</code> 5-axis</div>
-      <div class="sc-roles"><span class="ra">🤖</span> 5-axis review · <span class="rh">👤 QA+DEV</span> Sign-off</div>
-    </div>
-    <div class="sc">
-      <div class="sc-icon">🚀</div><div class="sc-name">Ship</div><div class="sc-cmd">/tgd-ship</div>
-      <div class="sc-io"><b class="in">📥 In</b>All signed-off</div>
-      <div class="sc-io"><b class="out">📤 Out</b><code>CHANGELOG</code> + deploy</div>
-      <div class="sc-roles"><span class="ra">🤖</span> CI + deploy · <span class="rh">👤 PM</span> Final gate</div>
-    </div>
-  </div>
-
-  <!-- KPI Impact Bar -->
-  <div class="kpi-bar">
-    <div class="kpi-title">📈 Projected<br>Impact</div>
-
-    <div class="kpi-chart-wrap">
-      <svg viewBox="0 0 340 110" preserveAspectRatio="xMidYMid meet">
-        <defs>
-          <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#16a34a"/><stop offset="100%" stop-color="#0d9488"/>
-          </linearGradient>
-        </defs>
-        <!-- baseline -->
-        <line x1="20" y1="52" x2="320" y2="52" stroke="#d0d3dc" stroke-width=".8" stroke-dasharray="4,3"/>
-        <text x="22" y="48" font-size="7" fill="#8a90ad" font-weight="600" font-family="Inter,sans-serif">PRE-tGD</text>
-        <!-- bars: y=10 (top=15) to y=90 (bottom=0), height=80px -->
-        <!-- Before: 2.5/15*80=13 -->
-        <rect x="35" y="77" width="36" height="13" rx="2" fill="#e8eaf0" stroke="#d0d3dc" stroke-width=".5"/>
-        <text x="53" y="74" text-anchor="middle" font-size="9" font-weight="800" fill="#4a5070" font-family="Inter,sans-serif">2-3</text>
-        <text x="53" y="100" text-anchor="middle" font-size="7" fill="#8a90ad" font-family="Inter,sans-serif">Before</text>
-        <!-- M1: 4.5/15*80=24 -->
-        <rect x="95" y="66" width="36" height="24" rx="2" fill="url(#bg)"/>
-        <text x="113" y="63" text-anchor="middle" font-size="9" font-weight="800" fill="#0d1130" font-family="Inter,sans-serif">4-5</text>
-        <text x="113" y="100" text-anchor="middle" font-size="7" fill="#8a90ad" font-family="Inter,sans-serif">Month 1</text>
-        <!-- M3: 7/15*80=37 -->
-        <rect x="155" y="53" width="36" height="37" rx="2" fill="url(#bg)"/>
-        <text x="173" y="50" text-anchor="middle" font-size="9" font-weight="800" fill="#0d1130" font-family="Inter,sans-serif">6-8</text>
-        <text x="173" y="100" text-anchor="middle" font-size="7" fill="#8a90ad" font-family="Inter,sans-serif">Month 3</text>
-        <!-- M6: 11/15*80=59 -->
-        <rect x="215" y="31" width="36" height="59" rx="2" fill="url(#bg)"/>
-        <text x="233" y="28" text-anchor="middle" font-size="9" font-weight="800" fill="#0d1130" font-family="Inter,sans-serif">10-12</text>
-        <text x="233" y="100" text-anchor="middle" font-size="7" fill="#8a90ad" font-family="Inter,sans-serif">Month 6</text>
-        <!-- SS: 15/15*80=80 -->
-        <rect x="275" y="10" width="36" height="80" rx="2" fill="url(#bg)"/>
-        <text x="293" y="7" text-anchor="middle" font-size="9" font-weight="800" fill="#0d1130" font-family="Inter,sans-serif">15+</text>
-        <text x="293" y="-2" text-anchor="middle" font-size="8" font-weight="700" fill="#16a34a" font-family="Inter,sans-serif">~5×</text>
-        <text x="293" y="100" text-anchor="middle" font-size="7" fill="#8a90ad" font-family="Inter,sans-serif">Steady</text>
-      </svg>
-    </div>
-
-    <div class="kpi-divider"></div>
-
-    <div class="kpi-metrics">
-      <div class="km">
-        <div class="km-n">5×</div>
-        <div class="km-l">Throughput</div>
-        <div class="km-t">Features / Sprint</div>
+  <section class="slide is-active" data-title="Pipeline Overview">
+    <!-- Brand + pills -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="brand-dot"></span><span class="brand">tGD</span>
+        <span class="gradient-text" style="font-size:16px;font-weight:700;margin-left:4px">The Agentic PDLC Harness</span>
       </div>
-      <div class="km">
-        <div class="km-n">80%</div>
-        <div class="km-l">Quality</div>
-        <div class="km-t">Less Regressions</div>
-      </div>
-      <div class="km">
-        <div class="km-n">10×</div>
-        <div class="km-l">Velocity</div>
-        <div class="km-t">Spec → Deploy</div>
+      <div class="row" style="gap:6px">
+        <span class="pill pill-accent">🏗️ 28 Skills</span>
+        <span class="pill pill-accent">🔄 7 Stages</span>
+        <span class="pill pill-accent">👤 3 Roles</span>
+        <span class="pill pill-accent">🖥️ 5 Platforms</span>
       </div>
     </div>
-  </div>
 
-  <!-- Footer -->
-  <div class="footer-row">
-    <div><a href="https://github.com/openclawyhwang-hub/tGD" target="_blank" rel="noopener">github.com/openclawyhwang-hub/tGD</a> · MIT · CalVer 2026</div>
-    <div style="display:flex;align-items:center;gap:12px">
-      <span style="font-weight:600;color:var(--text-2)">Same gates. 10× velocity.</span>
-      <a href="https://github.com/openclawyhwang-hub/tGD#getting-started" class="cta-btn" target="_blank" rel="noopener">Get Started →</a>
+    <!-- Tagline -->
+    <p style="text-align:center;font-size:17px;color:var(--text-2);margin:0 0 16px;line-height:1.5">
+      <span class="gradient-text" style="font-weight:800;font-size:19px">Your PDLC was built for humans. Now agents do the work.</span><br>
+      tGD transforms your existing workflow into an <b>agentic PDLC pipeline</b> — same gates, same accountability, 10× the velocity.
+    </p>
+
+    <!-- 7-Step Pipeline -->
+    <div class="pipeline" style="justify-content:center;margin-top:12px">
+      <div class="step"><span class="icon">🗺️</span><span class="name">Map</span><span class="cmd">/tgd-map</span></div>
+      <span class="arrow">→</span>
+      <div class="step"><span class="icon">📋</span><span class="name">Define</span><span class="cmd">/tgd-define</span></div>
+      <span class="arrow">→</span>
+      <div class="step"><span class="icon">📐</span><span class="name">Plan</span><span class="cmd">/tgd-plan</span></div>
+      <span class="arrow">→</span>
+      <div class="step"><span class="icon">⚡</span><span class="name">Develop</span><span class="cmd">/tgd-develop</span></div>
+      <span class="arrow">→</span>
+      <div class="step gate"><span class="icon">🧪</span><span class="name">Verify</span><span class="cmd">/tgd-verify</span></div>
+      <span class="arrow">→</span>
+      <div class="step"><span class="icon">🔎</span><span class="name">Review</span><span class="cmd">/tgd-review</span></div>
+      <span class="arrow">→</span>
+      <div class="step"><span class="icon">🚀</span><span class="name">Ship</span><span class="cmd">/tgd-ship</span></div>
     </div>
-  </div>
 
-</section>
+    <!-- I/O Detail Grid -->
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:14px">
+      <div class="card" style="padding:10px 8px;text-align:center">
+        <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px">📥 → 📤</div>
+        <div style="font-size:10px;color:var(--text-2)">Source code<br>→ <code style="font-size:9px">CONTEXT.md</code></div>
+      </div>
+      <div class="card" style="padding:10px 8px;text-align:center">
+        <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px">📥 → 📤</div>
+        <div style="font-size:10px;color:var(--text-2)"><code style="font-size:9px">CONTEXT</code> + intent<br>→ <code style="font-size:9px">PRD</code> <code style="font-size:9px">SPEC</code> <code style="font-size:9px">DESIGN</code></div>
+      </div>
+      <div class="card" style="padding:10px 8px;text-align:center">
+        <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px">📥 → 📤</div>
+        <div style="font-size:10px;color:var(--text-2)"><code style="font-size:9px">CONTEXT</code>·<code style="font-size:9px">PRD</code>·<code style="font-size:9px">SPEC</code><br>→ <code style="font-size:9px">TASKS.md</code> + BDD</div>
+      </div>
+      <div class="card" style="padding:10px 8px;text-align:center">
+        <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px">📥 → 📤</div>
+        <div style="font-size:10px;color:var(--text-2)"><code style="font-size:9px">TASKS</code>·<code style="font-size:9px">SPEC</code> + code<br>→ <code style="font-size:9px">src/</code> + <code style="font-size:9px">tests/</code></div>
+      </div>
+      <div class="card" style="padding:10px 8px;text-align:center;border-color:rgba(239,68,68,.2)">
+        <div style="font-size:11px;font-weight:700;color:#ef4444;margin-bottom:4px">📥 → 📤</div>
+        <div style="font-size:10px;color:var(--text-2)"><code style="font-size:9px">src/</code> <code style="font-size:9px">tests/</code> + catalog<br>→ <code style="font-size:9px">TEST-REPORT</code></div>
+      </div>
+      <div class="card" style="padding:10px 8px;text-align:center">
+        <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px">📥 → 📤</div>
+        <div style="font-size:10px;color:var(--text-2)"><code style="font-size:9px">src/</code> <code style="font-size:9px">TEST-REPORT</code><br>→ <code style="font-size:9px">REVIEW.md</code> 5-axis</div>
+      </div>
+      <div class="card" style="padding:10px 8px;text-align:center">
+        <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px">📥 → 📤</div>
+        <div style="font-size:10px;color:var(--text-2)">All signed-off<br>→ <code style="font-size:9px">CHANGELOG</code> + deploy</div>
+      </div>
+    </div>
+
+    <!-- KPI Impact Row -->
+    <div class="kpi-row">
+      <div style="text-align:center">
+        <div style="font-size:12px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">📈 Projected Impact</div>
+        <div class="chart-wrap">
+          <svg viewBox="0 0 340 100" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#16a34a"/><stop offset="100%" stop-color="#0d9488"/>
+              </linearGradient>
+            </defs>
+            <!-- baseline -->
+            <line x1="20" y1="48" x2="320" y2="48" stroke="#d0d3dc" stroke-width=".8" stroke-dasharray="4,3"/>
+            <text x="22" y="44" font-size="7" fill="#8a90ad" font-weight="600" font-family="Inter,sans-serif">PRE-tGD</text>
+            <!-- bars: y=8 (top) to y=88 (bottom), range=80px -->
+            <rect x="35" y="75" width="36" height="13" rx="2" fill="#e8eaf0" stroke="#d0d3dc" stroke-width=".5"/>
+            <text x="53" y="72" text-anchor="middle" font-size="9" font-weight="800" fill="#4a5070" font-family="Inter,sans-serif">2-3</text>
+            <text x="53" y="96" text-anchor="middle" font-size="7" fill="#8a90ad" font-family="Inter,sans-serif">Before</text>
+            <rect x="95" y="64" width="36" height="24" rx="2" fill="url(#bg)"/>
+            <text x="113" y="61" text-anchor="middle" font-size="9" font-weight="800" fill="#0d1130" font-family="Inter,sans-serif">4-5</text>
+            <text x="113" y="96" text-anchor="middle" font-size="7" fill="#8a90ad" font-family="Inter,sans-serif">Month 1</text>
+            <rect x="155" y="51" width="36" height="37" rx="2" fill="url(#bg)"/>
+            <text x="173" y="48" text-anchor="middle" font-size="9" font-weight="800" fill="#0d1130" font-family="Inter,sans-serif">6-8</text>
+            <text x="173" y="96" text-anchor="middle" font-size="7" fill="#8a90ad" font-family="Inter,sans-serif">Month 3</text>
+            <rect x="215" y="29" width="36" height="59" rx="2" fill="url(#bg)"/>
+            <text x="233" y="26" text-anchor="middle" font-size="9" font-weight="800" fill="#0d1130" font-family="Inter,sans-serif">10-12</text>
+            <text x="233" y="96" text-anchor="middle" font-size="7" fill="#8a90ad" font-family="Inter,sans-serif">Month 6</text>
+            <rect x="275" y="8" width="36" height="80" rx="2" fill="url(#bg)"/>
+            <text x="293" y="5" text-anchor="middle" font-size="9" font-weight="800" fill="#0d1130" font-family="Inter,sans-serif">15+</text>
+            <text x="293" y="-3" text-anchor="middle" font-size="8" font-weight="700" fill="#16a34a" font-family="Inter,sans-serif">~5×</text>
+            <text x="293" y="96" text-anchor="middle" font-size="7" fill="#8a90ad" font-family="Inter,sans-serif">Steady State</text>
+          </svg>
+        </div>
+        <div class="source-note">Features shipped per sprint · Estimated from AI-augmented engineering benchmarks</div>
+      </div>
+
+      <div class="kpi-divider"></div>
+
+      <div class="kpi-metrics">
+        <div class="km">
+          <div class="km-n">5×</div>
+          <div class="km-l">Throughput</div>
+          <div class="km-t">Features / Sprint</div>
+        </div>
+        <div class="km">
+          <div class="km-n">80%</div>
+          <div class="km-l">Quality</div>
+          <div class="km-t">Less Regressions</div>
+        </div>
+        <div class="km">
+          <div class="km-n">10×</div>
+          <div class="km-l">Velocity</div>
+          <div class="km-t">Spec → Deploy</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="deck-footer" style="display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <a href="https://github.com/openclawyhwang-hub/tGD" style="color:var(--accent)">github.com/openclawyhwang-hub/tGD</a>
+        <span style="margin:0 8px">·</span> MIT
+        <span style="margin:0 8px">·</span> CalVer 2026
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="font-weight:600">Same gates. 10× velocity.</span>
+        <a href="https://github.com/openclawyhwang-hub/tGD#getting-started" class="cta-btn" style="padding:6px 16px;border-radius:7px;background:var(--grad);color:#fff;font-weight:700;font-size:12px;text-decoration:none" target="_blank" rel="noopener">Get Started →</a>
+      </div>
+    </div>
+  </section>
+
 </div>
 <script src="html-ppt/assets/runtime.js"></script>
 </body>
