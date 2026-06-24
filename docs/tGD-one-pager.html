@@ -51,49 +51,35 @@
   .pipeline-section{background:var(--bg)}
   .pipeline-section h2{text-align:center;font-size:32px;font-weight:800;letter-spacing:-.03em;margin-bottom:8px}
   .pipeline-section .section-sub{text-align:center;font-size:16px;color:var(--text-3);margin-bottom:32px}
-  .pipeline-flow{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:40px}
-  .pipeline-flow .step{
-    display:flex;flex-direction:column;align-items:center;padding:14px 16px;border-radius:12px;
-    background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow);
-    min-width:100px;text-align:center;transition:transform .2s,box-shadow .2s;
-  }
-  .pipeline-flow .step:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
-  .pipeline-flow .step .icon{font-size:1.4rem;margin-bottom:4px}
-  .pipeline-flow .step .name{font-size:13px;font-weight:800;color:var(--text-1)}
-  .pipeline-flow .step .cmd{font-size:10px;font-family:'SF Mono','Menlo',monospace;color:var(--accent);opacity:.8}
-  .pipeline-flow .arrow{font-size:18px;color:var(--accent);font-weight:700}
-  .pipeline-flow .step.gate{border-color:rgba(239,68,68,.3)}
-  .pipeline-flow .step.gate .name{color:var(--red)}
-
   /* Stage Cards Grid — 7 in a row */
-  .stage-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;overflow-x:auto}
+  .stage-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;overflow-x:auto}
   @media(max-width:1100px){.stage-grid{grid-template-columns:repeat(4,1fr)}}
   @media(max-width:700px){.stage-grid{grid-template-columns:repeat(2,1fr)}}
   .stage-card{
-    padding:16px 12px;border-radius:var(--radius);background:var(--surface);
+    padding:20px 14px;border-radius:var(--radius);background:var(--surface);
     border:1px solid var(--border);box-shadow:var(--shadow);
     transition:transform .2s,box-shadow .2s;min-width:0;
   }
   .stage-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
-  .stage-card .sc-header{display:flex;flex-direction:column;align-items:center;gap:4px;margin-bottom:10px;text-align:center}
-  .stage-card .sc-icon{font-size:1.4rem}
-  .stage-card .sc-name{font-size:15px;font-weight:800}
-  .stage-card .sc-cmd{font-size:10px;font-family:'SF Mono','Menlo',monospace;color:var(--accent);background:rgba(22,163,74,.06);padding:2px 6px;border-radius:5px}
+  .stage-card .sc-header{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:14px;text-align:center}
+  .stage-card .sc-icon{font-size:1.8rem}
+  .stage-card .sc-name{font-size:17px;font-weight:800}
+  .stage-card .sc-cmd{font-size:11px;font-family:'SF Mono','Menlo',monospace;color:var(--accent);background:rgba(22,163,74,.06);padding:3px 8px;border-radius:6px}
   /* I/O Flow — vertical compact */
-  .stage-card .sc-flow{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
-  .stage-card .sc-flow-box{padding:6px 8px;border-radius:6px;background:var(--bg-soft);border:1px solid var(--border);text-align:center}
+  .stage-card .sc-flow{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+  .stage-card .sc-flow-box{padding:8px 10px;border-radius:8px;background:var(--bg-soft);border:1px solid var(--border);text-align:center}
   .stage-card .sc-flow-box.in{border-left:3px solid var(--blue)}
   .stage-card .sc-flow-box.out{border-left:3px solid var(--accent)}
-  .stage-card .sc-flow-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+  .stage-card .sc-flow-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
   .stage-card .sc-flow-box.in .sc-flow-label{color:var(--blue)}
   .stage-card .sc-flow-box.out .sc-flow-label{color:var(--accent)}
-  .stage-card .sc-flow-items{font-size:11px;color:var(--text-2);line-height:1.4}
-  .stage-card .sc-flow-arrow{text-align:center;font-size:14px;color:var(--accent);font-weight:700;line-height:1}
+  .stage-card .sc-flow-items{font-size:12px;color:var(--text-2);line-height:1.4}
+  .stage-card .sc-flow-arrow{text-align:center;font-size:16px;color:var(--accent);font-weight:700;line-height:1}
   /* Roles — badge style */
-  .stage-card .sc-roles{border-top:1px solid var(--border);padding-top:8px;display:flex;flex-direction:column;gap:4px}
-  .stage-card .sc-role{font-size:10px;display:flex;align-items:center;gap:4px;line-height:1.4}
-  .stage-card .sc-role .r-icon{font-size:12px;flex-shrink:0}
-  .stage-card .sc-role .r-label{font-weight:700;white-space:nowrap;border-radius:4px;padding:1px 5px;font-size:9px}
+  .stage-card .sc-roles{border-top:1px solid var(--border);padding-top:10px;display:flex;flex-direction:column;gap:5px}
+  .stage-card .sc-role{font-size:11px;display:flex;align-items:center;gap:5px;line-height:1.4}
+  .stage-card .sc-role .r-icon{font-size:13px;flex-shrink:0}
+  .stage-card .sc-role .r-label{font-weight:700;white-space:nowrap;border-radius:5px;padding:2px 7px;font-size:10px}
   .stage-card .sc-role .r-label.agent{background:rgba(59,130,246,.1);color:var(--blue)}
   .stage-card .sc-role .r-label.human{background:rgba(139,92,246,.1);color:var(--purple)}
   .stage-card .sc-role .r-desc{color:var(--text-2)}
@@ -153,23 +139,6 @@
   <div class="container">
     <h2>7-Stage Pipeline</h2>
     <p class="section-sub">Every output feeds the next. Gates enforce accountability.</p>
-
-    <!-- Pipeline Flow -->
-    <div class="pipeline-flow">
-      <div class="step"><span class="icon">🗺️</span><span class="name">Map</span><span class="cmd">/tgd-map</span></div>
-      <span class="arrow">→</span>
-      <div class="step"><span class="icon">📋</span><span class="name">Define</span><span class="cmd">/tgd-define</span></div>
-      <span class="arrow">→</span>
-      <div class="step"><span class="icon">📐</span><span class="name">Plan</span><span class="cmd">/tgd-plan</span></div>
-      <span class="arrow">→</span>
-      <div class="step"><span class="icon">⚡</span><span class="name">Develop</span><span class="cmd">/tgd-develop</span></div>
-      <span class="arrow">→</span>
-      <div class="step"><span class="icon">🧪</span><span class="name">Verify</span><span class="cmd">/tgd-verify</span></div>
-      <span class="arrow">→</span>
-      <div class="step"><span class="icon">🔎</span><span class="name">Review</span><span class="cmd">/tgd-review</span></div>
-      <span class="arrow">→</span>
-      <div class="step"><span class="icon">🚀</span><span class="name">Ship</span><span class="cmd">/tgd-ship</span></div>
-    </div>
 
     <!-- Stage Detail Cards -->
     <div class="stage-grid">
