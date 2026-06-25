@@ -54,7 +54,7 @@
 
   /* Table wrapper for horizontal scroll on small screens */
   .pipe-table-wrap{overflow-x:auto;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border)}
-  .pipe-table{width:100%;border-collapse:collapse;background:var(--surface);min-width:900px}
+  .pipe-table{width:100%;border-collapse:collapse;background:var(--surface);min-width:820px}
   .pipe-table thead th{
     font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;
     color:var(--text-3);padding:20px 16px;border-bottom:2px solid var(--border);
@@ -65,6 +65,20 @@
   .pipe-table tbody tr{transition:background .15s}
   .pipe-table tbody tr:hover{background:rgba(22,163,74,.03)}
   .pipe-table tbody tr:not(:last-child) td{border-bottom:1px solid var(--border)}
+
+  /* Left gradient bar: progressively greener from stage 1→7 */
+  .pipe-table tbody tr:nth-child(1) td:first-child{border-left:4px solid #e5e7eb}
+  .pipe-table tbody tr:nth-child(2) td:first-child{border-left:4px solid #bbf7d0}
+  .pipe-table tbody tr:nth-child(3) td:first-child{border-left:4px solid #86efac}
+  .pipe-table tbody tr:nth-child(4) td:first-child{border-left:4px solid #4ade80}
+  .pipe-table tbody tr:nth-child(5) td:first-child{border-left:4px solid #22c55e}
+  .pipe-table tbody tr:nth-child(6) td:first-child{border-left:4px solid #16a34a}
+  .pipe-table tbody tr:nth-child(7) td:first-child{border-left:4px solid #15803d}
+
+  /* Gate rows: subtle accent background */
+  .pipe-table tbody tr.row-gate td{background:rgba(22,163,74,.04)}
+  .gate-badge{display:inline-block;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#fff;background:var(--accent);padding:2px 7px;border-radius:4px;margin-left:6px;vertical-align:middle}
+
   .pipe-table td{padding:20px 16px;vertical-align:middle;font-size:17px;color:var(--text-2);line-height:1.6}
 
   /* Stage name cell */
@@ -89,9 +103,6 @@
   .pipe-table td.col-human{background:rgba(139,92,246,.04)}
   .pipe-table td.col-human .role-label{font-size:13px;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:.03em}
   .pipe-table td.col-human .role-desc{font-size:16px;color:var(--text-2);margin-top:3px}
-
-  /* Arrow column */
-  .pipe-table td.col-arrow{text-align:center;color:var(--accent);font-weight:700;font-size:22px;width:40px}
 
   /* ===================== KPI ===================== */
   .kpi-section{background:var(--bg-soft)}
@@ -155,7 +166,6 @@
         <tr>
           <th>Stage</th>
           <th>📥 Input</th>
-          <th></th>
           <th>📤 Output</th>
           <th class="col-agent">🤖 Agent</th>
           <th class="col-human">👤 Human</th>
@@ -165,7 +175,6 @@
         <tr>
           <td class="col-stage"><div class="stage-num">01</div><div class="stage-name"><span class="s-icon">🗺️</span>Map</div><div class="stage-cmd">/tgd-map</div></td>
           <td class="col-io col-input"><div class="io-label">Input</div>Source code</td>
-          <td class="col-arrow">→</td>
           <td class="col-io col-output"><div class="io-label">Output</div><code>CONTEXT.md</code></td>
           <td class="col-agent"><div class="role-label">Agent</div><div class="role-desc">Scans codebase, builds CodeGraph</div></td>
           <td class="col-human"><div class="role-label">DEV</div><div class="role-desc">Reviews CONTEXT.md</div></td>
@@ -173,7 +182,6 @@
         <tr>
           <td class="col-stage"><div class="stage-num">02</div><div class="stage-name"><span class="s-icon">📋</span>Define</div><div class="stage-cmd">/tgd-define</div></td>
           <td class="col-io col-input"><div class="io-label">Input</div><code>CONTEXT.md</code> + intent</td>
-          <td class="col-arrow">→</td>
           <td class="col-io col-output"><div class="io-label">Output</div><code>PRD</code> · <code>SPEC</code> · <code>DESIGN</code></td>
           <td class="col-agent"><div class="role-label">Agent</div><div class="role-desc">Interviews user, drafts specs</div></td>
           <td class="col-human"><div class="role-label">PM</div><div class="role-desc">Signs off PRD + SPEC</div></td>
@@ -181,7 +189,6 @@
         <tr>
           <td class="col-stage"><div class="stage-num">03</div><div class="stage-name"><span class="s-icon">📐</span>Plan</div><div class="stage-cmd">/tgd-plan</div></td>
           <td class="col-io col-input"><div class="io-label">Input</div><code>CONTEXT</code> · <code>PRD</code> · <code>SPEC</code></td>
-          <td class="col-arrow">→</td>
           <td class="col-io col-output"><div class="io-label">Output</div><code>TASKS.md</code> + BDD AC</td>
           <td class="col-agent"><div class="role-label">Agent</div><div class="role-desc">Triple-source decomposition</div></td>
           <td class="col-human"><div class="role-label">DEV</div><div class="role-desc">Signs off TASKS.md</div></td>
@@ -189,15 +196,13 @@
         <tr>
           <td class="col-stage"><div class="stage-num">04</div><div class="stage-name"><span class="s-icon">⚡</span>Develop</div><div class="stage-cmd">/tgd-develop</div></td>
           <td class="col-io col-input"><div class="io-label">Input</div><code>TASKS</code> · <code>SPEC</code> + codebase</td>
-          <td class="col-arrow">→</td>
           <td class="col-io col-output"><div class="io-label">Output</div><code>src/</code> + <code>tests/</code></td>
           <td class="col-agent"><div class="role-label">Agent</div><div class="role-desc">TDD in worktree sandbox</div></td>
           <td class="col-human"><div class="role-label">DEV</div><div class="role-desc">Reviews code, signs off</div></td>
         </tr>
-        <tr>
-          <td class="col-stage"><div class="stage-num">05</div><div class="stage-name"><span class="s-icon">🧪</span>Verify</div><div class="stage-cmd">/tgd-verify</div></td>
+        <tr class="row-gate">
+          <td class="col-stage"><div class="stage-num">05</div><div class="stage-name"><span class="s-icon">🧪</span>Verify<span class="gate-badge">Gate</span></div><div class="stage-cmd">/tgd-verify</div></td>
           <td class="col-io col-input"><div class="io-label">Input</div><code>src/</code> · <code>tests/</code> + catalog</td>
-          <td class="col-arrow">→</td>
           <td class="col-io col-output"><div class="io-label">Output</div><code>TEST-REPORT.md</code></td>
           <td class="col-agent"><div class="role-label">Agent</div><div class="role-desc">All tests + E2E + regression</div></td>
           <td class="col-human"><div class="role-label">QA</div><div class="role-desc">Signs off or blocks pipeline</div></td>
@@ -205,15 +210,13 @@
         <tr>
           <td class="col-stage"><div class="stage-num">06</div><div class="stage-name"><span class="s-icon">🔎</span>Review</div><div class="stage-cmd">/tgd-review</div></td>
           <td class="col-io col-input"><div class="io-label">Input</div><code>src/</code> · <code>TEST-REPORT</code></td>
-          <td class="col-arrow">→</td>
           <td class="col-io col-output"><div class="io-label">Output</div><code>REVIEW.md</code> — 5-axis</td>
           <td class="col-agent"><div class="role-label">Agent</div><div class="role-desc">5-axis code quality review</div></td>
           <td class="col-human"><div class="role-label">QA + DEV</div><div class="role-desc">Signs off REVIEW.md</div></td>
         </tr>
-        <tr>
-          <td class="col-stage"><div class="stage-num">07</div><div class="stage-name"><span class="s-icon">🚀</span>Ship</div><div class="stage-cmd">/tgd-ship</div></td>
+        <tr class="row-gate">
+          <td class="col-stage"><div class="stage-num">07</div><div class="stage-name"><span class="s-icon">🚀</span>Ship<span class="gate-badge">Gate</span></div><div class="stage-cmd">/tgd-ship</div></td>
           <td class="col-io col-input"><div class="io-label">Input</div>All signed-off artifacts</td>
-          <td class="col-arrow">→</td>
           <td class="col-io col-output"><div class="io-label">Output</div><code>CHANGELOG</code> + deploy</td>
           <td class="col-agent"><div class="role-label">Agent</div><div class="role-desc">Commit → CI → deploy</div></td>
           <td class="col-human"><div class="role-label">PM</div><div class="role-desc">Final sign-off gate</div></td>
