@@ -233,7 +233,7 @@
     <div class="kpi-grid">
       <!-- Chart -->
       <div class="kpi-chart">
-        <svg viewBox="0 0 720 270" preserveAspectRatio="none">
+        <svg viewBox="0 0 720 510" preserveAspectRatio="xMidYMid meet">
           <defs>
             <pattern id="hatch" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
               <rect width="6" height="6" fill="#16a34a"/>
@@ -242,81 +242,82 @@
           </defs>
 
           <!-- Title -->
-          <text x="50" y="18" font-size="13" font-weight="700" fill="#374151" font-family="Inter,sans-serif" letter-spacing="0.5">FEATURES SHIPPED PER PERSON, PER SPRINT</text>
+          <text x="50" y="25" font-size="13" font-weight="700" fill="#374151" font-family="Inter,sans-serif" letter-spacing="0.5">FEATURES SHIPPED PER PERSON, PER SPRINT</text>
 
           <!-- Y-axis tick labels -->
-          <text x="44" y="50" text-anchor="end" font-size="11" fill="#9ca3af" font-family="Inter,sans-serif">15</text>
-          <text x="44" y="113" text-anchor="end" font-size="11" fill="#9ca3af" font-family="Inter,sans-serif">10</text>
-          <text x="44" y="176" text-anchor="end" font-size="11" fill="#9ca3af" font-family="Inter,sans-serif">5</text>
-          <text x="44" y="238" text-anchor="end" font-size="11" fill="#9ca3af" font-family="Inter,sans-serif">0</text>
+          <text x="44" y="64" text-anchor="end" font-size="11" fill="#9ca3af" font-family="Inter,sans-serif">15</text>
+          <text x="44" y="194" text-anchor="end" font-size="11" fill="#9ca3af" font-family="Inter,sans-serif">10</text>
+          <text x="44" y="324" text-anchor="end" font-size="11" fill="#9ca3af" font-family="Inter,sans-serif">5</text>
+          <text x="44" y="454" text-anchor="end" font-size="11" fill="#9ca3af" font-family="Inter,sans-serif">0</text>
 
           <!-- Y-axis tick gridlines -->
-          <line x1="50" y1="45" x2="700" y2="45" stroke="#e5e7eb" stroke-width=".5"/>
-          <line x1="50" y1="108" x2="700" y2="108" stroke="#e5e7eb" stroke-width=".5"/>
-          <line x1="50" y1="171" x2="700" y2="171" stroke="#e5e7eb" stroke-width=".5"/>
+          <line x1="50" y1="60" x2="700" y2="60" stroke="#e5e7eb" stroke-width=".5"/>
+          <line x1="50" y1="190" x2="700" y2="190" stroke="#e5e7eb" stroke-width=".5"/>
+          <line x1="50" y1="320" x2="700" y2="320" stroke="#e5e7eb" stroke-width=".5"/>
 
-          <!-- Baseline dashed line at ~3 (y=206) -->
-          <line x1="50" y1="206" x2="700" y2="206" stroke="#9ca3af" stroke-width="1" stroke-dasharray="6,4"/>
-          <text x="696" y="201" text-anchor="end" font-size="10" fill="#6b7280" font-weight="600" font-family="Inter,sans-serif">PRE-tGD BASELINE · ~3 features</text>
+          <!-- Baseline dashed line at ~3 (y=372) -->
+          <line x1="50" y1="372" x2="700" y2="372" stroke="#9ca3af" stroke-width="1" stroke-dasharray="6,4"/>
+          <text x="696" y="367" text-anchor="end" font-size="10" fill="#6b7280" font-weight="600" font-family="Inter,sans-serif">PRE-tGD BASELINE · ~3 features</text>
 
           <!-- Milestone vertical dashed lines -->
-          <line x1="310" y1="28" x2="310" y2="248" stroke="#d1d5db" stroke-width="1" stroke-dasharray="3,3"/>
-          <text x="310" y="40" text-anchor="middle" font-size="9" fill="#6b7280" font-weight="600" font-family="Inter,sans-serif">tGD adopted</text>
+          <line x1="310" y1="40" x2="310" y2="458" stroke="#d1d5db" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="310" y="52" text-anchor="middle" font-size="9" fill="#6b7280" font-weight="600" font-family="Inter,sans-serif">tGD adopted</text>
 
-          <line x1="510" y1="28" x2="510" y2="248" stroke="#d1d5db" stroke-width="1" stroke-dasharray="3,3"/>
-          <text x="510" y="40" text-anchor="middle" font-size="9" fill="#6b7280" font-weight="600" font-family="Inter,sans-serif">Agents ramped</text>
+          <line x1="510" y1="40" x2="510" y2="458" stroke="#d1d5db" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="510" y="52" text-anchor="middle" font-size="9" fill="#6b7280" font-weight="600" font-family="Inter,sans-serif">Agents ramped</text>
 
-          <!-- 9 bars: y=45 (top=15) to y=235 (bottom=0), range=190px -->
-          <!-- 1. Before: 2.5 → 32px -->
-          <rect x="65" y="203" width="55" height="32" fill="url(#hatch)" rx="2"/>
-          <text x="92" y="198" text-anchor="middle" font-size="12" font-weight="700" fill="#374151" font-family="Inter,sans-serif">2-3</text>
-          <text x="92" y="255" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="Inter,sans-serif">Before</text>
+          <!-- 9 bars: y=60 (top=15) to y=450 (bottom=0), range=390px, unit=26px -->
 
-          <!-- 2. Week 2: 3.5 → 44px -->
-          <rect x="140" y="191" width="55" height="44" fill="#16a34a" rx="2"/>
-          <text x="167" y="186" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937" font-family="Inter,sans-serif">3-4</text>
-          <text x="167" y="255" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="Inter,sans-serif">Week 2</text>
+          <!-- 1. Before: 2.5 → 65px -->
+          <rect x="65" y="385" width="55" height="65" fill="url(#hatch)" rx="2"/>
+          <text x="92" y="380" text-anchor="middle" font-size="12" font-weight="700" fill="#374151" font-family="Inter,sans-serif">2-3</text>
+          <text x="92" y="470" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="Inter,sans-serif">Before</text>
 
-          <!-- 3. Month 1: 6 → 76px -->
-          <rect x="215" y="159" width="55" height="76" fill="#16a34a" rx="2"/>
-          <text x="242" y="154" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937" font-family="Inter,sans-serif">5-7</text>
-          <text x="242" y="255" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="Inter,sans-serif">Month 1</text>
+          <!-- 2. Week 2: 3.5 → 91px -->
+          <rect x="140" y="359" width="55" height="91" fill="#16a34a" rx="2"/>
+          <text x="167" y="354" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937" font-family="Inter,sans-serif">3-4</text>
+          <text x="167" y="470" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="Inter,sans-serif">Week 2</text>
 
-          <!-- 4. Month 2: 7 → 89px -->
-          <rect x="290" y="146" width="55" height="89" fill="#16a34a" rx="2"/>
-          <text x="317" y="141" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937" font-family="Inter,sans-serif">6-8</text>
-          <text x="317" y="255" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="Inter,sans-serif">Month 2</text>
+          <!-- 3. Month 1: 6 → 156px -->
+          <rect x="215" y="294" width="55" height="156" fill="#16a34a" rx="2"/>
+          <text x="242" y="289" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937" font-family="Inter,sans-serif">5-7</text>
+          <text x="242" y="470" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="Inter,sans-serif">Month 1</text>
 
-          <!-- 5. Month 3: 9 → 114px -->
-          <rect x="365" y="121" width="55" height="114" fill="#16a34a" rx="2"/>
-          <text x="392" y="116" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937" font-family="Inter,sans-serif">8-10</text>
-          <text x="392" y="255" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="Inter,sans-serif">Month 3</text>
+          <!-- 4. Month 2: 7 → 182px -->
+          <rect x="290" y="268" width="55" height="182" fill="#16a34a" rx="2"/>
+          <text x="317" y="263" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937" font-family="Inter,sans-serif">6-8</text>
+          <text x="317" y="470" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="Inter,sans-serif">Month 2</text>
 
-          <!-- 6. Month 4: 11 → 139px -->
-          <rect x="440" y="96" width="55" height="139" fill="#16a34a" rx="2"/>
-          <text x="467" y="91" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937" font-family="Inter,sans-serif">10-12</text>
-          <text x="467" y="255" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="Inter,sans-serif">Month 4</text>
+          <!-- 5. Month 3: 9 → 234px -->
+          <rect x="365" y="216" width="55" height="234" fill="#16a34a" rx="2"/>
+          <text x="392" y="211" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937" font-family="Inter,sans-serif">8-10</text>
+          <text x="392" y="470" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="Inter,sans-serif">Month 3</text>
 
-          <!-- 7. Month 5: 12.5 → 158px -->
-          <rect x="515" y="77" width="55" height="158" fill="#16a34a" rx="2"/>
-          <text x="542" y="72" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937" font-family="Inter,sans-serif">11-14</text>
-          <text x="542" y="255" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="Inter,sans-serif">Month 5</text>
+          <!-- 6. Month 4: 11 → 286px -->
+          <rect x="440" y="164" width="55" height="286" fill="#16a34a" rx="2"/>
+          <text x="467" y="159" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937" font-family="Inter,sans-serif">10-12</text>
+          <text x="467" y="470" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="Inter,sans-serif">Month 4</text>
 
-          <!-- 8. Month 6: 13.5 → 171px -->
-          <rect x="590" y="64" width="55" height="171" fill="#16a34a" rx="2"/>
-          <text x="617" y="59" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937" font-family="Inter,sans-serif">12-15</text>
-          <text x="617" y="255" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="Inter,sans-serif">Month 6</text>
+          <!-- 7. Month 5: 12.5 → 325px -->
+          <rect x="515" y="125" width="55" height="325" fill="#16a34a" rx="2"/>
+          <text x="542" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937" font-family="Inter,sans-serif">11-14</text>
+          <text x="542" y="470" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="Inter,sans-serif">Month 5</text>
 
-          <!-- 9. Steady State: 15 → 190px (hatched) -->
-          <rect x="665" y="45" width="55" height="190" fill="url(#hatch)" rx="2"/>
-          <text x="692" y="40" text-anchor="middle" font-size="12" font-weight="700" fill="#16a34a" font-family="Inter,sans-serif">15+</text>
-          <text x="692" y="28" text-anchor="middle" font-size="11" font-weight="700" fill="#16a34a" font-family="Inter,sans-serif">~5×</text>
-          <text x="692" y="255" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="Inter,sans-serif">Steady</text>
+          <!-- 8. Month 6: 13.5 → 351px -->
+          <rect x="590" y="99" width="55" height="351" fill="#16a34a" rx="2"/>
+          <text x="617" y="94" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937" font-family="Inter,sans-serif">12-15</text>
+          <text x="617" y="470" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="Inter,sans-serif">Month 6</text>
+
+          <!-- 9. Steady State: 15 → 390px (hatched) -->
+          <rect x="665" y="60" width="55" height="390" fill="url(#hatch)" rx="2"/>
+          <text x="692" y="55" text-anchor="middle" font-size="12" font-weight="700" fill="#16a34a" font-family="Inter,sans-serif">15+</text>
+          <text x="692" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="#16a34a" font-family="Inter,sans-serif">~5×</text>
+          <text x="692" y="470" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="Inter,sans-serif">Steady</text>
 
           <!-- Bottom note -->
-          <text x="50" y="268" font-size="9" fill="#9ca3af" font-family="Inter,sans-serif">Estimated from AI-augmented engineering benchmarks · </text>
+          <text x="50" y="498" font-size="9" fill="#9ca3af" font-family="Inter,sans-serif">Estimated from AI-augmented engineering benchmarks · </text>
           <a href="https://www.anthropic.com/institute/recursive-self-improvement" target="_blank" rel="noopener">
-            <text x="340" y="268" font-size="9" fill="#16a34a" font-family="Inter,sans-serif" text-decoration="underline">Anthropic Research (2026)</text>
+            <text x="340" y="498" font-size="9" fill="#16a34a" font-family="Inter,sans-serif" text-decoration="underline">Anthropic Research (2026)</text>
           </a>
         </svg>
       </div>
