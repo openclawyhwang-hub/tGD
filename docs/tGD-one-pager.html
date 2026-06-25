@@ -169,7 +169,7 @@
       <tbody>
         <tr>
           <td class="col-stage"><div class="stage-num">01</div><div class="stage-name">Map</div><div class="stage-cmd">/tgd-map</div></td>
-          <td class="col-io col-input"><div class="io-label">Input</div>Source code</td>
+          <td class="col-io col-input"><div class="io-label">Input</div><code>src/</code> + codebase</td>
           <td class="col-io col-output"><div class="io-label">Output</div><code>CONTEXT.md</code></td>
           <td class="col-agent"><div class="role-label">Agent</div><div class="role-desc">Scans codebase, builds CodeGraph</div></td>
           <td class="col-human"><div class="role-label">DEV</div><div class="role-desc">Reviews CONTEXT.md</div></td>
@@ -177,34 +177,34 @@
         <tr>
           <td class="col-stage"><div class="stage-num">02</div><div class="stage-name">Define</div><div class="stage-cmd">/tgd-define</div></td>
           <td class="col-io col-input"><div class="io-label">Input</div><code>CONTEXT.md</code> + intent</td>
-          <td class="col-io col-output"><div class="io-label">Output</div><code>PRD</code> · <code>SPEC</code> · <code>DESIGN</code></td>
+          <td class="col-io col-output"><div class="io-label">Output</div><code>PRD.md</code> · <code>SPEC.md</code> · <code>DESIGN.md</code></td>
           <td class="col-agent"><div class="role-label">Agent</div><div class="role-desc">Interviews user, drafts specs</div></td>
           <td class="col-human"><div class="role-label">PM</div><div class="role-desc">Signs off PRD + SPEC</div></td>
         </tr>
         <tr>
           <td class="col-stage"><div class="stage-num">03</div><div class="stage-name">Plan</div><div class="stage-cmd">/tgd-plan</div></td>
-          <td class="col-io col-input"><div class="io-label">Input</div><code>CONTEXT</code> · <code>PRD</code> · <code>SPEC</code></td>
+          <td class="col-io col-input"><div class="io-label">Input</div><code>CONTEXT.md</code> · <code>PRD.md</code> · <code>SPEC.md</code></td>
           <td class="col-io col-output"><div class="io-label">Output</div><code>TASKS.md</code> + BDD AC</td>
           <td class="col-agent"><div class="role-label">Agent</div><div class="role-desc">Triple-source decomposition</div></td>
           <td class="col-human"><div class="role-label">DEV</div><div class="role-desc">Signs off TASKS.md</div></td>
         </tr>
         <tr>
           <td class="col-stage"><div class="stage-num">04</div><div class="stage-name">Develop</div><div class="stage-cmd">/tgd-develop</div></td>
-          <td class="col-io col-input"><div class="io-label">Input</div><code>TASKS</code> · <code>SPEC</code> + codebase</td>
+          <td class="col-io col-input"><div class="io-label">Input</div><code>TASKS.md</code> · <code>SPEC.md</code> + <code>src/</code></td>
           <td class="col-io col-output"><div class="io-label">Output</div><code>src/</code> + <code>tests/</code></td>
           <td class="col-agent"><div class="role-label">Agent</div><div class="role-desc">TDD in worktree sandbox</div></td>
           <td class="col-human"><div class="role-label">DEV</div><div class="role-desc">Reviews code, signs off</div></td>
         </tr>
         <tr>
           <td class="col-stage"><div class="stage-num">05</div><div class="stage-name">Verify</div><div class="stage-cmd">/tgd-verify</div></td>
-          <td class="col-io col-input"><div class="io-label">Input</div><code>src/</code> · <code>tests/</code> + catalog</td>
+          <td class="col-io col-input"><div class="io-label">Input</div><code>src/</code> · <code>tests/</code> + <code>REGRESSION-CATALOG.md</code></td>
           <td class="col-io col-output"><div class="io-label">Output</div><code>TEST-REPORT.md</code></td>
           <td class="col-agent"><div class="role-label">Agent</div><div class="role-desc">All tests + E2E + regression</div></td>
           <td class="col-human"><div class="role-label">QA</div><div class="role-desc">Signs off or blocks pipeline</div></td>
         </tr>
         <tr>
           <td class="col-stage"><div class="stage-num">06</div><div class="stage-name">Review</div><div class="stage-cmd">/tgd-review</div></td>
-          <td class="col-io col-input"><div class="io-label">Input</div><code>src/</code> · <code>TEST-REPORT</code></td>
+          <td class="col-io col-input"><div class="io-label">Input</div><code>src/</code> · <code>TEST-REPORT.md</code></td>
           <td class="col-io col-output"><div class="io-label">Output</div><code>REVIEW.md</code> — 5-axis</td>
           <td class="col-agent"><div class="role-label">Agent</div><div class="role-desc">5-axis code quality review</div></td>
           <td class="col-human"><div class="role-label">QA + DEV</div><div class="role-desc">Signs off REVIEW.md</div></td>
@@ -212,7 +212,7 @@
         <tr>
           <td class="col-stage"><div class="stage-num">07</div><div class="stage-name">Release</div><div class="stage-cmd">/tgd-ship</div></td>
           <td class="col-io col-input"><div class="io-label">Input</div>All signed-off artifacts</td>
-          <td class="col-io col-output"><div class="io-label">Output</div><code>CHANGELOG</code> + deploy</td>
+          <td class="col-io col-output"><div class="io-label">Output</div><code>CHANGELOG.md</code> + deploy</td>
           <td class="col-agent"><div class="role-label">Agent</div><div class="role-desc">Commit → CI → deploy</div></td>
           <td class="col-human"><div class="role-label">PM</div><div class="role-desc">Final sign-off gate</div></td>
         </tr>
