@@ -6,6 +6,25 @@ Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow
 
 ---
 
+## v2026.06.26
+
+### Changed
+- **`/tgd-ship` → `/tgd-release`** — stage name and command renamed across all 5 platforms (Claude Code, Codex, Gemini, OpenCode, Pi) for consistency with pipeline terminology. Affects 30 files: command files, README ×4, AGENTS.md, docs, skills, landing page (`b6d8811`)
+- **One-pager redesign** — complete rewrite as standalone HTML with table-based pipeline layout, KPI chart (Anthropic editorial style), and role color coding (blue=Agent, purple=Human) (`cf90dc8`, `9d4e970`, and 14 follow-up fixes)
+- **Pipeline table optimization** — removed arrow column, added gate badges, progressive green gradient left bar, equal-width I/O columns (`75c2093`, `7ddb944`)
+- **AGENTS.md slimmed** — 278 → 140 lines; extracted skill authoring guide to `CONTRIBUTING.md` (`36d1647`)
+
+### Added
+- **Claude Desktop setup guide** — `docs/claude-desktop-setup.md` with full Custom Instructions, 22-file Knowledge Base upload list, and usage examples. Linked from all 4 README translations (`c59a2f2`)
+
+### Fixed
+- **Pipeline I/O column consistency** — all stages now show `<code>` wrapped filenames matching command file content (`1f9fd72`)
+
+### Migration (breaking)
+- If you use `/tgd-ship` in your workflow, update to `/tgd-release`. The command file was renamed; old slash command no longer resolves.
+
+---
+
 ## v2026.06.23
 
 ### Fixed
