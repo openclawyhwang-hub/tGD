@@ -175,9 +175,9 @@ const tgdPrompts: Record<string, string> = {
     "## Sign-off — QA (pending), DEV (pending)\n" +
     "If architectural decisions: create $TGD_DIR/<feature-name>/decisions/ADR-NNN-<decision>.md — sections: Date, Status, Context, Decision, Consequences (Positive/Negative/Risks).\n" +
     "Verification Gate: Code review feedback addressed, no critical warnings, REVIEW.md exists.\n" +
-    "After completing, suggest: /tgd-ship",
+    "After completing, suggest: /tgd-release",
 
-  "tgd-ship":
+  "tgd-release":
     "Run the `shipping-and-launch` skill. SHIP phase.\n\n" +
     "Pre-flight: Check $TGD_DIR/CONTEXT.md exists (or .codegraph/ is present). If missing, STOP and tell user to run /tgd-map first. Review passed (no critical issues) and $TGD_DIR/<feature>/REVIEW.md exists. If missing, suggest /tgd-review first. $TGD_DIR: Check env var $TGD_DIR first. If not set, check sibling ../<project-name>-tGD/\n\n" +
     "Feature Name Resolution: Scan $TGD_DIR/ for subdirectories. If none: STOP, run /tgd-define. If one: lock as <feature-name>. If multiple: ask user to pick.\n\n" +
@@ -215,7 +215,7 @@ export default function (pi: ExtensionAPI) {
     ["tgd-develop", "Build — implement thin vertical slices with tests"],
     ["tgd-verify", "Verify — debug, test, and prove it works"],
     ["tgd-review", "Review — code review, quality gates, simplification"],
-    ["tgd-ship", "Ship — clean git history, deploy safely"],
+    ["tgd-release", "Release — clean git history, deploy safely"],
   ] as [string, string][]) {
     pi.registerCommand(name, {
       description,

@@ -99,7 +99,7 @@ Use these commands in order. Do not skip phases:
 4. `/tgd-develop` → Build with subagents or incremental
 5. `/tgd-verify` → Run all tests, prove it works
 6. `/tgd-review` → Code quality + simplification
-7. `/tgd-ship` → Deploy with confidence
+7. `/tgd-release` → Deploy with confidence
 
 ## CodeGraph (if `.codegraph/` exists in project root)
 

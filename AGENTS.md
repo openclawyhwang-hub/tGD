@@ -20,7 +20,7 @@ A collection of skills for Claude.ai and Claude Code for senior software enginee
 | `/tgd-develop` | Develop | `context-engineering` → `source-driven-development` → (`subagent-driven-development` OR `incremental-implementation`) → `test-driven-development` → `verification-before-completion` | Code + Tests (on `feature/<name>` branch) |
 | `/tgd-verify` | Verify | `debugging-and-error-recovery` → `test-driven-development` → `agent-browser` (if UI) | `TEST-REPORT.md` |
 | `/tgd-review` | Review | `code-review-and-quality` → `code-simplification` (+ `security-and-hardening`, `performance-optimization` when relevant) | `REVIEW.md` · `decisions/ADR-*.md` (if architectural) |
-| `/tgd-ship` | Ship | `shipping-and-launch` (+ `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs` when relevant) | `CHANGELOG.md` · `REGRESSION-CATALOG.md` (if `[R]` tasks) |
+| `/tgd-release` | Release | `shipping-and-launch` (+ `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs` when relevant) | `CHANGELOG.md` · `REGRESSION-CATALOG.md` (if `[R]` tasks) |
 
 All artifacts live under `$TGD_DIR/<feature-name>/`. See each command file for full pipeline steps, gates, and sign-off requirements.
 
@@ -90,7 +90,7 @@ Each lifecycle phase has a distinct communication tone. Follow these when respon
 | DEVELOP | Minimal Implementer | Code-first, minimal prose | "Modified src/auth.ts:42. Running tests..." |
 | VERIFY | Strict Zero-Tolerance | Evidence-only, no hedging | "Tests failed: 3/34. Exit code 1. Must fix." |
 | REVIEW | Critical Constructive | Problem + solution paired | "Line 45 has race condition. Suggest mutex." |
-| SHIP | Cautious Process | Checklists, risk assessment | "Pre-deploy: ✅ tests ✅ build ⚠️ migration pending" |
+| Release | Cautious Process | Checklists, risk assessment | "Pre-deploy: ✅ tests ✅ build ⚠️ migration pending" |
 
 **Rules:**
 - Match the tone to the current phase — do not mix tones
@@ -103,7 +103,7 @@ tGD has three human roles. Each artifact has a `## Sign-off` section at the bott
 
 | Role | Focus | Primary Touchpoints |
 |------|-------|---------------------|
-| **PM** | Product direction & acceptance | Define (PRD.md), Ship (final sign-off) |
+| **PM** | Product direction & acceptance | Define (PRD.md), Release (final sign-off) |
 | **DEV** | Implementation quality | Plan (TASKS.md), Develop (code), Review |
 | **QA** | Test quality & coverage | Verify (TEST-REPORT.md), Review (REVIEW.md) |
 
@@ -112,10 +112,10 @@ tGD has three human roles. Each artifact has a `## Sign-off` section at the bott
 - Approve: `- [x] **PM**: Approved — YYYY-MM-DD — comment`
 - Reject: `- [x] **PM**: Rejected — YYYY-MM-DD — reason`
 - Agent checks for `[x]` in required role lines before proceeding (Gate 3)
-- Ship is the hard gate: all required Sign-offs must be `[x]`
+- Release is the hard gate: all required Sign-offs must be `[x]`
 - One person can hold multiple roles (common in small teams)
 
-**Async workflow:** Agent runs all phases but blocks at Ship until sign-offs are complete. Humans review on their own schedule — no real-time blocking.
+**Async workflow:** Agent runs all phases but blocks at Release until sign-offs are complete. Humans review on their own schedule — no real-time blocking.
 
 See `skills/tgd-lifecycle-commands/references/human-roles.md` for full details.
 
@@ -129,7 +129,7 @@ This repo has three composable layers. They have different jobs and should not b
 
 Composition rule: **the user (or a slash command) is the orchestrator. Personas do not invoke other personas.** A persona may invoke skills.
 
-The only multi-persona orchestration pattern this repo endorses is **parallel fan-out with a merge step** — used by `/tgd-ship` to run `code-reviewer`, `security-auditor`, and `test-engineer` concurrently and synthesize their reports. Do not build a "router" persona that decides which other persona to call; that's the job of slash commands and intent mapping.
+The only multi-persona orchestration pattern this repo endorses is **parallel fan-out with a merge step** — used by `/tgd-release` to run `code-reviewer`, `security-auditor`, and `test-engineer` concurrently and synthesize their reports. Do not build a "router" persona that decides which other persona to call; that's the job of slash commands and intent mapping.
 
 See [agents/README.md](agents/README.md) for the decision matrix and [references/orchestration-patterns.md](references/orchestration-patterns.md) for the full pattern catalog.
 

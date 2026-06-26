@@ -102,13 +102,13 @@ export const PHASES = [
     platforms: ['claude', 'codex', 'opencode'],
     outputs: ['Review report'],
     verify: 'Code review passes, no anti-patterns',
-    suggestNext: '/tgd-ship',
+    suggestNext: '/tgd-release',
   },
   {
     id: 'ship',
-    name: 'Ship',
+    name: 'Release',
     icon: '🚀',
-    command: '/tgd-ship',
+    command: '/tgd-release',
     desc: 'Clean git history, deploy safely',
     skills: [
       { name: 'git-workflow-and-versioning', required: true },

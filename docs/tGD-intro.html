@@ -34,7 +34,7 @@
       <span class="arrow">→</span>
       <div class="step"><span class="icon">🔎</span><span class="name">Review</span></div>
       <span class="arrow">→</span>
-      <div class="step"><span class="icon">🚀</span><span class="name">Ship</span></div>
+      <div class="step"><span class="icon">🚀</span><span class="name">Release</span></div>
     </div>
     <div class="row mt-l" style="gap:8px">
       <span class="pill pill-accent">Claude Code</span>
@@ -53,7 +53,7 @@
     <div class="grid g3 mt-l">
       <div class="card"><h4>"Should work"</h4><p>Agent claims success — tests never ran. No evidence, no proof.</p></div>
       <div class="card"><h4>500 lines before reading</h4><p>Writes a novel before understanding your codebase.</p></div>
-      <div class="card"><h4>Skips spec, ships broken PR</h4><p>No spec, no plan, no tests. Ships garbage and disappears.</p></div>
+      <div class="card"><h4>Skips spec, ships broken PR</h4><p>No spec, no plan, no tests. Releases garbage and disappears.</p></div>
     </div>
     <div class="quote-box mt-l">
       <div class="quote">The harness matters as much as the model.</div>
@@ -412,10 +412,10 @@ Agent: Scanning project...
     <div class="deck-footer"><span>REVIEW — Five-axis quality check</span><span class="slide-number" data-current="9" data-total="16"></span></div>
   </section>
 
-  <!-- ==================== 10. /tgd-ship ==================== -->
-  <section class="slide" data-title="tgd-ship">
+  <!-- ==================== 10. /tgd-release ==================== -->
+  <section class="slide" data-title="tgd-release">
     <p class="kicker">COMMAND 7 / 7</p>
-    <h2 class="h2"><span class="gradient-text">/tgd-ship</span> — Ship</h2>
+    <h2 class="h2"><span class="gradient-text">/tgd-release</span> — Release</h2>
     <p class="lede">Faster is safer. Commit, CI, rollout, monitor.</p>
     <div class="grid g2 mt-l" style="align-items:start">
       <div>
@@ -452,12 +452,12 @@ Agent: Scanning project...
 ├── REGRESSION-CATALOG.md    ← Cumulative regression tests
 │   ### [auth] valid JWT token
 │   - Test: tests/auth.test.ts
-│   - Shipped: v2026.06.15
+│   - Releaseped: v2026.06.15
 └── &lt;feature-name&gt;/
     └── decisions/
         └── ADR.md           ← Architecture Decision
 
-<span style="color:var(--text-3)">Ship Gate (all must be [x]):</span>
+<span style="color:var(--text-3)">Release Gate (all must be [x]):</span>
   PRD.md        → - [x] PM ✓
   TASKS.md      → - [x] DEV ✓
   TEST-REPORT   → - [x] QA ✓ (regression 5/5)
@@ -469,7 +469,7 @@ Agent: Scanning project...
         </div>
       </div>
     </div>
-    <div class="deck-footer"><span>SHIP — Faster is safer</span><span class="slide-number" data-current="10" data-total="16"></span></div>
+    <div class="deck-footer"><span>RELEASE — Faster is safer</span><span class="slide-number" data-current="10" data-total="16"></span></div>
   </section>
 
   <!-- ==================== 12. Pipeline Overview ==================== -->
@@ -483,7 +483,7 @@ Agent: Scanning project...
       <div class="phase"><div class="p-icon">⚡</div><div><div class="p-name">4. DEVELOP</div><div class="p-desc">Worktree → src/ + tests/</div><div class="p-skills">source-driven → TDD</div></div></div>
       <div class="phase gate"><div class="p-icon">🧪</div><div><div class="p-name">5. VERIFY</div><div class="p-desc">Tests + browser → TEST-REPORT.md</div><div class="p-skills">debugging → regression gate</div></div></div>
       <div class="phase"><div class="p-icon">🔎</div><div><div class="p-name">6. REVIEW</div><div class="p-desc">5-axis → REVIEW.md</div><div class="p-skills">code-review → simplification</div></div></div>
-      <div class="phase"><div class="p-icon">🚀</div><div><div class="p-name">7. SHIP</div><div class="p-desc">Commit + CI + catalog → CHANGELOG.md</div><div class="p-skills">git-workflow → catalog</div></div></div>
+      <div class="phase"><div class="p-icon">🚀</div><div><div class="p-name">7. RELEASE</div><div class="p-desc">Commit + CI + catalog → CHANGELOG.md</div><div class="p-skills">git-workflow → catalog</div></div></div>
     </div>
     <div class="deck-footer"><span>Full Pipeline</span><span class="slide-number" data-current="11" data-total="16"></span></div>
   </section>
@@ -525,7 +525,7 @@ Agent: Scanning project...
         <div class="card" style="border-left:3px solid var(--accent);margin-bottom:12px">
           <h4>🎯 Core Value</h4>
           <div class="stack" style="font-size:13px;color:var(--text-2)">
-            <div>7-stage pipeline: <b>Map → Define → Plan → Develop → Verify → Review → Ship</b></div>
+            <div>7-stage pipeline: <b>Map → Define → Plan → Develop → Verify → Review → Release</b></div>
             <div>Forces agents to follow disciplined workflow</div>
             <div>No more "should work" — only evidence</div>
           </div>
@@ -556,7 +556,7 @@ Agent: Scanning project...
 <pre><span style="color:var(--text-3)"># 3 commands to ship</span>
 $ git clone .../tGD.git
 $ cd tGD && <span style="color:var(--accent)">tgd</span>
-$ <span style="color:var(--accent)">/tgd-map</span> → <span style="color:var(--accent)">/tgd-define</span> → ... → <span style="color:var(--accent)">/tgd-ship</span></pre>
+$ <span style="color:var(--accent)">/tgd-map</span> → <span style="color:var(--accent)">/tgd-define</span> → ... → <span style="color:var(--accent)">/tgd-release</span></pre>
           </div>
           <div class="stack mt-s" style="font-size:13px;color:var(--text-2)">
             <div>5 platforms: Claude Code · Codex · Gemini · OpenCode · Pi</div>

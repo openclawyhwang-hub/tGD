@@ -19,7 +19,7 @@
 
 tGD 把你現有的工作流程轉變成 **agentic PDLC pipeline** — 同樣的關卡、同樣的問責，10 倍速度。
 
-Map → Define → Plan → Develop → Verify → Review → Ship
+Map → Define → Plan → Develop → Verify → Review → Release
 
 支援 Claude Code、Codex CLI、Gemini CLI、OpenCode、Pi Coding Agent。
 
@@ -111,6 +111,12 @@ pi
 ```
 > Agent 訪談你，建立 PRD + SPEC，然後就可以開始建造了。
 
+### Claude Desktop（無需終端機）
+
+使用 Claude Desktop 而非 coding agent？tGD 可以在**半自動模式**下運作 — Claude 產出 artifacts，你負責執行終端機指令。
+
+→ [Claude Desktop 設定指南](docs/claude-desktop-setup.md)
+
 ---
 
 ## 💡 實際範例
@@ -193,7 +199,7 @@ Agent：執行測試套件...
 
 ### 範例 4：安心出貨
 ```
-使用者：/tgd-ship
+使用者：/tgd-release
 
 Agent：執行最終檢查...
 → 程式碼審查：✅ 通過（五軸審查）
@@ -213,7 +219,7 @@ flowchart LR
     C --> D["⚡ DEVELOP\n/tgd-develop"]
     D --> E["🧪 VERIFY\n/tgd-verify"]
     E --> F["🔎 REVIEW\n/tgd-review"]
-    F --> G["🚀 SHIP\n/tgd-ship"]
+    F --> G["🚀 RELEASE\n/tgd-release"]
 
     classDef cyan fill:#0e7490,color:#ecfeff,stroke:#22d3ee
     classDef green fill:#059669,color:#ecfdf5,stroke:#34d399
@@ -299,7 +305,7 @@ flowchart LR
 | 沙盒建造 | `/tgd-develop` | **強制 Worktree** + 智能路由 | `source-driven-development` → (`subagent` OR `incremental`) → `test-driven-development` |
 | 證明它能跑 | `/tgd-verify` | 測試就是證明 | `debugging-and-error-recovery` → `test-driven-development` → **Cross-Feature Regression Gate** |
 | 合併前審查 | `/tgd-review` | 改善程式碼健康 | `code-review-and-quality` → `code-simplification` |
-| 部署到生產 | `/tgd-ship` | 快就是安全 | `git-workflow-and-versioning` → `shipping-and-launch` → **Regression Catalog Update + Audit** |
+| 部署到生產 | `/tgd-release` | 快就是安全 | `git-workflow-and-versioning` → `shipping-and-launch` → **Regression Catalog Update + Audit** |
 
 ---
 
@@ -308,7 +314,7 @@ flowchart LR
 tGD 的測試不是單一階段——它是跨四個階段的漸進紀律，每個階段建立在前一個之上：
 
 ```
-Plan            Develop           Verify            Review            Ship
+Plan            Develop           Verify            Review            Release
 ─────           ────────          ──────            ──────            ────
 BDD             TDD               跑所有測試        Code review       Regression
 (Given-When-    (Red-Green-       產出 TEST-        審查測試          Catalog
@@ -402,7 +408,7 @@ TEST-REPORT.md 是**自動產生**的，不是手寫的。Agent 解析 test runn
 
 ### 🏷️ Regression：安全網
 
-Regression 測試是驗收等級的測試，**每次 Ship 之前都必須通過**。它會隨著功能增加而累積——每個新功能把它的驗收測試寫入 `REGRESSION-CATALOG.md`。
+Regression 測試是驗收等級的測試，**每次 Release 之前都必須通過**。它會隨著功能增加而累積——每個新功能把它的驗收測試寫入 `REGRESSION-CATALOG.md`。
 
 **什麼是 regression？**
 - 從 PRD Acceptance Criteria 轉化的測試（在 TASKS.md 標記 `[R]`）
@@ -412,26 +418,26 @@ Regression 測試是驗收等級的測試，**每次 Ship 之前都必須通過*
 **如何累積：**
 
 ```
-Feature 1（auth）:      8 個 regression 測試   ← Ship 寫入 REGRESSION-CATALOG.md
+Feature 1（auth）:      8 個 regression 測試   ← Release 寫入 REGRESSION-CATALOG.md
 Feature 2（dashboard）: +5 個 regression 測試  ← Catalog 現有 13 筆
 Feature 3（payments）:  +6 個 regression 測試  ← Catalog 現有 19 筆
 ```
 
-每個功能的 Ship 都要求 100% regression pass——不只是新測試，是 catalog 裡**所有累積的 regression 測試**。
+每個功能的 Release 都要求 100% regression pass——不只是新測試，是 catalog 裡**所有累積的 regression 測試**。
 
 **REGRESSION-CATALOG 生命週期：**
 
 1. **Plan** — 在 TASKS.md 用 `[R]` 標記驗收條件
 2. **Develop** — TDD 為每個 `[R]` 條件建立實際的測試檔案
-3. **Ship** — 掃描 TASKS.md 的 `[R]` 條目，寫入 `REGRESSION-CATALOG.md`（累積型）
-4. **Ship（Catalog Audit）** — 逐條檢查：測試檔案還在嗎？通過嗎？功能已棄用？清除過時條目
+3. **Release** — 掃描 TASKS.md 的 `[R]` 條目，寫入 `REGRESSION-CATALOG.md`（累積型）
+4. **Release（Catalog Audit）** — 逐條檢查：測試檔案還在嗎？通過嗎？功能已棄用？清除過時條目
 5. **Verify** — 讀取 `REGRESSION-CATALOG.md`，逐條重跑。任何一筆失敗 = 硬性停止
 
 **如何標記：** Agent 用 stack 對應的標記方式標記驗收等級的測試（見上表）。不是所有測試都是 regression——只有驗證 PRD 驗收條件或關鍵使用者路徑的才是。
 
 **何時跑：**
 - `/tgd-verify` → 跑所有測試 + 讀取 `REGRESSION-CATALOG.md`，逐條重跑每筆 entry
-- `/tgd-ship` → 寫入新的 `[R]` 條目到 catalog + 審查現有條目是否過時
+- `/tgd-release` → 寫入新的 `[R]` 條目到 catalog + 審查現有條目是否過時
 - 任何時候 → 直接執行（如 `pytest -m regression`），不需要 tGD 包裝
 
 ### 🔍 Review：審計測試品質
@@ -444,9 +450,9 @@ Agent 產出 REVIEW.md，包含：
 
 Sign-off：**QA + DEV** 都要簽。
 
-### 🚀 Ship：Regression Gate
+### 🚀 Release：Regression Gate
 
-Ship 是 tGD 唯一的硬性門檻。執行前，Agent 驗證：
+Release 是 tGD 唯一的硬性門檻。執行前，Agent 驗證：
 
 ```
 PRD.md        → PM 簽了？       ✅
@@ -456,7 +462,7 @@ TEST-REPORT   → QA 簽了？       ✅
               → Failed = 0？      ✅
 REVIEW.md     → QA+DEV 都簽了？  ✅
 
-全部 ✅ → 執行 Ship
+全部 ✅ → 執行 Release
 任何 ❌ → 🛑 擋住：「X 還沒簽 Y」
 ```
 
@@ -468,14 +474,14 @@ tGD 有三個角色。每個 artifact 底部都有 `## Sign-off` 區塊：
 
 | 角色 | 職責 | 審查項目 | 簽核對象 |
 |------|------|----------|----------|
-| **PM** | 產品方向 | PRD（做什麼、為什麼） | PRD.md、Ship |
+| **PM** | 產品方向 | PRD（做什麼、為什麼） | PRD.md、Release |
 | **DEV** | 實作品質 | TASKS、程式碼 | TASKS.md、程式碼、REVIEW.md |
 | **QA** | 測試品質與覆蓋率 | TEST-REPORT、測試品質 | TEST-REPORT.md、REVIEW.md |
 
 **運作方式：**
 - Agent 產出 artifact → 人類在自己的電腦上審查 → 編輯 artifact 裡的 `## Sign-off` → commit & push
 - Agent 在進入下一階段前檢查 Sign-off checkbox（Gate 3）
-- Ship 是硬門檻：所有必要 Sign-offs 必須為 `[x]`
+- Release 是硬門檻：所有必要 Sign-offs 必須為 `[x]`
 - 格式：`- [x] **PM**: Approved — 日期 — 備註` 或 `- [x] **QA**: Rejected — 日期 — 原因`
 - 一人可兼多角（小團隊常見）
 - 不需要額外工具 — git 就是協調機制
@@ -523,7 +529,7 @@ Skills 使用**漸進式揭露**——agent 只在需要時載入細節，保持
 | **載入的 Skills** | 28（按需載入，非一次全部） |
 | **Context 使用量** | 每個 skill ~5%（漸進式揭露） |
 | **安裝時間** | < 30 秒 |
-| **第一個功能** | ~15 分鐘（從 `/tgd-define` 到 `/tgd-ship`） |
+| **第一個功能** | ~15 分鐘（從 `/tgd-define` 到 `/tgd-release`） |
 
 ---
 
@@ -647,7 +653,7 @@ my-project-backend/.codegraph → my-project-tGD/.scans/my-project-backend/.code
 | Develop | `/tgd-develop` | src/ | Code repo |
 | Verify | `/tgd-verify` | tests/ | Code repo |
 | Review | `/tgd-review` | REVIEW.md | `$TGD_DIR/<feature>/REVIEW.md` |
-| Ship | `/tgd-ship` | CHANGELOG.md, git tag | `$TGD_DIR/CHANGELOG.md` |
+| Release | `/tgd-release` | CHANGELOG.md, git tag | `$TGD_DIR/CHANGELOG.md` |
 
 ### Repo 內容
 ### Repo 內容
@@ -716,7 +722,7 @@ tGD/
 | [security-and-hardening](skills/security-and-hardening/SKILL.md) | OWASP & 密鑰管理 |
 | [performance-optimization](skills/performance-optimization/SKILL.md) | 效能分析 & 反模式 |
 
-### 🚀 Ship
+### 🚀 Release
 | Skill | 用途 |
 |---|---|
 | [git-workflow-and-versioning](skills/git-workflow-and-versioning/SKILL.md) | 原子提交 & 主幹開發 |

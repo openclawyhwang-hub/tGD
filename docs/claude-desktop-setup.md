@@ -1,51 +1,188 @@
 # tGD — Claude Desktop Setup Guide
 
-## How to Set Up
+Use tGD's 7-stage PDLC pipeline in Claude Desktop — no terminal required.
 
-### Step 1: Create a Project
-
-1. Open Claude Desktop → Left sidebar → **Projects** → **New Project**
-2. Name it: `tGD — Agentic PDLC`
-3. Click **Edit Project** → go to **Custom Instructions**
-
-### Step 2: Paste Custom Instructions
-
-Copy everything below the `---` line into the Custom Instructions field.
-
-### Step 3: Upload Knowledge Base Files
-
-Upload these files from `skills/` to the Project's **Knowledge Base** (drag & drop or click "Add content"):
-
-**Core pipeline skills (one per stage):**
-- `skills/context-engineering/SKILL.md` — Map
-- `skills/interview-me/SKILL.md` — Define
-- `skills/idea-refine/SKILL.md` — Define
-- `skills/spec-driven-development/SKILL.md` — Define
-- `skills/sketch/SKILL.md` — Define (UI)
-- `skills/planning-and-task-breakdown/SKILL.md` — Plan
-- `skills/source-driven-development/SKILL.md` — Develop
-- `skills/incremental-implementation/SKILL.md` — Develop
-- `skills/test-driven-development/SKILL.md` — Develop + Verify
-- `skills/subagent-driven-development/SKILL.md` — Develop
-- `skills/verification-before-completion/SKILL.md` — Develop + Verify
-- `skills/debugging-and-error-recovery/SKILL.md` — Verify
-- `skills/code-review-and-quality/SKILL.md` — Review
-- `skills/code-simplification/SKILL.md` — Review
-- `skills/security-and-hardening/SKILL.md` — Review
-- `skills/performance-optimization/SKILL.md` — Review
-- `skills/shipping-and-launch/SKILL.md` — Release
-- `skills/ci-cd-and-automation/SKILL.md` — Release
-- `skills/documentation-and-adrs/SKILL.md` — Release
-
-**Global rules:**
-- `skills/tgd-rules/SKILL.md`
-- `skills/doubt-driven-development/SKILL.md`
+> **Not a coder?** This guide is for you. tGD normally runs inside coding agents (Claude Code, Codex, Gemini CLI), but Claude Desktop can run the full pipeline in **semi-automatic mode**: Claude produces the artifacts, you handle the terminal commands.
 
 ---
 
-## Custom Instructions (paste below)
+## What You Get
+
+| Stage | Claude Does | You Do |
+|-------|------------|--------|
+| **Map** | Guides you through codebase analysis, produces `CONTEXT.md` | Paste your directory tree or repo structure |
+| **Define** | Asks questions, produces `PRD.md` / `SPEC.md` / `DESIGN.md` | Answer questions, review & sign off |
+| **Plan** | Decomposes work into `TASKS.md` with BDD acceptance criteria | Review & sign off |
+| **Develop** | Generates code + tests as artifacts | Copy code to your IDE, run tests, paste results back |
+| **Verify** | Analyzes test results, produces `TEST-REPORT.md` | Run tests, paste output |
+| **Review** | 5-axis code review, produces `REVIEW.md` | Paste `git diff` or PR content |
+| **Release** | Produces `CHANGELOG.md`, guides deployment | Run CI/CD, final sign-off |
+
+---
+
+## Limitations (vs. Claude Code)
+
+Claude Desktop is a chat interface — no file system, no terminal, no git. Here's what changes:
+
+- **No auto-scan** — Map stage: you paste the directory tree manually instead of Claude scanning it
+- **No code execution** — Develop/Verify: Claude generates code, you run it in your own IDE
+- **No file persistence** — Artifacts are produced in chat; you copy them to your repo manually
+- **No slash commands** — Use natural language triggers instead (e.g., "map this repo", "进入 define")
+
+**Best for:** PM-led Define & Review sessions, product planning, spec writing, code review discussions.
+**Not ideal for:** Full pipeline execution (use Claude Code or Codex CLI for that).
+
+---
+
+## Setup (3 Steps)
+
+### Step 1: Create a Project
+
+1. Open Claude Desktop → left sidebar → **Projects** → **New Project**
+2. Name it: `tGD — Agentic PDLC`
+
+### Step 2: Set Custom Instructions
+
+1. Click **Edit Project** → **Custom Instructions**
+2. Copy the entire content of the **Custom Instructions** section below and paste it in
+
+### Step 3: Upload Knowledge Base Files
+
+In the same Project settings, go to **Knowledge Base** → **Add content**.
+
+Upload these files from the `skills/` directory. You can multi-select in Finder (Cmd+Click) and drag them all in at once.
+
+**Core — Global Rules (upload these first):**
+
+| File | What it does |
+|------|-------------|
+| `skills/tgd-rules/SKILL.md` | Core rules — anti-rationalization, verification iron law |
+| `skills/doubt-driven-development/SKILL.md` | Doubt-first verification principle |
+
+**Map Stage:**
+
+| File | What it does |
+|------|-------------|
+| `skills/context-engineering/SKILL.md` | Codebase scanning & CONTEXT.md generation |
+
+**Define Stage:**
+
+| File | What it does |
+|------|-------------|
+| `skills/interview-me/SKILL.md` | Requirements interview workflow |
+| `skills/idea-refine/SKILL.md` | Refine vague ideas into concrete specs |
+| `skills/spec-driven-development/SKILL.md` | SPEC.md writing workflow |
+| `skills/sketch/SKILL.md` | UI prototyping (if feature has UI) |
+
+**Plan Stage:**
+
+| File | What it does |
+|------|-------------|
+| `skills/planning-and-task-breakdown/SKILL.md` | Triple-source task decomposition |
+
+**Develop Stage:**
+
+| File | What it does |
+|------|-------------|
+| `skills/source-driven-development/SKILL.md` | Source-code-first implementation |
+| `skills/incremental-implementation/SKILL.md` | Small incremental changes |
+| `skills/subagent-driven-development/SKILL.md` | Parallel subagent delegation |
+| `skills/test-driven-development/SKILL.md` | Red-Green-Refactor TDD cycle |
+| `skills/verification-before-completion/SKILL.md` | Evidence-based completion gates |
+
+**Verify Stage:**
+
+| File | What it does |
+|------|-------------|
+| `skills/debugging-and-error-recovery/SKILL.md` | Root cause debugging workflow |
+
+**Review Stage:**
+
+| File | What it does |
+|------|-------------|
+| `skills/code-review-and-quality/SKILL.md` | 5-axis code review |
+| `skills/code-simplification/SKILL.md` | Simplification pass |
+| `skills/security-and-hardening/SKILL.md` | Security audit |
+| `skills/performance-optimization/SKILL.md` | Performance analysis |
+
+**Release Stage:**
+
+| File | What it does |
+|------|-------------|
+| `skills/shipping-and-launch/SKILL.md` | Deployment checklist |
+| `skills/ci-cd-and-automation/SKILL.md` | CI/CD pipeline setup |
+| `skills/documentation-and-adrs/SKILL.md` | Docs & architecture decision records |
+
+**Supporting Skills (optional but recommended):**
+
+| File | What it does |
+|------|-------------|
+| `skills/frontend-ui-engineering/SKILL.md` | Frontend architecture guidance |
+| `skills/api-and-interface-design/SKILL.md` | API design patterns |
+| `skills/deprecation-and-migration/SKILL.md` | Migration & deprecation handling |
+
+**Total: 22 files** (2 core + 17 pipeline + 3 supporting)
+
+---
+
+## How to Use
+
+### Starting a Session
+
+Just tell Claude which stage you want:
 
 ```
+You: 帮我 map 这个 repo
+Claude: 请把项目的目录结构贴给我，我来帮你生成 CONTEXT.md。
+```
+
+```
+You: I want to build a user authentication feature
+Claude: 进入 Define 阶段。请问：
+  1. 认证方式？JWT / OAuth / Session-based？
+  2. 有哪些用户角色？
+  3. 有没有 UI 设计？
+```
+
+```
+You: plan the work
+Claude: 读取 CONTEXT.md + PRD.md + SPEC.md，开始分解任务...
+→ 产出 TASKS.md（含 BDD acceptance criteria）
+```
+
+### Stage Triggers
+
+| Say this | Enters stage |
+|----------|-------------|
+| "map this repo" / "扫描 codebase" / "help me understand this project" | Map |
+| "I want to build X" / "我要做一个功能" / "进入 define" | Define |
+| "plan the work" / "帮我排任务" / "进入 plan" | Plan |
+| "start coding" / "implement" / "进入 develop" | Develop |
+| "run tests" / "verify" / "进入 verify" | Verify |
+| "review this code" / "code review" / "进入 review" | Review |
+| "ship it" / "release" / "deploy" / "进入 release" | Release |
+
+### Sign-off Protocol
+
+Every artifact ends with a sign-off section. Review the artifact, then approve:
+
+```markdown
+## Sign-off
+- [x] **PM**: Approved — 2026-06-26 — Looks good
+- [ ] **DEV**: — (pending)
+- [ ] **QA**: — (pending)
+```
+
+Claude checks for `[x]` in required roles before proceeding to the next stage.
+
+---
+
+## Custom Instructions
+
+Copy everything below and paste into your Project's Custom Instructions field:
+
+---
+
 You are a tGD pipeline assistant. tGD is an Agentic PDLC (Product Development Lifecycle) harness that transforms human workflows into agent-driven pipelines. Your job is to guide the user through a 7-stage pipeline, producing structured artifacts at each stage.
 
 ## 7-Stage Pipeline
@@ -66,15 +203,13 @@ When the user says any of these, enter the corresponding stage:
 
 | User says | Stage |
 |-----------|-------|
-| "map this repo" / "掃描 codebase" / "help me understand this project" | Map |
-| "I want to build X" / "我要做一個功能" / "define a feature" / "進入 define" | Define |
-| "plan the work" / "幫我排任務" / "break this down" / "進入 plan" | Plan |
-| "start coding" / "implement" / "開始寫 code" / "進入 develop" | Develop |
-| "run tests" / "verify" / "跑測試" / "進入 verify" | Verify |
-| "review this code" / "code review" / "review 一下" / "進入 review" | Review |
-| "ship it" / "release" / "準備上線" / "deploy" / "進入 release" | Release |
-
-Also recognize `/tgd-map`, `/tgd-define`, etc. as direct stage triggers.
+| "map this repo" / "扫描 codebase" / "help me understand this project" | Map |
+| "I want to build X" / "我要做一个功能" / "define a feature" / "进入 define" | Define |
+| "plan the work" / "帮我排任务" / "break this down" / "进入 plan" | Plan |
+| "start coding" / "implement" / "开始写 code" / "进入 develop" | Develop |
+| "run tests" / "verify" / "跑测试" / "进入 verify" | Verify |
+| "review this code" / "code review" / "review 一下" / "进入 review" | Review |
+| "ship it" / "release" / "准备上线" / "deploy" / "进入 release" | Release |
 
 ## Core Rules (ALWAYS follow)
 
@@ -112,7 +247,7 @@ Match your tone to the current stage:
 
 One person can hold multiple roles. Each artifact has a `## Sign-off` section — only the assigned role modifies their checkbox.
 
-## How to Work (since you can't run terminal commands)
+## How to Work (Claude Desktop mode)
 
 Since this is Claude Desktop (not a coding agent), adapt each stage:
 
@@ -130,12 +265,10 @@ Since this is Claude Desktop (not a coding agent), adapt each stage:
 
 Every artifact MUST include at the bottom:
 
-```
-## Sign-off
-- [ ] **PM**: — date — comment
-- [ ] **DEV**: — date — comment
-- [ ] **QA**: — date — comment
-```
+    ## Sign-off
+    - [ ] **PM**: — date — comment
+    - [ ] **DEV**: — date — comment
+    - [ ] **QA**: — date — comment
 
 (Only the relevant roles for each stage.)
 
@@ -150,4 +283,3 @@ When the user starts a conversation:
 6. Request sign-off before proceeding
 
 When the user types a stage trigger (e.g., "map this repo"), jump directly to that stage.
-```

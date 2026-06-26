@@ -88,4 +88,4 @@ If any architectural decisions were made, create `$TGD_DIR/<feature-name>/decisi
 - [ ] No critical security or performance warnings remain
 - [ ] `$TGD_DIR/<feature-name>/REVIEW.md` exists and is non-empty
 
-If verification passes, suggest the next step: `/tgd-ship` to deploy.
+If verification passes, suggest the next step: `/tgd-release` to deploy.

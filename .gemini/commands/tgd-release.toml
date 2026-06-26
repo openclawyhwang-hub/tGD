@@ -1,4 +1,6 @@
+description = "Release to production — faster is safer"
 
+prompt = """
 **🛑 Pre-flight: Environment Check**
 - [ ] `$TGD_DIR/CONTEXT.md` exists (or `.codegraph/` is present).
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
@@ -17,18 +19,13 @@
 - [ ] `tests/` exists and passes.
 - **If missing:** STOP. Tell user: "Review or tests incomplete. Please run `/tgd-review` first."
 
-Run the `shipping-and-launch` skill. This is the SHIP phase. The full pipeline is:
+Run the shipping-and-launch skill. This is the SHIP phase. Full pipeline:
+1. git-workflow-and-versioning — clean commit history
+2. shipping-and-launch — pre-launch checklist, staged rollouts, monitoring
 
-**Core flow:**
-1. `git-workflow-and-versioning` — clean commit history, trunk-based development
-2. `shipping-and-launch` — pre-launch checklist, staged rollouts, monitoring setup
+Conditional: ci-cd-and-automation (pipeline work), deprecation-and-migration (removing old systems), documentation-and-adrs (new architecture or APIs).
 
-**Conditional (apply when relevant):**
-- CI/CD pipeline work? → `ci-cd-and-automation`
-- Removing old systems? → `deprecation-and-migration`
-- New architecture or API? → `documentation-and-adrs`
-
-Faster is safer. Deploy in stages, confirm monitoring, and have a rollback plan.
+Faster is safer. Deploy in stages, confirm monitoring, have a rollback plan.
 
 After shipping, update `$TGD_DIR/CHANGELOG.md` (create if it doesn't exist) with:
 - Version (CalVer: `vYYYY.MM.DD`)
@@ -56,7 +53,7 @@ After shipping, scan `$TGD_DIR/<feature-name>/TASKS.md` for Acceptance Criteria 
    ### [<feature-name>] Short description
    - **Criterion:** Given X, When Y, Then Z
    - **Test:** `tests/path/to/test.ts`
-   - **Shipped:** vYYYY.MM.DD
+   - **Releaseped:** vYYYY.MM.DD
    ```
 This catalog is cumulative — every shipped feature's `[R]` tests are preserved for future regression checks. Future features will re-run ALL catalog entries during `/tgd-verify`.
 
@@ -78,3 +75,4 @@ This prevents the catalog from becoming a zombie file full of dead references. E
 - [ ] Regression Catalog Audit completed — all entries point to existing, passing test files
 
 If verification passes, confirm that monitoring is active and the rollback plan is documented.
+"""

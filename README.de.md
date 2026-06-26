@@ -19,7 +19,7 @@
 
 tGD verwandelt Ihren bestehenden Workflow in eine **agentic PDLC Pipeline** — gleiche Gates, gleiche Verantwortung, 10× Geschwindigkeit.
 
-Map → Define → Plan → Develop → Verify → Review → Ship
+Map → Define → Plan → Develop → Verify → Review → Release
 
 Funktioniert mit Claude Code, Codex CLI, Gemini CLI, OpenCode und Pi Coding Agent.
 
@@ -99,6 +99,12 @@ pi       # Pi Coding Agent
 /tgd-define Ich möchte Benutzer-Authentifizierung hinzufügen
 ```
 > Agent interviewt Sie, erstellt PRD + SPEC.
+
+### Claude Desktop (ohne Terminal)
+
+Nutzen Sie Claude Desktop statt eines Coding-Agent? tGD funktioniert im **halbautomatischen Modus** — Claude erstellt die Artefakte, Sie führen die Terminal-Befehle aus.
+
+→ [Claude Desktop Einrichtungsanleitung](docs/claude-desktop-setup.md)
 
 ---
 
@@ -191,7 +197,7 @@ flowchart LR
     C --> D["⚡ ENTWICKELN\n/tgd-develop"]
     D --> E["🧪 VERIFIZIEREN\n/tgd-verify"]
     E --> F["🔎 REVIEW\n/tgd-review"]
-    F --> G["🚀 LIEFERN\n/tgd-ship"]
+    F --> G["🚀 RELEASE\n/tgd-release"]
 
     classDef cyan fill:#0e7490,color:#ecfeff,stroke:#22d3ee
     classDef green fill:#059669,color:#ecfdf5,stroke:#34d399
@@ -250,7 +256,7 @@ Die `tgd` CLI verwaltet Installation, Updates und Diagnose:
 | Sandbox-Bau | `/tgd-develop` | **Pflicht-Worktree** + Intelligentes Routing | `source-driven-development` → (`subagent` OR `incremental`) → `test-driven-development` |
 | Beweis erbringen | `/tgd-verify` | Tests sind der Beweis | `debugging-and-error-recovery` → `test-driven-development` → **Cross-Feature Regression Gate** |
 | Review vor Merge | `/tgd-review` | Code-Qualität verbessern | `code-review-and-quality` → `code-simplification` |
-| Produktion | `/tgd-ship` | Schneller ist sicherer | `git-workflow-and-versioning` → `shipping-and-launch` → **Regression Catalog Update + Audit** |
+| Produktion | `/tgd-release` | Schneller ist sicherer | `git-workflow-and-versioning` → `shipping-and-launch` → **Regression Catalog Update + Audit** |
 
 ---
 
@@ -259,7 +265,7 @@ Die `tgd` CLI verwaltet Installation, Updates und Diagnose:
 Testen ist in tGD kein einzelner Schritt — es ist eine fortschreitende Disziplin über vier Stufen, die aufeinander aufbauen:
 
 ```
-Plan            Develop           Verify            Review            Ship
+Plan            Develop           Verify            Review            Release
 ─────           ────────          ──────            ──────            ────
 BDD             TDD               Run ALL tests     Code review       Regression
 (Given-When-    (Red-Green-       Generate          Audit test        Catalog
@@ -353,7 +359,7 @@ TEST-REPORT.md wird **automatisch** aus der Test-Runner-Ausgabe generiert, nicht
 
 ### 🏷️ Regression: Das Sicherheitsnetz
 
-Regressionstests sind akzeptanznahe Tests, die **vor jedem Ship bestehen müssen**. Sie wachsen mit jedem Feature — jedes neue Feature fügt seine Akzeptanztests zu `REGRESSION-CATALOG.md` hinzu.
+Regressionstests sind akzeptanznahe Tests, die **vor jedem Release bestehen müssen**. Sie wachsen mit jedem Feature — jedes neue Feature fügt seine Akzeptanztests zu `REGRESSION-CATALOG.md` hinzu.
 
 **Was ist Regression?**
 - Tests, die aus den Akzeptanzkriterien der PRD abgeleitet werden (in TASKS.md mit `[R]` markiert)
@@ -363,26 +369,26 @@ Regressionstests sind akzeptanznahe Tests, die **vor jedem Ship bestehen müssen
 **So wächst der Catalog:**
 
 ```
-Feature 1 (auth):     8 regression tests   ← Ship schreibt in REGRESSION-CATALOG.md
+Feature 1 (auth):     8 regression tests   ← Release schreibt in REGRESSION-CATALOG.md
 Feature 2 (dashboard): +5 regression tests  ← Catalog hat jetzt 13 Einträge
 Feature 3 (payments):  +6 regression tests  ← Catalog hat jetzt 19 Einträge
 ```
 
-Das Ship jedes Features erfordert 100% Regression — nicht nur die neuen Tests, **alle** akkumulierten Einträge aus dem Catalog.
+Das Release jedes Features erfordert 100% Regression — nicht nur die neuen Tests, **alle** akkumulierten Einträge aus dem Catalog.
 
 **Der REGRESSION-CATALOG Lifecycle:**
 
 1. **Plan** — Akzeptanzkriterien in TASKS.md mit `[R]` markieren
 2. **Develop** — TDD erstellt die tatsächlichen Testdateien für jedes `[R]`-Kriterium
-3. **Ship** — Scannt TASKS.md nach `[R]`-Einträgen, hängt an `REGRESSION-CATALOG.md` an (kumulativ)
-4. **Ship (Catalog Audit)** — Jeder Eintrag geprüft: Testdatei existiert? Bestanden? Feature deprecated? Veraltete Einträge entfernen
+3. **Release** — Scannt TASKS.md nach `[R]`-Einträgen, hängt an `REGRESSION-CATALOG.md` an (kumulativ)
+4. **Release (Catalog Audit)** — Jeder Eintrag geprüft: Testdatei existiert? Bestanden? Feature deprecated? Veraltete Einträge entfernen
 5. **Verify** — Liest `REGRESSION-CATALOG.md`, führt alle Einträge neu aus. Ein Fehlschlag = Hard Stop
 
 **So werden Tests markiert:** Der Agent markiert akzeptanznahe Tests mit dem passenden Stack-Marker (siehe Tabelle oben). Nicht alle Tests sind Regression — nur Tests, die PRD-Akzeptanzkriterien oder kritische User-Pfade prüfen.
 
 **Wann ausführen:**
 - `/tgd-verify` → führt alle Tests aus + liest `REGRESSION-CATALOG.md`, führt jeden Catalog-Eintrag neu aus
-- `/tgd-ship` → schreibt neue `[R]`-Einträge in Catalog + auditiert bestehende Einträge auf Aktualität
+- `/tgd-release` → schreibt neue `[R]`-Einträge in Catalog + auditiert bestehende Einträge auf Aktualität
 - Jederzeit → direkt (z.B. `pytest -m regression`), ohne tGD-Wrapper
 
 ### 🔍 Review: Testqualität prüfen
@@ -395,9 +401,9 @@ Agent erstellt REVIEW.md mit:
 
 Sign-off: **QA + DEV** unterschreiben beide.
 
-### 🚀 Ship: Die Regression-Schranke
+### 🚀 Release: Die Regression-Schranke
 
-Ship ist die einzige harte Schranke in tGD. Vor der Ausführung prüft der Agent:
+Release ist die einzige harte Schranke in tGD. Vor der Ausführung prüft der Agent:
 
 ```
 PRD.md        → PM signed?      ✅
@@ -407,7 +413,7 @@ TEST-REPORT   → QA signed?      ✅
               → Failed = 0?      ✅
 REVIEW.md     → QA + DEV signed? ✅
 
-All ✅ → proceed to Ship
+All ✅ → proceed to Release
 Any ❌ → STOP: "X has not approved Y yet"
 ```
 
@@ -419,14 +425,14 @@ tGD hat drei menschliche Rollen. Jedes Artifact hat einen `## Sign-off`-Bereich 
 
 | Rolle | Fokus | Prüft | Sign-off für |
 |-------|-------|-------|-------------|
-| **PM** | Produktrichtung | PRD (Was & Warum) | PRD.md, Ship |
+| **PM** | Produktrichtung | PRD (Was & Warum) | PRD.md, Release |
 | **DEV** | Implementierungsqualität | TASKS, Code | TASKS.md, Code, REVIEW.md |
 | **QA** | Testqualität & Coverage | TEST-REPORT, Testqualität | TEST-REPORT.md, REVIEW.md |
 
 **So funktioniert es:**
 - Agent produziert Artifact → Mensch prüft auf eigenem Rechner → bearbeitet `## Sign-off` im Artifact → commit & push
 - Agent prüft Sign-off-Checkboxen vor dem nächsten Schritt (Gate 3)
-- Ship ist das harte Gate: alle erforderlichen Sign-offs müssen `[x]` sein
+- Release ist das harte Gate: alle erforderlichen Sign-offs müssen `[x]` sein
 - Format: `- [x] **PM**: Approved — Datum — Kommentar` oder `- [x] **QA**: Rejected — Datum — Grund`
 - Eine Person kann mehrere Rollen haben (bei kleinen Teams üblich)
 - Kein zusätzliches Werkzeug nötig — git ist der Koordinationsmechanismus
@@ -472,7 +478,7 @@ Jeder Skill folgt einer konsistenten Anatomie:
 | **Geladene Skills** | 28 (On-Demand, nicht alle gleichzeitig) |
 | **Kontextnutzung** | ~5% pro Skill (Progressive Disclosure) |
 | **Setup-Zeit** | < 30 Sekunden |
-| **Erstes Feature** | ~15 Minuten (von `/tgd-define` bis `/tgd-ship`) |
+| **Erstes Feature** | ~15 Minuten (von `/tgd-define` bis `/tgd-release`) |
 
 ---
 
@@ -593,7 +599,7 @@ my-project-backend/.codegraph → my-project-tGD/.scans/my-project-backend/.code
 | Develop | `/tgd-develop` | src/ | Code-Repository |
 | Verify | `/tgd-verify` | tests/ | Code-Repository |
 | Review | `/tgd-review` | REVIEW.md | `$TGD_DIR/<feature>/REVIEW.md` |
-| Ship | `/tgd-ship` | CHANGELOG.md, git tag | `$TGD_DIR/CHANGELOG.md` |
+| Release | `/tgd-release` | CHANGELOG.md, git tag | `$TGD_DIR/CHANGELOG.md` |
 
 ### Repository-Inhalt
 ### Repository-Inhalt
@@ -678,7 +684,7 @@ tGD/
 </details>
 
 <details>
-<summary><b>🚀 Ship (5)</b></summary>
+<summary><b>🚀 Release (5)</b></summary>
 
 | Skill | Zweck |
 |-------|-------|

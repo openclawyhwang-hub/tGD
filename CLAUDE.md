@@ -8,7 +8,7 @@ This is the tGD project — a collection of production-grade engineering skills 
 skills/       → Core skills (SKILL.md per directory)
 agents/       → Reusable agent personas (code-reviewer, test-engineer, security-auditor)
 hooks/        → Session lifecycle hooks
-.claude/commands/ → Slash commands (/tgd-map, /tgd-define, /tgd-plan, /tgd-develop, /tgd-verify, /tgd-review, /tgd-ship)
+.claude/commands/ → Slash commands (/tgd-map, /tgd-define, /tgd-plan, /tgd-develop, /tgd-verify, /tgd-review, /tgd-release)
 references/   → Supplementary checklists (testing, performance, security, accessibility)
 docs/         → Setup guides for different tools
 ```
@@ -20,7 +20,7 @@ docs/         → Setup guides for different tools
 **Build:** incremental-implementation, test-driven-development, context-engineering, source-driven-development, doubt-driven-development, frontend-ui-engineering, api-and-interface-design
 **Verify:** agent-browser, debugging-and-error-recovery
 **Review:** code-review-and-quality, code-simplification, security-and-hardening, performance-optimization
-**Ship:** git-workflow-and-versioning, ci-cd-and-automation, deprecation-and-migration, documentation-and-adrs, shipping-and-launch
+**Release:** git-workflow-and-versioning, ci-cd-and-automation, deprecation-and-migration, documentation-and-adrs, shipping-and-launch
 
 ## Conventions
 

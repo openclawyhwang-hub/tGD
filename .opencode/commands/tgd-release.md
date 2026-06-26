@@ -1,6 +1,4 @@
-description = "Ship to production — faster is safer"
 
-prompt = """
 **🛑 Pre-flight: Environment Check**
 - [ ] `$TGD_DIR/CONTEXT.md` exists (or `.codegraph/` is present).
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
@@ -19,24 +17,29 @@ prompt = """
 - [ ] `tests/` exists and passes.
 - **If missing:** STOP. Tell user: "Review or tests incomplete. Please run `/tgd-review` first."
 
-Run the shipping-and-launch skill. This is the SHIP phase. Full pipeline:
-1. git-workflow-and-versioning — clean commit history
-2. shipping-and-launch — pre-launch checklist, staged rollouts, monitoring
+Run the `shipping-and-launch` skill. This is the Release phase. The full pipeline is:
 
-Conditional: ci-cd-and-automation (pipeline work), deprecation-and-migration (removing old systems), documentation-and-adrs (new architecture or APIs).
+**Core flow:**
+1. `git-workflow-and-versioning` — clean commit history, trunk-based development
+2. `shipping-and-launch` — pre-launch checklist, staged rollouts, monitoring setup
 
-Faster is safer. Deploy in stages, confirm monitoring, have a rollback plan.
+**Conditional (apply when relevant):**
+- CI/CD pipeline work? → `ci-cd-and-automation`
+- Removing old systems? → `deprecation-and-migration`
+- New architecture or API? → `documentation-and-adrs`
 
-After shipping, update `$TGD_DIR/CHANGELOG.md` (create if it doesn't exist) with:
+Faster is safer. Deploy in stages, confirm monitoring, and have a rollback plan.
+
+After releasing, update `$TGD_DIR/CHANGELOG.md` (create if it doesn't exist) with:
 - Version (CalVer: `vYYYY.MM.DD`)
 - Feature name and summary
 - Date shipped
 - Key changes
 
 **📦 Regression Catalog Update**
-After shipping, scan `$TGD_DIR/<feature-name>/TASKS.md` for Acceptance Criteria marked `[R]` (Regression). For EACH `[R]` criterion:
+After releasing, scan `$TGD_DIR/<feature-name>/TASKS.md` for Acceptance Criteria marked `[R]` (Regression). For EACH `[R]` criterion:
 1. Extract the BDD criterion (Given/When/Then).
-2. Identify the actual test file that verifies this criterion (from `tests/` in the shipped code).
+2. Identify the actual test file that verifies this criterion (from `tests/` in the releaseped code).
 3. Append entries to `$TGD_DIR/REGRESSION-CATALOG.md` (create if it doesn't exist):
    If creating for the first time, start with this header:
    ```markdown
@@ -58,11 +61,11 @@ After shipping, scan `$TGD_DIR/<feature-name>/TASKS.md` for Acceptance Criteria 
 This catalog is cumulative — every shipped feature's `[R]` tests are preserved for future regression checks. Future features will re-run ALL catalog entries during `/tgd-verify`.
 
 **🧹 Regression Catalog Audit (MANDATORY if `$TGD_DIR/REGRESSION-CATALOG.md` exists)**
-Before finalizing the ship, audit the existing catalog for staleness:
+Before finalizing the release, audit the existing catalog for staleness:
 1. Read every entry in `$TGD_DIR/REGRESSION-CATALOG.md`.
 2. For EACH existing entry (not just the current feature's new ones):
    - **Test file exists?** If the path is broken (file deleted, moved, or renamed): remove the entry. Log the removal in `$TGD_DIR/CHANGELOG.md` under a `## Catalog Cleanup` subsection.
-   - **Test still passes?** Run it. If it fails: 🛑 STOP — this is a regression. Fix before shipping.
+   - **Test still passes?** Run it. If it fails: 🛑 STOP — this is a regression. Fix before releasing.
    - **Feature deprecated?** If the feature's code was removed or deprecated in this cycle (`deprecation-and-migration` ran): remove its entries from the catalog.
 3. After audit, the catalog must contain ONLY entries whose test files exist and pass.
 
@@ -75,4 +78,3 @@ This prevents the catalog from becoming a zombie file full of dead references. E
 - [ ] Regression Catalog Audit completed — all entries point to existing, passing test files
 
 If verification passes, confirm that monitoring is active and the rollback plan is documented.
-"""

@@ -18,7 +18,7 @@
 
 tGD transforms your existing workflow into an **agentic PDLC pipeline** — same gates, same accountability, 10× the velocity.
 
-Map → Define → Plan → Develop → Verify → Review → Ship
+Map → Define → Plan → Develop → Verify → Review → Release
 
 Works with Claude Code, Codex CLI, Gemini CLI, OpenCode, and Pi Coding Agent.
 
@@ -42,7 +42,7 @@ Works with Claude Code, Codex CLI, Gemini CLI, OpenCode, and Pi Coding Agent.
 
 ## Who is this for?
 
-- 🧑‍💻 **Solo Dev** — Ship faster with disciplined AI workflow. Agent handles specs, tests, reviews.
+- 🧑‍💻 **Solo Dev** — Release faster with disciplined AI workflow. Agent handles specs, tests, reviews.
 - 👥 **Team Lead** — Enforce standards across AI-generated code. Every PR follows the same 7-stage pipeline.
 - 🚀 **Startup** — Move fast without breaking things. The harness catches agent mistakes before production.
 - 🏢 **Enterprise** — Quality gates for AI development. Security, performance, and compliance enforced.
@@ -107,6 +107,12 @@ pi
 /tgd-define I want to add user authentication
 ```
 > Agent interviews you, creates PRD + SPEC, then you're ready to build.
+
+### Claude Desktop (No Terminal)
+
+Using Claude Desktop instead of a coding agent? tGD works in **semi-automatic mode** — Claude produces the artifacts, you handle the terminal commands.
+
+→ [Claude Desktop Setup Guide](docs/claude-desktop-setup.md)
 
 ---
 
@@ -199,7 +205,7 @@ flowchart LR
     C --> D["⚡ BUILD\n/tgd-develop"]
     D --> E["🧪 VERIFY\n/tgd-verify"]
     E --> F["🔎 REVIEW\n/tgd-review"]
-    F --> G["🚀 SHIP\n/tgd-ship"]
+    F --> G["🚀 RELEASE\n/tgd-release"]
 
     classDef cyan fill:#0e7490,color:#ecfeff,stroke:#22d3ee
     classDef green fill:#059669,color:#ecfdf5,stroke:#34d399
@@ -283,7 +289,7 @@ The `tgd` CLI manages installation, updates, and diagnostics:
 | Develop in sandbox | `/tgd-develop` | **Mandatory Worktree** + smart routing | `source-driven-development` → (`subagent` OR `incremental`) → `test-driven-development` |
 | Prove it works | `/tgd-verify` | Tests are proof | `debugging-and-error-recovery` → `test-driven-development` → **Cross-Feature Regression Gate** |
 | Review before merge | `/tgd-review` | Improve code health | `code-review-and-quality` → `code-simplification` |
-| Ship to production | `/tgd-ship` | Faster is safer | `git-workflow-and-versioning` → `shipping-and-launch` → **Regression Catalog Update + Audit** |
+| Release to production | `/tgd-release` | Faster is safer | `git-workflow-and-versioning` → `shipping-and-launch` → **Regression Catalog Update + Audit** |
 
 ---
 
@@ -292,7 +298,7 @@ The `tgd` CLI manages installation, updates, and diagnostics:
 Testing in tGD isn't a single phase — it's a progressive discipline across four stages, each building on the previous:
 
 ```
-Plan            Develop           Verify            Review            Ship
+Plan            Develop           Verify            Review            Release
 ─────           ────────          ──────            ──────            ────
 BDD             TDD               Run ALL tests     Code review       Regression
 (Given-When-    (Red-Green-       Generate          Audit test        Catalog
@@ -386,7 +392,7 @@ TEST-REPORT.md is **auto-generated** from test runner output, NOT hand-maintaine
 
 ### 🏷️ Regression: The Safety Net
 
-Regression tests are acceptance-level tests that **must pass before every Ship**. They accumulate across features — each new feature adds its acceptance tests to `REGRESSION-CATALOG.md`.
+Regression tests are acceptance-level tests that **must pass before every Release**. They accumulate across features — each new feature adds its acceptance tests to `REGRESSION-CATALOG.md`.
 
 **What is regression?**
 - Tests derived from PRD Acceptance Criteria (marked `[R]` in TASKS.md)
@@ -396,26 +402,26 @@ Regression tests are acceptance-level tests that **must pass before every Ship**
 **How it accumulates:**
 
 ```
-Feature 1 (auth):     8 regression tests   ← Ship writes to REGRESSION-CATALOG.md
+Feature 1 (auth):     8 regression tests   ← Release writes to REGRESSION-CATALOG.md
 Feature 2 (dashboard): +5 regression tests  ← Catalog now has 13 entries
 Feature 3 (payments):  +6 regression tests  ← Catalog now has 19 entries
 ```
 
-Each feature's Ship requires 100% regression pass — not just the new tests, ALL accumulated regression tests from the catalog.
+Each feature's Release requires 100% regression pass — not just the new tests, ALL accumulated regression tests from the catalog.
 
 **The REGRESSION-CATALOG lifecycle:**
 
 1. **Plan** — Mark acceptance criteria with `[R]` in TASKS.md
 2. **Develop** — TDD creates the actual test files for each `[R]` criterion
-3. **Ship** — Scans TASKS.md for `[R]` entries, appends to `REGRESSION-CATALOG.md` (cumulative)
-4. **Ship (Catalog Audit)** — Every entry checked: test file exists? Passes? Feature deprecated? Stale entries pruned
+3. **Release** — Scans TASKS.md for `[R]` entries, appends to `REGRESSION-CATALOG.md` (cumulative)
+4. **Release (Catalog Audit)** — Every entry checked: test file exists? Passes? Feature deprecated? Stale entries pruned
 5. **Verify** — Reads `REGRESSION-CATALOG.md`, re-runs ALL entries. Any failure = hard stop
 
 **How to mark:** Agent marks acceptance-level tests using the stack-appropriate marker (see table above). Not all tests are regression — only tests that verify PRD acceptance criteria or critical user paths.
 
 **When to run:**
 - `/tgd-verify` → runs ALL tests + reads `REGRESSION-CATALOG.md`, re-runs every catalog entry
-- `/tgd-ship` → writes new `[R]` entries to catalog + audits existing entries for staleness
+- `/tgd-release` → writes new `[R]` entries to catalog + audits existing entries for staleness
 - Anytime → direct command (e.g. `pytest -m regression`), no tGD wrapper needed
 
 ### 🔍 Review: Audit Test Quality
@@ -428,9 +434,9 @@ Agent produces REVIEW.md, including:
 
 Sign-off: **QA + DEV** both sign.
 
-### 🚀 Ship: The Regression Gate
+### 🚀 Release: The Regression Gate
 
-Ship is the only hard gate in tGD. Before executing, agent verifies:
+Release is the only hard gate in tGD. Before executing, agent verifies:
 
 ```
 PRD.md        → PM signed?      ✅
@@ -440,7 +446,7 @@ TEST-REPORT   → QA signed?      ✅
               → Failed = 0?      ✅
 REVIEW.md     → QA + DEV signed? ✅
 
-All ✅ → proceed to Ship
+All ✅ → proceed to Release
 Any ❌ → STOP: "X has not approved Y yet"
 ```
 
@@ -452,14 +458,14 @@ tGD has three human roles. Each artifact has a `## Sign-off` section at the bott
 
 | Role | Focus | Reviews | Signs off on |
 |------|-------|---------|-------------|
-| **PM** | Product direction | PRD (what & why) | PRD.md, Ship |
+| **PM** | Product direction | PRD (what & why) | PRD.md, Release |
 | **DEV** | Implementation quality | TASKS, code | TASKS.md, code, REVIEW.md |
 | **QA** | Test quality & coverage | TEST-REPORT, test quality | TEST-REPORT.md, REVIEW.md |
 
 **How it works:**
 - Agent produces artifact → human reviews on their own machine → edits `## Sign-off` (checkbox format) → commits & pushes
 - Agent checks for `[x]` in required role lines before proceeding (Gate 3)
-- Ship is the hard gate: all required Sign-offs must be `[x]`
+- Release is the hard gate: all required Sign-offs must be `[x]`
 - Approve: `- [x] **PM**: Approved — date — comment`
 - One person can hold multiple roles (common in small teams)
 - No extra tooling needed — git is the coordination mechanism
@@ -507,7 +513,7 @@ Skills use **progressive disclosure** — the agent only loads details when need
 | **Skills loaded** | 28 (on-demand, not all at once) |
 | **Context usage** | ~5% per skill (progressive disclosure) |
 | **Setup time** | < 30 seconds |
-| **First feature** | ~15 minutes (from `/tgd-define` to `/tgd-ship`) |
+| **First feature** | ~15 minutes (from `/tgd-define` to `/tgd-release`) |
 
 ---
 
@@ -631,7 +637,7 @@ my-project-backend/.codegraph → my-project-tGD/.scans/my-project-backend/.code
 | Develop | `/tgd-develop` | src/ | Code repo |
 | Verify | `/tgd-verify` | tests/ | Code repo |
 | Review | `/tgd-review` | REVIEW.md | `$TGD_DIR/<feature>/REVIEW.md` |
-| Ship | `/tgd-ship` | CHANGELOG.md, git tag | `$TGD_DIR/CHANGELOG.md` |
+| Release | `/tgd-release` | CHANGELOG.md, git tag | `$TGD_DIR/CHANGELOG.md` |
 
 ### Repo Contents
 ```
@@ -698,7 +704,7 @@ The commands above are entry points. The pack includes 28 skills total — 26 li
 | [security-and-hardening](skills/security-and-hardening/SKILL.md) | OWASP & secrets management |
 | [performance-optimization](skills/performance-optimization/SKILL.md) | Profiling & anti-patterns |
 
-### 🚀 Ship
+### 🚀 Release
 | Skill | Purpose |
 |---|---|
 | [git-workflow-and-versioning](skills/git-workflow-and-versioning/SKILL.md) | Atomic commits & trunk-based dev |

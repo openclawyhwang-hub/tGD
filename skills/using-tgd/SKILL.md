@@ -174,7 +174,7 @@ Not every task needs every skill. A bug fix might only need: `debugging-and-erro
 | Review | code-review-and-quality | Five-axis review with quality gates |
 | Review | security-and-hardening | OWASP prevention, input validation, least privilege |
 | Review | performance-optimization | Measure first, optimize only what matters |
-| Ship | git-workflow-and-versioning | Atomic commits, clean history |
-| Ship | ci-cd-and-automation | Automated quality gates on every change |
-| Ship | documentation-and-adrs | Document the why, not just the what |
-| Ship | shipping-and-launch | Pre-launch checklist, monitoring, rollback plan |
+| Release | git-workflow-and-versioning | Atomic commits, clean history |
+| Release | ci-cd-and-automation | Automated quality gates on every change |
+| Release | documentation-and-adrs | Document the why, not just the what |
+| Release | shipping-and-launch | Pre-launch checklist, monitoring, rollback plan |
