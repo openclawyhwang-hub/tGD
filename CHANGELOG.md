@@ -9,7 +9,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow
 ## v2026.06.27
 
 ### Changed
-- **Removed unsupported platform references** — Cursor / Copilot / Antigravity / Windsurf / Kiro removed from `AGENTS.md` and all 4 README translations. tGD officially supports only the 5 platforms deployed by `setup.sh`: Claude Code, Codex, OpenCode, Gemini CLI, Pi
+- **Removed unsupported platform references** — Cursor / Copilot / Antigravity / Windsurf / Kiro removed from `AGENTS.md` and all 4 README translations. tGD officially supports only the 5 platforms deployed by `setup.sh`: Claude Code, Codex, OpenCode, Gemini CLI, Pi (`4c4bf44`)
 
 ---
 
