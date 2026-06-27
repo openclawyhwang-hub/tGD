@@ -15,6 +15,47 @@ Core rules that MUST be followed at all times in every tGD session. These rules 
 - Referenced by all 8 `/tgd-*` lifecycle commands
 - Any time an agent is about to claim completion, skip a step, or rationalize an exception
 
+## Repository Overview
+
+A collection of skills for Claude.ai and Claude Code for senior software engineers. Skills are packaged instructions and scripts that extend Claude and your coding agents capabilities.
+
+## Lifecycle Commands
+
+7 commands, each a full pipeline. Commands are defined in `.claude/commands/`, `.gemini/commands/`, `.opencode/commands/`, `.codex/prompts/`, and `.pi/extensions/`.
+
+| Command | Phase | Pipeline | Artifacts |
+|---------|-------|----------|-----------|
+| `/tgd-map` | Map | `context-engineering` → `codegraph init` → `understand` (MANDATORY) | `CONTEXT.md` + `.scans/<repo>/` |
+| `/tgd-define` | Define | `interview-me` → `idea-refine` → `spec-driven-development` → `sketch` (if UI) | `PRD.md` · `SPEC.md` · `DESIGN.md` (if UI) · `docs/ideas/` (if vague) |
+| `/tgd-plan` | Plan | `planning-and-task-breakdown` | `TASKS.md` |
+| `/tgd-develop` | Develop | `context-engineering` → `source-driven-development` → (`subagent-driven-development` OR `incremental-implementation`) → `test-driven-development` → `verification-before-completion` | Code + Tests (on `feature/<name>` branch) |
+| `/tgd-verify` | Verify | `debugging-and-error-recovery` → `test-driven-development` → `agent-browser` (if UI) | `TEST-REPORT.md` |
+| `/tgd-review` | Review | `code-review-and-quality` → `code-simplification` (+ `security-and-hardening`, `performance-optimization` when relevant) | `REVIEW.md` · `decisions/ADR-*.md` (if architectural) |
+| `/tgd-release` | Release | `shipping-and-launch` (+ `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs` when relevant) | `CHANGELOG.md` · `REGRESSION-CATALOG.md` (if `[R]` tasks) |
+
+All artifacts live under `$TGD_DIR/<feature-name>/`. See each command file for full pipeline steps, gates, and sign-off requirements.
+
+If the user types a command, invoke it. If they use natural language, map their intent to the right skill automatically.
+
+Use these commands in order. Do not skip phases:
+
+1. `/tgd-map` → Understand the project
+2. `/tgd-define` → Write PRD + SPEC
+3. `/tgd-plan` → Break into tasks (Zero-Context Rule)
+4. `/tgd-develop` → Build with subagents or incremental
+5. `/tgd-verify` → Run all tests, prove it works
+6. `/tgd-review` → Code quality + simplification
+7. `/tgd-release` → Deploy with confidence
+
+## Execution Model
+
+For every request:
+
+1. Determine if any skill applies (even 1% chance)
+2. Invoke the appropriate skill using the `skill` tool
+3. Follow the skill workflow strictly
+4. Only proceed to implementation after required steps (spec, plan, etc.) are complete
+
 ## Common Rationalizations
 
 These thoughts are WRONG. If you catch yourself thinking any of these, STOP and follow the rule instead:
@@ -30,6 +71,13 @@ These thoughts are WRONG. If you catch yourself thinking any of these, STOP and 
 | "Tests passed last time" | Run them again, fresh. |
 | "I'm tired" | Exhaustion ≠ excuse. |
 | "The user is waiting" | Lying is worse than delay. |
+
+Correct behavior:
+
+- Always check for and use skills first
+- Never claim completion without running verification commands
+- Never use "should", "probably", "seems to" in your claims
+- Always show command output as evidence
 
 ## Red Flags
 
@@ -55,12 +103,15 @@ Before claiming any work is complete, fixed, or passing:
 | "Should pass now" | `npm test` → "34/34 pass" |
 | "Looks correct" | `git diff` → show actual changes |
 | "I'm confident" | Run command, show exit 0 |
-| "Done!" before verification | Verification output FIRST |
+| "Tests pass" (without running) | Run tests THIS message, show output |
+| "Done! before verification" | Verification output FIRST, then "Done!" |
+
+This is non-negotiable. Violating the letter of this rule is violating the spirit.
 
 ## Anti-Rationalization
 
 **MANDATORY SELECTION PROTOCOL (All Platforms)**
-When you need the user to pick an option (Feature Name, Design Variant, etc.), DO NOT use open-ended questions. 
+When you need the user to pick an option (Feature Name, Design Variant, etc.), DO NOT use open-ended questions.
 **ALWAYS provide a numbered/bulleted list and ask the user to reply with the number or letter.**
 
 | Context | Bad Question | Good (Selection Protocol) |
@@ -89,17 +140,62 @@ Before saying "done", "complete", or "fixed":
 - [ ] No rationalization language used in claims
 - [ ] tGD lifecycle phases followed in order
 
-## tGD Lifecycle
+## Tone Guide (Phase-Specific)
 
-Use these commands in order. Do not skip phases:
+Each lifecycle phase has a distinct communication tone. Follow these when responding during that phase.
 
-1. `/tgd-map` → Understand the project
-2. `/tgd-define` → Write PRD + SPEC
-3. `/tgd-plan` → Break into tasks (Zero-Context Rule)
-4. `/tgd-develop` → Build with subagents or incremental
-5. `/tgd-verify` → Run all tests, prove it works
-6. `/tgd-review` → Code quality + simplification
-7. `/tgd-release` → Deploy with confidence
+| Phase | Tone | Characteristics | Example |
+|-------|------|-----------------|---------|
+| MAP | Technical Analyst | Precise, objective, data-driven | "CodeGraph shows 28 skills across 5 platforms. Entry points: setup.sh, tgd-rules" |
+| DEFINE | Guided Explorer | Question-heavy, option-based, no assumptions | "Which scenario fits? 1. User auth 2. API key 3. OAuth SSO" |
+| PLAN | Structured List-maker | Task-oriented, clear boundaries, verifiable | "Task 1: Create schema → Verify: `npm test` passes" |
+| DEVELOP | Minimal Implementer | Code-first, minimal prose | "Modified src/auth.ts:42. Running tests..." |
+| VERIFY | Strict Zero-Tolerance | Evidence-only, no hedging | "Tests failed: 3/34. Exit code 1. Must fix." |
+| REVIEW | Critical Constructive | Problem + solution paired | "Line 45 has race condition. Suggest mutex." |
+| Release | Cautious Process | Checklists, risk assessment | "Pre-deploy: ✅ tests ✅ build ⚠️ migration pending" |
+
+**Rules:**
+- Match the tone to the current phase — do not mix tones
+- VERIFY tone overrides all other considerations (no softening bad news)
+- When uncertain about phase, default to DEVELOP tone (minimal, code-first)
+
+## Human Roles & Sign-off Protocol
+
+tGD has three human roles. Each artifact has a `## Sign-off` section at the bottom — review results live inside the artifact, not in a separate file.
+
+| Role | Focus | Primary Touchpoints |
+|------|-------|---------------------|
+| **PM** | Product direction & acceptance | Define (PRD.md), Release (final sign-off) |
+| **DEV** | Implementation quality | Plan (TASKS.md), Develop (code), Review |
+| **QA** | Test quality & coverage | Verify (TEST-REPORT.md), Review (REVIEW.md) |
+
+**Sign-off rules:**
+- Each role only modifies their own checkbox line in the `## Sign-off` section
+- Approve: `- [x] **PM**: Approved — YYYY-MM-DD — comment`
+- Reject: `- [x] **PM**: Rejected — YYYY-MM-DD — reason`
+- Agent checks for `[x]` in required role lines before proceeding (Gate 3)
+- Release is the hard gate: all required Sign-offs must be `[x]`
+- One person can hold multiple roles (common in small teams)
+
+**Async workflow:** Agent runs all phases but blocks at Release until sign-offs are complete. Humans review on their own schedule — no real-time blocking.
+
+See `skills/tgd-lifecycle-commands/references/human-roles.md` for full details.
+
+## Orchestration: Personas, Skills, and Commands
+
+This repo has three composable layers. They have different jobs and should not be confused:
+
+- **Skills** (`skills/<name>/SKILL.md`) — workflows with steps and exit criteria. The *how*. Mandatory hops when an intent matches.
+- **Personas** (`agents/<role>.md`) — roles with a perspective and an output format. The *who*.
+- **Slash commands** (`.claude/commands/*.md`) — user-facing entry points. The *when*. The orchestration layer.
+
+Composition rule: **the user (or a slash command) is the orchestrator. Personas do not invoke other personas.** A persona may invoke skills.
+
+The only multi-persona orchestration pattern this repo endorses is **parallel fan-out with a merge step** — used by `/tgd-release` to run `code-reviewer`, `security-auditor`, and `test-engineer` concurrently and synthesize their reports. Do not build a "router" persona that decides which other persona to call; that's the job of slash commands and intent mapping.
+
+See [agents/README.md](agents/README.md) for the decision matrix and [references/orchestration-patterns.md](references/orchestration-patterns.md) for the full pattern catalog.
+
+**Claude Code interop:** the personas in `agents/` work as Claude Code subagents (auto-discovered from this plugin's `agents/` directory) and as Agent Teams teammates (referenced by name when spawning). Two platform constraints align with our rules: subagents cannot spawn other subagents, and teams cannot nest. Plugin agents silently ignore the `hooks`, `mcpServers`, and `permissionMode` frontmatter fields.
 
 ## CodeGraph (if `.codegraph/` exists in project root)
 
