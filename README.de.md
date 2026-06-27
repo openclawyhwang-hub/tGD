@@ -496,9 +496,6 @@ A: Jede Stufe hat Pre-flight-Checks. Überspringen blockiert die nächste Stufe.
 **Q: Funktioniert es mit bestehenden Projekten?**
 A: Ja! `/tgd-map` scannt zuerst die bestehende Codebasis.
 
-**Q: Wie unterscheidet es sich von Cursor/Copilot?**
-A: Diese Tools schreiben Code. tGD erzwingt einen Workflow – Spezifikation, Plan, Tests, Reviews – bevor Code geliefert wird.
-
 ---
 
 ## 📁 Projektstruktur
@@ -782,20 +779,3 @@ Pi unterstützt `/tgd-plan` nativ über eine **TypeScript Extension** (`.pi/exte
 pi
 /tgd-plan
 ```
-
-### Andere Plattformen
-<details>
-<summary><b>Cursor / Windsurf / Kiro</b></summary>
-
-- **Cursor:** `skills/` nach `.cursor/rules/` kopieren
-- **Windsurf:** Skill-Inhalte zur Rules-Konfiguration hinzufügen
-- **Kiro:** Skills in `.kiro/skills/` ablegen
-
-</details>
-
-<details>
-<summary><b>GitHub Copilot</b></summary>
-
-Verwenden Sie `AGENTS.md` und `.github/copilot-instructions.md` um diese Workflows zu laden.
-
-</details>

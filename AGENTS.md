@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This file provides guidance to AI coding agents (Claude Code, Cursor, Copilot, Antigravity, etc.) when working with code in this repository.
+This file provides guidance to AI coding agents (Claude Code, Codex, OpenCode, Gemini CLI, Pi) when working with code in this repository.
 
 > **⚠️ This file contains session-level rules only.** For full pipeline details, read the command file (`.claude/commands/tgd-*.md`). For skill internals, read the skill file (`skills/<name>/SKILL.md`).
 
