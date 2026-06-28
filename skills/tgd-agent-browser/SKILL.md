@@ -1,6 +1,6 @@
 ---
 name: tgd-agent-browser
-description: THE primary tool for all browser verification, testing, and automation. Use for ANY browser task: navigating pages, filling forms, clicking buttons, taking screenshots, extracting data, testing web apps, or exploring DOM. Replaces Webwright and DevTools.
+description: "THE primary tool for all browser verification, testing, and automation. Use for ANY browser task: navigating pages, filling forms, clicking buttons, taking screenshots, extracting data, testing web apps, or exploring DOM. Replaces Webwright and DevTools."
 allowed-tools: Bash(agent-browser:*)
 ---
 # Agent Browser (tGD Integration)

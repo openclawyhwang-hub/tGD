@@ -11,6 +11,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow
 ### Changed
 - **All 27 tGD skills renamed to `tgd-` prefix** — every tGD skill directory and frontmatter `name:` now carries the `tgd-` prefix (e.g. `skills/spec-driven-development/` → `skills/tgd-spec-driven-development/`, `name: spec-driven-development` → `name: tgd-spec-driven-development`). `tgd-rules` unchanged. `using-tgd` (mixed-case form) renamed to `tgd-router`. Affects: 28 skill directories, 28 SKILL.md files, 28 command files (4 platform copies + 1 Gemini TOML), 48 cross-skill references in SKILL.md, 108 cross-skill references in command files
 - **setup.sh upgrade migration** — added `purge_old_tgd_symlinks` function that auto-removes pre-prefix tGD symlinks on `bash setup.sh --upgrade` (double-checked against `understand-anything` third-party symlinks)
+- **`tgd-agent-browser` SKILL.md YAML fix** — wrapped `description` in double quotes (was a YAML plain scalar containing `task: navigating`, which strict YAML parsers — like Pi's `yaml` package — flagged as a nested mapping). Discovered when Pi agent auto-fixed the file in-session. Other 27 skills verified clean (no plain scalar with `:` patterns).
 
 ### Migration (breaking)
 - **If you installed a previous version, run `bash setup.sh --upgrade`** — this removes the old un-prefixed symlinks and links the new `tgd-` prefixed ones
