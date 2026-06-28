@@ -1,10 +1,10 @@
 #!/bin/bash
-# Gemini CLI SessionStart hook — injects using-tGD meta-skill
+# Gemini CLI SessionStart hook — injects tgd-router meta-skill
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SKILLS_DIR="$(dirname "$SCRIPT_DIR")/skills"
-META_SKILL="$SKILLS_DIR/using-tgd/SKILL.md"
+META_SKILL="$SKILLS_DIR/tgd-router/SKILL.md"
 
 if ! command -v jq >/dev/null 2>&1; then
   exit 0

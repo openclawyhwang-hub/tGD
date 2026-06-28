@@ -20,7 +20,7 @@ prompt = """
 - [ ] If SPEC has Frontend/Full-stack: `$TGD_DIR/<feature-name>/DESIGN.md` exists.
 - **If missing:** STOP. Tell user: "Design is missing. Please run `/tgd-define` first."
 
-Run the `planning-and-task-breakdown` skill. Decompose the specification into small, verifiable tasks with acceptance criteria and dependency ordering.
+Run the `tgd-planning-and-task-breakdown` skill. Decompose the specification into small, verifiable tasks with acceptance criteria and dependency ordering.
 
 **Mandatory Reading:**
 1. **Read `$TGD_DIR/CONTEXT.md`**: Understand existing project structure and tech stack.
@@ -48,7 +48,7 @@ This ensures each task is assigned to the correct repo and can be executed in th
 
 **🔗 Jira Integration Gate** → IMMEDIATELY after TASKS.md is written. Do NOT skip this step.
 1. Check env vars: `JIRA_URL`, `JIRA_PROJECT`, `JIRA_TOKEN`.
-2. **If ALL configured:** Run the `jira-auto-sync` skill automatically. Do NOT ask.
+2. **If ALL configured:** Run the `tgd-jira-auto-sync` skill automatically. Do NOT ask.
    - Parse TASKS.md, create issues, report keys (e.g., `ENG-1234`).
    - Add issue keys back to TASKS.md tasks as `[ENG-1234]`.
 3. **If NOT configured:** Ask the user conversationally:
@@ -60,7 +60,7 @@ This ensures each task is assigned to the correct repo and can be executed in th
      - `JIRA_URL`（例：https://jira.company.com）
      - `JIRA_PROJECT`（例：ENG）
      - `JIRA_TOKEN`（Personal Access Token）
-     Save to `$TGD_DIR/.env` for future runs. Then run `jira-auto-sync` skill.
+     Save to `$TGD_DIR/.env` for future runs. Then run `tgd-jira-auto-sync` skill.
    - **If no:** Skip Jira, proceed to verification.
 4. **Verification Gate:**
 - [ ] `$TGD_DIR/<feature-name>/TASKS.md` exists and is non-empty

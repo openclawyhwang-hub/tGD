@@ -63,7 +63,7 @@ Before finalizing the ship, audit the existing catalog for staleness:
 2. For EACH existing entry (not just the current feature's new ones):
    - **Test file exists?** If the path is broken (file deleted, moved, or renamed): remove the entry. Log the removal in `$TGD_DIR/CHANGELOG.md` under a `## Catalog Cleanup` subsection.
    - **Test still passes?** Run it. If it fails: 🛑 STOP — this is a regression. Fix before shipping.
-   - **Feature deprecated?** If the feature's code was removed or deprecated in this cycle (`deprecation-and-migration` ran): remove its entries from the catalog.
+   - **Feature deprecated?** If the feature's code was removed or deprecated in this cycle (`tgd-deprecation-and-migration` ran): remove its entries from the catalog.
 3. After audit, the catalog must contain ONLY entries whose test files exist and pass.
 
 This prevents the catalog from becoming a zombie file full of dead references. Every entry should be runnable.

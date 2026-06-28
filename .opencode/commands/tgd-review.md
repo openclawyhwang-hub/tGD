@@ -18,16 +18,16 @@ description: Review before merge — improve code health
 - [ ] Test files exist in `tests/`.
 - **If missing:** STOP. Tell user: "Tests are missing. Please run `/tgd-verify` first."
 
-Run the `code-review-and-quality` skill. This is the REVIEW phase. The full pipeline is:
+Run the `tgd-code-review-and-quality` skill. This is the REVIEW phase. The full pipeline is:
 
 **Core flow:**
-1. `code-review-and-quality` — five-axis review with severity labels (Nit/Optional/FYI), ~100 lines per change
+1. `tgd-code-review-and-quality` — five-axis review with severity labels (Nit/Optional/FYI), ~100 lines per change
    - Run `codegraph callers <modified-function>` and `codegraph affected <changed-files>` to verify impact coverage.
-2. `code-simplification` — apply Chesterton's Fence, reduce complexity while preserving exact behavior
+2. `tgd-code-simplification` — apply Chesterton's Fence, reduce complexity while preserving exact behavior
 
 **Conditional (apply when relevant):**
-- Security concerns? → `security-and-hardening`
-- Performance concerns? → `performance-optimization`
+- Security concerns? → `tgd-security-and-hardening`
+- Performance concerns? → `tgd-performance-optimization`
 - Reviewing large or unfamiliar changes? → the `understand-diff` skill to visualize the full blast radius.
 
 Improve code health before merge. If the change is larger than ~100 lines, split it into smaller reviews.

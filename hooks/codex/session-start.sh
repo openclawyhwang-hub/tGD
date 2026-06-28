@@ -1,5 +1,5 @@
 #!/bin/bash
-# Codex SessionStart hook — injects using-tGD meta-skill
+# Codex SessionStart hook — injects tgd-router meta-skill
 # Codex SessionStart expects hookSpecificOutput.additionalContext JSON,
 # NOT Claude's {priority, message} format.
 # See: https://developers.openai.com/codex/hooks
@@ -8,7 +8,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # Script lives at hooks/codex/session-start.sh, so skills/ is two levels up.
 SKILLS_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)/skills"
-META_SKILL="$SKILLS_DIR/using-tgd/SKILL.md"
+META_SKILL="$SKILLS_DIR/tgd-router/SKILL.md"
 
 if ! command -v jq >/dev/null 2>&1; then
   exit 0

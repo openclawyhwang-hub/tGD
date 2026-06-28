@@ -25,13 +25,13 @@ A collection of skills for Claude.ai and Claude Code for senior software enginee
 
 | Command | Phase | Pipeline | Artifacts |
 |---------|-------|----------|-----------|
-| `/tgd-map` | Map | `context-engineering` → `codegraph init` → `understand` (MANDATORY) | `CONTEXT.md` + `.scans/<repo>/` |
-| `/tgd-define` | Define | `interview-me` → `idea-refine` → `spec-driven-development` → `sketch` (if UI) | `PRD.md` · `SPEC.md` · `DESIGN.md` (if UI) · `docs/ideas/` (if vague) |
-| `/tgd-plan` | Plan | `planning-and-task-breakdown` | `TASKS.md` |
-| `/tgd-develop` | Develop | `context-engineering` → `source-driven-development` → (`subagent-driven-development` OR `incremental-implementation`) → `test-driven-development` → `verification-before-completion` | Code + Tests (on `feature/<name>` branch) |
-| `/tgd-verify` | Verify | `debugging-and-error-recovery` → `test-driven-development` → `agent-browser` (if UI) | `TEST-REPORT.md` |
-| `/tgd-review` | Review | `code-review-and-quality` → `code-simplification` (+ `security-and-hardening`, `performance-optimization` when relevant) | `REVIEW.md` · `decisions/ADR-*.md` (if architectural) |
-| `/tgd-release` | Release | `shipping-and-launch` (+ `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs` when relevant) | `CHANGELOG.md` · `REGRESSION-CATALOG.md` (if `[R]` tasks) |
+| `/tgd-map` | Map | `tgd-context-engineering` → `codegraph init` → `understand` (MANDATORY) | `CONTEXT.md` + `.scans/<repo>/` |
+| `/tgd-define` | Define | `tgd-interview-me` → `tgd-idea-refine` → `tgd-spec-driven-development` → `tgd-sketch` (if UI) | `PRD.md` · `SPEC.md` · `DESIGN.md` (if UI) · `docs/ideas/` (if vague) |
+| `/tgd-plan` | Plan | `tgd-planning-and-task-breakdown` | `TASKS.md` |
+| `/tgd-develop` | Develop | `tgd-context-engineering` → `tgd-source-driven-development` → (`tgd-subagent-driven-development` OR `tgd-incremental-implementation`) → `tgd-test-driven-development` → `tgd-verification-before-completion` | Code + Tests (on `feature/<name>` branch) |
+| `/tgd-verify` | Verify | `tgd-debugging-and-error-recovery` → `tgd-test-driven-development` → `tgd-agent-browser` (if UI) | `TEST-REPORT.md` |
+| `/tgd-review` | Review | `tgd-code-review-and-quality` → `tgd-code-simplification` (+ `tgd-security-and-hardening`, `tgd-performance-optimization` when relevant) | `REVIEW.md` · `decisions/ADR-*.md` (if architectural) |
+| `/tgd-release` | Release | `tgd-shipping-and-launch` (+ `tgd-ci-cd-and-automation`, `tgd-deprecation-and-migration`, `tgd-documentation-and-adrs` when relevant) | `CHANGELOG.md` · `REGRESSION-CATALOG.md` (if `[R]` tasks) |
 
 All artifacts live under `$TGD_DIR/<feature-name>/`. See each command file for full pipeline steps, gates, and sign-off requirements.
 

@@ -7,7 +7,7 @@ description: Start spec-driven development — write a structured specification 
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
 - **$TGD_DIR:** Check env var `$TGD_DIR` first. If not set, check sibling `../<project-name>-tGD/`. If neither exists: STOP — run `/tgd-map` first.
 
-Run the `spec-driven-development` skill. Write a PRD (product requirements document) covering objectives, commands, structure, code style, testing strategy, and boundaries before any code is written.
+Run the `tgd-spec-driven-development` skill. Write a PRD (product requirements document) covering objectives, commands, structure, code style, testing strategy, and boundaries before any code is written.
 
 This is the DEFINE phase. The full pipeline is:
 1. **Feature Name Resolution** (Selection Protocol) — **Analyze the user's request first.** Extract the core action + object (e.g., "user login" → action: login, object: user). Then propose 3 distinct kebab-case `<feature-name>` options that **directly reflect the user's intent**:
@@ -17,9 +17,9 @@ This is the DEFINE phase. The full pipeline is:
    
    **Wait for the user to select one by number or provide their own before proceeding.** Once locked, create `$TGD_DIR/<feature-name>/`.
 2. **🌿 Git Branch Setup** — If on `main`/`master`, create and switch to `feature/<feature-name>` (`git checkout -b feature/user-login`).
-3. `interview-me` — if the ask is underspecified, extract what the user actually wants
-4. `idea-refine` — if the concept is vague, stress-test and expand options
-5. `spec-driven-development` — write the structured spec (PRD + SPEC)
+3. `tgd-interview-me` — if the ask is underspecified, extract what the user actually wants
+4. `tgd-idea-refine` — if the concept is vague, stress-test and expand options
+5. `tgd-spec-driven-development` — write the structured spec (PRD + SPEC)
 
 **Multi-Repo Tagging:** If CONTEXT.md lists multiple repos, SPEC.md MUST be tagged by repo:
 ```markdown
@@ -37,13 +37,13 @@ Each section header uses `## <repo-name>` so tasks can be traced to their target
 After writing SPEC.md, you MUST ask the user: "Does this feature have a UI component requiring DESIGN.md?"
 **Format:** "1. Yes (Generate design) 2. No (Backend only)"
 - If YES: 
-  1. Run the `sketch` skill to generate 2-3 HTML prototype variants in `$TGD_DIR/<feature-name>/prototype/`
+  1. Run the `tgd-sketch` skill to generate 2-3 HTML prototype variants in `$TGD_DIR/<feature-name>/prototype/`
   2. Present comparison table → user picks one by letter (or requests iteration)
   3. Write DESIGN.md documenting the chosen design decisions and component tree
   4. Wait for user confirmation before proceeding.
 - If NO: skip DESIGN.md and prototype. **You cannot skip this step without explicit user approval.**
 
-Use `interview-me` first if the ask is underspecified. Use `idea-refine` if you have a rough concept but it's not concrete yet.
+Use `tgd-interview-me` first if the ask is underspecified. Use `tgd-idea-refine` if you have a rough concept but it's not concrete yet.
 
 After completing the spec, verify the outputs.
 

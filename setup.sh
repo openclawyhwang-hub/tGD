@@ -286,6 +286,14 @@ fi
 TGD_VERSION=$(cat "$TGD_DIR/VERSION" 2>/dev/null || echo "unknown")
 VERSION_FILE="$HOME/.tgd-installed-version"
 
+# Guard: remove any pre-existing self-loop symlink at $TGD_DIR/skills/skills
+# (historical artifact — was never created by setup.sh, but recurs somehow).
+# Self-loops break Claude's individual symlink scan if a future setup.sh change
+# ever iterates skills/*/ without filtering.
+if [[ -L "$TGD_DIR/skills/skills" ]]; then
+    rm -f "$TGD_DIR/skills/skills"
+fi
+
 if [[ "$MODE" == "install" ]] && [[ -f "$VERSION_FILE" ]]; then
     INSTALLED_VERSION=$(cat "$VERSION_FILE" 2>/dev/null || echo "unknown")
     if [[ "$INSTALLED_VERSION" == "$TGD_VERSION" ]]; then
@@ -332,6 +340,32 @@ purge_stale_skills() {
     fi
 }
 
+# Remove pre-v2026.07 tGD symlinks (no tgd- prefix) that point into ~/tGD/skills/
+# Migration: every tGD skill was renamed to tgd-<name> in v2026.07.x.
+# Old symlinks (e.g. `spec-driven-development`) are dead references; new symlinks
+# (`tgd-spec-driven-development`) are created by the install sections below.
+# Safety: only remove if BOTH (a) symlink name lacks tgd- prefix AND
+# (b) target path segment after /tGD/skills/ also lacks tgd- prefix.
+# This protects third-party symlinks like `understand-anything`.
+purge_old_tgd_symlinks() {
+    local dir="$1"
+    local label="$2"
+    if [[ -d "$dir" ]]; then
+        for link in "$dir"/*; do
+            [[ -L "$link" ]] || continue
+            local base=$(basename "$link")
+            local target=$(readlink "$link" 2>/dev/null)
+            # Extract the path segment after /tGD/skills/ (e.g. .../tGD/skills/tgd-spec-driven-development/)
+            local seg=$(echo "$target" | sed -nE 's#.*/tGD/skills/([^/]+)/?.*#\1#p')
+            # Match only if BOTH symlink name AND target segment are pre-prefix
+            if [[ -n "$seg" ]] && [[ ! "$base" =~ ^tgd- ]] && [[ ! "$seg" =~ ^tgd- ]]; then
+                echo "   🗑️  Removing legacy tGD symlink ($label): $link → $target"
+                rm -f "$link"
+            fi
+        done
+    fi
+}
+
 if [[ "$MODE" == "upgrade" ]]; then
     echo "🧹 Purging stale symlinks from previous version..."
     purge_stale_symlinks "$HOME/.claude/skills" "Claude Code skills"
@@ -345,6 +379,13 @@ if [[ "$MODE" == "upgrade" ]]; then
     purge_stale_symlinks "$HOME/.pi/agent/skills" "Pi skills"
     purge_stale_symlinks "$HOME/.pi/agent/extensions" "Pi extensions"
     purge_stale_skills "$HOME/.claude/rules" "Claude Code rules"
+    # v2026.07.x migration: remove pre-prefix tGD symlinks (now tgd-<name>)
+    echo "🔄 Migrating tGD skills to tgd- prefix (v2026.07.x)..."
+    purge_old_tgd_symlinks "$HOME/.claude/skills" "Claude Code"
+    purge_old_tgd_symlinks "$HOME/.config/opencode/skills" "OpenCode"
+    purge_old_tgd_symlinks "$HOME/.codex/skills" "Codex CLI"
+    purge_old_tgd_symlinks "$HOME/.gemini/skills" "Gemini CLI"
+    purge_old_tgd_symlinks "$HOME/.pi/agent/skills" "Pi"
     echo ""
 fi
 
@@ -391,6 +432,10 @@ if command -v claude &> /dev/null; then
         mkdir -p ~/.claude/skills
         for skill in "$TGD_DIR"/skills/*/; do
             skill_name=$(basename "$skill")
+            # Skip nested symlink traps (e.g. skills/skills -> skills) — would create self-loop
+            if [ "$skill_name" = "skills" ]; then
+                continue
+            fi
             # Remove real directories (from old copy-installs) before re-linking
             if [ -d "$HOME/.claude/skills/$skill_name" ] && [ ! -L "$HOME/.claude/skills/$skill_name" ]; then
                 rm -rf "$HOME/.claude/skills/$skill_name"
@@ -735,6 +780,10 @@ if [ -d "$UA_SKILLS_DIR" ]; then
     if [ -d "$HOME/.claude" ] || [ -L "$HOME/.claude" ]; then
         for skill in "$UA_SKILLS_DIR"/*/; do
             skill_name=$(basename "$skill")
+            # Skip nested symlink traps (UA vendor may contain a self-loopping `skills` entry)
+            if [ "$skill_name" = "skills" ]; then
+                continue
+            fi
             ln -sf "$skill" "$HOME/.claude/skills/understand-$skill_name" 2>/dev/null || true
         done
         echo "   ✅ Claude: Understand-Anything skills linked."
@@ -777,7 +826,7 @@ fi
 echo "📦 Checking optional dependencies..."
 
 # Agent Browser (E2E browser automation)
-if [ -d "skills/agent-browser" ]; then
+if [ -d "skills/tgd-agent-browser" ]; then
     echo "   🌐 Agent Browser skill detected."
     if command -v npm &> /dev/null || command -v npx &> /dev/null; then
         NPM_CMD=$(command -v npm || command -v npx)
@@ -898,6 +947,33 @@ else
         echo "   ⚠️  Add ~/.local/bin to PATH: export PATH=\"\$HOME/.local/bin:\$PATH\""
     fi
 fi
+
+# ─── Final guard: remove any self-loop symlinks left in tGD skill dirs ──────
+# A self-loop is a symlink whose target, when resolved, points back into its
+# own path (e.g. skills/skills → skills). These confuse `find -L` and some
+# platform skill discovery scanners. We detect by realpath comparison: if the
+# symlink's realpath equals its own parent dir, it's a self-loop.
+for dir in "$TGD_DIR/skills" "$TGD_DIR/vendor/understand-anything/understand-anything-plugin/skills"; do
+    if [[ -d "$dir" ]]; then
+        for entry in "$dir"/*; do
+            [[ -L "$entry" ]] || continue
+            sl_target=$(readlink "$entry" 2>/dev/null)
+            [[ -z "$sl_target" ]] && continue
+            # Resolve target to absolute path (handles relative targets)
+            if [[ "$sl_target" != /* ]]; then
+                sl_abs="$(cd "$(dirname "$entry")" && cd "$sl_target" 2>/dev/null && pwd -P)" || continue
+            else
+                sl_abs="$(cd "$sl_target" 2>/dev/null && pwd -P)" || continue
+            fi
+            entry_abs="$(cd "$(dirname "$entry")" && pwd -P)/$(basename "$entry")"
+            # Self-loop: symlink target equals its own parent directory
+            if [[ "$sl_abs" == "$(dirname "$entry_abs")" ]]; then
+                echo "   🧹 Removing self-loop symlink: $entry → $sl_target"
+                rm -f "$entry"
+            fi
+        done
+    fi
+done
 
 echo "✅ Setup Complete!"
 echo ""

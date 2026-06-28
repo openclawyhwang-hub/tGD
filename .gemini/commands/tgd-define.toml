@@ -6,7 +6,7 @@ prompt = """
 - **If missing:** STOP. Tell user: "Project context not mapped. Please run `/tgd-map` first."
 - **$TGD_DIR:** Check env var `$TGD_DIR` first. If not set, check sibling `../<project-name>-tGD/`. If neither exists: STOP — run `/tgd-map` first.
 
-Run the `spec-driven-development` skill.
+Run the `tgd-spec-driven-development` skill.
 1. **Feature Name Resolution** (Selection Protocol) — **Analyze the user's request first.** Extract the core action + object (e.g., "user login" → action: login, object: user). Then propose 3 distinct kebab-case `<feature-name>` options that **directly reflect the user's intent**:
    - Option 1: Most literal/direct (e.g., `user-login`)
    - Option 2: Action-focused (e.g., `authenticate-user`)
@@ -34,7 +34,7 @@ Each section header uses `## <repo-name>` so tasks can be traced to their target
 After writing SPEC.md, you MUST ask the user: "Does this feature have a UI component requiring DESIGN.md?"
 **Format:** "1. Yes (Generate design) 2. No (Backend only)"
 - If YES: 
-  1. Run the `sketch` skill to generate 2-3 HTML prototype variants in `$TGD_DIR/<feature-name>/prototype/`
+  1. Run the `tgd-sketch` skill to generate 2-3 HTML prototype variants in `$TGD_DIR/<feature-name>/prototype/`
   2. Present comparison table → user picks one by letter (or requests iteration)
   3. Write DESIGN.md documenting the chosen design decisions and component tree
   4. Wait for user confirmation before proceeding.

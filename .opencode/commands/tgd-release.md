@@ -17,16 +17,16 @@
 - [ ] `tests/` exists and passes.
 - **If missing:** STOP. Tell user: "Review or tests incomplete. Please run `/tgd-review` first."
 
-Run the `shipping-and-launch` skill. This is the Release phase. The full pipeline is:
+Run the `tgd-shipping-and-launch` skill. This is the Release phase. The full pipeline is:
 
 **Core flow:**
-1. `git-workflow-and-versioning` — clean commit history, trunk-based development
-2. `shipping-and-launch` — pre-launch checklist, staged rollouts, monitoring setup
+1. `tgd-git-workflow-and-versioning` — clean commit history, trunk-based development
+2. `tgd-shipping-and-launch` — pre-launch checklist, staged rollouts, monitoring setup
 
 **Conditional (apply when relevant):**
-- CI/CD pipeline work? → `ci-cd-and-automation`
-- Removing old systems? → `deprecation-and-migration`
-- New architecture or API? → `documentation-and-adrs`
+- CI/CD pipeline work? → `tgd-ci-cd-and-automation`
+- Removing old systems? → `tgd-deprecation-and-migration`
+- New architecture or API? → `tgd-documentation-and-adrs`
 
 Faster is safer. Deploy in stages, confirm monitoring, and have a rollback plan.
 
@@ -66,7 +66,7 @@ Before finalizing the release, audit the existing catalog for staleness:
 2. For EACH existing entry (not just the current feature's new ones):
    - **Test file exists?** If the path is broken (file deleted, moved, or renamed): remove the entry. Log the removal in `$TGD_DIR/CHANGELOG.md` under a `## Catalog Cleanup` subsection.
    - **Test still passes?** Run it. If it fails: 🛑 STOP — this is a regression. Fix before releasing.
-   - **Feature deprecated?** If the feature's code was removed or deprecated in this cycle (`deprecation-and-migration` ran): remove its entries from the catalog.
+   - **Feature deprecated?** If the feature's code was removed or deprecated in this cycle (`tgd-deprecation-and-migration` ran): remove its entries from the catalog.
 3. After audit, the catalog must contain ONLY entries whose test files exist and pass.
 
 This prevents the catalog from becoming a zombie file full of dead references. Every entry should be runnable.

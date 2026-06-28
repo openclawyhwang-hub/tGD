@@ -65,10 +65,10 @@ The agent evaluates every request and maps it to the appropriate skill.
 
 Examples:
 
-- "build a feature" → `incremental-implementation` + `test-driven-development`
-- "design a system" → `spec-driven-development`
-- "fix a bug" → `debugging-and-error-recovery`
-- "review this code" → `code-review-and-quality`
+- "build a feature" → `tgd-incremental-implementation` + `tgd-test-driven-development`
+- "design a system" → `tgd-spec-driven-development`
+- "fix a bug" → `tgd-debugging-and-error-recovery`
+- "review this code" → `tgd-code-review-and-quality`
 
 The user does **not** need to explicitly request skills.
 
@@ -76,12 +76,12 @@ The user does **not** need to explicitly request skills.
 
 The development lifecycle is encoded implicitly:
 
-- DEFINE → `spec-driven-development`
-- PLAN → `planning-and-task-breakdown`
-- BUILD → `incremental-implementation` + `test-driven-development`
-- VERIFY → `debugging-and-error-recovery`
-- REVIEW → `code-review-and-quality`
-- SHIP → `shipping-and-launch`
+- DEFINE → `tgd-spec-driven-development`
+- PLAN → `tgd-planning-and-task-breakdown`
+- BUILD → `tgd-incremental-implementation` + `tgd-test-driven-development`
+- VERIFY → `tgd-debugging-and-error-recovery`
+- REVIEW → `tgd-code-review-and-quality`
+- SHIP → `tgd-shipping-and-launch`
 
 This replaces slash commands like `/spec`, `/plan`, etc.
 
@@ -98,7 +98,7 @@ Add authentication to this app
 
 Agent behavior:
 - Detects feature work
-- Invokes `spec-driven-development`
+- Invokes `tgd-spec-driven-development`
 - Produces a spec before writing code
 - Moves to planning and implementation skills
 
@@ -112,7 +112,7 @@ This endpoint is returning 500 errors
 ```
 
 Agent behavior:
-- Invokes `debugging-and-error-recovery`
+- Invokes `tgd-debugging-and-error-recovery`
 - Reproduces → localizes → fixes → adds guards
 
 ---
@@ -125,7 +125,7 @@ Review this PR
 ```
 
 Agent behavior:
-- Invokes `code-review-and-quality`
+- Invokes `tgd-code-review-and-quality`
 - Applies structured review (correctness, design, readability, etc.)
 
 ---
@@ -158,8 +158,8 @@ OpenCode supports lifecycle hooks via TypeScript plugins. tGD ships three plugin
 
 | Plugin | Hook | Purpose |
 |--------|------|---------|
-| `session-start.ts` | `session.created` | Injects `using-tGD` meta-skill at session start |
-| `sdd-cache.ts` | `tool.execute.before/after` | HTTP cache for `source-driven-development` doc fetching |
+| `session-start.ts` | `session.created` | Injects `tgd-router` meta-skill at session start |
+| `sdd-cache.ts` | `tool.execute.before/after` | HTTP cache for `tgd-source-driven-development` doc fetching |
 
 ### Installation
 

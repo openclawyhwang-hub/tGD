@@ -250,13 +250,13 @@ Die `tgd` CLI verwaltet Installation, Updates und Diagnose:
 
 | 🎯 Was | ⌨️ Command | 💡 Prinzip | 🔧 Skills |
 |---|---|---|---|
-| Projekt verstehen | `/tgd-map` | Kontext vor Änderungen | `context-engineering` + `codegraph init` + `understand-dashboard` |
-| Definition | `/tgd-define` | 3-Option-Naming + Produkt + Spezifikation | `interview-me` → `idea-refine` → `spec-driven-development` |
-| Planung | `/tgd-plan` | CONTEXT + PRD + SPEC → Atomare Tasks | `planning-and-task-breakdown` → `jira-auto-sync` |
-| Sandbox-Bau | `/tgd-develop` | **Pflicht-Worktree** + Intelligentes Routing | `source-driven-development` → (`subagent` OR `incremental`) → `test-driven-development` |
-| Beweis erbringen | `/tgd-verify` | Tests sind der Beweis | `debugging-and-error-recovery` → `test-driven-development` → **Cross-Feature Regression Gate** |
-| Review vor Merge | `/tgd-review` | Code-Qualität verbessern | `code-review-and-quality` → `code-simplification` |
-| Produktion | `/tgd-release` | Schneller ist sicherer | `git-workflow-and-versioning` → `shipping-and-launch` → **Regression Catalog Update + Audit** |
+| Projekt verstehen | `/tgd-map` | Kontext vor Änderungen | `tgd-context-engineering` + `codegraph init` + `understand-dashboard` |
+| Definition | `/tgd-define` | 3-Option-Naming + Produkt + Spezifikation | `tgd-interview-me` → `tgd-idea-refine` → `tgd-spec-driven-development` |
+| Planung | `/tgd-plan` | CONTEXT + PRD + SPEC → Atomare Tasks | `tgd-planning-and-task-breakdown` → `tgd-jira-auto-sync` |
+| Sandbox-Bau | `/tgd-develop` | **Pflicht-Worktree** + Intelligentes Routing | `tgd-source-driven-development` → (`subagent` OR `incremental`) → `tgd-test-driven-development` |
+| Beweis erbringen | `/tgd-verify` | Tests sind der Beweis | `tgd-debugging-and-error-recovery` → `tgd-test-driven-development` → **Cross-Feature Regression Gate** |
+| Review vor Merge | `/tgd-review` | Code-Qualität verbessern | `tgd-code-review-and-quality` → `tgd-code-simplification` |
+| Produktion | `/tgd-release` | Schneller ist sicherer | `tgd-git-workflow-and-versioning` → `tgd-shipping-and-launch` → **Regression Catalog Update + Audit** |
 
 ---
 
@@ -315,7 +315,7 @@ Der Agent erkennt den Test-Runner automatisch aus dem SPEC.md Tech-Stack:
 | Go | `go test` | `//go:build regression` or `TestXxxRegression` naming |
 | Rust | `cargo test` | Naming convention |
 | Java | junit / mvn test | `@Tag("regression")` |
-| E2E (any) | agent-browser | Separate regression suite |
+| E2E (any) | tgd-agent-browser | Separate regression suite |
 
 ### 🧪 Verify: Tests ausführen + Report generieren
 
@@ -355,7 +355,7 @@ Command: pytest -v --tb=short
 
 TEST-REPORT.md wird **automatisch** aus der Test-Runner-Ausgabe generiert, nicht manuell gepflegt.
 
-**Frontend-Pflicht:** Wenn SPEC.md UI enthält, MUSS Verify `agent-browser` für E2E-Browser-Tests ausführen.
+**Frontend-Pflicht:** Wenn SPEC.md UI enthält, MUSS Verify `tgd-agent-browser` für E2E-Browser-Tests ausführen.
 
 ### 🏷️ Regression: Das Sicherheitsnetz
 
@@ -442,7 +442,7 @@ tGD hat drei menschliche Rollen. Jedes Artifact hat einen `## Sign-off`-Bereich 
 ## 🔗 Integrationen
 
 ### Jira Data Center
-Wenn `/tgd-plan` eine `TASKS.md` generiert, kann der **`jira-auto-sync`** Skill automatisch Jira-Issues erstellen:
+Wenn `/tgd-plan` eine `TASKS.md` generiert, kann der **`tgd-jira-auto-sync`** Skill automatisch Jira-Issues erstellen:
 ```
 /tgd-plan → generiert TASKS.md → Benutzer bestätigt → erstellt Jira-Issues
 ```
@@ -622,7 +622,7 @@ tGD/
 
 | Skill | Zweck |
 |-------|-------|
-| [using-tGD](skills/using-tGD/SKILL.md) | Arbeit dem richtigen Skill zuordnen |
+| [tgd-router](skills/tgd-router/SKILL.md) | Arbeit dem richtigen Skill zuordnen |
 </details>
 
 <details>
@@ -630,9 +630,9 @@ tGD/
 
 | Skill | Zweck |
 |-------|-------|
-| [interview-me](skills/interview-me/SKILL.md) | Benutzer-Intent durch Q&A extrahieren |
-| [idea-refine](skills/idea-refine/SKILL.md) | Divergentes/konvergentes Denken |
-| [spec-driven-development](skills/spec-driven-development/SKILL.md) | PRD + SPEC vor Code |
+| [tgd-interview-me](skills/tgd-interview-me/SKILL.md) | Benutzer-Intent durch Q&A extrahieren |
+| [tgd-idea-refine](skills/tgd-idea-refine/SKILL.md) | Divergentes/konvergentes Denken |
+| [tgd-spec-driven-development](skills/tgd-spec-driven-development/SKILL.md) | PRD + SPEC vor Code |
 </details>
 
 <details>
@@ -640,8 +640,8 @@ tGD/
 
 | Skill | Zweck |
 |-------|-------|
-| [planning-and-task-breakdown](skills/planning-and-task-breakdown/SKILL.md) | In TASKS.md zerlegen |
-| [jira-auto-sync](skills/jira-auto-sync/SKILL.md) | Jira-Issues automatisch erstellen |
+| [tgd-planning-and-task-breakdown](skills/tgd-planning-and-task-breakdown/SKILL.md) | In TASKS.md zerlegen |
+| [tgd-jira-auto-sync](skills/tgd-jira-auto-sync/SKILL.md) | Jira-Issues automatisch erstellen |
 </details>
 
 <details>
@@ -649,15 +649,15 @@ tGD/
 
 | Skill | Zweck |
 |-------|-------|
-| [subagent-driven-development](skills/subagent-driven-development/SKILL.md) | Parallele Tasks durch frische Subagenten |
-| [incremental-implementation](skills/incremental-implementation/SKILL.md) | Schrittweise inkrementell |
-| [test-driven-development](skills/test-driven-development/SKILL.md) | Red-Green-Refactor |
-| [verification-before-completion](skills/verification-before-completion/SKILL.md) | Beweis vor Behauptungen |
-| [context-engineering](skills/context-engineering/SKILL.md) | Richtige Infos an Agent liefern |
-| [source-driven-development](skills/source-driven-development/SKILL.md) | Entscheidungen auf offizielle Docs stützen |
-| [doubt-driven-development](skills/doubt-driven-development/SKILL.md) | Gegnerische Überprüfung |
-| [frontend-ui-engineering](skills/frontend-ui-engineering/SKILL.md) | UI-Architektur & Design-Systeme |
-| [api-and-interface-design](skills/api-and-interface-design/SKILL.md) | Contract-First-API-Design |
+| [tgd-subagent-driven-development](skills/tgd-subagent-driven-development/SKILL.md) | Parallele Tasks durch frische Subagenten |
+| [tgd-incremental-implementation](skills/tgd-incremental-implementation/SKILL.md) | Schrittweise inkrementell |
+| [tgd-test-driven-development](skills/tgd-test-driven-development/SKILL.md) | Red-Green-Refactor |
+| [tgd-verification-before-completion](skills/tgd-verification-before-completion/SKILL.md) | Beweis vor Behauptungen |
+| [tgd-context-engineering](skills/tgd-context-engineering/SKILL.md) | Richtige Infos an Agent liefern |
+| [tgd-source-driven-development](skills/tgd-source-driven-development/SKILL.md) | Entscheidungen auf offizielle Docs stützen |
+| [tgd-doubt-driven-development](skills/tgd-doubt-driven-development/SKILL.md) | Gegnerische Überprüfung |
+| [tgd-frontend-ui-engineering](skills/tgd-frontend-ui-engineering/SKILL.md) | UI-Architektur & Design-Systeme |
+| [tgd-api-and-interface-design](skills/tgd-api-and-interface-design/SKILL.md) | Contract-First-API-Design |
 </details>
 
 <details>
@@ -665,8 +665,8 @@ tGD/
 
 | Skill | Zweck |
 |-------|-------|
-| [agent-browser](skills/agent-browser/SKILL.md) | E2E-Browser-Automatisierung, CDP-basiertes CLI |
-| [debugging-and-error-recovery](skills/debugging-and-error-recovery/SKILL.md) | Triage, Fix, Guard |
+| [tgd-agent-browser](skills/tgd-agent-browser/SKILL.md) | E2E-Browser-Automatisierung, CDP-basiertes CLI |
+| [tgd-debugging-and-error-recovery](skills/tgd-debugging-and-error-recovery/SKILL.md) | Triage, Fix, Guard |
 </details>
 
 <details>
@@ -674,10 +674,10 @@ tGD/
 
 | Skill | Zweck |
 |-------|-------|
-| [code-review-and-quality](skills/code-review-and-quality/SKILL.md) | 5-Achsen-Review |
-| [code-simplification](skills/code-simplification/SKILL.md) | Komplexität reduzieren |
-| [security-and-hardening](skills/security-and-hardening/SKILL.md) | OWASP & Secrets-Management |
-| [performance-optimization](skills/performance-optimization/SKILL.md) | Profiling & Anti-Patterns |
+| [tgd-code-review-and-quality](skills/tgd-code-review-and-quality/SKILL.md) | 5-Achsen-Review |
+| [tgd-code-simplification](skills/tgd-code-simplification/SKILL.md) | Komplexität reduzieren |
+| [tgd-security-and-hardening](skills/tgd-security-and-hardening/SKILL.md) | OWASP & Secrets-Management |
+| [tgd-performance-optimization](skills/tgd-performance-optimization/SKILL.md) | Profiling & Anti-Patterns |
 </details>
 
 <details>
@@ -685,11 +685,11 @@ tGD/
 
 | Skill | Zweck |
 |-------|-------|
-| [git-workflow-and-versioning](skills/git-workflow-and-versioning/SKILL.md) | Atomische Commits & Trunk-basiert |
-| [ci-cd-and-automation](skills/ci-cd-and-automation/SKILL.md) | Shift Left & Feature-Flags |
-| [deprecation-and-migration](skills/deprecation-and-migration/SKILL.md) | Migrations-Pattern |
-| [documentation-and-adrs](skills/documentation-and-adrs/SKILL.md) | ADRs & API-Dokumentation |
-| [shipping-and-launch](skills/shipping-and-launch/SKILL.md) | Stufen-Rollouts & Monitoring |
+| [tgd-git-workflow-and-versioning](skills/tgd-git-workflow-and-versioning/SKILL.md) | Atomische Commits & Trunk-basiert |
+| [tgd-ci-cd-and-automation](skills/tgd-ci-cd-and-automation/SKILL.md) | Shift Left & Feature-Flags |
+| [tgd-deprecation-and-migration](skills/tgd-deprecation-and-migration/SKILL.md) | Migrations-Pattern |
+| [tgd-documentation-and-adrs](skills/tgd-documentation-and-adrs/SKILL.md) | ADRs & API-Dokumentation |
+| [tgd-shipping-and-launch](skills/tgd-shipping-and-launch/SKILL.md) | Stufen-Rollouts & Monitoring |
 </details>
 
 ---
@@ -702,7 +702,7 @@ Nachdem Sie Ihr erstes Feature gebaut haben:
 2. 🔧 Entdecken Sie [alle 28 Skills](#alle-28-skills) um zu sehen was verfügbar ist
 3. 🤖 Probieren Sie [Agent Personas](#agent-personas) für spezialisierte Reviews
 4. 🔗 Richten Sie die [Jira-Integration](#integrationen) für Task-Tracking ein
-5. 🌐 Aktivieren Sie [Agent Browser](skills/agent-browser/SKILL.md) für E2E-Browser-Tests
+5. 🌐 Aktivieren Sie [tgd-agent-browser](skills/tgd-agent-browser/SKILL.md) für E2E-Browser-Tests
 
 ---
 

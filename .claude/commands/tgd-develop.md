@@ -29,22 +29,22 @@ Before writing any code, create an isolated workspace. This keeps `$TGD_DIR/` ar
 
 **⚡ Step 2: Execution Mode Routing**
 Check the number of tasks in `TASKS.md`:
-- **< 3 tasks** (Simple/Fast): `incremental-implementation`. The main agent switches to the worktree directory and implements directly.
-- **≥ 3 tasks** (Complex/Quality): `subagent-driven-development`. Dispatch subagents to implement and review within the worktree directory.
+- **< 3 tasks** (Simple/Fast): `tgd-incremental-implementation`. The main agent switches to the worktree directory and implements directly.
+- **≥ 3 tasks** (Complex/Quality): `tgd-subagent-driven-development`. Dispatch subagents to implement and review within the worktree directory.
 
 **Core flow (both modes):**
-1. `context-engineering` — load the right spec sections and source files for the current task
+1. `tgd-context-engineering` — load the right spec sections and source files for the current task
    - Before modifying a file, run `codegraph callers <symbol>` to ensure backward compatibility.
-2. `source-driven-development` — ground framework decisions in official docs, verify and cite
-3. `subagent-driven-development` OR `incremental-implementation` — execute tasks in worktree
-4. `test-driven-development` — Red-Green-Refactor, write tests alongside each task
-5. `verification-before-completion` — evidence before claims, no exceptions
+2. `tgd-source-driven-development` — ground framework decisions in official docs, verify and cite
+3. `tgd-subagent-driven-development` OR `tgd-incremental-implementation` — execute tasks in worktree
+4. `tgd-test-driven-development` — Red-Green-Refactor, write tests alongside each task
+5. `tgd-verification-before-completion` — evidence before claims, no exceptions
 
 **Conditional (apply when relevant):**
 - Working with unfamiliar code? → the `understand` skill to clarify architectural boundaries.
-- Touching UI? → `frontend-ui-engineering`
-- Designing APIs? → `api-and-interface-design`
-- High-stakes decision? → `doubt-driven-development`
+- Touching UI? → `tgd-frontend-ui-engineering`
+- Designing APIs? → `tgd-api-and-interface-design`
+- High-stakes decision? → `tgd-doubt-driven-development`
 
 **🧹 Step 3: Cleanup**
 After all tasks pass verification:
