@@ -10,15 +10,15 @@ description: Start spec-driven development — write a structured specification 
 Run the `tgd-spec-driven-development` skill. Write a PRD (product requirements document) covering objectives, commands, structure, code style, testing strategy, and boundaries before any code is written.
 
 This is the DEFINE phase. The full pipeline is:
-1. **Feature Name Resolution** (Selection Protocol) — **Analyze the user's request first.** Extract the core action + object (e.g., "user login" → action: login, object: user). Then propose 3 distinct kebab-case `<feature-name>` options that **directly reflect the user's intent**:
+1. `tgd-interview-me` — if the ask is underspecified, extract what the user actually wants
+2. `tgd-idea-refine` — if the concept is vague, stress-test and expand options
+3. **Feature Name Resolution** (Selection Protocol) — After the feature is discussed and the direction is clear, analyze the request and extract the core action + object (e.g., "user login" → action: login, object: user). Then propose 3 distinct kebab-case `<feature-name>` options that **directly reflect the user's intent**:
    - Option 1: Most literal/direct (e.g., `user-login`)
    - Option 2: Action-focused (e.g., `authenticate-user`)
    - Option 3: Domain-specific if applicable (e.g., `auth-flow`)
    
    **Wait for the user to select one by number or provide their own before proceeding.** Once locked, create `$TGD_DIR/<feature-name>/`.
-2. **🌿 Git Branch Setup** — If on `main`/`master`, create and switch to `feature/<feature-name>` (`git checkout -b feature/user-login`).
-3. `tgd-interview-me` — if the ask is underspecified, extract what the user actually wants
-4. `tgd-idea-refine` — if the concept is vague, stress-test and expand options
+4. **🌿 Git Branch Setup** — If on `main`/`master`, create and switch to `feature/<feature-name>` (`git checkout -b feature/user-login`).
 5. `tgd-spec-driven-development` — write the structured spec (PRD + SPEC)
 
 **Multi-Repo Tagging:** If CONTEXT.md lists multiple repos, SPEC.md MUST be tagged by repo:

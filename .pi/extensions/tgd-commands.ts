@@ -65,10 +65,10 @@ const tgdPrompts: Record<string, string> = {
     "Run the `tgd-spec-driven-development` skill. Write a PRD (product requirements document) covering objectives, commands, structure, code style, testing strategy, and boundaries before any code is written. DEFINE phase.\n\n" +
     "Pre-flight: Check $TGD_DIR/CONTEXT.md exists (or .codegraph/ is present). If missing, STOP and tell user to run /tgd-map first. $TGD_DIR: Check env var $TGD_DIR first. If not set, check sibling ../<project-name>-tGD/\n\n" +
     "Pipeline:\n" +
-    "1. Feature Name Resolution (Selection Protocol) — **Analyze the user's request first.** Extract core action + object (e.g., 'user login' → action: login, object: user). Propose 3 kebab-case names that **directly reflect intent**: (a) most literal/direct, (b) action-focused, (c) domain-specific. Wait for user to pick by number. Once locked, create $TGD_DIR/<feature-name>/.\n" +
-    "2. 🌿 Git Branch Setup — If on main/master, create and switch to feature/<feature-name> (git checkout -b feature/user-login).\n" +
-    "3. `tgd-interview-me` — if the ask is underspecified, extract what the user actually wants\n" +
-    "4. `tgd-idea-refine` — if the concept is vague, stress-test and expand options\n" +
+    "1. `tgd-interview-me` — if the ask is underspecified, extract what the user actually wants\n" +
+    "2. `tgd-idea-refine` — if the concept is vague, stress-test and expand options\n" +
+    "3. Feature Name Resolution (Selection Protocol) — After the feature is discussed and the direction is clear, analyze the request and extract core action + object (e.g., 'user login' → action: login, object: user). Propose 3 kebab-case names that **directly reflect intent**: (a) most literal/direct, (b) action-focused, (c) domain-specific. Wait for user to pick by number. Once locked, create $TGD_DIR/<feature-name>/.\n" +
+    "4. 🌿 Git Branch Setup — If on main/master, create and switch to feature/<feature-name> (git checkout -b feature/user-login).\n" +
     "5. `tgd-spec-driven-development` — write the structured spec (PRD + SPEC)\n\n" +
     "Multi-Repo Tagging: If CONTEXT.md lists multiple repos, SPEC.md MUST be tagged by repo. Use ## <repo-name> as section headers (e.g., ## Backend (my-project-backend), ## Frontend (my-project-frontend)).\n\n" +
     "Phase 1.5: UI Design Gate (MANDATORY CHECK via Selection Protocol)\n" +
