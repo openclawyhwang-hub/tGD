@@ -86,49 +86,57 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 ## 1. Executive Summary
 [Why are we doing this? Business value? Expected impact?]
 
-## 2. Problem Statement
+## 2. Goals & Non-Goals
+- **Goals:**
+  - [What specific outcomes must this feature achieve?]
+  - [Each goal should be verifiable — can you tell when it's done?]
+- **Non-Goals:**
+  - [What is explicitly out of scope for this iteration?]
+  - [Things we considered but chose not to do — and why]
+
+## 3. Problem Statement
 - **Current state:** [What is happening now?]
 - **Pain point:** [What is the problem?]
 - **Impact:** [How does this affect users/business?]
 
-## 3. Target Audience
+## 4. Target Audience
 - **Primary:** [Who is this for?]
 - **Secondary:** [Who else benefits?]
 - **User scale:** [Expected MAU/DAU]
 
-## 4. User Stories
+## 5. User Stories
 | ID | Story | Priority | Acceptance Criteria |
 |----|-------|----------|---------------------|
 | US-01 | As a [role], I want [goal], so [benefit] | P0 | [Specific criteria] |
 
-## 5. Success Metrics (KPIs)
+## 6. Success Metrics (KPIs)
 | Metric | Target | Measurement Method |
 |--------|--------|-------------------|
 | [Metric 1] | [Target] | [How to measure] |
 
-## 6. Scope
+## 7. Scope
 - **Phase 1:** [Must haves]
 - **Phase 2:** [Nice to haves]
 - **Phase 3:** [Future]
-- **Out of Scope:** [Explicitly not doing]
+- **Out of Scope:** See §2 Non-Goals
 
-## 7. Risks & Mitigations
+## 8. Risks & Mitigations
 | Risk | Impact | Mitigation |
 |------|--------|------------|
 | [Risk] | High/Med/Low | [Strategy] |
 
-## 8. Competitive Analysis (if applicable)
+## 9. Competitive Analysis (if applicable)
 | Feature | Our Product | Competitor A | Competitor B |
 |---------|-------------|--------------|--------------|
 | [Feature] | ✅/❌/Phase N | ✅/❌ | ✅/❌ |
 
-## 9. Stakeholder Alignment
+## 10. Stakeholder Alignment
 - **PM:** [Sign-off on scope]
 - **Design:** [Sign-off on UX flow]
 - **Engineering:** [Sign-off on feasibility]
 - **Security:** [Sign-off on security requirements]
 
-## 10. Timeline
+## 11. Timeline
 | Phase | Duration | Milestone |
 |-------|----------|-----------|
 | Phase 1 | [X weeks] | [Milestone] |
