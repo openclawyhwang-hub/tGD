@@ -87,9 +87,8 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 [Why are we doing this? Business value? Expected impact?]
 
 ## 2. Goals & Non-Goals
-- **Goals:**
-  - [What specific outcomes must this feature achieve?]
-  - [Each goal should be verifiable — can you tell when it's done?]
+- **Goals:** (outcomes, not features — what changes for the user?)
+  - [e.g., "Users can recover access without an email round-trip" — not "Add SMS OTP"]
 - **Non-Goals:**
   - [What is explicitly out of scope for this iteration?]
   - [Things we considered but chose not to do — and why]
@@ -115,6 +114,7 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 | [Metric 1] | [Target] | [How to measure] |
 
 ## 7. Scope
+(deliverables, not outcomes — what gets built and when)
 - **Phase 1:** [Must haves]
 - **Phase 2:** [Nice to haves]
 - **Phase 3:** [Future]
