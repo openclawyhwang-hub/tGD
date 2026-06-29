@@ -86,17 +86,17 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 ## 1. Executive Summary
 [Why are we doing this? Business value? Expected impact?]
 
-## 2. Goals & Non-Goals
+## 2. Problem Statement
+- **Current state:** [What is happening now?]
+- **Pain point:** [What is the problem?]
+- **Impact:** [How does this affect users/business?]
+
+## 3. Goals & Non-Goals
 - **Goals:** (outcomes, not features — what changes for the user?)
   - [e.g., "Users can recover access without an email round-trip" — not "Add SMS OTP"]
 - **Non-Goals:**
   - [What is explicitly out of scope for this iteration?]
   - [Things we considered but chose not to do — and why]
-
-## 3. Problem Statement
-- **Current state:** [What is happening now?]
-- **Pain point:** [What is the problem?]
-- **Impact:** [How does this affect users/business?]
 
 ## 4. Target Audience
 - **Primary:** [Who is this for?]
@@ -118,7 +118,7 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 - **Phase 1:** [Must haves]
 - **Phase 2:** [Nice to haves]
 - **Phase 3:** [Future]
-- **Out of Scope:** See §2 Non-Goals
+- **Out of Scope:** See §3 Non-Goals
 
 ## 8. Risks & Mitigations
 | Risk | Impact | Mitigation |
