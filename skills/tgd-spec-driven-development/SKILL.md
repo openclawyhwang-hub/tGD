@@ -68,9 +68,10 @@ Don't silently fill in ambiguous requirements. The spec's entire purpose is to s
 
 **Write a PRD document covering these product areas:**
 
-1. **Objective** — What are we building and why? Who is the user? What does success look like?
-2. **User Stories** — "As a [user], I want [goal], so that [benefit]."
-3. **Success Criteria** — Measurable metrics for completion.
+1. **Problem** — What is broken? What is the pain point?
+2. **Goals & Non-Goals** — What outcomes must we achieve? What is explicitly out of scope?
+3. **User Stories** — "As a [user], I want [goal], so that [benefit]."
+4. **Success Criteria** — Measurable metrics for completion.
 
 **PRD.md template (save to `$TGD_DIR/<feature-name>/PRD.md`):**
 
@@ -358,7 +359,7 @@ Break the plan into discrete, implementable tasks:
 
 ### Phase 4: Implement
 
-Execute tasks one at a time following `skills/incremental-implementation/SKILL.md` (`tgd-incremental-implementation`) and `skills/test-driven-development/SKILL.md` (`tgd-test-driven-development`). Use `skills/context-engineering/SKILL.md` (`tgd-context-engineering`) to load the right spec sections and source files at each step rather than flooding the agent with the entire spec.
+Execute tasks one at a time following `skills/tgd-incremental-implementation/SKILL.md` (`tgd-incremental-implementation`) and `skills/tgd-test-driven-development/SKILL.md` (`tgd-test-driven-development`). Use `skills/tgd-context-engineering/SKILL.md` (`tgd-context-engineering`) to load the right spec sections and source files at each step rather than flooding the agent with the entire spec.
 
 ## Keeping the Spec Alive
 
