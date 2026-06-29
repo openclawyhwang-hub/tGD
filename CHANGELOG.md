@@ -4,6 +4,22 @@ All notable changes to tGD will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow [CalVer](https://calver.org/) (YYYY.MM.DD).
 
+## v2026.06.30
+
+### ✨ Features
+- add Goals & Non-Goals section to PRD template (`df17e78`)
+### 🐛 Bug Fixes
+- sync PRD guidance with new template structure (`07750b3`)
+- reorder PRD — Problem Statement before Goals (`1b89e92`)
+- disambiguate Goals (outcomes) vs Scope (deliverables) in PRD template (`c0ebe06`)
+- quote tgd-agent-browser description to avoid YAML plain-scalar trap (`16af44c`)
+### 📝 Documentation
+- update skill paths to use tgd- prefix in claude-desktop-setup.md (`ebe9023`)
+- replace Chinese examples with English in claude-desktop-setup.md (`6832da8`)
+### ♻️ Refactoring
+- discuss feature before naming — move interview/idea-refine before branch setup (`cc648ce`)
+
+
 ---
 
 ## v2026.06.28
