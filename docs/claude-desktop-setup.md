@@ -57,69 +57,69 @@ Upload these files from the `skills/` directory. You can multi-select in Finder 
 | File | What it does |
 |------|-------------|
 | `skills/tgd-rules/SKILL.md` | Core rules — anti-rationalization, verification iron law |
-| `skills/doubt-driven-development/SKILL.md` | Doubt-first verification principle |
+| `skills/tgd-doubt-driven-development/SKILL.md` | Doubt-first verification principle |
 
 **Map Stage:**
 
 | File | What it does |
 |------|-------------|
-| `skills/context-engineering/SKILL.md` | Codebase scanning & CONTEXT.md generation |
+| `skills/tgd-context-engineering/SKILL.md` | Codebase scanning & CONTEXT.md generation |
 
 **Define Stage:**
 
 | File | What it does |
 |------|-------------|
-| `skills/interview-me/SKILL.md` | Requirements interview workflow |
-| `skills/idea-refine/SKILL.md` | Refine vague ideas into concrete specs |
-| `skills/spec-driven-development/SKILL.md` | SPEC.md writing workflow |
-| `skills/sketch/SKILL.md` | UI prototyping (if feature has UI) |
+| `skills/tgd-interview-me/SKILL.md` | Requirements interview workflow |
+| `skills/tgd-idea-refine/SKILL.md` | Refine vague ideas into concrete specs |
+| `skills/tgd-spec-driven-development/SKILL.md` | SPEC.md writing workflow |
+| `skills/tgd-sketch/SKILL.md` | UI prototyping (if feature has UI) |
 
 **Plan Stage:**
 
 | File | What it does |
 |------|-------------|
-| `skills/planning-and-task-breakdown/SKILL.md` | Triple-source task decomposition |
+| `skills/tgd-planning-and-task-breakdown/SKILL.md` | Triple-source task decomposition |
 
 **Develop Stage:**
 
 | File | What it does |
 |------|-------------|
-| `skills/source-driven-development/SKILL.md` | Source-code-first implementation |
-| `skills/incremental-implementation/SKILL.md` | Small incremental changes |
-| `skills/subagent-driven-development/SKILL.md` | Parallel subagent delegation |
-| `skills/test-driven-development/SKILL.md` | Red-Green-Refactor TDD cycle |
-| `skills/verification-before-completion/SKILL.md` | Evidence-based completion gates |
+| `skills/tgd-source-driven-development/SKILL.md` | Source-code-first implementation |
+| `skills/tgd-incremental-implementation/SKILL.md` | Small incremental changes |
+| `skills/tgd-subagent-driven-development/SKILL.md` | Parallel subagent delegation |
+| `skills/tgd-test-driven-development/SKILL.md` | Red-Green-Refactor TDD cycle |
+| `skills/tgd-verification-before-completion/SKILL.md` | Evidence-based completion gates |
 
 **Verify Stage:**
 
 | File | What it does |
 |------|-------------|
-| `skills/debugging-and-error-recovery/SKILL.md` | Root cause debugging workflow |
+| `skills/tgd-debugging-and-error-recovery/SKILL.md` | Root cause debugging workflow |
 
 **Review Stage:**
 
 | File | What it does |
 |------|-------------|
-| `skills/code-review-and-quality/SKILL.md` | 5-axis code review |
-| `skills/code-simplification/SKILL.md` | Simplification pass |
-| `skills/security-and-hardening/SKILL.md` | Security audit |
-| `skills/performance-optimization/SKILL.md` | Performance analysis |
+| `skills/tgd-code-review-and-quality/SKILL.md` | 5-axis code review |
+| `skills/tgd-code-simplification/SKILL.md` | Simplification pass |
+| `skills/tgd-security-and-hardening/SKILL.md` | Security audit |
+| `skills/tgd-performance-optimization/SKILL.md` | Performance analysis |
 
 **Release Stage:**
 
 | File | What it does |
 |------|-------------|
-| `skills/shipping-and-launch/SKILL.md` | Deployment checklist |
-| `skills/ci-cd-and-automation/SKILL.md` | CI/CD pipeline setup |
-| `skills/documentation-and-adrs/SKILL.md` | Docs & architecture decision records |
+| `skills/tgd-shipping-and-launch/SKILL.md` | Deployment checklist |
+| `skills/tgd-ci-cd-and-automation/SKILL.md` | CI/CD pipeline setup |
+| `skills/tgd-documentation-and-adrs/SKILL.md` | Docs & architecture decision records |
 
 **Supporting Skills (optional but recommended):**
 
 | File | What it does |
 |------|-------------|
-| `skills/frontend-ui-engineering/SKILL.md` | Frontend architecture guidance |
-| `skills/api-and-interface-design/SKILL.md` | API design patterns |
-| `skills/deprecation-and-migration/SKILL.md` | Migration & deprecation handling |
+| `skills/tgd-frontend-ui-engineering/SKILL.md` | Frontend architecture guidance |
+| `skills/tgd-api-and-interface-design/SKILL.md` | API design patterns |
+| `skills/tgd-deprecation-and-migration/SKILL.md` | Migration & deprecation handling |
 
 **Total: 22 files** (2 core + 17 pipeline + 3 supporting)
 
