@@ -27,7 +27,7 @@ Claude Desktop is a chat interface — no file system, no terminal, no git. Here
 - **No auto-scan** — Map stage: you paste the directory tree manually instead of Claude scanning it
 - **No code execution** — Develop/Verify: Claude generates code, you run it in your own IDE
 - **No file persistence** — Artifacts are produced in chat; you copy them to your repo manually
-- **No slash commands** — Use natural language triggers instead (e.g., "map this repo", "进入 define")
+- **No slash commands** — Use natural language triggers instead (e.g., "map this repo", "enter define")
 
 **Best for:** PM-led Define & Review sessions, product planning, spec writing, code review discussions.
 **Not ideal for:** Full pipeline execution (use Claude Code or Codex CLI for that).
@@ -132,35 +132,35 @@ Upload these files from the `skills/` directory. You can multi-select in Finder 
 Just tell Claude which stage you want:
 
 ```
-You: 帮我 map 这个 repo
-Claude: 请把项目的目录结构贴给我，我来帮你生成 CONTEXT.md。
+You: Help me map this repo
+Claude: Please paste your project's directory structure, and I'll generate CONTEXT.md for you.
 ```
 
 ```
 You: I want to build a user authentication feature
-Claude: 进入 Define 阶段。请问：
-  1. 认证方式？JWT / OAuth / Session-based？
-  2. 有哪些用户角色？
-  3. 有没有 UI 设计？
+Claude: Entering Define stage. A few questions:
+  1. Authentication method? JWT / OAuth / Session-based?
+  2. What user roles exist?
+  3. Is there any UI design?
 ```
 
 ```
 You: plan the work
-Claude: 读取 CONTEXT.md + PRD.md + SPEC.md，开始分解任务...
-→ 产出 TASKS.md（含 BDD acceptance criteria）
+Claude: Reading CONTEXT.md + PRD.md + SPEC.md, decomposing tasks...
+→ Produces TASKS.md (with BDD acceptance criteria)
 ```
 
 ### Stage Triggers
 
 | Say this | Enters stage |
 |----------|-------------|
-| "map this repo" / "扫描 codebase" / "help me understand this project" | Map |
-| "I want to build X" / "我要做一个功能" / "进入 define" | Define |
-| "plan the work" / "帮我排任务" / "进入 plan" | Plan |
-| "start coding" / "implement" / "进入 develop" | Develop |
-| "run tests" / "verify" / "进入 verify" | Verify |
-| "review this code" / "code review" / "进入 review" | Review |
-| "ship it" / "release" / "deploy" / "进入 release" | Release |
+| "map this repo" / "scan codebase" / "help me understand this project" | Map |
+| "I want to build X" / "define a feature" / "enter define" | Define |
+| "plan the work" / "break this down" / "enter plan" | Plan |
+| "start coding" / "implement" / "enter develop" | Develop |
+| "run tests" / "verify" / "enter verify" | Verify |
+| "review this code" / "code review" / "enter review" | Review |
+| "ship it" / "release" / "deploy" / "enter release" | Release |
 
 ### Sign-off Protocol
 
@@ -203,13 +203,13 @@ When the user says any of these, enter the corresponding stage:
 
 | User says | Stage |
 |-----------|-------|
-| "map this repo" / "扫描 codebase" / "help me understand this project" | Map |
-| "I want to build X" / "我要做一个功能" / "define a feature" / "进入 define" | Define |
-| "plan the work" / "帮我排任务" / "break this down" / "进入 plan" | Plan |
-| "start coding" / "implement" / "开始写 code" / "进入 develop" | Develop |
-| "run tests" / "verify" / "跑测试" / "进入 verify" | Verify |
-| "review this code" / "code review" / "review 一下" / "进入 review" | Review |
-| "ship it" / "release" / "准备上线" / "deploy" / "进入 release" | Release |
+| "map this repo" / "scan codebase" / "help me understand this project" | Map |
+| "I want to build X" / "define a feature" / "enter define" | Define |
+| "plan the work" / "break this down" / "enter plan" | Plan |
+| "start coding" / "implement" / "enter develop" | Develop |
+| "run tests" / "verify" / "enter verify" | Verify |
+| "review this code" / "code review" / "enter review" | Review |
+| "ship it" / "release" / "deploy" / "enter release" | Release |
 
 ## Core Rules (ALWAYS follow)
 
