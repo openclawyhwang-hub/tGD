@@ -4,6 +4,18 @@ All notable changes to tGD will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow [CalVer](https://calver.org/) (YYYY.MM.DD).
 
+## v2026.07.01
+
+### ✨ Features
+- enforce minimum coverage floors (80/60/90) with machine gate (`828bbe3`)
+- capture raw test output as machine-checkable evidence (`c85d124`)
+- machine-gate the cross-feature regression check (`95db43f`)
+- sharpen [R] regression rule — MUST-mark list + fail-closed enforcement (`0c02d3b`)
+- add Hermes Agent as the 6th supported platform (`00490ee`)
+### 📝 Documentation
+- update CHANGELOG.md for v2026.06.30 (`3e7e4e3`)
+
+
 ## v2026.06.30
 
 ### ✨ Features
