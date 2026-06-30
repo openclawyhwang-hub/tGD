@@ -384,3 +384,22 @@ After completing any implementation:
 - [ ] Coverage hasn't decreased (if tracked)
 
 **Note:** Run each test command after a change that could affect the result. After a clean run, don't repeat the same command unless the code has changed since — re-running on unchanged code adds no confidence.
+
+## Minimum Coverage Gate
+
+Beyond "coverage hasn't decreased", enforce explicit floors before merging a feature:
+
+| Scope | Floor |
+|---|---|
+| Lines | ≥ 80% |
+| Branches | ≥ 60% |
+| Functions | ≥ 90% |
+| Critical paths (auth, payment, data loss, security boundary) | 100% line + branch |
+
+**Why explicit floors**: "Coverage hasn't decreased" is relative — a feature can lower the floor by 5% every release and nobody notices. Absolute floors are visible, comparable across features, and catch slow erosion.
+
+**Enforcement**: `bash $TGD_DIR/scripts/coverage-check.sh` (run by `/tgd-verify`) auto-detects the project's coverage tool (`nyc`/`jest --coverage`/`vitest --coverage`/`coverage.py`/`go test -cover`/`cargo tarpaulin`) and exits 0 only when all floors pass. Exit 1 with the failing metric.
+
+**Exceptions**: If a floor cannot be met (e.g. glue code with no logic, generated files), the agent MUST document the exception in the TEST-REPORT.md "## Coverage Exceptions" section with: which metric, which files, why exempt. `/tgd-review` may reject undocumented exceptions.
+
+**Why not 100% everywhere**: Pure-function business logic should hit 100%; plumbing, type re-exports, and framework boilerplate legitimately have lower coverage. The 80/60/90 floors are calibrated for typical application code, not libraries.

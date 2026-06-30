@@ -65,6 +65,13 @@ Exit code: `0` (PASS) / `1` (FAIL)
 | Lines | |
 | Branches | |
 | Functions | |
+
+> Run the coverage gate before filling this table:
+> ```bash
+> bash "$TGD_DIR/scripts/coverage-check.sh"
+> ```
+> Exit 0 = all floors met, use the printed numbers. Exit 1 = gate failed, do not proceed.
+> Document any floor exception in "## Coverage Exceptions" below.
  
 ## 3. Failures & Root Causes
 | Test | Error | Root Cause | Fix Applied |
@@ -101,6 +108,7 @@ bash "$TGD_DIR/scripts/regression-gate.sh"
 - [ ] Tests pass for the implemented feature
 - [ ] `capture-test-output.sh` ran and appended raw output + meta-comment to TEST-REPORT.md
 - [ ] Summary table counts match the meta-comment (no fabrication)
+- [ ] `coverage-check.sh` exits 0 (or exceptions documented in "## Coverage Exceptions")
 - [ ] All regression tests in `$TGD_DIR/REGRESSION-CATALOG.md` still pass (`regression-gate.sh` exit 0)
 
 If verification passes, suggest the next step: `/tgd-review` to review the code quality.

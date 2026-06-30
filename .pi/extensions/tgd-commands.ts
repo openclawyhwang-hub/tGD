@@ -147,6 +147,7 @@ const tgdPrompts: Record<string, string> = {
     "> Date: YYYY-MM-DD\n" +
     "## 1. Test Summary — table: Suite/Passed/Failed/Skipped, exit code\n" +
     "## 2. Coverage — table: Lines/Branches/Functions\n" +
+    "Run coverage gate before filling: bash \"$TGD_DIR/scripts/coverage-check.sh\". Exit 0 = floors met, use numbers. Exit 1 = gate failed. Document exceptions in '## Coverage Exceptions'.\n" +
     "## 3. Failures & Root Causes — table: Test/Error/Root Cause/Fix Applied\n" +
     "## 4. Regression Status — checkboxes: regression-gate.sh exits 0, no regressions\n" +
     "## Sign-off — QA (pending)\n" +
@@ -158,7 +159,7 @@ const tgdPrompts: Record<string, string> = {
     "Exit 2 = no catalog yet (first release) OR no test runner detected.\n" +
     "Why machine-gated: Manually walking the catalog is the exact failure mode this gate prevents — agents skip entries, run the wrong file, or trust stale references. The script enforces 'all entries run' and 'no stale references' without exception.\n" +
     "A broken regression test means your feature broke a previously shipped critical path. Hard fail.\n" +
-    "Verification Gate: Tests pass, TEST-REPORT.md exists, regression-gate.sh exit 0.\n" +
+    "Verification Gate: Tests pass, TEST-REPORT.md exists, regression-gate.sh exit 0, coverage-check.sh exit 0 (or coverage exceptions documented).\n" +
     "After completing, suggest: /tgd-review",
 
   "tgd-review":
