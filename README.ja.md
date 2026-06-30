@@ -4,7 +4,7 @@
   <img src="https://img.shields.io/github/stars/openclawyhwang-hub/tGD?style=for-the-badge&logo=github&label=Stars&color=gold" alt="GitHub Stars">
   <img src="https://img.shields.io/github/license/openclawyhwang-hub/tGD?style=for-the-badge&color=blue" alt="License">
   <img src="https://img.shields.io/github/last-commit/openclawyhwang-hub/tGD?style=for-the-badge&logo=github&label=Last%20Commit&color=green" alt="Last Commit">
-  <img src="https://img.shields.io/badge/platforms-Claude%20Code%20%7C%20Codex%20%7C%20Gemini%20%7C%20OpenCode%20%7C%20Pi-8A2BE2?style=for-the-badge" alt="Platforms">
+  <img src="https://img.shields.io/badge/platforms-Claude%20Code%20%7C%20Codex%20%7C%20Gemini%20%7C%20OpenCode%20%7C%20Pi%20%7C%20Hermes-8A2BE2?style=for-the-badge" alt="Platforms">
   <img src="https://img.shields.io/badge/version-CalVer-2ea44f?style=for-the-badge" alt="Version">
 </p>
 
@@ -21,7 +21,7 @@ tGDは既存のワークフローを **agentic PDLC pipeline** に変換 — 同
 
 Map → Define → Plan → Develop → Verify → Review → Release
 
-Claude Code、Codex CLI、Gemini CLI、OpenCode、Pi Coding Agent に対応。
+Claude Code、Codex CLI、Gemini CLI、OpenCode、Pi Coding Agent、Hermes Agent に対応。
 
 ---
 
@@ -57,7 +57,7 @@ Claude Code、Codex CLI、Gemini CLI、OpenCode、Pi Coding Agent に対応。
 git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
 bash setup.sh
 ```
-> インストール済みCLI（Claude、Codex、Gemini、OpenCode、Pi）を自動検出。Webwrightの依存関係も自動インストール。
+> インストール済みCLI（Claude、Codex、Gemini、OpenCode、Pi、Hermes）を自動検出。Webwrightの依存関係も自動インストール。
 >
 > これにより `tgd` CLI もPATHにインストールされ、次回から簡単に使えます。
 

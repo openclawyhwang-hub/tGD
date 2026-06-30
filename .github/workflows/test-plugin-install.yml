@@ -74,6 +74,7 @@ jobs:
             "$HOME/.config/opencode/skills/tgd-rules" \
             "$HOME/.gemini/skills/tgd-rules" \
             "$HOME/.pi/agent/skills/tgd-rules" \
+            "$HOME/.hermes/skills/tgd-rules" \
           ; do
             if [ ! -L "$link" ] && [ ! -f "$link" ]; then
               echo "❌ Missing: $link"

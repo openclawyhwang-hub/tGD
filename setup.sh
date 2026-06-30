@@ -77,6 +77,12 @@ if [[ "$MODE" == "uninstall" ]]; then
     remove_tgd_items "$HOME/.pi/agent/skills" "Pi skill" "tgd"
     remove_tgd_items "$HOME/.pi/agent/extensions" "Pi extension" "tgd"
     remove_tgd_items "$HOME/.claude/rules" "Claude rule" "tgd"
+    remove_tgd_items "$HOME/.hermes/skills" "Hermes skill" "tgd"
+    # Remove Hermes plugin
+    if [[ -L "$HOME/.hermes/plugins/tgd" ]]; then
+        echo "   🗑️  Removing Hermes plugin: $HOME/.hermes/plugins/tgd"
+        rm -f "$HOME/.hermes/plugins/tgd"
+    fi
 
     # Remove Codex top-level skills/tGD symlink
     if [[ -L "$HOME/.codex/skills/tGD" ]]; then
@@ -223,7 +229,7 @@ PYEOF
     fi
 
     # 3. Remove Understand-Anything links
-    for dir in "$HOME/.claude/skills" "$HOME/.agents/skills" "$HOME/.codex/skills" "$HOME/.config/opencode/skills" "$HOME/.gemini/skills" "$HOME/.pi/agent/skills"; do
+    for dir in "$HOME/.claude/skills" "$HOME/.agents/skills" "$HOME/.codex/skills" "$HOME/.config/opencode/skills" "$HOME/.gemini/skills" "$HOME/.pi/agent/skills" "$HOME/.hermes/skills"; do
         if [[ -d "$dir" ]]; then
             for link in "$dir"/understand*; do
                 if [[ -L "$link" ]] && readlink "$link" 2>/dev/null | grep -q "understand-anything"; then
@@ -386,6 +392,7 @@ if [[ "$MODE" == "upgrade" ]]; then
     purge_old_tgd_symlinks "$HOME/.codex/skills" "Codex CLI"
     purge_old_tgd_symlinks "$HOME/.gemini/skills" "Gemini CLI"
     purge_old_tgd_symlinks "$HOME/.pi/agent/skills" "Pi"
+    purge_old_tgd_symlinks "$HOME/.hermes/skills" "Hermes"
     echo ""
 fi
 
@@ -677,6 +684,45 @@ else
     echo "   ℹ️  Pi Coding Agent not detected — skip extension install."
 fi
 
+# Hermes Agent
+if command -v hermes &> /dev/null; then
+    echo "   📂 Hermes Agent detected."
+    # Link skills (individual symlinks like Claude Code)
+    if [ -d "$TGD_DIR/skills" ]; then
+        mkdir -p "$HOME/.hermes/skills"
+        for skill in "$TGD_DIR"/skills/*/; do
+            skill_name=$(basename "$skill")
+            # Skip nested symlink traps
+            if [ "$skill_name" = "skills" ]; then
+                continue
+            fi
+            if [ -d "$HOME/.hermes/skills/$skill_name" ] && [ ! -L "$HOME/.hermes/skills/$skill_name" ]; then
+                rm -rf "$HOME/.hermes/skills/$skill_name"
+            fi
+            ln -sf "$skill" "$HOME/.hermes/skills/$skill_name" 2>/dev/null || true
+        done
+        echo "   ✅ Skills linked."
+    fi
+
+    # Install plugin (symlink the plugin directory)
+    if [ -d "$TGD_DIR/.hermes/plugins/tgd" ]; then
+        mkdir -p "$HOME/.hermes/plugins"
+        if [ -d "$HOME/.hermes/plugins/tgd" ] && [ ! -L "$HOME/.hermes/plugins/tgd" ]; then
+            rm -rf "$HOME/.hermes/plugins/tgd"
+        fi
+        ln -sf "$TGD_DIR/.hermes/plugins/tgd" "$HOME/.hermes/plugins/tgd" 2>/dev/null || true
+        echo "   ✅ Plugin linked (7 commands + session-start hook)."
+    fi
+
+    # Link AGENTS.md
+    if [ -f "$TGD_DIR/.hermes/AGENTS.md" ]; then
+        ln -sf "$TGD_DIR/.hermes/AGENTS.md" "$HOME/.hermes/AGENTS.md" 2>/dev/null || true
+        echo "   ✅ AGENTS.md linked."
+    fi
+else
+    echo "   ℹ️  Hermes Agent not detected — skip plugin install."
+fi
+
 # CodeGraph (required for /tgd-map)
 echo "📊 Checking CodeGraph..."
 if command -v codegraph &> /dev/null; then
@@ -820,6 +866,14 @@ if [ -d "$UA_SKILLS_DIR" ]; then
         fi
         ln -sf "$UA_SKILLS_DIR" "$HOME/.pi/agent/skills/understand-anything" 2>/dev/null && echo "   ✅ Pi: Understand-Anything skills linked."
     fi
+    # Hermes Agent: folder symlink in ~/.hermes/skills/
+    if [ -d "$HOME/.hermes" ] || [ -L "$HOME/.hermes" ]; then
+        mkdir -p "$HOME/.hermes/skills"
+        if [ -d "$HOME/.hermes/skills/understand-anything" ] && [ ! -L "$HOME/.hermes/skills/understand-anything" ]; then
+            rm -rf "$HOME/.hermes/skills/understand-anything"
+        fi
+        ln -sf "$UA_SKILLS_DIR" "$HOME/.hermes/skills/understand-anything" 2>/dev/null && echo "   ✅ Hermes Agent: Understand-Anything skills linked."
+    fi
 fi
 
 # 3. Install Optional Dependencies (Agent Browser)
@@ -929,6 +983,15 @@ if command -v pi &> /dev/null || [ -n "$CI" ]; then
     ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.pi/agent/skills/tgd-rules" 2>/dev/null && echo "   ✅ Pi: ~/.pi/agent/skills/tgd-rules → symlink"
 fi
 
+# Hermes Agent: ~/.hermes/skills/tgd-rules
+if command -v hermes &> /dev/null || [ -n "$CI" ]; then
+    mkdir -p "$HOME/.hermes/skills"
+    if [ -d "$HOME/.hermes/skills/tgd-rules" ] && [ ! -L "$HOME/.hermes/skills/tgd-rules" ]; then
+        rm -rf "$HOME/.hermes/skills/tgd-rules"
+    fi
+    ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.hermes/skills/tgd-rules" 2>/dev/null && echo "   ✅ Hermes Agent: ~/.hermes/skills/tgd-rules → symlink"
+fi
+
 echo ""
 echo "===================================="
 
@@ -979,6 +1042,6 @@ echo "✅ Setup Complete!"
 echo ""
 echo "tGD is now active in ALL projects."
 echo "Just start your agent in any project:"
-echo "  claude | codex | opencode | gemini | pi"
+echo "  claude | codex | opencode | gemini | pi | hermes"
 echo "Then type '/tgd-map' to initialize."
 echo ""

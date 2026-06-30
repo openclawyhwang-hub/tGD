@@ -4,7 +4,7 @@
   <img src="https://img.shields.io/github/stars/openclawyhwang-hub/tGD?style=for-the-badge&logo=github&label=Stars&color=gold" alt="GitHub Stars">
   <img src="https://img.shields.io/github/license/openclawyhwang-hub/tGD?style=for-the-badge&color=blue" alt="License">
   <img src="https://img.shields.io/github/last-commit/openclawyhwang-hub/tGD?style=for-the-badge&logo=github&label=Last%20Commit&color=green" alt="Last Commit">
-  <img src="https://img.shields.io/badge/platforms-Claude%20Code%20%7C%20Codex%20%7C%20Gemini%20%7C%20OpenCode%20%7C%20Pi-8A2BE2?style=for-the-badge" alt="Platforms">
+  <img src="https://img.shields.io/badge/platforms-Claude%20Code%20%7C%20Codex%20%7C%20Gemini%20%7C%20OpenCode%20%7C%20Pi%20%7C%20Hermes-8A2BE2?style=for-the-badge" alt="Platforms">
   <img src="https://img.shields.io/badge/version-CalVer-2ea44f?style=for-the-badge" alt="Version">
 </p>
 
@@ -21,7 +21,7 @@ tGD 把你現有的工作流程轉變成 **agentic PDLC pipeline** — 同樣的
 
 Map → Define → Plan → Develop → Verify → Review → Release
 
-支援 Claude Code、Codex CLI、Gemini CLI、OpenCode、Pi Coding Agent。
+支援 Claude Code、Codex CLI、Gemini CLI、OpenCode、Pi Coding Agent、Hermes Agent。
 
 ---
 
@@ -59,7 +59,7 @@ Map → Define → Plan → Develop → Verify → Review → Release
 git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
 bash setup.sh
 ```
-> 自動偵測已安裝的 CLI（Claude、Codex、Gemini、OpenCode、Pi）並完成設定。agent-browser 依賴自動安裝。
+> 自動偵測已安裝的 CLI（Claude、Codex、Gemini、OpenCode、Pi、Hermes）並完成設定。agent-browser 依賴自動安裝。
 >
 > 這也會將 `tgd` CLI 安裝到你的 PATH，方便後續使用。
 

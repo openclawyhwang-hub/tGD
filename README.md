@@ -4,7 +4,7 @@
   <img src="https://img.shields.io/github/stars/openclawyhwang-hub/tGD?style=for-the-badge&logo=github&label=Stars&color=gold" alt="GitHub Stars">
   <img src="https://img.shields.io/github/license/openclawyhwang-hub/tGD?style=for-the-badge&color=blue" alt="License">
   <img src="https://img.shields.io/github/last-commit/openclawyhwang-hub/tGD?style=for-the-badge&logo=github&label=Last%20Commit&color=green" alt="Last Commit">
-  <img src="https://img.shields.io/badge/platforms-Claude%20Code%20%7C%20Codex%20%7C%20Gemini%20%7C%20OpenCode%20%7C%20Pi-8A2BE2?style=for-the-badge" alt="Platforms">
+  <img src="https://img.shields.io/badge/platforms-Claude%20Code%20%7C%20Codex%20%7C%20Gemini%20%7C%20OpenCode%20%7C%20Pi%20%7C%20Hermes-8A2BE2?style=for-the-badge" alt="Platforms">
   <img src="https://img.shields.io/badge/version-CalVer-2ea44f?style=for-the-badge" alt="Version">
 </p>
 <p align="center">
@@ -20,7 +20,7 @@ tGD transforms your existing workflow into an **agentic PDLC pipeline** — same
 
 Map → Define → Plan → Develop → Verify → Review → Release
 
-Works with Claude Code, Codex CLI, Gemini CLI, OpenCode, and Pi Coding Agent.
+Works with Claude Code, Codex CLI, Gemini CLI, OpenCode, Pi Coding Agent, and Hermes Agent.
 
 ---
 
@@ -56,7 +56,7 @@ Works with Claude Code, Codex CLI, Gemini CLI, OpenCode, and Pi Coding Agent.
 git clone https://github.com/openclawyhwang-hub/tGD.git && cd tGD
 bash setup.sh
 ```
-> Auto-detects your installed CLIs (Claude, Codex, Gemini, OpenCode, Pi) and configures everything. tgd-agent-browser dependencies installed automatically.
+> Auto-detects your installed CLIs (Claude, Codex, Gemini, OpenCode, Pi, Hermes) and configures everything. tgd-agent-browser dependencies installed automatically.
 >
 > This also installs the `tgd` CLI to your PATH for future use.
 

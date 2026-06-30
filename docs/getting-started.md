@@ -101,7 +101,7 @@ Load an agent definition when you need specialized review. For example, ask your
 
 ## Using Commands
 
-The `.claude/commands/` directory contains slash commands for Claude Code:
+The `.claude/commands/` directory contains slash commands for Claude Code. The same commands are available on all platforms — Hermes Agent registers them via a Python plugin, Codex/OpenCode use `.md` prompts, Gemini uses `.toml`, and Pi uses a TypeScript extension.
 
 | Command | Skill Invoked |
 |---------|---------------|

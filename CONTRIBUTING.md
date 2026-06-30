@@ -102,6 +102,11 @@ Document these two installation methods for users:
 cp -r skills/{skill-name} ~/.claude/skills/
 ```
 
+**Hermes Agent:**
+```bash
+cp -r skills/{skill-name} ~/.hermes/skills/
+```
+
 **claude.ai:**
 Add the skill to project knowledge or paste SKILL.md contents into the conversation.
 
