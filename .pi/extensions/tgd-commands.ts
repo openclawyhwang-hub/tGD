@@ -144,14 +144,17 @@ const tgdPrompts: Record<string, string> = {
     "## 1. Test Summary — table: Suite/Passed/Failed/Skipped, exit code\n" +
     "## 2. Coverage — table: Lines/Branches/Functions\n" +
     "## 3. Failures & Root Causes — table: Test/Error/Root Cause/Fix Applied\n" +
-    "## 4. Regression Status — checkboxes: REGRESSION-CATALOG.md entries pass, no regressions\n" +
+    "## 4. Regression Status — checkboxes: regression-gate.sh exits 0, no regressions\n" +
     "## Sign-off — QA (pending)\n" +
     "Cross-Feature Regression Gate (MANDATORY if $TGD_DIR/REGRESSION-CATALOG.md exists):\n" +
-    "1. Read $TGD_DIR/REGRESSION-CATALOG.md.\n" +
-    "2. For EACH entry: locate the test file, run it, confirm it passes.\n" +
-    "3. If ANY regression test fails: STOP. Report which prior feature's regression test broke.\n" +
-    "   A broken regression test means your feature broke a previously shipped critical path. Hard fail.\n" +
-    "Verification Gate: Tests pass, TEST-REPORT.md exists, all REGRESSION-CATALOG.md entries still pass (if catalog exists).\n" +
+    "Run the machine gate — do NOT manually walk the catalog.\n" +
+    "Run from client repo root: bash \"$TGD_DIR/scripts/regression-gate.sh\"\n" +
+    "Exit 0 = all catalog entries verified, proceed.\n" +
+    "Exit 1 = test suite failed OR catalog entry test file missing. STOP. Report which prior feature's regression test broke.\n" +
+    "Exit 2 = no catalog yet (first release) OR no test runner detected.\n" +
+    "Why machine-gated: Manually walking the catalog is the exact failure mode this gate prevents — agents skip entries, run the wrong file, or trust stale references. The script enforces 'all entries run' and 'no stale references' without exception.\n" +
+    "A broken regression test means your feature broke a previously shipped critical path. Hard fail.\n" +
+    "Verification Gate: Tests pass, TEST-REPORT.md exists, regression-gate.sh exit 0.\n" +
     "After completing, suggest: /tgd-review",
 
   "tgd-review":

@@ -60,7 +60,7 @@ Exit code: `0` (PASS) / `1` (FAIL)
 |------|-------|------------|-------------|
  
 ## 4. Regression Status
-- [ ] All entries in `$TGD_DIR/REGRESSION-CATALOG.md` pass (if catalog exists)
+- [ ] `bash $TGD_DIR/scripts/regression-gate.sh` exits 0 (or catalog doesn't exist yet)
 - [ ] No cross-feature regressions introduced
  
 ## Sign-off
@@ -68,15 +68,28 @@ Exit code: `0` (PASS) / `1` (FAIL)
 ```
 
 **🛡️ Cross-Feature Regression Gate (MANDATORY if `$TGD_DIR/REGRESSION-CATALOG.md` exists)**
-1. Read `$TGD_DIR/REGRESSION-CATALOG.md`.
-2. For EACH entry: locate the test file, run it, confirm it passes.
-3. If ANY regression test fails: 🛑 STOP. Report which prior feature's regression test broke. Do NOT proceed to review.
-- **Verification Gate Failure**: A broken regression test means your feature broke a previously shipped critical path. This is a hard fail — no exceptions.
+
+Run the machine gate — do NOT manually walk the catalog:
+
+```bash
+# Run from the client repo root (where the test runner lives).
+# This script auto-detects npm/pytest/go/cargo and runs the full suite,
+# then cross-references REGRESSION-CATALOG.md for stale entries.
+bash "$TGD_DIR/scripts/regression-gate.sh"
+```
+
+- **Exit 0** = all catalog entries verified, proceed.
+- **Exit 1** = test suite failed OR a catalog entry's test file is missing. 🛑 STOP. Do NOT proceed to review. Report which prior feature's regression test broke.
+- **Exit 2** = no catalog yet (first release) OR no test runner detected. If catalog exists and you got exit 2 for "no test runner", fix the detection or wire up the runner before proceeding.
+
+**Why machine-gated**: Manually walking the catalog is exactly the failure mode this gate prevents — agents skip entries, run the wrong file, or trust stale references. The script enforces "all entries run" and "no stale references" without exception.
+
+**Verification Gate Failure**: A broken regression test means your feature broke a previously shipped critical path. This is a hard fail — no exceptions.
 
 **Verification Gate:**
 - [ ] Tests pass for the implemented feature
 - [ ] `$TGD_DIR/<feature-name>/TEST-REPORT.md` exists and is non-empty
-- [ ] All regression tests in `$TGD_DIR/REGRESSION-CATALOG.md` still pass (if catalog exists)
+- [ ] All regression tests in `$TGD_DIR/REGRESSION-CATALOG.md` still pass (`regression-gate.sh` exit 0)
 
 If verification passes, suggest the next step: `/tgd-review` to review the code quality.
 """
