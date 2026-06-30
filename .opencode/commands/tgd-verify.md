@@ -30,11 +30,22 @@ Run the `tgd-debugging-and-error-recovery` skill. This is the VERIFY phase. The 
 
 Verify that the feature works correctly before proceeding to review. Tests are proof — "seems right" is never sufficient.
 
-After completing the verification, create `$TGD_DIR/<feature-name>/TEST-REPORT.md` using this template:
- 
+Run the test-output capture first — this is the raw evidence that backs the report:
+
+```bash
+# From the client repo root. Creates the report file if needed, runs the suite,
+# appends a "## Raw Test Output" section + meta-comment with real pass/fail counts.
+bash "$TGD_DIR/scripts/capture-test-output.sh" "$TGD_DIR/<feature-name>/TEST-REPORT.md"
+```
+
+- **Exit 0** = tests passed, raw output captured. Use the real numbers from the meta-comment in the Summary table below — do NOT invent counts.
+- **Exit 1** = tests failed, raw output still captured. Fix the failures, re-run, only then proceed.
+
+After capturing raw output, fill in `$TGD_DIR/<feature-name>/TEST-REPORT.md` using this template:
+
 ```markdown
 # TEST-REPORT: [Feature Name]
- 
+
 > **Date**: YYYY-MM-DD
  
 ## 1. Test Summary
@@ -86,7 +97,8 @@ bash "$TGD_DIR/scripts/regression-gate.sh"
 
 **Verification Gate:**
 - [ ] Tests pass for the implemented feature
-- [ ] `$TGD_DIR/<feature-name>/TEST-REPORT.md` exists and is non-empty
+- [ ] `capture-test-output.sh` ran and appended raw output + meta-comment to TEST-REPORT.md
+- [ ] Summary table counts match the meta-comment (no fabrication)
 - [ ] All regression tests in `$TGD_DIR/REGRESSION-CATALOG.md` still pass (`regression-gate.sh` exit 0)
 
 If verification passes, suggest the next step: `/tgd-review` to review the code quality.

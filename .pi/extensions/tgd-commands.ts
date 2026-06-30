@@ -138,7 +138,11 @@ const tgdPrompts: Record<string, string> = {
     "4. Conditional: want visual impact? → the `understand-diff` skill\n\n" +
     "Verify that the feature works correctly before proceeding to review. Tests are proof — 'seems right' is never sufficient.\n" +
     "Verification: ALL tests pass, build succeeds.\n" +
-    "After completing, create $TGD_DIR/<feature-name>/TEST-REPORT.md using this template:\n" +
+    "Run the test-output capture first — raw evidence that backs the report:\n" +
+    "Run from client repo root: bash \"$TGD_DIR/scripts/capture-test-output.sh\" \"$TGD_DIR/<feature-name>/TEST-REPORT.md\"\n" +
+    "Exit 0 = tests passed, raw output captured. Use real numbers from the meta-comment in the Summary table — do NOT invent counts.\n" +
+    "Exit 1 = tests failed, raw output still captured. Fix and re-run.\n" +
+    "After capturing raw output, create $TGD_DIR/<feature-name>/TEST-REPORT.md using this template:\n" +
     "# TEST-REPORT: [Feature Name]\n" +
     "> Date: YYYY-MM-DD\n" +
     "## 1. Test Summary — table: Suite/Passed/Failed/Skipped, exit code\n" +
