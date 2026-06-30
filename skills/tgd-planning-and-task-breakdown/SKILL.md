@@ -94,8 +94,15 @@ Before writing any code, operate in read-only mode to gather context from all av
 - **Given** [initial context]
 - **When** [event happens]
 - **Then** [expected outcome]
-- **Regression**: [Yes `[R]` / No] — mark as `[R]` if this criterion verifies a PRD acceptance criterion or critical user path
+- **Regression**: [Yes `[R]` / No] — must mark `[R]` if criterion matches any of these MUST-marks:
+  - **MUST mark `[R]`** if criterion matches ANY of:
+    - (a) Verifies a PRD acceptance criterion (any `### AC-` in the PRD)
+    - (b) Covers a critical user path (auth, payment, data loss, security boundary)
+    - (c) Catches a previously-fixed bug from `REGRESSION-CATALOG.md`
+  - **SHOULD NOT mark `[R]`** if criterion is: cosmetic, internal refactor, dev-only tooling, single-use migration
+  - **When in doubt**: mark `[R]`. The cost of an extra catalog entry is low; the cost of missing a regression is high.
   - **If `[R]`**: Ensure a corresponding test is created during `/tgd-develop` (TDD) that verifies this criterion. This test will be added to `$TGD_DIR/REGRESSION-CATALOG.md` during `/tgd-release`.
+  - **Enforcement**: `/tgd-verify` reads `$TGD_DIR/REGRESSION-CATALOG.md` and `TASKS.md`, then cross-references: every `[R]` decision must (i) point to a test reference, (ii) that test must be in the catalog. Missing decisions default to `[R]` (fail-closed).
 
 ### 4. Files Likely Touched
 - `path/to/file.ts`
