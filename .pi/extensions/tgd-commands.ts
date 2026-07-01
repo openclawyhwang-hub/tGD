@@ -43,10 +43,17 @@ const tgdPrompts: Record<string, string> = {
     "1. rm -rf <repo-path>/.understand-anything && ln -s $TGD_DIR/.scans/<repo-name>/.understand-anything <repo-path>/.understand-anything\n" +
     "2. load and execute the `understand` skill to build a full knowledge graph\n" +
     "3. Produces $TGD_DIR/.scans/<repo-name>/.understand-anything/knowledge-graph.json\n" +
-    "4. After ALL repos are mapped, load the `understand-dashboard` skill from EACH repo to launch the interactive visualization\n" +
-    "5. If unfamiliar with any repo, load the `understand-onboard` skill for a guided tour\n\n" +
+    "4. If unfamiliar with any repo, load the `understand-onboard` skill for a guided tour\n\n" +
+    "## Step 5: Launch Dashboard (MANDATORY)\n\n" +
+    "After ALL repos are mapped (Step 4 complete), you MUST launch the interactive dashboard for EACH repo.\n\n" +
+    "You MAY use subagent delegation to execute this step.\n\n" +
+    "For each repo to map (primary + all additional repos from Step 1):\n\n" +
+    "1. cd into the repo\n" +
+    "2. Load the `understand-dashboard` skill to launch the dashboard\n" +
+    "3. Verify the dashboard is running (check for localhost URL in output)\n" +
+    "4. Report the dashboard URL to the user\n\n" +
     "⚠️ Do NOT skip the dashboard. It is a required deliverable of tgd-map for EVERY repo.\n\n" +
-    "## Step 5: Generate tGD Wiki (MANDATORY)\n\n" +
+    "## Step 6: Generate tGD Wiki (MANDATORY)\n\n" +
     "Load and execute the `tgd-wiki-generation` skill.\n\n" +
     "This compiles CodeGraph + Understand-Anything into a browsable Markdown wiki plus an optional MkDocs Material static site.\n\n" +
     "Command sequence (adjust skill path to your platform):\n" +
@@ -67,13 +74,13 @@ const tgdPrompts: Record<string, string> = {
     "- Site URL if built: http://localhost:8000 (after: cd $TGD_DIR && mkdocs serve)\n" +
     "- Wiki path: $TGD_DIR/wiki/index.md\n" +
     "- Manifest path: $TGD_DIR/wiki/manifest.json\n\n" +
-    "## Step 6: Produce CONTEXT.md\n\n" +
+    "## Step 7: Produce CONTEXT.md\n\n" +
     "CONTEXT.md must include:\n" +
     "1. Primary Repository — path, name, structure, key files, summary, code entry points\n" +
     "2. Additional Context Repositories — for each: source, resolved path, summary, key insights, relevance\n" +
     "3. Synthesis — integration points, architecture decisions, open questions\n" +
     "4. See Also — dashboard URL\n\n" +
-    "## Step 7: Verification Gate\n\n" +
+    "## Step 8: Verification Gate\n\n" +
     "- [ ] $TGD_DIR/CONTEXT.md exists and is non-empty\n" +
     "- [ ] $TGD_DIR/.scans/<repo>/.codegraph symlink exists\n" +
     "- [ ] $TGD_DIR/.scans/<repo>/.understand-anything symlink exists\n" +
