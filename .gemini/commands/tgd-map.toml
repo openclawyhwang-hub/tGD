@@ -93,42 +93,45 @@ For each repo to map (primary + all additional repos from Step 1):
 Load and execute the `tgd-wiki-generation` skill.
 
 This compiles the CodeGraph + Understand-Anything outputs into a browsable
-Markdown wiki plus an optional MkDocs Material static site.
+Docusaurus 3 documentation site with a uniform DeepWiki-style layout — same
+brand colors, Grid Cards, and React components across every project.
 
 **Command sequence:**
 
 ```bash
-python "$TGD_DIR/../tGD/skills/tgd-wiki-generation/scripts/generate-wiki.py" "$TGD_DIR"
-python "$TGD_DIR/../tGD/skills/tgd-wiki-generation/scripts/generate-mkdocs-config.py" "$TGD_DIR"
-bash   "$TGD_DIR/../tGD/skills/tgd-wiki-generation/scripts/build-site.sh" "$TGD_DIR"
+python "$TGD_REPO_ROOT/skills/tgd-wiki-generation/scripts/generate-wiki.py" "$TGD_DIR"
+python "$TGD_REPO_ROOT/skills/tgd-wiki-generation/scripts/generate-docusaurus-config.py" "$TGD_DIR"
+bash   "$TGD_REPO_ROOT/skills/tgd-wiki-generation/scripts/build-site.sh" "$TGD_DIR"
 ```
 
-Substitute the actual skill path for your platform. When calling the skill,
-resolve `<SKILL_DIR>` as `$TGD_REPO_ROOT/skills/tgd-wiki-generation/`.
+Resolve `$TGD_REPO_ROOT` to the cloned tGD repo (typically `~/tGD/`).
 
 **Outputs (all under `$TGD_DIR/`):**
 
-- `wiki/index.md` — unified human entry point
-- `wiki/overview.md`, `architecture.md`, `onboarding.md`
-- `wiki/modules/<layer>.md` — one page per architectural layer
-- `wiki/flows/<step>.md` — one page per tour step
-- `wiki/diagrams/{architecture,dependencies}.mmd` — Mermaid diagrams
-- `wiki/manifest.json` — machine-readable index (agents)
-- `mkdocs.yml` — auto-generated MkDocs Material config
-- `site/index.html` — built static site (if `mkdocs` is installed)
+- `docs/index.mdx` — unified human entry point
+- `docs/overview.mdx`, `architecture.mdx`, `onboarding.mdx`
+- `docs/modules/<layer>.mdx` — one page per architectural layer
+- `docs/flows/<step>.mdx` — one page per tour step
+- `docs/diagrams/{architecture,dependencies}.mmd` — Mermaid source files
+- `docs/manifest.json` — machine-readable index (agents)
+- `docusaurus.config.ts`, `sidebars.ts`, `package.json`, `.gitignore` — auto-generated
+- `src/components/*.tsx` and `src/css/custom.css` — copied from skill (do not edit)
+- `build/index.html` — built static site (if `npm` is installed)
 
 **Behavior:**
 
-- Wiki Markdown is always produced. If `mkdocs` is missing, `build-site.sh`
-  logs a warning and continues — Markdown remains readable.
-- Re-running overwrites `wiki/`, `mkdocs.yml`, and `site/` in place.
-- `manifest.json` is regenerated on every run; do not hand-edit.
+- MDX content is always produced. If `node`/`npm` is missing, `build-site.sh`
+  logs a warning and continues — MDX under `docs/` remains readable.
+- First run does `npm install` (~2 min). Subsequent runs reuse `node_modules/`.
+- Re-running overwrites `docs/`, `src/components/`, `src/css/`, and generated
+  config files in place. `manifest.json` and `docs/` are the source of truth.
 
 **Report to the user:**
 
-- Site URL if built: `http://localhost:8000` (after `cd $TGD_DIR && mkdocs serve`)
-- Wiki path: `$TGD_DIR/wiki/index.md`
-- Manifest path: `$TGD_DIR/wiki/manifest.json`
+- Site URL if built: `http://localhost:3000` (after `cd $TGD_DIR && npm run serve`)
+- Dev mode with hot reload: `cd $TGD_DIR && npm run start`
+- Wiki path: `$TGD_DIR/docs/index.mdx`
+- Manifest path: `$TGD_DIR/docs/manifest.json`
 
 ## Step 7: Produce CONTEXT.md
 
@@ -195,10 +198,14 @@ Synthesize data from the tools:
 - [ ] $TGD_DIR/.scans/<repo>/.understand-anything symlink exists
 - [ ] $TGD_DIR/.scans/<repo>/.understand-anything/knowledge-graph.json exists
 - [ ] **Dashboard is running** (localhost URL confirmed)
-- [ ] $TGD_DIR/wiki/index.md exists (tGD Wiki generated)
-- [ ] $TGD_DIR/wiki/manifest.json exists
-- [ ] $TGD_DIR/mkdocs.yml exists
-- [ ] If `mkdocs` is installed: $TGD_DIR/site/index.html exists
+- [ ] $TGD_DIR/docs/index.mdx exists (tGD Wiki generated)
+- [ ] $TGD_DIR/docs/manifest.json exists
+- [ ] $TGD_DIR/docusaurus.config.ts exists
+- [ ] $TGD_DIR/sidebars.ts exists
+- [ ] $TGD_DIR/package.json exists
+- [ ] $TGD_DIR/src/components/ModuleCard.tsx exists (copied from skill)
+- [ ] $TGD_DIR/src/css/custom.css exists (copied from skill)
+- [ ] If `npm` is installed: $TGD_DIR/build/index.html exists
 - [ ] If additional repos were provided, their summaries appear in CONTEXT.md
 
 If verification passes, suggest: /tgd-define to start defining what to build.

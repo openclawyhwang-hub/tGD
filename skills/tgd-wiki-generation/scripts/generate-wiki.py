@@ -1,30 +1,35 @@
 #!/usr/bin/env python3
 """
-generate-wiki.py — Compile Understand-Anything + CodeGraph outputs into a
-Markdown wiki under $TGD_DIR/wiki/.
+generate-wiki.py — Compile Understand-Anything + CodeGraph outputs into MDX
+docs under $TGD_DIR/docs/, plus copy React components + CSS from the skill's
+assets/ into $TGD_DIR/src/.
 
 Called by /tgd-map Step 6 (via the tgd-wiki-generation skill).
 
 Usage:
-    python generate-wiki.py <TGD_DIR> [--repo <slug>] [--quiet]
+    python generate-wiki.py <TGD_DIR> [--repo <slug>] [--dashboard-url URL] [--quiet]
 
 Inputs:
     $TGD_DIR/.scans/<repo>/.understand-anything/knowledge-graph.json  (required)
     $TGD_DIR/.scans/<repo>/.codegraph/                                (optional)
 
-Outputs:
-    $TGD_DIR/wiki/index.md
-    $TGD_DIR/wiki/overview.md
-    $TGD_DIR/wiki/architecture.md
-    $TGD_DIR/wiki/onboarding.md
-    $TGD_DIR/wiki/sources.md
-    $TGD_DIR/wiki/modules/*.md
-    $TGD_DIR/wiki/flows/*.md
-    $TGD_DIR/wiki/diagrams/index.md
-    $TGD_DIR/wiki/diagrams/architecture.mmd
-    $TGD_DIR/wiki/diagrams/dependencies.mmd
-    $TGD_DIR/wiki/manifest.json
-    $TGD_DIR/wiki/README.md
+Outputs (all under $TGD_DIR/):
+    docs/index.mdx
+    docs/overview.mdx
+    docs/architecture.mdx
+    docs/onboarding.mdx
+    docs/sources.mdx
+    docs/modules/*.mdx
+    docs/flows/*.mdx
+    docs/diagrams/index.mdx
+    docs/diagrams/architecture.mmd
+    docs/diagrams/dependencies.mmd
+    docs/manifest.json
+    src/components/ModuleCard.tsx  (copied from skill)
+    src/components/KPIGrid.tsx     (copied from skill)
+    src/components/LayerBadge.tsx  (copied from skill)
+    src/components/Hero.tsx        (copied from skill)
+    src/css/custom.css             (copied from skill)
 
 Fails hard on unrecoverable errors (missing $TGD_DIR, no knowledge graph).
 Degrades gracefully when optional data is missing (no tour, no layers, etc.).
@@ -34,8 +39,8 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import re
+import shutil
 import sys
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -43,17 +48,17 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 try:
-    from jinja2 import Environment, FileSystemLoader, StrictUndefined, Undefined
+    from jinja2 import Environment, FileSystemLoader, Undefined
 except ImportError:
-    sys.stderr.write(
-        "Error: Jinja2 is required. Install with: pip install jinja2\n"
-    )
+    sys.stderr.write("Error: Jinja2 is required. Install with: pip install jinja2\n")
     sys.exit(2)
 
 
-GENERATOR_VERSION = "0.1.0"
+GENERATOR_VERSION = "0.2.0"
 SCRIPT_DIR = Path(__file__).resolve().parent
-TEMPLATE_DIR = SCRIPT_DIR.parent / "templates"
+SKILL_DIR = SCRIPT_DIR.parent
+TEMPLATE_DIR = SKILL_DIR / "templates" / "mdx"
+ASSETS_DIR = SKILL_DIR / "assets"
 
 
 # ---------------------------------------------------------------------------
@@ -63,8 +68,6 @@ TEMPLATE_DIR = SCRIPT_DIR.parent / "templates"
 
 @dataclass
 class WikiModel:
-    """The full compiled model handed to templates."""
-
     project: Dict[str, Any]
     layers: List[Dict[str, Any]]
     tour: List[Dict[str, Any]]
@@ -91,10 +94,41 @@ class WikiModel:
 
 _SLUG_RX = re.compile(r"[^a-z0-9]+")
 
+# Layers frequently share these names — auto-assign accent colors.
+_LAYER_ACCENT_HINTS: List[Tuple[re.Pattern, str]] = [
+    (re.compile(r"ui|front", re.I), "ui"),
+    (re.compile(r"api|route|http|controller", re.I), "api"),
+    (re.compile(r"domain|service|business", re.I), "domain"),
+    (re.compile(r"persist|db|database|model|repo", re.I), "persistence"),
+    (re.compile(r"infra|deploy|docker|ops", re.I), "infra"),
+]
+
+_LAYER_ICON_HINTS: List[Tuple[re.Pattern, str]] = [
+    (re.compile(r"ui|front", re.I), "🎨"),
+    (re.compile(r"api|route|http", re.I), "🔌"),
+    (re.compile(r"domain|service|business", re.I), "🧠"),
+    (re.compile(r"persist|db|database|model|repo", re.I), "🗄️"),
+    (re.compile(r"infra|deploy|docker|ops", re.I), "⚙️"),
+]
+
 
 def slugify(text: str) -> str:
     slug = _SLUG_RX.sub("-", (text or "").lower()).strip("-")
     return slug or "unnamed"
+
+
+def infer_layer_accent(name: str) -> str:
+    for rx, accent in _LAYER_ACCENT_HINTS:
+        if rx.search(name or ""):
+            return accent
+    return "default"
+
+
+def infer_layer_icon(name: str) -> str:
+    for rx, icon in _LAYER_ICON_HINTS:
+        if rx.search(name or ""):
+            return icon
+    return "🧩"
 
 
 def log(msg: str, *, quiet: bool = False) -> None:
@@ -118,12 +152,41 @@ def write_json(path: Path, obj: Any) -> None:
 
 
 # ---------------------------------------------------------------------------
+# MDX escaping — the delicate bit
+# ---------------------------------------------------------------------------
+
+
+def escape_mdx_inline(text: str) -> str:
+    """Escape MDX-hostile characters in inline text destined for prose.
+
+    MDX parses `<` as a JSX tag opener and `{` as an expression opener.
+    Summary strings from UA may legitimately contain either. We escape both
+    with HTML entities so the MDX parser skips them.
+
+    We do NOT touch table cells here — see ``escape_mdx_table_cell``.
+    """
+    if not text:
+        return ""
+    return (
+        text.replace("<", "&lt;").replace(">", "&gt;")
+        # Curly braces need escaping too — MDX treats `{expr}` as JSX.
+        .replace("{", r"\{").replace("}", r"\}")
+    )
+
+
+def escape_mdx_table_cell(text: str) -> str:
+    """Escape pipe and MDX-hostile chars for a single Markdown table cell."""
+    if not text:
+        return ""
+    return escape_mdx_inline(text).replace("|", r"\|").replace("\n", " ")
+
+
+# ---------------------------------------------------------------------------
 # Scan discovery
 # ---------------------------------------------------------------------------
 
 
 def discover_repos(tgd_dir: Path) -> List[Tuple[str, Path]]:
-    """Return [(slug, scan_dir)] for every repo under $TGD_DIR/.scans/."""
     scans = tgd_dir / ".scans"
     if not scans.is_dir():
         return []
@@ -190,7 +253,6 @@ def build_modules(
     node_map: Dict[str, Dict[str, Any]],
     edges: List[Dict[str, Any]],
 ) -> List[Dict[str, Any]]:
-    """One module page per layer."""
     modules: List[Dict[str, Any]] = []
     for layer in layers:
         title = layer.get("name") or layer.get("id") or "unnamed"
@@ -217,7 +279,6 @@ def build_modules(
                         "summary": node.get("summary") or "",
                     }
                 )
-        # Cap symbol list — too many drowns the page.
         symbols_capped = sorted(symbols, key=lambda s: s["name"])[:40]
         module_ids = set(node_ids)
         dep_mermaid = _module_dependency_mermaid(module_ids, edges, node_map, title)
@@ -231,8 +292,11 @@ def build_modules(
                 "symbols": symbols_capped,
                 "dependency_mermaid": dep_mermaid,
                 "node_ids": sorted(module_ids),
+                "file_count": len(files),
+                "symbol_count": len(symbols_capped),
+                "icon": infer_layer_icon(title),
+                "accent": infer_layer_accent(title),
                 "related_modules": [],
-                "related_flows": [],
             }
         )
     return modules
@@ -244,7 +308,6 @@ def _module_dependency_mermaid(
     node_map: Dict[str, Dict[str, Any]],
     label: str,
 ) -> str:
-    """Small internal-dependency graph for a single module."""
     subset = [
         e
         for e in edges
@@ -253,11 +316,10 @@ def _module_dependency_mermaid(
     if not subset:
         return f"graph TD\n  A[No internal edges in {label}]"
     lines = ["graph TD"]
-    # Cap edges to avoid an unreadable soup.
     for e in subset[:60]:
         s = node_map.get(e["source"], {}).get("name") or e["source"]
         t = node_map.get(e["target"], {}).get("name") or e["target"]
-        etype = e.get("type") or "→"
+        etype = e.get("type") or "->"
         lines.append(f'  {_mm_id(s)}[{s}] -->|{etype}| {_mm_id(t)}[{t}]')
     if len(subset) > 60:
         lines.append(f"  %% Truncated: {len(subset) - 60} more edges omitted")
@@ -265,7 +327,6 @@ def _module_dependency_mermaid(
 
 
 def _mm_id(name: str) -> str:
-    """Turn an arbitrary name into a Mermaid-safe identifier."""
     return re.sub(r"[^A-Za-z0-9_]", "_", name)[:80] or "n"
 
 
@@ -287,7 +348,6 @@ def build_flows(
                 "description": step.get("description") or "",
                 "mermaid": _flow_sequence_mermaid(title, files),
                 "files": files,
-                "steps": [],
                 "order": step.get("order", 0),
             }
         )
@@ -298,27 +358,27 @@ def _flow_sequence_mermaid(title: str, files: List[Dict[str, Any]]) -> str:
     if not files:
         return f"sequenceDiagram\n  Note over Flow: {title} (no files captured)"
     lines = ["sequenceDiagram"]
-    prev: Optional[str] = None
+    actors: List[str] = []
+    seen_actors = set()
     for f in files:
         actor = _mm_id(Path(f["path"]).stem or "step")
-        lines.append(f"  participant {actor}")
-    for i, f in enumerate(files):
-        actor = _mm_id(Path(f["path"]).stem or "step")
-        if prev is None:
+        if actor not in seen_actors:
+            lines.append(f"  participant {actor}")
+            seen_actors.add(actor)
+        actors.append(actor)
+    for i, actor in enumerate(actors):
+        if i == 0:
             lines.append(f"  Note over {actor}: start")
         else:
-            lines.append(f"  {prev}->>+{actor}: next")
-        prev = actor
+            lines.append(f"  {actors[i-1]}->>+{actor}: next")
     return "\n".join(lines)
 
 
 def build_architecture_mermaid(
     layers: List[Dict[str, Any]], edges: List[Dict[str, Any]], node_map: Dict[str, Dict[str, Any]]
 ) -> str:
-    """Layer-level architecture diagram."""
     if not layers:
         return "graph TD\n  A[No layers detected]"
-    # Map each node → its layer.
     node_to_layer: Dict[str, str] = {}
     for l in layers:
         for nid in l.get("nodeIds") or []:
@@ -336,7 +396,7 @@ def build_architecture_mermaid(
         lid = l.get("id") or slugify(l.get("name") or "layer")
         lname = l.get("name") or lid
         lines.append(f'  {_mm_id(lid)}["{lname}"]')
-    for (s, t), weight in sorted(layer_edges.items(), key=lambda kv: -kv[1])[:30]:
+    for (s, t), weight in sorted(layer_edges.items(), key=lambda kv: (-kv[1], kv[0]))[:30]:
         lines.append(f"  {_mm_id(s)} -->|{weight}| {_mm_id(t)}")
     return "\n".join(lines)
 
@@ -344,18 +404,16 @@ def build_architecture_mermaid(
 def build_dependency_mermaid(
     edges: List[Dict[str, Any]], node_map: Dict[str, Dict[str, Any]]
 ) -> str:
-    """Simplified file-level dependency graph (top-N by edge count)."""
     counts: Dict[str, int] = {}
     for e in edges:
         counts[e.get("source", "")] = counts.get(e.get("source", ""), 0) + 1
         counts[e.get("target", "")] = counts.get(e.get("target", ""), 0) + 1
-    # Deterministic ordering: sort by (-count, id) so ties break by node id.
     top_list = [nid for nid, _ in sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))[:25]]
     top = set(top_list)
     if not top_list:
         return "graph TD\n  A[No edges]"
     lines = ["graph LR"]
-    for nid in top_list:  # iterate the ordered list, NOT the set
+    for nid in top_list:
         n = node_map.get(nid, {})
         lbl = n.get("name") or nid
         lines.append(f'  {_mm_id(nid)}["{lbl}"]')
@@ -371,24 +429,13 @@ def build_dependency_mermaid(
 
 
 def detect_entry_points(nodes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """Heuristic entry-point detection from node tags/paths."""
     hits: List[Dict[str, Any]] = []
     entry_patterns = (
-        "main.py",
-        "__main__.py",
-        "manage.py",
-        "index.ts",
-        "index.js",
-        "main.ts",
-        "main.tsx",
-        "app.py",
-        "server.ts",
-        "server.js",
-        "cmd/",
-        "src/main.rs",
-        "cli.py",
-        "wsgi.py",
-        "asgi.py",
+        "main.py", "__main__.py", "manage.py",
+        "index.ts", "index.js", "main.ts", "main.tsx",
+        "app.py", "server.ts", "server.js",
+        "cmd/", "src/main.rs", "cli.py",
+        "wsgi.py", "asgi.py",
     )
     seen = set()
     for n in nodes:
@@ -419,13 +466,18 @@ class SilentUndefined(Undefined):
 
 
 def make_env() -> Environment:
-    return Environment(
+    env = Environment(
         loader=FileSystemLoader(str(TEMPLATE_DIR)),
         undefined=SilentUndefined,
-        trim_blocks=True,
-        lstrip_blocks=True,
+        trim_blocks=False,
+        lstrip_blocks=False,
         keep_trailing_newline=True,
     )
+    # tojson comes built-in — but MUST NOT unicode-escape, because JSX attribute
+    # strings (title="...") do not interpret backslash escapes. `\u2014` would
+    # render literally instead of an em dash. Override to keep the real chars.
+    env.filters["tojson"] = lambda v: json.dumps(v, ensure_ascii=False)
+    return env
 
 
 def render(env: Environment, template_name: str, ctx: Dict[str, Any]) -> str:
@@ -437,42 +489,41 @@ def render(env: Environment, template_name: str, ctx: Dict[str, Any]) -> str:
 # ---------------------------------------------------------------------------
 
 
-def build_manifest(model: WikiModel, wiki_dir: Path) -> Dict[str, Any]:
+def build_manifest(model: WikiModel) -> Dict[str, Any]:
     pages: List[Dict[str, Any]] = []
 
-    def add_page(page_id: str, rel_path: str, page_type: str, summary: str, related=None):
-        pages.append(
-            {
-                "id": page_id,
-                "path": str(rel_path),
-                "type": page_type,
-                "summary": summary,
-                "relatedNodes": related or [],
-            }
-        )
+    def add(page_id: str, rel: str, page_type: str, summary: str, related=None):
+        pages.append({
+            "id": page_id,
+            "path": rel,
+            "type": page_type,
+            "summary": summary,
+            "relatedNodes": related or [],
+        })
 
-    add_page("index", "wiki/index.md", "index", "Unified wiki entry point")
-    add_page("overview", "wiki/overview.md", "overview", model.project.get("description") or "")
-    add_page("architecture", "wiki/architecture.md", "architecture", "Layers and dependencies")
-    add_page("onboarding", "wiki/onboarding.md", "onboarding", "Suggested reading path")
+    add("index", "docs/index.mdx", "index", "Unified wiki entry point")
+    add("overview", "docs/overview.mdx", "overview", model.project.get("description") or "")
+    add("architecture", "docs/architecture.mdx", "architecture", "Layers and dependencies")
+    add("onboarding", "docs/onboarding.mdx", "onboarding", "Suggested reading path")
     for m in model.modules:
-        add_page(
+        add(
             f"modules/{m['slug']}",
-            f"wiki/modules/{m['slug']}.md",
+            f"docs/modules/{m['slug']}.mdx",
             "module",
             m["summary"],
             related=m.get("node_ids") or [],
         )
     for f in model.flows:
-        add_page(f"flows/{f['slug']}", f"wiki/flows/{f['slug']}.md", "flow", f["description"])
-    add_page("diagrams", "wiki/diagrams/index.md", "diagrams", "Architecture and dependency diagrams")
+        add(f"flows/{f['slug']}", f"docs/flows/{f['slug']}.mdx", "flow", f["description"])
+    add("diagrams", "docs/diagrams/index.mdx", "diagrams", "Architecture and dependency diagrams")
     if model.additional_repos:
-        add_page("sources", "wiki/sources.md", "sources", "Additional context repositories")
+        add("sources", "docs/sources.mdx", "sources", "Additional context repositories")
 
     return {
         "generator": {
             "name": "tgd-wiki-generation",
             "version": GENERATOR_VERSION,
+            "engine": "docusaurus",
             "generatedAt": model.generated_at,
         },
         "project": {
@@ -484,13 +535,34 @@ def build_manifest(model: WikiModel, wiki_dir: Path) -> Dict[str, Any]:
             "frameworks": model.project.get("frameworks") or [],
         },
         "entryPoints": model.entry_points,
-        "importantFlows": [f"wiki/flows/{f['slug']}.md" for f in model.flows],
+        "importantFlows": [f"docs/flows/{f['slug']}.mdx" for f in model.flows],
         "pages": pages,
     }
 
 
 # ---------------------------------------------------------------------------
-# Main
+# Assets copy (React components + CSS)
+# ---------------------------------------------------------------------------
+
+
+def copy_assets(tgd_dir: Path, *, quiet: bool = False) -> None:
+    """Copy skill-owned assets into $TGD_DIR/src/. Overwrite unconditionally."""
+    dest_components = tgd_dir / "src" / "components"
+    dest_css = tgd_dir / "src" / "css"
+    dest_components.mkdir(parents=True, exist_ok=True)
+    dest_css.mkdir(parents=True, exist_ok=True)
+
+    for f in sorted((ASSETS_DIR / "components").glob("*.tsx")):
+        shutil.copy2(f, dest_components / f.name)
+    for f in sorted((ASSETS_DIR / "css").glob("*.css")):
+        shutil.copy2(f, dest_css / f.name)
+
+    log(f"Copied React components → {dest_components}", quiet=quiet)
+    log(f"Copied CSS → {dest_css}", quiet=quiet)
+
+
+# ---------------------------------------------------------------------------
+# Model compile
 # ---------------------------------------------------------------------------
 
 
@@ -507,17 +579,43 @@ def compile_model(
     nodes = graph.get("nodes") or []
     edges = graph.get("edges") or []
 
+    # Escape strings on the way in — one place, once.
+    escaped_project = dict(project)
+    escaped_project["description"] = escape_mdx_inline(project.get("description") or "")
+
+    escaped_layers: List[Dict[str, Any]] = []
+    for l in layers:
+        nl = dict(l)
+        nl["description"] = escape_mdx_inline(l.get("description") or "")
+        nl["accent"] = infer_layer_accent(l.get("name") or "")
+        nl["node_count"] = len(l.get("nodeIds") or [])
+        escaped_layers.append(nl)
+
+    for n in nodes:
+        n["summary"] = escape_mdx_inline(n.get("summary") or "")
+
+    for t in tour:
+        t["description"] = escape_mdx_inline(t.get("description") or "")
+
     node_map = _node_map(nodes)
     node_paths = _node_paths(nodes)
-    modules = build_modules(layers, node_map, edges)
+    modules = build_modules(escaped_layers, node_map, edges)
+    # Escape module summaries + file summaries after building
+    for m in modules:
+        m["summary"] = escape_mdx_inline(m["summary"])
+        for f in m["files"]:
+            f["summary"] = escape_mdx_inline(f["summary"])
+        for s in m["symbols"]:
+            s["summary"] = escape_mdx_inline(s["summary"])
+
     flows = build_flows(tour, node_paths)
     entry_points = detect_entry_points(nodes)
-    arch_mm = build_architecture_mermaid(layers, edges, node_map)
+    arch_mm = build_architecture_mermaid(escaped_layers, edges, node_map)
     dep_mm = build_dependency_mermaid(edges, node_map)
 
     return WikiModel(
-        project=project,
-        layers=layers,
+        project=escaped_project,
+        layers=escaped_layers,
         tour=tour,
         nodes=nodes,
         edges=edges,
@@ -537,7 +635,6 @@ def compile_model(
 
 
 def infer_primary_repo_path(scan_dir: Path, project: Dict[str, Any]) -> str:
-    # Prefer project.rootPath from the graph if present; otherwise guess.
     root = project.get("rootPath") or project.get("primaryRepoPath")
     if root:
         return root
@@ -559,22 +656,33 @@ def gather_additional_repos(
         except Exception:
             continue
         proj = g.get("project") or {}
-        extras.append(
-            {
-                "name": proj.get("name") or slug,
-                "source": slug,
-                "type": "scanned",
-                "path": infer_primary_repo_path(scan, proj),
-                "summary": proj.get("description") or "",
-                "relevance": "",
-                "dashboard_url": None,
-            }
-        )
+        extras.append({
+            "name": proj.get("name") or slug,
+            "source": slug,
+            "type": "scanned",
+            "path": infer_primary_repo_path(scan, proj),
+            "summary": escape_mdx_inline(proj.get("description") or ""),
+            "relevance": "",
+            "dashboard_url": None,
+        })
     return extras
 
 
-def render_all(model: WikiModel, wiki_dir: Path) -> None:
+# ---------------------------------------------------------------------------
+# Rendering all pages
+# ---------------------------------------------------------------------------
+
+
+def render_all(model: WikiModel, docs_dir: Path) -> None:
     env = make_env()
+
+    kpi = {
+        "files": sum(1 for n in model.nodes if n.get("type") in FILE_LEVEL_TYPES),
+        "modules": len(model.modules),
+        "flows": len(model.flows),
+        "edges": len(model.edges),
+    }
+
     ctx_common = {
         "generator_version": GENERATOR_VERSION,
         "generated_at": model.generated_at,
@@ -585,102 +693,94 @@ def render_all(model: WikiModel, wiki_dir: Path) -> None:
         "dashboard_url": model.dashboard_url,
         "modules": model.modules,
         "flows": model.flows,
+        "kpi": kpi,
     }
 
-    # Top-level pages
+    hero_title = f"{model.project.get('name') or 'Project'} — Project Wiki"
+    hero_subtitle = model.project.get("description") or "Explore the architecture, modules, and flows of this codebase."
+
+    # index.mdx
     write_text(
-        wiki_dir / "index.md",
-        render(env, "index.md.jinja", ctx_common),
-    )
-    write_text(
-        wiki_dir / "overview.md",
-        render(
-            env,
-            "overview.md.jinja",
-            {
-                **ctx_common,
-                "entry_points": model.entry_points,
-                "layers": model.layers,
-            },
-        ),
-    )
-    write_text(
-        wiki_dir / "architecture.md",
-        render(
-            env,
-            "architecture.md.jinja",
-            {
-                **ctx_common,
-                "layers": model.layers,
-                "architecture_mermaid": model.architecture_mermaid,
-                "dependency_mermaid": model.dependency_mermaid,
-                "patterns": model.patterns,
-            },
-        ),
-    )
-    write_text(
-        wiki_dir / "onboarding.md",
-        render(
-            env,
-            "onboarding.md.jinja",
-            {
-                **ctx_common,
-                "tour": model.tour,
-                "node_paths": model.node_paths,
-            },
-        ),
-    )
-    write_text(
-        wiki_dir / "sources.md",
-        render(
-            env,
-            "sources.md.jinja",
-            {**ctx_common, "repos": model.additional_repos},
-        ),
-    )
-    write_text(
-        wiki_dir / "README.md",
-        render(
-            env,
-            "readme.md.jinja",
-            {**ctx_common, "site_name": model.project.get("name") or "Project Wiki"},
-        ),
+        docs_dir / "index.mdx",
+        render(env, "index.mdx.jinja", {
+            **ctx_common,
+            "hero_title": hero_title,
+            "hero_subtitle": hero_subtitle,
+        }),
     )
 
-    # Modules
+    # overview.mdx
+    write_text(
+        docs_dir / "overview.mdx",
+        render(env, "overview.mdx.jinja", {
+            **ctx_common,
+            "entry_points": model.entry_points,
+            "layers": model.layers,
+        }),
+    )
+
+    # architecture.mdx
+    write_text(
+        docs_dir / "architecture.mdx",
+        render(env, "architecture.mdx.jinja", {
+            **ctx_common,
+            "layers": model.layers,
+            "architecture_mermaid": model.architecture_mermaid,
+            "dependency_mermaid": model.dependency_mermaid,
+            "patterns": model.patterns,
+        }),
+    )
+
+    # onboarding.mdx
+    write_text(
+        docs_dir / "onboarding.mdx",
+        render(env, "onboarding.mdx.jinja", {
+            **ctx_common,
+            "tour": model.tour,
+            "node_paths": model.node_paths,
+        }),
+    )
+
+    # sources.mdx
+    write_text(
+        docs_dir / "sources.mdx",
+        render(env, "sources.mdx.jinja", {**ctx_common, "repos": model.additional_repos}),
+    )
+
+    # modules/*.mdx
     for m in model.modules:
         write_text(
-            wiki_dir / "modules" / f"{m['slug']}.md",
-            render(env, "module.md.jinja", {**ctx_common, "module": m}),
+            docs_dir / "modules" / f"{m['slug']}.mdx",
+            render(env, "module.mdx.jinja", {**ctx_common, "module": m}),
         )
 
-    # Flows
+    # flows/*.mdx
     for f in model.flows:
         write_text(
-            wiki_dir / "flows" / f"{f['slug']}.md",
-            render(env, "flow.md.jinja", {**ctx_common, "flow": f}),
+            docs_dir / "flows" / f"{f['slug']}.mdx",
+            render(env, "flow.mdx.jinja", {**ctx_common, "flow": f}),
         )
 
-    # Diagrams
+    # diagrams
     write_text(
-        wiki_dir / "diagrams" / "index.md",
-        render(
-            env,
-            "diagrams-index.md.jinja",
-            {
-                **ctx_common,
-                "architecture_mermaid": model.architecture_mermaid,
-                "dependency_mermaid": model.dependency_mermaid,
-                "extra_diagrams": [],
-            },
-        ),
+        docs_dir / "diagrams" / "index.mdx",
+        render(env, "diagrams-index.mdx.jinja", {
+            **ctx_common,
+            "architecture_mermaid": model.architecture_mermaid,
+            "dependency_mermaid": model.dependency_mermaid,
+        }),
     )
-    write_text(wiki_dir / "diagrams" / "architecture.mmd", model.architecture_mermaid)
-    write_text(wiki_dir / "diagrams" / "dependencies.mmd", model.dependency_mermaid)
+    write_text(docs_dir / "diagrams" / "architecture.mmd", model.architecture_mermaid)
+    write_text(docs_dir / "diagrams" / "dependencies.mmd", model.dependency_mermaid)
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Generate tGD wiki from CodeGraph + UA")
+    parser = argparse.ArgumentParser(description="Generate tGD Wiki (Docusaurus MDX)")
     parser.add_argument("tgd_dir", help="$TGD_DIR path")
     parser.add_argument("--repo", help="Primary repo slug (defaults to first scan)")
     parser.add_argument("--dashboard-url", help="Optional dashboard URL to embed in the index")
@@ -704,8 +804,7 @@ def main() -> int:
     log(f"Primary repo: {primary_slug}", quiet=args.quiet)
     log(f"Scan dir: {primary_scan}", quiet=args.quiet)
 
-    graph_path = primary_scan / ".understand-anything" / "knowledge-graph.json"
-    graph = load_json(graph_path)
+    graph = load_json(primary_scan / ".understand-anything" / "knowledge-graph.json")
     log(
         f"Loaded graph: {len(graph.get('nodes') or [])} nodes, "
         f"{len(graph.get('edges') or [])} edges, "
@@ -726,16 +825,18 @@ def main() -> int:
         dashboard_url=args.dashboard_url,
     )
 
-    wiki_dir = tgd_dir / "wiki"
-    log(f"Rendering to {wiki_dir}", quiet=args.quiet)
-    render_all(model, wiki_dir)
+    docs_dir = tgd_dir / "docs"
+    log(f"Rendering MDX pages to {docs_dir}", quiet=args.quiet)
+    render_all(model, docs_dir)
 
-    manifest = build_manifest(model, wiki_dir)
-    write_json(wiki_dir / "manifest.json", manifest)
+    manifest = build_manifest(model)
+    write_json(docs_dir / "manifest.json", manifest)
+
+    copy_assets(tgd_dir, quiet=args.quiet)
 
     log("Done.", quiet=args.quiet)
-    log(f"  Index:    {wiki_dir}/index.md", quiet=args.quiet)
-    log(f"  Manifest: {wiki_dir}/manifest.json", quiet=args.quiet)
+    log(f"  Index:    {docs_dir}/index.mdx", quiet=args.quiet)
+    log(f"  Manifest: {docs_dir}/manifest.json", quiet=args.quiet)
     log(f"  Modules:  {len(model.modules)}", quiet=args.quiet)
     log(f"  Flows:    {len(model.flows)}", quiet=args.quiet)
     return 0

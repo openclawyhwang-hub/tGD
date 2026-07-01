@@ -1,0 +1,40 @@
+import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
+
+const sidebars: SidebarsConfig = {
+  wiki: [
+    {type: 'doc', id: 'index', label: 'Home'},
+    {type: 'doc', id: 'overview', label: 'Overview'},
+    {type: 'doc', id: 'architecture', label: 'Architecture'},
+    {type: 'doc', id: 'onboarding', label: 'Onboarding'},
+    {% if modules %}
+    {
+      type: 'category',
+      label: 'Modules',
+      collapsed: false,
+      items: [
+        {% for m in modules %}
+        {type: 'doc', id: 'modules/{{ m.slug }}', label: {{ m.title | tojson }}},
+        {% endfor %}
+      ],
+    },
+    {% endif %}
+    {% if flows %}
+    {
+      type: 'category',
+      label: 'Flows',
+      collapsed: false,
+      items: [
+        {% for f in flows %}
+        {type: 'doc', id: 'flows/{{ f.slug }}', label: {{ f.title | tojson }}},
+        {% endfor %}
+      ],
+    },
+    {% endif %}
+    {type: 'doc', id: 'diagrams/index', label: 'Diagrams'},
+    {% if additional_repos %}
+    {type: 'doc', id: 'sources', label: 'Sources'},
+    {% endif %}
+  ],
+};
+
+export default sidebars;

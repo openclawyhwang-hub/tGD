@@ -1,11 +1,12 @@
 #!/bin/bash
-# build-site.sh — Build the MkDocs static site for $TGD_DIR/wiki/.
+# build-site.sh — Install deps and build the Docusaurus static site.
 #
 # Usage:
-#   bash build-site.sh <TGD_DIR>
+#   bash build-site.sh <TGD_DIR> [--skip-install]
 #
-# Soft-fails when mkdocs is not installed — the wiki is still readable as raw
-# Markdown, so we just warn and exit 0.
+# Soft-fails when npm is missing or npm install fails — the MDX content is
+# still readable as raw files under $TGD_DIR/docs/. Exit 0 in that case so
+# /tgd-map Step 6 does not block on optional infrastructure.
 
 set -u
 
@@ -14,30 +15,67 @@ if [ -z "$TGD_DIR" ] || [ ! -d "$TGD_DIR" ]; then
   echo "Error: TGD_DIR argument required (got: '$TGD_DIR')" >&2
   exit 2
 fi
+shift
 
-if [ ! -f "$TGD_DIR/mkdocs.yml" ]; then
-  echo "Error: $TGD_DIR/mkdocs.yml not found. Run generate-mkdocs-config.py first." >&2
+SKIP_INSTALL=false
+for arg in "$@"; do
+  case "$arg" in
+    --skip-install) SKIP_INSTALL=true ;;
+  esac
+done
+
+if [ ! -f "$TGD_DIR/package.json" ] || [ ! -f "$TGD_DIR/docusaurus.config.ts" ]; then
+  echo "Error: $TGD_DIR is not a Docusaurus project (missing package.json or docusaurus.config.ts)." >&2
+  echo "       Run generate-docusaurus-config.py first." >&2
   exit 2
 fi
 
-if ! command -v mkdocs >/dev/null 2>&1; then
+if ! command -v node >/dev/null 2>&1; then
   cat >&2 <<EOF
-[tgd-wiki] mkdocs is not installed — skipping static site build.
-[tgd-wiki] Install to enable the browsable site:
-[tgd-wiki]   pip install mkdocs mkdocs-material mkdocs-mermaid2-plugin
-[tgd-wiki] The wiki is still readable as raw Markdown at $TGD_DIR/wiki/.
+[tgd-wiki] node is not installed — skipping Docusaurus build.
+[tgd-wiki] Install Node.js 18+ (recommend 22) to enable the browsable site.
+[tgd-wiki] The wiki is still readable as raw MDX at $TGD_DIR/docs/.
 EOF
   exit 0
 fi
 
-echo "[tgd-wiki] Building MkDocs site..." >&2
-cd "$TGD_DIR" || exit 1
-
-if ! mkdocs build --quiet; then
-  echo "[tgd-wiki] mkdocs build failed — the wiki is still readable as raw Markdown." >&2
+if ! command -v npm >/dev/null 2>&1; then
+  cat >&2 <<EOF
+[tgd-wiki] npm is not installed — skipping Docusaurus build.
+[tgd-wiki] The wiki is still readable as raw MDX at $TGD_DIR/docs/.
+EOF
   exit 0
 fi
 
-echo "[tgd-wiki] Site built: $TGD_DIR/site/index.html" >&2
-echo "[tgd-wiki] To serve: cd $TGD_DIR && mkdocs serve" >&2
+cd "$TGD_DIR" || exit 1
+
+if [ "$SKIP_INSTALL" != "true" ]; then
+  if [ ! -d node_modules ] || [ package.json -nt node_modules/.package-lock.json ] 2>/dev/null; then
+    echo "[tgd-wiki] Running npm install (first run ~2 min, then cached)..." >&2
+    if ! npm install --no-audit --no-fund --loglevel=error; then
+      cat >&2 <<EOF
+[tgd-wiki] npm install failed.
+[tgd-wiki] The wiki is still readable as raw MDX at $TGD_DIR/docs/.
+[tgd-wiki] Retry manually with: cd $TGD_DIR && npm install
+EOF
+      exit 0
+    fi
+  else
+    echo "[tgd-wiki] node_modules present — skipping npm install." >&2
+  fi
+fi
+
+echo "[tgd-wiki] Building Docusaurus site..." >&2
+if ! npx --no-install docusaurus build --out-dir build 2>&1; then
+  cat >&2 <<EOF
+[tgd-wiki] docusaurus build failed.
+[tgd-wiki] The wiki is still readable as raw MDX at $TGD_DIR/docs/.
+[tgd-wiki] Retry manually with: cd $TGD_DIR && npm run build
+EOF
+  exit 0
+fi
+
+echo "[tgd-wiki] Site built: $TGD_DIR/build/index.html" >&2
+echo "[tgd-wiki] To serve locally: cd $TGD_DIR && npm run serve" >&2
+echo "[tgd-wiki] Or dev mode:      cd $TGD_DIR && npm run start" >&2
 exit 0

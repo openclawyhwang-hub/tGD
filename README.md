@@ -231,13 +231,17 @@ flowchart LR
 
 ### 📖 DeepWiki-Style Project Documentation
 `/tgd-map` now compiles CodeGraph + Understand-Anything analysis into a
-browsable **MkDocs Material** static site at `$TGD_DIR/site/`. You get:
-- **`wiki/index.md`** — unified human entry point with modules, flows, and diagrams
-- **`wiki/manifest.json`** — machine-readable index for downstream tGD stages
+browsable **Docusaurus 3** static site at `$TGD_DIR/build/`. You get:
+- **`docs/index.mdx`** — unified human entry point with a Hero, KPI grid, Module cards, flows, and diagrams
+- **`docs/manifest.json`** — machine-readable index for downstream tGD stages
 - **Mermaid diagrams** — architecture, dependencies, and per-module graphs
-- **`mkdocs serve`** — full-text search, dark mode, navigation tabs out of the box
+- **React components** — ModuleCard, KPIGrid, LayerBadge, Hero (uniform layout across every project)
+- **`npm run start`** — dev server with hot reload; **`npm run serve`** — production preview
+- Full-text search, dark mode, mobile-friendly nav out of the box
 
 Everything lives in `$TGD_DIR`, so the wiki never pollutes your code repo.
+Layout is uniform across projects because CSS and React components ship
+inside the `tgd-wiki-generation` skill and are copied on every `/tgd-map`.
 
 ### 🏖️ Mandatory Worktree Isolation
 When you run `/tgd-develop`, tGD **automatically creates a Git Worktree** sandbox (`../project-<feature>/`) before writing any code. This ensures:

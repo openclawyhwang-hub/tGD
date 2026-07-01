@@ -1,0 +1,69 @@
+---
+id: index
+title: {{ project.name }} — Project Wiki
+slug: /
+sidebar_position: 1
+---
+
+import Hero from '@site/src/components/Hero';
+import ModuleCard from '@site/src/components/ModuleCard';
+import KPIGrid from '@site/src/components/KPIGrid';
+
+<Hero
+  title={{ hero_title | tojson }}
+  subtitle={{ hero_subtitle | tojson }}
+  primary={{ '{' }}{ label: 'Read the Overview', to: '/overview' }{{ '}' }}
+  secondary={{ '{' }}{ label: 'Explore Architecture', to: '/architecture' }{{ '}' }}
+/>
+
+<KPIGrid items={{ '{' }}[
+  { label: 'Files', value: {{ kpi.files }} },
+  { label: 'Modules', value: {{ kpi.modules }} },
+  { label: 'Flows', value: {{ kpi.flows }} },
+  { label: 'Dependencies', value: {{ kpi.edges }} },
+]{{ '}' }} />
+
+## 🧩 Modules
+
+<div className="tgd-module-grid">
+{% for m in modules %}
+  <ModuleCard
+    title={{ m.title | tojson }}
+    slug={{ m.slug | tojson }}
+    summary={{ m.summary | tojson }}
+    fileCount={ {{- m.file_count -}} }
+    symbolCount={ {{- m.symbol_count -}} }
+    icon={{ m.icon | tojson }}
+    accent={{ m.accent | tojson }}
+  />
+{% endfor %}
+</div>
+
+## 🔄 Flows
+
+{% if flows %}
+{% for f in flows %}
+- [{{ f.title }}](/flows/{{ f.slug }})
+{% endfor %}
+{% else %}
+_No named flows were captured. Add a tour to the Understand-Anything analysis to seed flows._
+{% endif %}
+
+## 🗺️ Diagrams
+
+- [Architecture diagram](/diagrams#architecture)
+- [Dependency diagram](/diagrams#dependencies)
+
+## 📚 References
+
+{% if additional_repos %}
+- [Sources](/sources) — Additional context repos scanned
+{% endif %}
+- Knowledge graph JSON — see `$TGD_DIR/.scans/{{ primary_repo_slug }}/.understand-anything/knowledge-graph.json`
+{% if dashboard_url %}
+- [Interactive Dashboard]({{ dashboard_url }})
+{% endif %}
+
+---
+
+*Generated {{ generated_at }} by tGD Wiki v{{ generator_version }}.*

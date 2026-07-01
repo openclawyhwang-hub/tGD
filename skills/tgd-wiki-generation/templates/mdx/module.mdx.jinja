@@ -1,4 +1,12 @@
-# {{ module.title }} Module
+---
+id: {{ module.slug }}
+title: {{ module.title }}
+sidebar_label: {{ module.title }}
+---
+
+import LayerBadge from '@site/src/components/LayerBadge';
+
+# <LayerBadge label={{ module.title | tojson }} accent={{ module.accent | tojson }} /> {{ module.title }} Module
 
 ## Responsibility
 
@@ -27,25 +35,17 @@ _No files were mapped into this module._
 ## Dependencies
 
 ```mermaid
-{{ module.dependency_mermaid or "graph TD\n  A[No edges captured for this module]" }}
+{{ module.dependency_mermaid }}
 ```
 
 {% if module.related_modules %}
 ## Related Modules
 
 {% for r in module.related_modules %}
-- [{{ r.title }}](../modules/{{ r.slug }}.md)
-{% endfor %}
-{% endif %}
-
-{% if module.related_flows %}
-## Related Flows
-
-{% for f in module.related_flows %}
-- [{{ f.title }}](../flows/{{ f.slug }}.md)
+- [{{ r.title }}](/modules/{{ r.slug }})
 {% endfor %}
 {% endif %}
 
 ---
 
-**Related pages:** [Architecture](../architecture.md) · [Index](../index.md)
+**Related pages:** [Architecture](/architecture) · [Home](/)
