@@ -90,9 +90,6 @@ Three coordinated entry points:
 python <SKILL_DIR>/scripts/generate-wiki.py "$TGD_DIR"
 python <SKILL_DIR>/scripts/generate-docusaurus-config.py "$TGD_DIR"
 bash   <SKILL_DIR>/scripts/build-site.sh "$TGD_DIR"
-# Build-site.sh invokes verify-wiki.py automatically. To run it
-# out-of-band (e.g. on a wiki produced by a previous run):
-python <SKILL_DIR>/scripts/verify-wiki.py "$TGD_DIR"
 ```
 
 `<SKILL_DIR>` resolves to the directory containing this SKILL.md.
@@ -200,38 +197,12 @@ After running this skill:
 - [ ] `$TGD_DIR/wiki/docs/overview.mdx`, `architecture.mdx`, `onboarding.mdx` exist
 - [ ] `$TGD_DIR/wiki/docs/modules/` contains one page per architectural layer
 - [ ] `$TGD_DIR/wiki/docs/flows/` contains one page per tour step (or is empty if no tour)
-- [ ] `$TGD_DIR/wiki/diagrams/architecture.mmd` and `dependencies.mmd` exist
+- [ ] `$TGD_DIR/wiki/docs/diagrams/architecture.mmd` and `dependencies.mmd` exist
 - [ ] `$TGD_DIR/wiki/docusaurus.config.ts` exists and is valid TS
 - [ ] `$TGD_DIR/wiki/sidebars.ts` exists
 - [ ] `$TGD_DIR/wiki/package.json` exists with pinned versions
-- [ ] `$TGD_DIR/wiki/src/components/ModuleCard.tsx` exists (copied from skill)
-- [ ] `$TGD_DIR/wiki/src/css/custom.css` exists (copied from skill)
+- [ ] `$TGD_DIR/wiki/src/components/` contains ModuleCard, KPIGrid, LayerBadge
+- [ ] `$TGD_DIR/wiki/src/css/custom.css` exists
 - [ ] If `npm` is available: `$TGD_DIR/wiki/build/index.html` exists and `npm run serve` starts without errors
 - [ ] No files were written outside `$TGD_DIR/`
 - [ ] Re-running the skill on the same input produces identical output (idempotent)
-
-### Automated: layout/brand contract
-
-The above checklist is **also enforced programmatically** by
-`scripts/verify-wiki.py`. It is the canonical guarantee that "every
-project gets the same DeepWiki-style layout":
-
-```bash
-python skills/tgd-wiki-generation/scripts/verify-wiki.py "$TGD_DIR"
-```
-
-What it checks:
-
-| Check | Catches |
-|---|---|
-| Required paths exist | Forgot to run `generate-docusaurus-config.py` |
-| npm package pinning | Drift to Docusaurus 2 / 4 / different React version |
-| 4 required React components | Someone deleted a component from skill assets |
-| 12 required brand tokens in `custom.css` | Removed `--tgd-accent-*` "because it looked redundant" |
-| Required `manifest.json` fields | Downstream `/tgd-define` would break |
-| Skill assets byte-identical to user copy | User hand-edited `wiki/src/` (overwritten on next run anyway) |
-
-`build-site.sh` runs `verify-wiki.py` automatically at the end of every
-build (soft warning, not a hard fail — a broken Docusaurus build is already
-a hard exit). The same script is wired into CI as
-`scripts/ci-verify-wiki.sh` so every push enforces the contract.
