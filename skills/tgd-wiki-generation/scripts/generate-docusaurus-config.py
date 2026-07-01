@@ -82,7 +82,7 @@ def main() -> int:
         sys.stderr.write(f"Error: TGD_DIR does not exist: {tgd_dir}\n")
         return 2
 
-    manifest_path = tgd_dir / "docs" / "manifest.json"
+    manifest_path = tgd_dir / "wiki" / "docs" / "manifest.json"
     if not manifest_path.is_file():
         sys.stderr.write(
             f"Error: manifest.json not found at {manifest_path}. "
@@ -99,9 +99,11 @@ def main() -> int:
     additional_repos = [p for p in (manifest.get("pages") or []) if p.get("id") == "sources"]
 
     env = make_env()
+    wiki_dir = tgd_dir / "wiki"
+    wiki_dir.mkdir(parents=True, exist_ok=True)
 
     # docusaurus.config.ts
-    (tgd_dir / "docusaurus.config.ts").write_text(
+    (wiki_dir / "docusaurus.config.ts").write_text(
         env.get_template("docusaurus.config.ts.jinja").render(
             site_title=f"{project_name} Wiki",
             site_tagline=project_desc,
@@ -110,10 +112,10 @@ def main() -> int:
         ),
         encoding="utf-8",
     )
-    sys.stderr.write(f"[tgd-wiki] Wrote {tgd_dir}/docusaurus.config.ts\n")
+    sys.stderr.write(f"[tgd-wiki] Wrote {wiki_dir}/docusaurus.config.ts\n")
 
     # sidebars.ts
-    (tgd_dir / "sidebars.ts").write_text(
+    (wiki_dir / "sidebars.ts").write_text(
         env.get_template("sidebars.ts.jinja").render(
             modules=modules,
             flows=flows,
@@ -121,21 +123,21 @@ def main() -> int:
         ),
         encoding="utf-8",
     )
-    sys.stderr.write(f"[tgd-wiki] Wrote {tgd_dir}/sidebars.ts\n")
+    sys.stderr.write(f"[tgd-wiki] Wrote {wiki_dir}/sidebars.ts\n")
 
     # package.json
-    (tgd_dir / "package.json").write_text(
+    (wiki_dir / "package.json").write_text(
         env.get_template("package.json.jinja").render(pkg_name=npm_safe_name(project_name)),
         encoding="utf-8",
     )
-    sys.stderr.write(f"[tgd-wiki] Wrote {tgd_dir}/package.json\n")
+    sys.stderr.write(f"[tgd-wiki] Wrote {wiki_dir}/package.json\n")
 
-    # .gitignore
-    (tgd_dir / ".gitignore").write_text(
+    # .gitignore (inside wiki/ — only ignores wiki-owned artefacts)
+    (wiki_dir / ".gitignore").write_text(
         env.get_template("gitignore.jinja").render(),
         encoding="utf-8",
     )
-    sys.stderr.write(f"[tgd-wiki] Wrote {tgd_dir}/.gitignore\n")
+    sys.stderr.write(f"[tgd-wiki] Wrote {wiki_dir}/.gitignore\n")
 
     return 0
 

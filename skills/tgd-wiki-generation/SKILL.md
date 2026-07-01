@@ -37,42 +37,51 @@ context repositories and get their own module pages.
 
 ## Outputs
 
+All wiki artefacts live under `$TGD_DIR/wiki/` — one self-contained folder.
+Deleting it fully resets the wiki without touching `CONTEXT.md`, `.scans/`,
+or any feature directories in `$TGD_DIR/`.
+
 ```
 $TGD_DIR/
-├── docs/                        ← Docusaurus content root (docs_dir equivalent)
-│   ├── index.mdx                ← Unified entry point (people)
-│   ├── overview.mdx
-│   ├── architecture.mdx
-│   ├── onboarding.mdx
-│   ├── modules/*.mdx            ← One per architectural layer
-│   ├── flows/*.mdx              ← One per tour step
-│   ├── diagrams/
-│   │   ├── index.mdx
-│   │   ├── architecture.mmd
-│   │   └── dependencies.mmd
-│   ├── sources.mdx              ← Additional context repos
-│   └── manifest.json            ← Machine-readable index (agents)
-├── src/
-│   ├── components/              ← React components (copied from skill on every run)
-│   │   ├── ModuleCard.tsx
-│   │   ├── KPIGrid.tsx
-│   │   └── LayerBadge.tsx
-│   └── css/
-│       └── custom.css           ← tGD brand theme (copied from skill on every run)
-├── static/                      ← Placeholder for future assets
-├── docusaurus.config.ts         ← Auto-generated
-├── sidebars.ts                  ← Auto-generated
-├── package.json                 ← Auto-generated with locked versions
-└── build/                       ← docusaurus build output (mkdocs's `site/` equivalent)
-    └── index.html
+├── CONTEXT.md                    ← tGD core (untouched)
+├── .scans/                       ← tGD core (untouched)
+└── wiki/                         ← ALL wiki artefacts live here
+    ├── docs/                     ← MDX content (Docusaurus docs root)
+    │   ├── index.mdx             ← unified human entry point
+    │   ├── overview.mdx
+    │   ├── architecture.mdx
+    │   ├── onboarding.mdx
+    │   ├── modules/*.mdx         ← one per architectural layer
+    │   ├── flows/*.mdx           ← one per tour step
+    │   ├── diagrams/
+    │   │   ├── index.mdx
+    │   │   ├── architecture.mmd
+    │   │   └── dependencies.mmd
+    │   ├── sources.mdx           ← additional context repos
+    │   └── manifest.json         ← machine-readable index (agents)
+    ├── src/
+    │   ├── components/           ← React components (copied from skill on every run)
+    │   │   ├── ModuleCard.tsx
+    │   │   ├── KPIGrid.tsx
+    │   │   ├── LayerBadge.tsx
+    │   │   └── Hero.tsx
+    │   └── css/
+    │       └── custom.css        ← tGD brand theme (copied from skill on every run)
+    ├── docusaurus.config.ts      ← auto-generated
+    ├── sidebars.ts               ← auto-generated
+    ├── package.json              ← auto-generated with pinned deps
+    ├── .gitignore                ← ignores node_modules/ + build/
+    ├── node_modules/             ← npm install output (gitignored)
+    └── build/                    ← docusaurus build output
+        └── index.html
 ```
 
 Three coordinated entry points:
 
 | Audience | Entry point | Purpose |
 |---|---|---|
-| Human | `$TGD_DIR/build/index.html` (or serve via `npm run start`) | Browse the wiki |
-| Agent | `$TGD_DIR/docs/manifest.json` | Machine-readable navigation |
+| Human | `$TGD_DIR/wiki/build/index.html` (or serve via `npm run start`) | Browse the wiki |
+| Agent | `$TGD_DIR/wiki/docs/manifest.json` | Machine-readable navigation |
 | tGD stages | `$TGD_DIR/CONTEXT.md` | Top-level summary (unchanged) |
 
 ## Execution
@@ -137,8 +146,8 @@ hand-edit; edits will be lost.
 
 **Guarantee:** the visual layout, brand colors, and component set are
 uniform across all projects because they are shipped inside the skill
-(`assets/css/`, `assets/components/`) and copied into `$TGD_DIR/src/` on
-every run. Do not modify `$TGD_DIR/src/` files by hand — they will be
+(`assets/css/`, `assets/components/`) and copied into `$TGD_DIR/wiki/src/` on
+every run. Do not modify `$TGD_DIR/wiki/src/` files by hand — they will be
 overwritten. If you need customization, patch the skill's `assets/`
 directory instead.
 
@@ -153,7 +162,7 @@ directory instead.
 
 - ❌ **Do not write into the code repo.** All outputs go under `$TGD_DIR/`.
 - ❌ **Do not hand-edit `manifest.json`** — regenerated on every run.
-- ❌ **Do not hand-edit `$TGD_DIR/src/`** — copied fresh from skill assets on every run.
+- ❌ **Do not hand-edit `$TGD_DIR/wiki/src/`** — copied fresh from skill assets on every run.
 - ❌ **Skipping `generate-wiki.py` fallback logic** — non-code files (config, docs) must still appear as wiki pages.
 - ❌ **Not escaping MDX special chars** — `<`, `>`, `{`, `}` in generated content break MDX parsing. `generate-wiki.py` MUST escape.
 - ❌ **Assuming `npm` is installed** — the site build must degrade gracefully.
@@ -177,23 +186,23 @@ directory instead.
 - Leaving stale files behind on regeneration
 - Skipping MDX escape (`<`, `{` in summaries → build failure)
 - Silently swallowing template rendering errors — every failure must surface
-- Modifying `$TGD_DIR/src/components/` from anywhere other than skill assets
+- Modifying `$TGD_DIR/wiki/src/components/` from anywhere other than skill assets
 
 ## Verification
 
 After running this skill:
 
-- [ ] `$TGD_DIR/docs/index.mdx` exists and is non-empty
-- [ ] `$TGD_DIR/docs/manifest.json` exists and lists every rendered page
-- [ ] `$TGD_DIR/docs/overview.mdx`, `architecture.mdx`, `onboarding.mdx` exist
-- [ ] `$TGD_DIR/docs/modules/` contains one page per architectural layer
-- [ ] `$TGD_DIR/docs/flows/` contains one page per tour step (or is empty if no tour)
-- [ ] `$TGD_DIR/docs/diagrams/architecture.mmd` and `dependencies.mmd` exist
-- [ ] `$TGD_DIR/docusaurus.config.ts` exists and is valid TS
-- [ ] `$TGD_DIR/sidebars.ts` exists
-- [ ] `$TGD_DIR/package.json` exists with pinned versions
-- [ ] `$TGD_DIR/src/components/` contains ModuleCard, KPIGrid, LayerBadge
-- [ ] `$TGD_DIR/src/css/custom.css` exists
-- [ ] If `npm` is available: `$TGD_DIR/build/index.html` exists and `npm run serve` starts without errors
+- [ ] `$TGD_DIR/wiki/docs/index.mdx` exists and is non-empty
+- [ ] `$TGD_DIR/wiki/docs/manifest.json` exists and lists every rendered page
+- [ ] `$TGD_DIR/wiki/docs/overview.mdx`, `architecture.mdx`, `onboarding.mdx` exist
+- [ ] `$TGD_DIR/wiki/docs/modules/` contains one page per architectural layer
+- [ ] `$TGD_DIR/wiki/docs/flows/` contains one page per tour step (or is empty if no tour)
+- [ ] `$TGD_DIR/wiki/docs/diagrams/architecture.mmd` and `dependencies.mmd` exist
+- [ ] `$TGD_DIR/wiki/docusaurus.config.ts` exists and is valid TS
+- [ ] `$TGD_DIR/wiki/sidebars.ts` exists
+- [ ] `$TGD_DIR/wiki/package.json` exists with pinned versions
+- [ ] `$TGD_DIR/wiki/src/components/` contains ModuleCard, KPIGrid, LayerBadge
+- [ ] `$TGD_DIR/wiki/src/css/custom.css` exists
+- [ ] If `npm` is available: `$TGD_DIR/wiki/build/index.html` exists and `npm run serve` starts without errors
 - [ ] No files were written outside `$TGD_DIR/`
 - [ ] Re-running the skill on the same input produces identical output (idempotent)

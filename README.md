@@ -231,9 +231,9 @@ flowchart LR
 
 ### 📖 DeepWiki-Style Project Documentation
 `/tgd-map` now compiles CodeGraph + Understand-Anything analysis into a
-browsable **Docusaurus 3** static site at `$TGD_DIR/build/`. You get:
-- **`docs/index.mdx`** — unified human entry point with a Hero, KPI grid, Module cards, flows, and diagrams
-- **`docs/manifest.json`** — machine-readable index for downstream tGD stages
+browsable **Docusaurus 3** static site at `$TGD_DIR/wiki/build/`. You get:
+- **`wiki/docs/index.mdx`** — unified human entry point with a Hero, KPI grid, Module cards, flows, and diagrams
+- **`wiki/docs/manifest.json`** — machine-readable index for downstream tGD stages
 - **Mermaid diagrams** — architecture, dependencies, and per-module graphs
 - **React components** — ModuleCard, KPIGrid, LayerBadge, Hero (uniform layout across every project)
 - **`npm run start`** — dev server with hot reload; **`npm run serve`** — production preview

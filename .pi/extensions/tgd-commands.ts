@@ -60,7 +60,7 @@ const tgdPrompts: Record<string, string> = {
     "  python $TGD_REPO_ROOT/skills/tgd-wiki-generation/scripts/generate-wiki.py \"$TGD_DIR\"\n" +
     "  python $TGD_REPO_ROOT/skills/tgd-wiki-generation/scripts/generate-docusaurus-config.py \"$TGD_DIR\"\n" +
     "  bash   $TGD_REPO_ROOT/skills/tgd-wiki-generation/scripts/build-site.sh \"$TGD_DIR\"\n\n" +
-    "Outputs (all under $TGD_DIR/):\n" +
+    "Outputs (all under $TGD_DIR/wiki/):\n" +
     "- docs/index.mdx — unified human entry point\n" +
     "- docs/overview.mdx, architecture.mdx, onboarding.mdx\n" +
     "- docs/modules/<layer>.mdx — one page per architectural layer\n" +
@@ -72,10 +72,10 @@ const tgdPrompts: Record<string, string> = {
     "- build/index.html — built static site (if npm is installed)\n\n" +
     "Behavior: MDX content is always produced. If node/npm is missing, build-site.sh warns and continues — MDX under docs/ remains readable. First run does npm install (~2 min). Subsequent runs reuse node_modules/. Re-running overwrites docs/, src/components/, src/css/, and generated config files in place.\n\n" +
     "Report to the user:\n" +
-    "- Site URL if built: http://localhost:3000 (after: cd $TGD_DIR && npm run serve)\n" +
-    "- Dev mode with hot reload: cd $TGD_DIR && npm run start\n" +
-    "- Wiki path: $TGD_DIR/docs/index.mdx\n" +
-    "- Manifest path: $TGD_DIR/docs/manifest.json\n\n" +
+    "- Site URL if built: http://localhost:3000 (after: cd $TGD_DIR/wiki && npm run serve)\n" +
+    "- Dev mode with hot reload: cd $TGD_DIR/wiki && npm run start\n" +
+    "- Wiki path: $TGD_DIR/wiki/docs/index.mdx\n" +
+    "- Manifest path: $TGD_DIR/wiki/docs/manifest.json\n\n" +
     "## Step 7: Produce CONTEXT.md\n\n" +
     "CONTEXT.md must include:\n" +
     "1. Primary Repository — path, name, structure, key files, summary, code entry points\n" +
@@ -88,14 +88,14 @@ const tgdPrompts: Record<string, string> = {
     "- [ ] $TGD_DIR/.scans/<repo>/.understand-anything symlink exists\n" +
     "- [ ] $TGD_DIR/.scans/<repo>/.understand-anything/knowledge-graph.json exists\n" +
     "- [ ] Dashboard is running for EVERY repo (localhost URLs confirmed)\n" +
-    "- [ ] $TGD_DIR/docs/index.mdx exists (tGD Wiki generated)\n" +
-    "- [ ] $TGD_DIR/docs/manifest.json exists\n" +
-    "- [ ] $TGD_DIR/docusaurus.config.ts exists\n" +
-    "- [ ] $TGD_DIR/sidebars.ts exists\n" +
-    "- [ ] $TGD_DIR/package.json exists\n" +
-    "- [ ] $TGD_DIR/src/components/ModuleCard.tsx exists (copied from skill)\n" +
-    "- [ ] $TGD_DIR/src/css/custom.css exists (copied from skill)\n" +
-    "- [ ] If npm is installed: $TGD_DIR/build/index.html exists\n" +
+    "- [ ] $TGD_DIR/wiki/docs/index.mdx exists (tGD Wiki generated)\n" +
+    "- [ ] $TGD_DIR/wiki/docs/manifest.json exists\n" +
+    "- [ ] $TGD_DIR/wiki/docusaurus.config.ts exists\n" +
+    "- [ ] $TGD_DIR/wiki/sidebars.ts exists\n" +
+    "- [ ] $TGD_DIR/wiki/package.json exists\n" +
+    "- [ ] $TGD_DIR/wiki/src/components/ModuleCard.tsx exists (copied from skill)\n" +
+    "- [ ] $TGD_DIR/wiki/src/css/custom.css exists (copied from skill)\n" +
+    "- [ ] If npm is installed: $TGD_DIR/wiki/build/index.html exists\n" +
     "- [ ] If additional repos were provided, their summaries appear in CONTEXT.md\n\n" +
     "After completing, suggest: /tgd-define",
 

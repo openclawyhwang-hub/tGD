@@ -118,7 +118,7 @@ bash   "$TGD_REPO_ROOT/skills/tgd-wiki-generation/scripts/build-site.sh" "$TGD_D
 
 Resolve `$TGD_REPO_ROOT` to the cloned tGD repo (typically `~/tGD/`).
 
-**Outputs (all under `$TGD_DIR/`):**
+**Outputs (all under `$TGD_DIR/wiki/`):**
 
 - `docs/index.mdx` — unified human entry point
 - `docs/overview.mdx`, `architecture.mdx`, `onboarding.mdx`
@@ -141,10 +141,10 @@ Resolve `$TGD_REPO_ROOT` to the cloned tGD repo (typically `~/tGD/`).
 
 **Report to the user:**
 
-- Site URL if built: `http://localhost:3000` (after `cd $TGD_DIR && npm run serve`)
-- Dev mode with hot reload: `cd $TGD_DIR && npm run start`
-- Wiki path: `$TGD_DIR/docs/index.mdx`
-- Manifest path: `$TGD_DIR/docs/manifest.json`
+- Site URL if built: `http://localhost:3000` (after `cd $TGD_DIR/wiki && npm run serve`)
+- Dev mode with hot reload: `cd $TGD_DIR/wiki && npm run start`
+- Wiki path: `$TGD_DIR/wiki/docs/index.mdx`
+- Manifest path: `$TGD_DIR/wiki/docs/manifest.json`
 
 ## Step 7: Produce CONTEXT.md
 
@@ -213,14 +213,14 @@ Synthesize data from the tools:
 - [ ] `$TGD_DIR/.scans/<repo>/.understand-anything` symlink exists
 - [ ] `$TGD_DIR/.scans/<repo>/.understand-anything/knowledge-graph.json` exists
 - [ ] **Dashboard is running** (localhost URL confirmed)
-- [ ] `$TGD_DIR/docs/index.mdx` exists (tGD Wiki generated)
-- [ ] `$TGD_DIR/docs/manifest.json` exists
-- [ ] `$TGD_DIR/docusaurus.config.ts` exists
-- [ ] `$TGD_DIR/sidebars.ts` exists
-- [ ] `$TGD_DIR/package.json` exists
-- [ ] `$TGD_DIR/src/components/ModuleCard.tsx` exists (copied from skill)
-- [ ] `$TGD_DIR/src/css/custom.css` exists (copied from skill)
-- [ ] If `npm` is installed: `$TGD_DIR/build/index.html` exists
+- [ ] `$TGD_DIR/wiki/docs/index.mdx` exists (tGD Wiki generated)
+- [ ] `$TGD_DIR/wiki/docs/manifest.json` exists
+- [ ] `$TGD_DIR/wiki/docusaurus.config.ts` exists
+- [ ] `$TGD_DIR/wiki/sidebars.ts` exists
+- [ ] `$TGD_DIR/wiki/package.json` exists
+- [ ] `$TGD_DIR/wiki/src/components/ModuleCard.tsx` exists (copied from skill)
+- [ ] `$TGD_DIR/wiki/src/css/custom.css` exists (copied from skill)
+- [ ] If `npm` is installed: `$TGD_DIR/wiki/build/index.html` exists
 - [ ] If additional repos were provided, their summaries appear in CONTEXT.md
 
 If verification passes, suggest the next step: `/tgd-define` to start defining what to build.

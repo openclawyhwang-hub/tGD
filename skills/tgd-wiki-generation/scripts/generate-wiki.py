@@ -501,23 +501,23 @@ def build_manifest(model: WikiModel) -> Dict[str, Any]:
             "relatedNodes": related or [],
         })
 
-    add("index", "docs/index.mdx", "index", "Unified wiki entry point")
-    add("overview", "docs/overview.mdx", "overview", model.project.get("description") or "")
-    add("architecture", "docs/architecture.mdx", "architecture", "Layers and dependencies")
-    add("onboarding", "docs/onboarding.mdx", "onboarding", "Suggested reading path")
+    add("index", "wiki/docs/index.mdx", "index", "Unified wiki entry point")
+    add("overview", "wiki/docs/overview.mdx", "overview", model.project.get("description") or "")
+    add("architecture", "wiki/docs/architecture.mdx", "architecture", "Layers and dependencies")
+    add("onboarding", "wiki/docs/onboarding.mdx", "onboarding", "Suggested reading path")
     for m in model.modules:
         add(
             f"modules/{m['slug']}",
-            f"docs/modules/{m['slug']}.mdx",
+            f"wiki/docs/modules/{m['slug']}.mdx",
             "module",
             m["summary"],
             related=m.get("node_ids") or [],
         )
     for f in model.flows:
-        add(f"flows/{f['slug']}", f"docs/flows/{f['slug']}.mdx", "flow", f["description"])
-    add("diagrams", "docs/diagrams/index.mdx", "diagrams", "Architecture and dependency diagrams")
+        add(f"flows/{f['slug']}", f"wiki/docs/flows/{f['slug']}.mdx", "flow", f["description"])
+    add("diagrams", "wiki/docs/diagrams/index.mdx", "diagrams", "Architecture and dependency diagrams")
     if model.additional_repos:
-        add("sources", "docs/sources.mdx", "sources", "Additional context repositories")
+        add("sources", "wiki/docs/sources.mdx", "sources", "Additional context repositories")
 
     return {
         "generator": {
@@ -535,7 +535,7 @@ def build_manifest(model: WikiModel) -> Dict[str, Any]:
             "frameworks": model.project.get("frameworks") or [],
         },
         "entryPoints": model.entry_points,
-        "importantFlows": [f"docs/flows/{f['slug']}.mdx" for f in model.flows],
+        "importantFlows": [f"wiki/docs/flows/{f['slug']}.mdx" for f in model.flows],
         "pages": pages,
     }
 
@@ -546,9 +546,10 @@ def build_manifest(model: WikiModel) -> Dict[str, Any]:
 
 
 def copy_assets(tgd_dir: Path, *, quiet: bool = False) -> None:
-    """Copy skill-owned assets into $TGD_DIR/src/. Overwrite unconditionally."""
-    dest_components = tgd_dir / "src" / "components"
-    dest_css = tgd_dir / "src" / "css"
+    """Copy skill-owned assets into $TGD_DIR/wiki/src/. Overwrite unconditionally."""
+    wiki_dir = tgd_dir / "wiki"
+    dest_components = wiki_dir / "src" / "components"
+    dest_css = wiki_dir / "src" / "css"
     dest_components.mkdir(parents=True, exist_ok=True)
     dest_css.mkdir(parents=True, exist_ok=True)
 
@@ -825,7 +826,7 @@ def main() -> int:
         dashboard_url=args.dashboard_url,
     )
 
-    docs_dir = tgd_dir / "docs"
+    docs_dir = tgd_dir / "wiki" / "docs"
     log(f"Rendering MDX pages to {docs_dir}", quiet=args.quiet)
     render_all(model, docs_dir)
 
