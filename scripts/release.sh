@@ -1,9 +1,18 @@
 #!/bin/bash
 # Create a GitHub release for tGD with auto-categorized CHANGELOG
-# Usage: bash scripts/release.sh [version]
+# Usage: bash scripts/release.sh [version] [--yes]
 # If version not provided, uses today's date (CalVer)
+# --yes: skip interactive confirmation prompts (non-interactive mode)
 
 set -e
+
+# Parse flags
+AUTO_YES=false
+for arg in "$@"; do
+    case "$arg" in
+        --yes|-y) AUTO_YES=true ;;
+    esac
+done
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(dirname "$SCRIPT_DIR")"
@@ -11,11 +20,12 @@ cd "$REPO_ROOT"
 
 # Check for help flag
 if [ "$1" == "--help" ] || [ "$1" == "-h" ]; then
-    echo "Usage: $0 [version]"
+    echo "Usage: $0 [version] [--yes]"
     echo ""
     echo "Create a GitHub release for tGD with categorized changelog."
     echo ""
     echo "If version is not provided, uses today's date (CalVer)."
+    echo "Add --yes (or -y) to skip confirmation prompts (non-interactive mode)."
     echo "Syncs VERSION, setup.sh, and CHANGELOG.md."
     echo ""
     echo "Commit message convention (Conventional Commits):"
@@ -48,9 +58,17 @@ if ! gh auth status &> /dev/null; then
 fi
 
 # Get version — default to today's date (CalVer)
-if [ -n "$1" ]; then
-    VERSION="$1"
-else
+# Skip the --yes / -y flag so it doesn't get treated as the version string.
+VERSION=""
+for arg in "$@"; do
+    if [ "$arg" = "--yes" ] || [ "$arg" = "-y" ]; then
+        continue
+    fi
+    if [ -z "$VERSION" ]; then
+        VERSION="$arg"
+    fi
+done
+if [ -z "$VERSION" ]; then
     VERSION="v$(date +%Y.%m.%d)"
 fi
 
@@ -78,14 +96,20 @@ echo ""
 # Check if tag already exists
 if git rev-parse "$VERSION" &> /dev/null; then
     echo "⚠️  Tag $VERSION already exists."
-    read -p "   Delete and recreate? (y/N) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
+    if [ "$AUTO_YES" = true ]; then
+        echo "   Auto-deleting and recreating (--yes)"
         git tag -d "$VERSION"
         git push origin ":refs/tags/$VERSION" 2>/dev/null || true
     else
-        echo "   Aborted."
-        exit 1
+        read -p "   Delete and recreate? (y/N) " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            git tag -d "$VERSION"
+            git push origin ":refs/tags/$VERSION" 2>/dev/null || true
+        else
+            echo "   Aborted."
+            exit 1
+        fi
     fi
 fi
 
@@ -202,11 +226,15 @@ fi
 echo "📝 Updated CHANGELOG.md"
 
 # Confirm
-read -p "Create tag and release? (Y/n) " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Nn]$ ]]; then
-    echo "Aborted."
-    exit 1
+if [ "$AUTO_YES" = true ]; then
+    echo "✅ Auto-confirming (--yes)"
+else
+    read -p "Create tag and release? (Y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Nn]$ ]]; then
+        echo "Aborted."
+        exit 1
+    fi
 fi
 
 # Create and push tag
