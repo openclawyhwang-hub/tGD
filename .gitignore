@@ -19,3 +19,9 @@ skills/skills
 !skills/*/templates/
 vendor/understand-anything/understand-anything-plugin/skills/*/
 vendor/understand-anything/understand-anything-plugin/skills/skills
+
+# Runtime artefacts (legacy codewiki experiment + local caches)
+data/
+storage/
+tmp/
+.hermes/plugins/tgd/tgd
