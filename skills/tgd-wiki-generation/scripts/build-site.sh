@@ -81,4 +81,17 @@ fi
 echo "[tgd-wiki] Site built: $WIKI_DIR/build/index.html" >&2
 echo "[tgd-wiki] To serve locally: cd $WIKI_DIR && npm run serve" >&2
 echo "[tgd-wiki] Or dev mode:      cd $WIKI_DIR && npm run start" >&2
+
+# Layout/brand contract check — runs after every build so /tgd-map
+# notices if the user (or a stale npm install) drifted the wiki away
+# from the skill's source of truth.
+SKILL_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+if [ -f "$SKILL_DIR/scripts/verify-wiki.py" ]; then
+  echo "[tgd-wiki] Verifying layout/brand contract..." >&2
+  if ! python3 "$SKILL_DIR/scripts/verify-wiki.py" "$TGD_DIR" 2>&1; then
+    echo "[tgd-wiki] ⚠️  Layout/brand contract failed — wiki still built but visuals may have drifted." >&2
+    echo "[tgd-wiki]      See verify-wiki.py output above for remediation hints." >&2
+  fi
+fi
+
 exit 0
