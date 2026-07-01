@@ -1,0 +1,46 @@
+# Architecture
+
+## Summary
+
+{{ project.name }} is organized into {{ layers | length }} architectural layer{{ "s" if layers | length != 1 else "" }}.
+
+## Layers
+
+{% if layers %}
+| Layer | Description | Files |
+|---|---|---:|
+{% for l in layers %}| **{{ l.name }}** | {{ l.description }} | {{ l.nodeIds | length }} |
+{% endfor %}
+{% else %}
+_No layers were identified. This usually means the codebase is small or Understand-Anything did not have enough signal to segment it._
+{% endif %}
+
+## Architecture Diagram
+
+```mermaid
+{{ architecture_mermaid }}
+```
+
+## Dependency Overview
+
+```mermaid
+{{ dependency_mermaid }}
+```
+
+## Key Patterns
+
+{% if patterns %}
+{% for p in patterns %}
+- **{{ p.name }}** — {{ p.description }}
+{% endfor %}
+{% else %}
+_No recurring patterns extracted. This section is populated when the graph contains enough `similar_to` or `implements` edges._
+{% endif %}
+
+## Related Pages
+
+- [Overview](overview.md)
+{% for m in modules %}
+- [{{ m.title }} module](modules/{{ m.slug }}.md)
+{% endfor %}
+- [Index](index.md)

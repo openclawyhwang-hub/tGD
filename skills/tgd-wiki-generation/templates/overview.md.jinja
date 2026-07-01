@@ -1,0 +1,44 @@
+# Overview
+
+## What is {{ project.name }}?
+
+{{ project.description or "_(no description available from README or manifest)_" }}
+
+## Stack
+
+| Category | Value |
+|---|---|
+| Languages | {{ (project.languages or ["_unknown_"]) | join(", ") }} |
+| Frameworks | {{ (project.frameworks or ["_none detected_"]) | join(", ") }} |
+| Primary repo | `{{ primary_repo_path }}` |
+{% if additional_repos %}| Additional context repos | {{ additional_repos | length }} |{% endif %}
+
+## Entry Points
+
+{% if entry_points %}
+| File | Kind |
+|---|---|
+{% for e in entry_points %}| `{{ e.path }}` | {{ e.kind or "entry" }} |
+{% endfor %}
+{% else %}
+_No entry points detected. Check that CodeGraph ran successfully._
+{% endif %}
+
+## Top-Level Layers
+
+{% if layers %}
+{% for l in layers %}
+### {{ l.name }}
+
+{{ l.description }}
+
+_{{ l.nodeIds | length }} files in this layer._
+
+{% endfor %}
+{% else %}
+_No layers identified._
+{% endif %}
+
+---
+
+**Related pages:** [Architecture](architecture.md) · [Onboarding](onboarding.md) · [Index](index.md)

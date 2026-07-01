@@ -1,0 +1,34 @@
+# Diagrams
+
+## Architecture
+
+```mermaid
+{{ architecture_mermaid }}
+```
+
+_[Download source](architecture.mmd)_
+
+## Dependencies
+
+```mermaid
+{{ dependency_mermaid }}
+```
+
+_[Download source](dependencies.mmd)_
+
+{% if extra_diagrams %}
+## Additional Diagrams
+
+{% for d in extra_diagrams %}
+### {{ d.title }}
+
+```mermaid
+{{ d.body }}
+```
+
+{% endfor %}
+{% endif %}
+
+---
+
+**Related pages:** [Architecture](../architecture.md) · [Index](../index.md)

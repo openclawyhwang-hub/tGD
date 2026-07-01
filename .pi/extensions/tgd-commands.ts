@@ -46,18 +46,43 @@ const tgdPrompts: Record<string, string> = {
     "4. After ALL repos are mapped, load the `understand-dashboard` skill from EACH repo to launch the interactive visualization\n" +
     "5. If unfamiliar with any repo, load the `understand-onboard` skill for a guided tour\n\n" +
     "⚠️ Do NOT skip the dashboard. It is a required deliverable of tgd-map for EVERY repo.\n\n" +
-    "## Step 5: Produce CONTEXT.md\n\n" +
+    "## Step 5: Generate tGD Wiki (MANDATORY)\n\n" +
+    "Load and execute the `tgd-wiki-generation` skill.\n\n" +
+    "This compiles CodeGraph + Understand-Anything into a browsable Markdown wiki plus an optional MkDocs Material static site.\n\n" +
+    "Command sequence (adjust skill path to your platform):\n" +
+    "  python <SKILL_DIR>/scripts/generate-wiki.py \"$TGD_DIR\"\n" +
+    "  python <SKILL_DIR>/scripts/generate-mkdocs-config.py \"$TGD_DIR\"\n" +
+    "  bash   <SKILL_DIR>/scripts/build-site.sh \"$TGD_DIR\"\n\n" +
+    "Outputs (all under $TGD_DIR/):\n" +
+    "- wiki/index.md — unified human entry point\n" +
+    "- wiki/overview.md, architecture.md, onboarding.md\n" +
+    "- wiki/modules/<layer>.md — one page per architectural layer\n" +
+    "- wiki/flows/<step>.md — one page per tour step\n" +
+    "- wiki/diagrams/{architecture,dependencies}.mmd — Mermaid diagrams\n" +
+    "- wiki/manifest.json — machine-readable index (agents)\n" +
+    "- mkdocs.yml — auto-generated MkDocs Material config\n" +
+    "- site/index.html — built static site (if mkdocs is installed)\n\n" +
+    "Behavior: Wiki Markdown is always produced. If mkdocs is missing, build-site.sh warns and continues — Markdown remains readable. Re-running overwrites wiki/, mkdocs.yml, and site/ in place. manifest.json is regenerated on every run; do not hand-edit.\n\n" +
+    "Report to the user:\n" +
+    "- Site URL if built: http://localhost:8000 (after: cd $TGD_DIR && mkdocs serve)\n" +
+    "- Wiki path: $TGD_DIR/wiki/index.md\n" +
+    "- Manifest path: $TGD_DIR/wiki/manifest.json\n\n" +
+    "## Step 6: Produce CONTEXT.md\n\n" +
     "CONTEXT.md must include:\n" +
     "1. Primary Repository — path, name, structure, key files, summary, code entry points\n" +
     "2. Additional Context Repositories — for each: source, resolved path, summary, key insights, relevance\n" +
     "3. Synthesis — integration points, architecture decisions, open questions\n" +
     "4. See Also — dashboard URL\n\n" +
-    "## Step 6: Verification Gate\n\n" +
+    "## Step 7: Verification Gate\n\n" +
     "- [ ] $TGD_DIR/CONTEXT.md exists and is non-empty\n" +
     "- [ ] $TGD_DIR/.scans/<repo>/.codegraph symlink exists\n" +
     "- [ ] $TGD_DIR/.scans/<repo>/.understand-anything symlink exists\n" +
     "- [ ] $TGD_DIR/.scans/<repo>/.understand-anything/knowledge-graph.json exists\n" +
     "- [ ] Dashboard is running for EVERY repo (localhost URLs confirmed)\n" +
+    "- [ ] $TGD_DIR/wiki/index.md exists (tGD Wiki generated)\n" +
+    "- [ ] $TGD_DIR/wiki/manifest.json exists\n" +
+    "- [ ] $TGD_DIR/mkdocs.yml exists\n" +
+    "- [ ] If mkdocs is installed: $TGD_DIR/site/index.html exists\n" +
     "- [ ] If additional repos were provided, their summaries appear in CONTEXT.md\n\n" +
     "After completing, suggest: /tgd-define",
 

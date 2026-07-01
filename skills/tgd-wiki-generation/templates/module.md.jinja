@@ -1,0 +1,51 @@
+# {{ module.title }} Module
+
+## Responsibility
+
+{{ module.summary }}
+
+## Key Files
+
+{% if module.files %}
+| File | Role |
+|---|---|
+{% for f in module.files %}| `{{ f.path }}` | {{ f.summary or "_(no summary)_" }} |
+{% endfor %}
+{% else %}
+_No files were mapped into this module._
+{% endif %}
+
+{% if module.symbols %}
+## Important Symbols
+
+| Symbol | File | Purpose |
+|---|---|---|
+{% for s in module.symbols %}| `{{ s.name }}` | `{{ s.file }}` | {{ s.summary or "_(no summary)_" }} |
+{% endfor %}
+{% endif %}
+
+## Dependencies
+
+```mermaid
+{{ module.dependency_mermaid or "graph TD\n  A[No edges captured for this module]" }}
+```
+
+{% if module.related_modules %}
+## Related Modules
+
+{% for r in module.related_modules %}
+- [{{ r.title }}](../modules/{{ r.slug }}.md)
+{% endfor %}
+{% endif %}
+
+{% if module.related_flows %}
+## Related Flows
+
+{% for f in module.related_flows %}
+- [{{ f.title }}](../flows/{{ f.slug }}.md)
+{% endfor %}
+{% endif %}
+
+---
+
+**Related pages:** [Architecture](../architecture.md) · [Index](../index.md)

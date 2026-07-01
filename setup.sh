@@ -737,6 +737,16 @@ else
     fi
 fi
 
+# MkDocs Material (optional — powers the tGD Wiki static site)
+echo "📖 Checking MkDocs (for tGD Wiki static site)..."
+if command -v mkdocs &> /dev/null; then
+    echo "   ✅ MkDocs already installed."
+else
+    echo "   ⚠️  MkDocs not installed — tGD Wiki will produce raw Markdown only."
+    echo "      Install to enable the browsable static site:"
+    echo "      pip install mkdocs mkdocs-material mkdocs-mermaid2-plugin"
+fi
+
 # ─── Install UA dependencies (subshell-safe: cd won't leak) ──────────────────
 install_ua_deps() {
     local ua_dir="$1"

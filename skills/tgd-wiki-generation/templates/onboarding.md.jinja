@@ -1,0 +1,28 @@
+# Onboarding — Reading Path
+
+A suggested tour through {{ project.name }} for new contributors.
+
+{% if tour %}
+{% for step in tour %}
+## Step {{ loop.index }}: {{ step.title }}
+
+{{ step.description }}
+
+**Files to read:**
+
+{% for nid in step.nodeIds %}
+- `{{ node_paths[nid] or nid }}`
+{% endfor %}
+{% if step.languageLesson %}
+
+**Language notes:** {{ step.languageLesson }}
+{% endif %}
+
+{% endfor %}
+{% else %}
+_No onboarding tour was generated. Run `/understand --full` to (re)build the knowledge graph including the tour phase._
+{% endif %}
+
+---
+
+**Related pages:** [Overview](overview.md) · [Architecture](architecture.md) · [Index](index.md)

@@ -89,7 +89,49 @@ For each repo to map (primary + all additional repos from Step 1):
 
 **⚠️ Do NOT skip this step. The dashboard is a required deliverable of tgd-map for EVERY repo.**
 
-## Step 6: Produce CONTEXT.md
+## Step 6: Generate tGD Wiki (MANDATORY)
+
+Load and execute the `tgd-wiki-generation` skill.
+
+This compiles the CodeGraph + Understand-Anything outputs into a browsable
+Markdown wiki plus an optional MkDocs Material static site.
+
+**Command sequence:**
+
+```bash
+python "$TGD_DIR/../tGD/skills/tgd-wiki-generation/scripts/generate-wiki.py" "$TGD_DIR"
+python "$TGD_DIR/../tGD/skills/tgd-wiki-generation/scripts/generate-mkdocs-config.py" "$TGD_DIR"
+bash   "$TGD_DIR/../tGD/skills/tgd-wiki-generation/scripts/build-site.sh" "$TGD_DIR"
+```
+
+Substitute the actual skill path for your platform. When calling the skill,
+resolve `<SKILL_DIR>` as `$TGD_REPO_ROOT/skills/tgd-wiki-generation/`.
+
+**Outputs (all under `$TGD_DIR/`):**
+
+- `wiki/index.md` — unified human entry point
+- `wiki/overview.md`, `architecture.md`, `onboarding.md`
+- `wiki/modules/<layer>.md` — one page per architectural layer
+- `wiki/flows/<step>.md` — one page per tour step
+- `wiki/diagrams/{architecture,dependencies}.mmd` — Mermaid diagrams
+- `wiki/manifest.json` — machine-readable index (agents)
+- `mkdocs.yml` — auto-generated MkDocs Material config
+- `site/index.html` — built static site (if `mkdocs` is installed)
+
+**Behavior:**
+
+- Wiki Markdown is always produced. If `mkdocs` is missing, `build-site.sh`
+  logs a warning and continues — Markdown remains readable.
+- Re-running overwrites `wiki/`, `mkdocs.yml`, and `site/` in place.
+- `manifest.json` is regenerated on every run; do not hand-edit.
+
+**Report to the user:**
+
+- Site URL if built: `http://localhost:8000` (after `cd $TGD_DIR && mkdocs serve`)
+- Wiki path: `$TGD_DIR/wiki/index.md`
+- Manifest path: `$TGD_DIR/wiki/manifest.json`
+
+## Step 7: Produce CONTEXT.md
 
 Outputs (all under $TGD_DIR/):
 - CONTEXT.md — project structure analysis (MUST reference CodeGraph/UA data)
@@ -147,13 +189,17 @@ Synthesize data from the tools:
   ## See Also
   - Interactive Dashboard: http://localhost:<port>
 
-## Step 7: Verification Gate
+## Step 8: Verification Gate
 
-- [ ] $TGD_DIR/CONTEXT.md exists and is non-empty
-- [ ] $TGD_DIR/.scans/<repo>/.codegraph symlink exists
-- [ ] $TGD_DIR/.scans/<repo>/.understand-anything symlink exists
-- [ ] $TGD_DIR/.scans/<repo>/.understand-anything/knowledge-graph.json exists
+- [ ] `$TGD_DIR/CONTEXT.md` exists and is non-empty
+- [ ] `$TGD_DIR/.scans/<repo>/.codegraph` symlink exists
+- [ ] `$TGD_DIR/.scans/<repo>/.understand-anything` symlink exists
+- [ ] `$TGD_DIR/.scans/<repo>/.understand-anything/knowledge-graph.json` exists
 - [ ] **Dashboard is running** (localhost URL confirmed)
+- [ ] `$TGD_DIR/wiki/index.md` exists (tGD Wiki generated)
+- [ ] `$TGD_DIR/wiki/manifest.json` exists
+- [ ] `$TGD_DIR/mkdocs.yml` exists
+- [ ] If `mkdocs` is installed: `$TGD_DIR/site/index.html` exists
 - [ ] If additional repos were provided, their summaries appear in CONTEXT.md
 
 If verification passes, suggest: /tgd-define to start defining what to build.

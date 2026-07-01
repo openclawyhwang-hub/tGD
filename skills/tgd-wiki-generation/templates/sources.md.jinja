@@ -1,0 +1,26 @@
+# Additional Context Repositories
+
+{% if repos %}
+{% for r in repos %}
+## {{ r.name }}
+
+- **Source:** {{ r.source }}
+- **Type:** {{ r.type }}
+- **Resolved to:** `{{ r.path }}`
+
+**Summary:** {{ r.summary or "_(no summary)_" }}
+
+**Relevance:** {{ r.relevance or "_(not specified)_" }}
+
+{% if r.dashboard_url %}
+- [Dashboard]({{ r.dashboard_url }})
+{% endif %}
+
+{% endfor %}
+{% else %}
+_No additional context repositories were provided during /tgd-map Step 1._
+{% endif %}
+
+---
+
+**Related pages:** [Index](index.md) · [Architecture](architecture.md)

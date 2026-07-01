@@ -1,0 +1,30 @@
+# {{ flow.title }}
+
+{{ flow.description }}
+
+## Flow Diagram
+
+```mermaid
+{{ flow.mermaid or "sequenceDiagram\n  Note over Flow: No diagram data captured." }}
+```
+
+{% if flow.steps %}
+## Steps
+
+| # | Actor / File | Action |
+|---:|---|---|
+{% for s in flow.steps %}| {{ loop.index }} | `{{ s.file or s.actor }}` | {{ s.action }} |
+{% endfor %}
+{% endif %}
+
+{% if flow.files %}
+## Files Involved
+
+{% for f in flow.files %}
+- `{{ f.path }}` — {{ f.summary or "_(no summary)_" }}
+{% endfor %}
+{% endif %}
+
+---
+
+**Related pages:** [Architecture](../architecture.md) · [Index](../index.md)
