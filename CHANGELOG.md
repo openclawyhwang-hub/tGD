@@ -4,6 +4,19 @@ All notable changes to tGD will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow [CalVer](https://calver.org/) (YYYY.MM.DD).
 
+## v--yes
+
+### ✨ Features
+- migrate to Docusaurus 3 for uniform DeepWiki-style output (`573da88`)
+- auto-install MkDocs for tGD Wiki site (`960d4a7`)
+- generate DeepWiki-style docs from CodeGraph + UA (`9e3dc1a`)
+### 🐛 Bug Fixes
+- promote Dashboard to a first-class Step 5 (`64062eb`)
+- unignore .hermes/plugins/tgd/ — was blocked by tGD/ gitignore rule (`f00f739`)
+### ♻️ Refactoring
+- nest all wiki artefacts under $TGD_DIR/wiki/ (`39ee3b4`)
+
+
 ## v2026.07.01
 
 ### ✨ Features
