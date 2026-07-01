@@ -742,9 +742,31 @@ echo "📖 Checking MkDocs (for tGD Wiki static site)..."
 if command -v mkdocs &> /dev/null; then
     echo "   ✅ MkDocs already installed."
 else
-    echo "   ⚠️  MkDocs not installed — tGD Wiki will produce raw Markdown only."
-    echo "      Install to enable the browsable static site:"
-    echo "      pip install mkdocs mkdocs-material mkdocs-mermaid2-plugin"
+    if command -v pip3 &> /dev/null || command -v pip &> /dev/null; then
+        PIP_CMD="$(command -v pip3 || command -v pip)"
+        echo "   📥 Installing MkDocs + Material + Mermaid plugin via $PIP_CMD..."
+        # --user for POSIX-friendly install without sudo; PyYAML + Jinja2 come as deps.
+        if "$PIP_CMD" install --user --quiet mkdocs mkdocs-material mkdocs-mermaid2-plugin 2>/dev/null; then
+            echo "   ✅ MkDocs installed."
+            # macOS/Linux user-scheme scripts land in a directory that isn't always on PATH.
+            USER_BIN=""
+            if command -v python3 &> /dev/null; then
+                USER_BIN="$(python3 -c 'import site; print(site.USER_BASE)' 2>/dev/null)/bin"
+            fi
+            if [ -n "$USER_BIN" ] && ! echo ":$PATH:" | grep -q ":$USER_BIN:"; then
+                echo "   ℹ️  Add to your shell rc to make 'mkdocs' visible in new shells:"
+                echo "        export PATH=\"$USER_BIN:\$PATH\""
+            fi
+        else
+            echo "   ⚠️  Auto-install failed. Install manually:"
+            echo "        pip install mkdocs mkdocs-material mkdocs-mermaid2-plugin"
+            echo "      tGD Wiki will still produce raw Markdown without mkdocs."
+        fi
+    else
+        echo "   ⚠️  pip not found. Install manually:"
+        echo "        pip install mkdocs mkdocs-material mkdocs-mermaid2-plugin"
+        echo "      tGD Wiki will still produce raw Markdown without mkdocs."
+    fi
 fi
 
 # ─── Install UA dependencies (subshell-safe: cd won't leak) ──────────────────
