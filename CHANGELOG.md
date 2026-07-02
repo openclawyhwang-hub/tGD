@@ -4,6 +4,14 @@ All notable changes to tGD will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow [CalVer](https://calver.org/) (YYYY.MM.DD).
 
+## v2026.07.02.2
+
+### ✨ Features
+- add offline local search (`29907c9`)
+### 📝 Documentation
+- update CHANGELOG.md for v2026.07.02.1 (`d8617fa`)
+
+
 ## v2026.07.02.1
 
 ### ✨ Features
