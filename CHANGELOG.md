@@ -4,6 +4,20 @@ All notable changes to tGD will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow [CalVer](https://calver.org/) (YYYY.MM.DD).
 
+## v2026.07.02.1
+
+### ✨ Features
+- add offline symbol-to-source jump links (`31ca617`)
+- full multi-repo wiki with per-repo trees + navbar dropdown (`a852eba`)
+### 📝 Documentation
+- update CHANGELOG.md for v2026.07.02 (`7eaac04`)
+### 🔧 Chores
+- ignore legacy codewiki runtime dirs (data/ storage/ tmp/) (`8a370d5`)
+### 📦 Other Changes
+- Revert "feat(tgd-wiki): enforce layout/brand contract with verify-wiki.py" (`169bc2e`)
+- Revert "docs: update CHANGELOG.md for v2026.07.02" (`e1ca5ee`)
+
+
 ## v2026.07.02
 
 ### ✨ Features
