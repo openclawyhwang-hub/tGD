@@ -42,10 +42,10 @@ _No files were mapped into this module._
 ## Related Modules
 
 {% for r in module.related_modules %}
-- [{{ r.title }}](/modules/{{ r.slug }})
+- [{{ r.title }}]({{ base_path }}/modules/{{ r.slug }})
 {% endfor %}
 {% endif %}
 
 ---
 
-**Related pages:** [Architecture](/architecture) · [Home](/)
+**Related pages:** [Architecture]({{ base_path }}/architecture) · [{{ project.name }} Home]({{ base_path }}) · [Wiki Home](/)

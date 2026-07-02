@@ -1,38 +1,41 @@
 #!/usr/bin/env python3
 """
-generate-wiki.py — Compile Understand-Anything + CodeGraph outputs into MDX
-docs under $TGD_DIR/docs/, plus copy React components + CSS from the skill's
-assets/ into $TGD_DIR/src/.
+generate-wiki.py — Compile Understand-Anything + CodeGraph outputs into a
+multi-repo Docusaurus MDX wiki under $TGD_DIR/wiki/.
 
 Called by /tgd-map Step 6 (via the tgd-wiki-generation skill).
 
+Every repo scanned in $TGD_DIR/.scans/<slug>/ gets its OWN full wiki
+tree under $TGD_DIR/wiki/docs/repos/<slug>/, with overview, architecture,
+onboarding, modules/, flows/, and diagrams/. The top-level docs/ hosts a
+unified home page (repo selector grid) plus a shared sources page.
+
 Usage:
-    python generate-wiki.py <TGD_DIR> [--repo <slug>] [--dashboard-url URL] [--quiet]
+    python generate-wiki.py <TGD_DIR> [--primary <slug>] [--dashboard-url URL] [--quiet]
 
 Inputs:
-    $TGD_DIR/.scans/<repo>/.understand-anything/knowledge-graph.json  (required)
-    $TGD_DIR/.scans/<repo>/.codegraph/                                (optional)
+    $TGD_DIR/.scans/<slug>/.understand-anything/knowledge-graph.json  (required per repo)
+    $TGD_DIR/.scans/<slug>/.codegraph/                                (optional)
 
-Outputs (all under $TGD_DIR/):
-    docs/index.mdx
-    docs/overview.mdx
-    docs/architecture.mdx
-    docs/onboarding.mdx
-    docs/sources.mdx
-    docs/modules/*.mdx
-    docs/flows/*.mdx
-    docs/diagrams/index.mdx
-    docs/diagrams/architecture.mmd
-    docs/diagrams/dependencies.mmd
-    docs/manifest.json
-    src/components/ModuleCard.tsx  (copied from skill)
-    src/components/KPIGrid.tsx     (copied from skill)
-    src/components/LayerBadge.tsx  (copied from skill)
-    src/components/Hero.tsx        (copied from skill)
-    src/css/custom.css             (copied from skill)
+Outputs (all under $TGD_DIR/wiki/):
+    docs/index.mdx                          ← home: repo selector grid
+    docs/sources.mdx                        ← shared: source list
+    docs/manifest.json                      ← top-level manifest (all repos)
+    docs/repos/<slug>/index.mdx             ← per-repo home
+    docs/repos/<slug>/overview.mdx
+    docs/repos/<slug>/architecture.mdx
+    docs/repos/<slug>/onboarding.mdx
+    docs/repos/<slug>/modules/*.mdx
+    docs/repos/<slug>/flows/*.mdx
+    docs/repos/<slug>/diagrams/index.mdx
+    docs/repos/<slug>/diagrams/architecture.mmd
+    docs/repos/<slug>/diagrams/dependencies.mmd
+    docs/repos/<slug>/manifest.json         ← per-repo manifest
+    src/components/*.tsx                    ← copied from skill assets
+    src/css/custom.css                      ← copied from skill assets
 
 Fails hard on unrecoverable errors (missing $TGD_DIR, no knowledge graph).
-Degrades gracefully when optional data is missing (no tour, no layers, etc.).
+Degrades gracefully when optional per-repo data is missing.
 """
 
 from __future__ import annotations
@@ -54,7 +57,7 @@ except ImportError:
     sys.exit(2)
 
 
-GENERATOR_VERSION = "0.2.0"
+GENERATOR_VERSION = "0.3.0"
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
 TEMPLATE_DIR = SKILL_DIR / "templates" / "mdx"
@@ -76,9 +79,8 @@ class WikiModel:
     modules: List[Dict[str, Any]] = field(default_factory=list)
     flows: List[Dict[str, Any]] = field(default_factory=list)
     entry_points: List[Dict[str, Any]] = field(default_factory=list)
-    additional_repos: List[Dict[str, Any]] = field(default_factory=list)
-    primary_repo_slug: str = ""
-    primary_repo_path: str = ""
+    repo_slug: str = ""
+    repo_path: str = ""
     dashboard_url: Optional[str] = None
     architecture_mermaid: str = ""
     dependency_mermaid: str = ""
@@ -94,7 +96,6 @@ class WikiModel:
 
 _SLUG_RX = re.compile(r"[^a-z0-9]+")
 
-# Layers frequently share these names — auto-assign accent colors.
 _LAYER_ACCENT_HINTS: List[Tuple[re.Pattern, str]] = [
     (re.compile(r"ui|front", re.I), "ui"),
     (re.compile(r"api|route|http|controller", re.I), "api"),
@@ -152,30 +153,20 @@ def write_json(path: Path, obj: Any) -> None:
 
 
 # ---------------------------------------------------------------------------
-# MDX escaping — the delicate bit
+# MDX escaping
 # ---------------------------------------------------------------------------
 
 
 def escape_mdx_inline(text: str) -> str:
-    """Escape MDX-hostile characters in inline text destined for prose.
-
-    MDX parses `<` as a JSX tag opener and `{` as an expression opener.
-    Summary strings from UA may legitimately contain either. We escape both
-    with HTML entities so the MDX parser skips them.
-
-    We do NOT touch table cells here — see ``escape_mdx_table_cell``.
-    """
     if not text:
         return ""
     return (
         text.replace("<", "&lt;").replace(">", "&gt;")
-        # Curly braces need escaping too — MDX treats `{expr}` as JSX.
         .replace("{", r"\{").replace("}", r"\}")
     )
 
 
 def escape_mdx_table_cell(text: str) -> str:
-    """Escape pipe and MDX-hostile chars for a single Markdown table cell."""
     if not text:
         return ""
     return escape_mdx_inline(text).replace("|", r"\|").replace("\n", " ")
@@ -197,23 +188,23 @@ def discover_repos(tgd_dir: Path) -> List[Tuple[str, Path]]:
     return repos
 
 
-def pick_primary_repo(
+def pick_primary_slug(
     repos: List[Tuple[str, Path]], requested: Optional[str]
-) -> Tuple[str, Path]:
+) -> str:
     if not repos:
         raise SystemExit(
             "No repos with a knowledge-graph.json found under $TGD_DIR/.scans/. "
             "Run /tgd-map Step 4 first."
         )
     if requested:
-        for slug, path in repos:
+        for slug, _ in repos:
             if slug == requested:
-                return slug, path
+                return slug
         raise SystemExit(
-            f"Requested repo '{requested}' not found. Available: "
+            f"Requested primary repo '{requested}' not found. Available: "
             + ", ".join(s for s, _ in repos)
         )
-    return repos[0]
+    return repos[0][0]
 
 
 # ---------------------------------------------------------------------------
@@ -222,15 +213,8 @@ def pick_primary_repo(
 
 
 FILE_LEVEL_TYPES = {
-    "file",
-    "config",
-    "document",
-    "service",
-    "pipeline",
-    "table",
-    "schema",
-    "resource",
-    "endpoint",
+    "file", "config", "document", "service", "pipeline",
+    "table", "schema", "resource", "endpoint",
 }
 
 
@@ -272,33 +256,29 @@ def build_modules(
             if ntype in FILE_LEVEL_TYPES:
                 files.append(entry)
             elif ntype in {"function", "class"}:
-                symbols.append(
-                    {
-                        "name": node.get("name") or nid,
-                        "file": node.get("filePath") or "",
-                        "summary": node.get("summary") or "",
-                    }
-                )
+                symbols.append({
+                    "name": node.get("name") or nid,
+                    "file": node.get("filePath") or "",
+                    "summary": node.get("summary") or "",
+                })
         symbols_capped = sorted(symbols, key=lambda s: s["name"])[:40]
         module_ids = set(node_ids)
         dep_mermaid = _module_dependency_mermaid(module_ids, edges, node_map, title)
-        modules.append(
-            {
-                "id": layer.get("id") or f"layer:{slug}",
-                "title": title,
-                "slug": slug,
-                "summary": layer.get("description") or "",
-                "files": files,
-                "symbols": symbols_capped,
-                "dependency_mermaid": dep_mermaid,
-                "node_ids": sorted(module_ids),
-                "file_count": len(files),
-                "symbol_count": len(symbols_capped),
-                "icon": infer_layer_icon(title),
-                "accent": infer_layer_accent(title),
-                "related_modules": [],
-            }
-        )
+        modules.append({
+            "id": layer.get("id") or f"layer:{slug}",
+            "title": title,
+            "slug": slug,
+            "summary": layer.get("description") or "",
+            "files": files,
+            "symbols": symbols_capped,
+            "dependency_mermaid": dep_mermaid,
+            "node_ids": sorted(module_ids),
+            "file_count": len(files),
+            "symbol_count": len(symbols_capped),
+            "icon": infer_layer_icon(title),
+            "accent": infer_layer_accent(title),
+            "related_modules": [],
+        })
     return modules
 
 
@@ -309,8 +289,7 @@ def _module_dependency_mermaid(
     label: str,
 ) -> str:
     subset = [
-        e
-        for e in edges
+        e for e in edges
         if e.get("source") in module_ids and e.get("target") in module_ids
     ]
     if not subset:
@@ -341,16 +320,14 @@ def build_flows(
             {"path": node_paths.get(nid, nid), "summary": ""}
             for nid in step.get("nodeIds") or []
         ]
-        flows.append(
-            {
-                "title": title,
-                "slug": slug,
-                "description": step.get("description") or "",
-                "mermaid": _flow_sequence_mermaid(title, files),
-                "files": files,
-                "order": step.get("order", 0),
-            }
-        )
+        flows.append({
+            "title": title,
+            "slug": slug,
+            "description": step.get("description") or "",
+            "mermaid": _flow_sequence_mermaid(title, files),
+            "files": files,
+            "order": step.get("order", 0),
+        })
     return flows
 
 
@@ -456,8 +433,6 @@ def detect_entry_points(nodes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
 
 
 class SilentUndefined(Undefined):
-    """Missing template var → empty string, no exception."""
-
     def _fail_with_undefined_error(self, *args, **kwargs):  # type: ignore[override]
         return ""
 
@@ -473,9 +448,6 @@ def make_env() -> Environment:
         lstrip_blocks=False,
         keep_trailing_newline=True,
     )
-    # tojson comes built-in — but MUST NOT unicode-escape, because JSX attribute
-    # strings (title="...") do not interpret backslash escapes. `\u2014` would
-    # render literally instead of an em dash. Override to keep the real chars.
     env.filters["tojson"] = lambda v: json.dumps(v, ensure_ascii=False)
     return env
 
@@ -485,11 +457,11 @@ def render(env: Environment, template_name: str, ctx: Dict[str, Any]) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Manifest
+# Per-repo manifest
 # ---------------------------------------------------------------------------
 
 
-def build_manifest(model: WikiModel) -> Dict[str, Any]:
+def build_repo_manifest(model: WikiModel, base_path: str) -> Dict[str, Any]:
     pages: List[Dict[str, Any]] = []
 
     def add(page_id: str, rel: str, page_type: str, summary: str, related=None):
@@ -501,23 +473,28 @@ def build_manifest(model: WikiModel) -> Dict[str, Any]:
             "relatedNodes": related or [],
         })
 
-    add("index", "wiki/docs/index.mdx", "index", "Unified wiki entry point")
-    add("overview", "wiki/docs/overview.mdx", "overview", model.project.get("description") or "")
-    add("architecture", "wiki/docs/architecture.mdx", "architecture", "Layers and dependencies")
-    add("onboarding", "wiki/docs/onboarding.mdx", "onboarding", "Suggested reading path")
+    slug = model.repo_slug
+    add("index", f"wiki/docs/repos/{slug}/index.mdx", "index", f"{slug} wiki home")
+    add("overview", f"wiki/docs/repos/{slug}/overview.mdx", "overview", model.project.get("description") or "")
+    add("architecture", f"wiki/docs/repos/{slug}/architecture.mdx", "architecture", "Layers and dependencies")
+    add("onboarding", f"wiki/docs/repos/{slug}/onboarding.mdx", "onboarding", "Suggested reading path")
     for m in model.modules:
         add(
             f"modules/{m['slug']}",
-            f"wiki/docs/modules/{m['slug']}.mdx",
+            f"wiki/docs/repos/{slug}/modules/{m['slug']}.mdx",
             "module",
             m["summary"],
             related=m.get("node_ids") or [],
         )
     for f in model.flows:
-        add(f"flows/{f['slug']}", f"wiki/docs/flows/{f['slug']}.mdx", "flow", f["description"])
-    add("diagrams", "wiki/docs/diagrams/index.mdx", "diagrams", "Architecture and dependency diagrams")
-    if model.additional_repos:
-        add("sources", "wiki/docs/sources.mdx", "sources", "Additional context repositories")
+        add(
+            f"flows/{f['slug']}",
+            f"wiki/docs/repos/{slug}/flows/{f['slug']}.mdx",
+            "flow",
+            f["description"],
+        )
+    add("diagrams", f"wiki/docs/repos/{slug}/diagrams/index.mdx", "diagrams",
+        "Architecture and dependency diagrams")
 
     return {
         "generator": {
@@ -526,27 +503,69 @@ def build_manifest(model: WikiModel) -> Dict[str, Any]:
             "engine": "docusaurus",
             "generatedAt": model.generated_at,
         },
-        "project": {
-            "name": model.project.get("name") or "unnamed",
+        "repo": {
+            "slug": model.repo_slug,
+            "name": model.project.get("name") or model.repo_slug,
             "description": model.project.get("description") or "",
-            "primaryRepoSlug": model.primary_repo_slug,
-            "primaryRepoPath": model.primary_repo_path,
+            "path": model.repo_path,
             "languages": model.project.get("languages") or [],
             "frameworks": model.project.get("frameworks") or [],
+            "basePath": base_path,
         },
         "entryPoints": model.entry_points,
-        "importantFlows": [f"wiki/docs/flows/{f['slug']}.mdx" for f in model.flows],
+        "importantFlows": [
+            f"wiki/docs/repos/{slug}/flows/{f['slug']}.mdx" for f in model.flows
+        ],
         "pages": pages,
     }
 
 
 # ---------------------------------------------------------------------------
-# Assets copy (React components + CSS)
+# Top-level manifest (all repos)
+# ---------------------------------------------------------------------------
+
+
+def build_top_manifest(
+    repo_summaries: List[Dict[str, Any]],
+    primary_slug: str,
+    generated_at: str,
+    dashboard_urls: Dict[str, Optional[str]],
+) -> Dict[str, Any]:
+    return {
+        "generator": {
+            "name": "tgd-wiki-generation",
+            "version": GENERATOR_VERSION,
+            "engine": "docusaurus",
+            "generatedAt": generated_at,
+        },
+        "primaryRepoSlug": primary_slug,
+        "repos": [
+            {
+                "slug": r["slug"],
+                "name": r["name"],
+                "description": r["description"],
+                "path": r["path"],
+                "basePath": f"/repos/{r['slug']}",
+                "modules": r["modules"],
+                "flows": r["flows"],
+                "dashboardUrl": dashboard_urls.get(r["slug"]),
+                "manifestPath": f"wiki/docs/repos/{r['slug']}/manifest.json",
+            }
+            for r in repo_summaries
+        ],
+        "topPages": [
+            {"id": "index", "path": "wiki/docs/index.mdx", "type": "home"},
+            {"id": "sources", "path": "wiki/docs/sources.mdx", "type": "sources"},
+        ],
+    }
+
+
+# ---------------------------------------------------------------------------
+# Assets copy
 # ---------------------------------------------------------------------------
 
 
 def copy_assets(tgd_dir: Path, *, quiet: bool = False) -> None:
-    """Copy skill-owned assets into $TGD_DIR/wiki/src/. Overwrite unconditionally."""
     wiki_dir = tgd_dir / "wiki"
     dest_components = wiki_dir / "src" / "components"
     dest_css = wiki_dir / "src" / "css"
@@ -563,15 +582,14 @@ def copy_assets(tgd_dir: Path, *, quiet: bool = False) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Model compile
+# Model compile (one per repo)
 # ---------------------------------------------------------------------------
 
 
-def compile_model(
+def compile_repo_model(
     graph: Dict[str, Any],
-    primary_slug: str,
-    primary_repo_path: str,
-    additional_repos: List[Dict[str, Any]],
+    repo_slug: str,
+    repo_path: str,
     dashboard_url: Optional[str],
 ) -> WikiModel:
     project = graph.get("project") or {}
@@ -580,7 +598,6 @@ def compile_model(
     nodes = graph.get("nodes") or []
     edges = graph.get("edges") or []
 
-    # Escape strings on the way in — one place, once.
     escaped_project = dict(project)
     escaped_project["description"] = escape_mdx_inline(project.get("description") or "")
 
@@ -601,7 +618,6 @@ def compile_model(
     node_map = _node_map(nodes)
     node_paths = _node_paths(nodes)
     modules = build_modules(escaped_layers, node_map, edges)
-    # Escape module summaries + file summaries after building
     for m in modules:
         m["summary"] = escape_mdx_inline(m["summary"])
         for f in m["files"]:
@@ -623,9 +639,8 @@ def compile_model(
         modules=modules,
         flows=flows,
         entry_points=entry_points,
-        additional_repos=additional_repos,
-        primary_repo_slug=primary_slug,
-        primary_repo_path=primary_repo_path,
+        repo_slug=repo_slug,
+        repo_path=repo_path,
         dashboard_url=dashboard_url,
         architecture_mermaid=arch_mm,
         dependency_mermaid=dep_mm,
@@ -635,7 +650,7 @@ def compile_model(
     )
 
 
-def infer_primary_repo_path(scan_dir: Path, project: Dict[str, Any]) -> str:
+def infer_repo_path(scan_dir: Path, project: Dict[str, Any]) -> str:
     root = project.get("rootPath") or project.get("primaryRepoPath")
     if root:
         return root
@@ -644,37 +659,17 @@ def infer_primary_repo_path(scan_dir: Path, project: Dict[str, Any]) -> str:
     return str(guess if guess.is_dir() else scan_dir.name)
 
 
-def gather_additional_repos(
-    tgd_dir: Path, primary_slug: str
-) -> List[Dict[str, Any]]:
-    extras: List[Dict[str, Any]] = []
-    for slug, scan in discover_repos(tgd_dir):
-        if slug == primary_slug:
-            continue
-        graph_path = scan / ".understand-anything" / "knowledge-graph.json"
-        try:
-            g = load_json(graph_path)
-        except Exception:
-            continue
-        proj = g.get("project") or {}
-        extras.append({
-            "name": proj.get("name") or slug,
-            "source": slug,
-            "type": "scanned",
-            "path": infer_primary_repo_path(scan, proj),
-            "summary": escape_mdx_inline(proj.get("description") or ""),
-            "relevance": "",
-            "dashboard_url": None,
-        })
-    return extras
-
-
 # ---------------------------------------------------------------------------
-# Rendering all pages
+# Rendering one repo's wiki tree
 # ---------------------------------------------------------------------------
 
 
-def render_all(model: WikiModel, docs_dir: Path) -> None:
+def render_repo(
+    model: WikiModel,
+    repo_docs_dir: Path,
+    base_path: str,
+    all_repos: List[Dict[str, Any]],
+) -> None:
     env = make_env()
 
     kpi = {
@@ -684,47 +679,45 @@ def render_all(model: WikiModel, docs_dir: Path) -> None:
         "edges": len(model.edges),
     }
 
-    ctx_common = {
+    ctx = {
         "generator_version": GENERATOR_VERSION,
         "generated_at": model.generated_at,
         "project": model.project,
-        "primary_repo_slug": model.primary_repo_slug,
-        "primary_repo_path": model.primary_repo_path,
-        "additional_repos": model.additional_repos,
+        "repo_slug": model.repo_slug,
+        "repo_path": model.repo_path,
+        "base_path": base_path,  # e.g. "/repos/backend"
         "dashboard_url": model.dashboard_url,
         "modules": model.modules,
         "flows": model.flows,
         "kpi": kpi,
+        "all_repos": all_repos,
     }
 
-    hero_title = f"{model.project.get('name') or 'Project'} — Project Wiki"
+    hero_title = f"{model.project.get('name') or model.repo_slug} — Project Wiki"
     hero_subtitle = model.project.get("description") or "Explore the architecture, modules, and flows of this codebase."
 
-    # index.mdx
     write_text(
-        docs_dir / "index.mdx",
-        render(env, "index.mdx.jinja", {
-            **ctx_common,
+        repo_docs_dir / "index.mdx",
+        render(env, "repo-index.mdx.jinja", {
+            **ctx,
             "hero_title": hero_title,
             "hero_subtitle": hero_subtitle,
         }),
     )
 
-    # overview.mdx
     write_text(
-        docs_dir / "overview.mdx",
+        repo_docs_dir / "overview.mdx",
         render(env, "overview.mdx.jinja", {
-            **ctx_common,
+            **ctx,
             "entry_points": model.entry_points,
             "layers": model.layers,
         }),
     )
 
-    # architecture.mdx
     write_text(
-        docs_dir / "architecture.mdx",
+        repo_docs_dir / "architecture.mdx",
         render(env, "architecture.mdx.jinja", {
-            **ctx_common,
+            **ctx,
             "layers": model.layers,
             "architecture_mermaid": model.architecture_mermaid,
             "dependency_mermaid": model.dependency_mermaid,
@@ -732,47 +725,73 @@ def render_all(model: WikiModel, docs_dir: Path) -> None:
         }),
     )
 
-    # onboarding.mdx
     write_text(
-        docs_dir / "onboarding.mdx",
+        repo_docs_dir / "onboarding.mdx",
         render(env, "onboarding.mdx.jinja", {
-            **ctx_common,
+            **ctx,
             "tour": model.tour,
             "node_paths": model.node_paths,
         }),
     )
 
-    # sources.mdx
-    write_text(
-        docs_dir / "sources.mdx",
-        render(env, "sources.mdx.jinja", {**ctx_common, "repos": model.additional_repos}),
-    )
-
-    # modules/*.mdx
     for m in model.modules:
         write_text(
-            docs_dir / "modules" / f"{m['slug']}.mdx",
-            render(env, "module.mdx.jinja", {**ctx_common, "module": m}),
+            repo_docs_dir / "modules" / f"{m['slug']}.mdx",
+            render(env, "module.mdx.jinja", {**ctx, "module": m}),
         )
 
-    # flows/*.mdx
     for f in model.flows:
         write_text(
-            docs_dir / "flows" / f"{f['slug']}.mdx",
-            render(env, "flow.mdx.jinja", {**ctx_common, "flow": f}),
+            repo_docs_dir / "flows" / f"{f['slug']}.mdx",
+            render(env, "flow.mdx.jinja", {**ctx, "flow": f}),
         )
 
-    # diagrams
     write_text(
-        docs_dir / "diagrams" / "index.mdx",
+        repo_docs_dir / "diagrams" / "index.mdx",
         render(env, "diagrams-index.mdx.jinja", {
-            **ctx_common,
+            **ctx,
             "architecture_mermaid": model.architecture_mermaid,
             "dependency_mermaid": model.dependency_mermaid,
         }),
     )
-    write_text(docs_dir / "diagrams" / "architecture.mmd", model.architecture_mermaid)
-    write_text(docs_dir / "diagrams" / "dependencies.mmd", model.dependency_mermaid)
+    write_text(repo_docs_dir / "diagrams" / "architecture.mmd", model.architecture_mermaid)
+    write_text(repo_docs_dir / "diagrams" / "dependencies.mmd", model.dependency_mermaid)
+
+
+# ---------------------------------------------------------------------------
+# Top-level rendering (home + sources)
+# ---------------------------------------------------------------------------
+
+
+def render_top_level(
+    docs_dir: Path,
+    repo_summaries: List[Dict[str, Any]],
+    primary_slug: str,
+    generated_at: str,
+) -> None:
+    env = make_env()
+
+    total_modules = sum(r["module_count"] for r in repo_summaries)
+    total_flows = sum(r["flow_count"] for r in repo_summaries)
+
+    ctx = {
+        "generator_version": GENERATOR_VERSION,
+        "generated_at": generated_at,
+        "repos": repo_summaries,
+        "primary_slug": primary_slug,
+        "repo_count": len(repo_summaries),
+        "total_modules": total_modules,
+        "total_flows": total_flows,
+    }
+
+    write_text(
+        docs_dir / "index.mdx",
+        render(env, "home.mdx.jinja", ctx),
+    )
+    write_text(
+        docs_dir / "sources.mdx",
+        render(env, "sources.mdx.jinja", ctx),
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -781,10 +800,10 @@ def render_all(model: WikiModel, docs_dir: Path) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Generate tGD Wiki (Docusaurus MDX)")
+    parser = argparse.ArgumentParser(description="Generate tGD multi-repo Wiki (Docusaurus MDX)")
     parser.add_argument("tgd_dir", help="$TGD_DIR path")
-    parser.add_argument("--repo", help="Primary repo slug (defaults to first scan)")
-    parser.add_argument("--dashboard-url", help="Optional dashboard URL to embed in the index")
+    parser.add_argument("--primary", help="Primary repo slug (defaults to first scan)")
+    parser.add_argument("--dashboard-url", help="Dashboard URL to embed (applied to primary)")
     parser.add_argument("--quiet", action="store_true")
     args = parser.parse_args()
 
@@ -801,45 +820,116 @@ def main() -> int:
         )
         return 2
 
-    primary_slug, primary_scan = pick_primary_repo(repos, args.repo)
-    log(f"Primary repo: {primary_slug}", quiet=args.quiet)
-    log(f"Scan dir: {primary_scan}", quiet=args.quiet)
-
-    graph = load_json(primary_scan / ".understand-anything" / "knowledge-graph.json")
-    log(
-        f"Loaded graph: {len(graph.get('nodes') or [])} nodes, "
-        f"{len(graph.get('edges') or [])} edges, "
-        f"{len(graph.get('layers') or [])} layers, "
-        f"{len(graph.get('tour') or [])} tour steps",
-        quiet=args.quiet,
-    )
-
-    additional = gather_additional_repos(tgd_dir, primary_slug)
-    if additional:
-        log(f"Additional context repos: {len(additional)}", quiet=args.quiet)
-
-    model = compile_model(
-        graph=graph,
-        primary_slug=primary_slug,
-        primary_repo_path=infer_primary_repo_path(primary_scan, graph.get("project") or {}),
-        additional_repos=additional,
-        dashboard_url=args.dashboard_url,
-    )
+    primary_slug = pick_primary_slug(repos, args.primary)
+    log(f"Discovered {len(repos)} repo(s). Primary: {primary_slug}", quiet=args.quiet)
 
     docs_dir = tgd_dir / "wiki" / "docs"
-    log(f"Rendering MDX pages to {docs_dir}", quiet=args.quiet)
-    render_all(model, docs_dir)
 
-    manifest = build_manifest(model)
-    write_json(docs_dir / "manifest.json", manifest)
+    # Clear previous per-repo trees so removed repos don't leave stale pages
+    repos_root = docs_dir / "repos"
+    if repos_root.is_dir():
+        shutil.rmtree(repos_root)
 
+    generated_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    repo_summaries: List[Dict[str, Any]] = []
+    dashboard_urls: Dict[str, Optional[str]] = {}
+    models: List[WikiModel] = []
+
+    for slug, scan_dir in repos:
+        graph_path = scan_dir / ".understand-anything" / "knowledge-graph.json"
+        try:
+            graph = load_json(graph_path)
+        except Exception as e:
+            log(f"⚠️  Skipping {slug}: cannot load graph ({e})", quiet=False)
+            continue
+
+        log(
+            f"[{slug}] graph: {len(graph.get('nodes') or [])} nodes, "
+            f"{len(graph.get('edges') or [])} edges, "
+            f"{len(graph.get('layers') or [])} layers, "
+            f"{len(graph.get('tour') or [])} tour steps",
+            quiet=args.quiet,
+        )
+
+        repo_path = infer_repo_path(scan_dir, graph.get("project") or {})
+        this_dashboard = args.dashboard_url if slug == primary_slug else None
+        dashboard_urls[slug] = this_dashboard
+
+        model = compile_repo_model(
+            graph=graph,
+            repo_slug=slug,
+            repo_path=repo_path,
+            dashboard_url=this_dashboard,
+        )
+        # override generated_at so all repos share one timestamp
+        model.generated_at = generated_at
+        models.append(model)
+
+        proj = model.project
+        icon = infer_layer_icon(proj.get("name") or slug)
+        accent = infer_layer_accent(proj.get("name") or slug)
+        repo_summaries.append({
+            "slug": slug,
+            "name": proj.get("name") or slug,
+            "description": proj.get("description") or "",
+            "path": repo_path,
+            "modules": [{"slug": m["slug"], "title": m["title"], "icon": m["icon"]}
+                        for m in model.modules],
+            "flows": [{"slug": f["slug"], "title": f["title"]} for f in model.flows],
+            "module_count": len(model.modules),
+            "flow_count": len(model.flows),
+            "kpi": {
+                "files": sum(1 for n in model.nodes if n.get("type") in FILE_LEVEL_TYPES),
+                "edges": len(model.edges),
+            },
+            "icon": icon,
+            "accent": accent,
+            "is_primary": slug == primary_slug,
+            "dashboard_url": this_dashboard,
+        })
+
+    if not models:
+        sys.stderr.write("Error: no repos could be compiled.\n")
+        return 2
+
+    # Build all_repos view for cross-linking inside each repo tree
+    all_repos = [
+        {
+            "slug": r["slug"],
+            "name": r["name"],
+            "base_path": f"/repos/{r['slug']}",
+            "is_primary": r["is_primary"],
+            "icon": r["icon"],
+        }
+        for r in repo_summaries
+    ]
+
+    # Render each repo
+    for model in models:
+        base_path = f"/repos/{model.repo_slug}"
+        repo_docs_dir = docs_dir / "repos" / model.repo_slug
+        log(f"Rendering repo → {repo_docs_dir}", quiet=args.quiet)
+        render_repo(model, repo_docs_dir, base_path, all_repos)
+
+        # Per-repo manifest
+        manifest = build_repo_manifest(model, base_path)
+        write_json(repo_docs_dir / "manifest.json", manifest)
+
+    # Top-level home + sources + manifest
+    log(f"Rendering top-level home → {docs_dir}/index.mdx", quiet=args.quiet)
+    render_top_level(docs_dir, repo_summaries, primary_slug, generated_at)
+
+    top_manifest = build_top_manifest(repo_summaries, primary_slug, generated_at, dashboard_urls)
+    write_json(docs_dir / "manifest.json", top_manifest)
+
+    # Copy React assets + CSS
     copy_assets(tgd_dir, quiet=args.quiet)
 
     log("Done.", quiet=args.quiet)
-    log(f"  Index:    {docs_dir}/index.mdx", quiet=args.quiet)
+    log(f"  Repos:    {len(models)}", quiet=args.quiet)
+    log(f"  Primary:  {primary_slug}", quiet=args.quiet)
+    log(f"  Home:     {docs_dir}/index.mdx", quiet=args.quiet)
     log(f"  Manifest: {docs_dir}/manifest.json", quiet=args.quiet)
-    log(f"  Modules:  {len(model.modules)}", quiet=args.quiet)
-    log(f"  Flows:    {len(model.flows)}", quiet=args.quiet)
     return 0
 
 

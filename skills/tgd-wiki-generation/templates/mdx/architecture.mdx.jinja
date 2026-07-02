@@ -6,7 +6,7 @@ sidebar_position: 3
 
 import LayerBadge from '@site/src/components/LayerBadge';
 
-# Architecture
+# Architecture — {{ project.name }}
 
 ## Summary
 
@@ -47,8 +47,8 @@ _No recurring patterns extracted. This section is populated when the graph conta
 
 ## Related Pages
 
-- [Overview](/overview)
+- [Overview]({{ base_path }}/overview)
 {% for m in modules %}
-- [{{ m.title }} module](/modules/{{ m.slug }})
+- [{{ m.title }} module]({{ base_path }}/modules/{{ m.slug }})
 {% endfor %}
-- [Home](/)
+- [Wiki Home](/)

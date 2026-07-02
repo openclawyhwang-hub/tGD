@@ -46,9 +46,23 @@ const config: Config = {
       title: {{ navbar_title | tojson }},
       items: [
         {to: '/', label: 'Home', position: 'left'},
-        {to: '/overview', label: 'Overview', position: 'left'},
-        {to: '/architecture', label: 'Architecture', position: 'left'},
-        {to: '/onboarding', label: 'Onboarding', position: 'left'},
+        {% if multi_repo %}
+        {
+          type: 'dropdown',
+          label: '📦 Repos',
+          position: 'left',
+          items: [
+            {% for r in repos %}
+            {to: '/repos/{{ r.slug }}', label: {{ (r.name ~ (" ⭐" if r.slug == primary_slug else "")) | tojson }}},
+            {% endfor %}
+          ],
+        },
+        {to: '/sources', label: 'All Sources', position: 'left'},
+        {% else %}
+        {to: '/repos/{{ primary_slug }}/overview', label: 'Overview', position: 'left'},
+        {to: '/repos/{{ primary_slug }}/architecture', label: 'Architecture', position: 'left'},
+        {to: '/repos/{{ primary_slug }}/onboarding', label: 'Onboarding', position: 'left'},
+        {% endif %}
       ],
     },
     footer: {

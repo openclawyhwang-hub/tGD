@@ -7,7 +7,7 @@ sidebar_position: 2
 import KPIGrid from '@site/src/components/KPIGrid';
 import LayerBadge from '@site/src/components/LayerBadge';
 
-# Overview
+# Overview — {{ project.name }}
 
 ## What is {{ project.name }}?
 
@@ -19,9 +19,7 @@ import LayerBadge from '@site/src/components/LayerBadge';
 |---|---|
 | Languages | {{ (project.languages or ["_unknown_"]) | join(", ") }} |
 | Frameworks | {{ (project.frameworks or ["_none detected_"]) | join(", ") }} |
-| Primary repo | `{{ primary_repo_path }}` |
-{% if additional_repos %}| Additional context repos | {{ additional_repos | length }} |
-{% endif %}
+| Repo path | `{{ repo_path }}` |
 
 ## Signals
 
@@ -60,4 +58,4 @@ _No layers identified._
 
 ---
 
-**Related pages:** [Architecture](/architecture) · [Onboarding](/onboarding) · [Home](/)
+**Related pages:** [Architecture]({{ base_path }}/architecture) · [Onboarding]({{ base_path }}/onboarding) · [Wiki Home](/)

@@ -1,7 +1,6 @@
 ---
-id: index
-title: {{ project.name }} — Project Wiki
-slug: /
+id: repo-index
+title: {{ project.name }} — Wiki
 sidebar_position: 1
 ---
 
@@ -12,8 +11,8 @@ import KPIGrid from '@site/src/components/KPIGrid';
 <Hero
   title={{ hero_title | tojson }}
   subtitle={{ hero_subtitle | tojson }}
-  primary={{ '{' }}{ label: 'Read the Overview', to: '/overview' }{{ '}' }}
-  secondary={{ '{' }}{ label: 'Explore Architecture', to: '/architecture' }{{ '}' }}
+  primary={{ '{' }}{ label: 'Read the Overview', to: '{{ base_path }}/overview' }{{ '}' }}
+  secondary={{ '{' }}{ label: 'Explore Architecture', to: '{{ base_path }}/architecture' }{{ '}' }}
 />
 
 <KPIGrid items={{ '{' }}[
@@ -29,7 +28,7 @@ import KPIGrid from '@site/src/components/KPIGrid';
 {% for m in modules %}
   <ModuleCard
     title={{ m.title | tojson }}
-    slug={{ m.slug | tojson }}
+    slug={{ ("repos/" ~ repo_slug ~ "/modules/" ~ m.slug) | tojson }}
     summary={{ m.summary | tojson }}
     fileCount={ {{- m.file_count -}} }
     symbolCount={ {{- m.symbol_count -}} }
@@ -43,7 +42,7 @@ import KPIGrid from '@site/src/components/KPIGrid';
 
 {% if flows %}
 {% for f in flows %}
-- [{{ f.title }}](/flows/{{ f.slug }})
+- [{{ f.title }}]({{ base_path }}/flows/{{ f.slug }})
 {% endfor %}
 {% else %}
 _No named flows were captured. Add a tour to the Understand-Anything analysis to seed flows._
@@ -51,17 +50,25 @@ _No named flows were captured. Add a tour to the Understand-Anything analysis to
 
 ## 🗺️ Diagrams
 
-- [Architecture diagram](/diagrams#architecture)
-- [Dependency diagram](/diagrams#dependencies)
+- [Architecture diagram]({{ base_path }}/diagrams#architecture)
+- [Dependency diagram]({{ base_path }}/diagrams#dependencies)
 
 ## 📚 References
 
-{% if additional_repos %}
-- [Sources](/sources) — Additional context repos scanned
-{% endif %}
-- Knowledge graph JSON — see `$TGD_DIR/.scans/{{ primary_repo_slug }}/.understand-anything/knowledge-graph.json`
+- Repo path: `{{ repo_path }}`
+- Knowledge graph: `$TGD_DIR/.scans/{{ repo_slug }}/.understand-anything/knowledge-graph.json`
 {% if dashboard_url %}
 - [Interactive Dashboard]({{ dashboard_url }})
+{% endif %}
+
+{% if all_repos and all_repos | length > 1 %}
+## Switch Repository
+
+{% for r in all_repos %}
+{% if r.slug != repo_slug %}
+- [{{ r.icon }} {{ r.name }}]({{ r.base_path }}){{ " ⭐" if r.is_primary else "" }}
+{% endif %}
+{% endfor %}
 {% endif %}
 
 ---

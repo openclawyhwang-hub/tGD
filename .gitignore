@@ -17,6 +17,7 @@ skills/skills
 !skills/*/scripts/
 !skills/*/references/
 !skills/*/templates/
+!skills/*/assets/
 vendor/understand-anything/understand-anything-plugin/skills/*/
 vendor/understand-anything/understand-anything-plugin/skills/skills
 

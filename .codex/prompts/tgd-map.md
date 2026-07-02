@@ -109,14 +109,17 @@ Resolve `$TGD_REPO_ROOT` to the cloned tGD repo (typically `~/tGD/`).
 
 **Outputs (all under `$TGD_DIR/wiki/`):**
 
-- `docs/index.mdx` — unified human entry point
-- `docs/overview.mdx`, `architecture.mdx`, `onboarding.mdx`
-- `docs/modules/<layer>.mdx` — one page per architectural layer
-- `docs/flows/<step>.mdx` — one page per tour step
-- `docs/diagrams/{architecture,dependencies}.mmd` — Mermaid source files
-- `docs/manifest.json` — machine-readable index (agents)
-- `docusaurus.config.ts`, `sidebars.ts`, `package.json`, `.gitignore` — auto-generated
-- `src/components/*.tsx` and `src/css/custom.css` — copied from skill (do not edit)
+- `docs/index.mdx` — top-level home with repo selector grid
+- `docs/sources.mdx` — all-repos summary page
+- `docs/manifest.json` — top-level manifest listing every scanned repo
+- `docs/repos/<slug>/` — one full wiki tree per scanned repo, containing:
+  - `index.mdx`, `overview.mdx`, `architecture.mdx`, `onboarding.mdx`
+  - `modules/<layer>.mdx` — one page per architectural layer
+  - `flows/<step>.mdx` — one page per tour step
+  - `diagrams/{architecture,dependencies}.mmd` — Mermaid source
+  - `manifest.json` — per-repo machine-readable index
+- `docusaurus.config.ts`, `sidebars.ts`, `package.json`, `.gitignore` — auto-generated (config has a Repos dropdown when >1 repo scanned)
+- `src/components/*.tsx` and `src/css/custom.css` — copied from skill assets (do not edit)
 - `build/index.html` — built static site (if `npm` is installed)
 
 **Behavior:**

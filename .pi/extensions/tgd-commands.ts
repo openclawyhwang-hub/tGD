@@ -61,14 +61,17 @@ const tgdPrompts: Record<string, string> = {
     "  python $TGD_REPO_ROOT/skills/tgd-wiki-generation/scripts/generate-docusaurus-config.py \"$TGD_DIR\"\n" +
     "  bash   $TGD_REPO_ROOT/skills/tgd-wiki-generation/scripts/build-site.sh \"$TGD_DIR\"\n\n" +
     "Outputs (all under $TGD_DIR/wiki/):\n" +
-    "- docs/index.mdx — unified human entry point\n" +
-    "- docs/overview.mdx, architecture.mdx, onboarding.mdx\n" +
-    "- docs/modules/<layer>.mdx — one page per architectural layer\n" +
-    "- docs/flows/<step>.mdx — one page per tour step\n" +
-    "- docs/diagrams/{architecture,dependencies}.mmd — Mermaid source files\n" +
-    "- docs/manifest.json — machine-readable index (agents)\n" +
-    "- docusaurus.config.ts, sidebars.ts, package.json, .gitignore — auto-generated\n" +
-    "- src/components/*.tsx and src/css/custom.css — copied from skill (do not edit)\n" +
+    "- docs/index.mdx — top-level home with repo selector grid\n" +
+    "- docs/sources.mdx — all-repos summary page\n" +
+    "- docs/manifest.json — top-level manifest listing every scanned repo\n" +
+    "- docs/repos/<slug>/ — one full wiki tree per scanned repo, containing:\n" +
+    "  - index.mdx, overview.mdx, architecture.mdx, onboarding.mdx\n" +
+    "  - modules/<layer>.mdx — one page per architectural layer\n" +
+    "  - flows/<step>.mdx — one page per tour step\n" +
+    "  - diagrams/{architecture,dependencies}.mmd — Mermaid source\n" +
+    "  - manifest.json — per-repo machine-readable index\n" +
+    "- docusaurus.config.ts, sidebars.ts, package.json, .gitignore — auto-generated (config has a Repos dropdown when >1 repo scanned)\n" +
+    "- src/components/*.tsx and src/css/custom.css — copied from skill assets (do not edit)\n" +
     "- build/index.html — built static site (if npm is installed)\n\n" +
     "Behavior: MDX content is always produced. If node/npm is missing, build-site.sh warns and continues — MDX under docs/ remains readable. First run does npm install (~2 min). Subsequent runs reuse node_modules/. Re-running overwrites docs/, src/components/, src/css/, and generated config files in place.\n\n" +
     "Report to the user:\n" +
