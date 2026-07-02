@@ -27,6 +27,80 @@ fi
 TGD_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$TGD_DIR"
 
+# Hermes profiles are isolated homes.  A profile-scoped Hermes session resolves
+# skills/plugins from ~/.hermes/profiles/<name>/, not from the default
+# ~/.hermes/ tree, so install tGD into default plus every existing profile.
+hermes_homes() {
+    if [[ -d "$HOME/.hermes" || -L "$HOME/.hermes" ]]; then
+        echo "$HOME/.hermes"
+    fi
+    if [[ -d "$HOME/.hermes/profiles" ]]; then
+        for profile_home in "$HOME/.hermes/profiles"/*; do
+            [[ -d "$profile_home" ]] || continue
+            echo "$profile_home"
+        done
+    fi
+}
+
+display_home_path() {
+    local path="$1"
+    echo "${path/#$HOME/~}"
+}
+
+link_tgd_skills_to_hermes_home() {
+    local hermes_home="$1"
+    mkdir -p "$hermes_home/skills"
+    local count=0
+    for skill in "$TGD_DIR"/skills/*/; do
+        local skill_name
+        skill_name=$(basename "$skill")
+        # Skip nested symlink traps
+        if [[ "$skill_name" == "skills" ]]; then
+            continue
+        fi
+        if [[ -d "$hermes_home/skills/$skill_name" && ! -L "$hermes_home/skills/$skill_name" ]]; then
+            rm -rf "$hermes_home/skills/$skill_name"
+        fi
+        ln -sf "$skill" "$hermes_home/skills/$skill_name" 2>/dev/null || true
+        count=$((count + 1))
+    done
+    echo "   ✅ Hermes skills linked: $(display_home_path "$hermes_home")/skills ($count skills)."
+}
+
+link_hermes_plugin_to_home() {
+    local hermes_home="$1"
+    if [[ -d "$TGD_DIR/.hermes/plugins/tgd" ]]; then
+        mkdir -p "$hermes_home/plugins"
+        if [[ -d "$hermes_home/plugins/tgd" && ! -L "$hermes_home/plugins/tgd" ]]; then
+            rm -rf "$hermes_home/plugins/tgd"
+        fi
+        ln -sf "$TGD_DIR/.hermes/plugins/tgd" "$hermes_home/plugins/tgd" 2>/dev/null || true
+        echo "   ✅ Hermes plugin linked: $(display_home_path "$hermes_home")/plugins/tgd."
+    fi
+}
+
+link_hermes_agents_to_home() {
+    local hermes_home="$1"
+    if [[ -f "$TGD_DIR/.hermes/AGENTS.md" ]]; then
+        ln -sf "$TGD_DIR/.hermes/AGENTS.md" "$hermes_home/AGENTS.md" 2>/dev/null || true
+    fi
+}
+
+link_skill_folder_to_hermes_homes() {
+    local source_dir="$1"
+    local link_name="$2"
+    local label="$3"
+    while IFS= read -r hermes_home; do
+        [[ -n "$hermes_home" ]] || continue
+        mkdir -p "$hermes_home/skills"
+        if [[ -d "$hermes_home/skills/$link_name" && ! -L "$hermes_home/skills/$link_name" ]]; then
+            rm -rf "$hermes_home/skills/$link_name"
+        fi
+        ln -sf "$source_dir" "$hermes_home/skills/$link_name" 2>/dev/null || true
+        echo "   ✅ Hermes $label linked: $(display_home_path "$hermes_home")/skills/$link_name."
+    done < <(hermes_homes)
+}
+
 # ─── Prerequisite checks ─────────────────────────────────────────────────────
 missing_deps=()
 command -v git &> /dev/null || missing_deps+=("git")
@@ -77,12 +151,19 @@ if [[ "$MODE" == "uninstall" ]]; then
     remove_tgd_items "$HOME/.pi/agent/skills" "Pi skill" "tgd"
     remove_tgd_items "$HOME/.pi/agent/extensions" "Pi extension" "tgd"
     remove_tgd_items "$HOME/.claude/rules" "Claude rule" "tgd"
-    remove_tgd_items "$HOME/.hermes/skills" "Hermes skill" "tgd"
-    # Remove Hermes plugin
-    if [[ -L "$HOME/.hermes/plugins/tgd" ]]; then
-        echo "   🗑️  Removing Hermes plugin: $HOME/.hermes/plugins/tgd"
-        rm -f "$HOME/.hermes/plugins/tgd"
-    fi
+    while IFS= read -r hermes_home; do
+        [[ -n "$hermes_home" ]] || continue
+        remove_tgd_items "$hermes_home/skills" "Hermes skill" "tgd"
+        # Remove Hermes plugin
+        if [[ -L "$hermes_home/plugins/tgd" ]]; then
+            echo "   🗑️  Removing Hermes plugin: $(display_home_path "$hermes_home")/plugins/tgd"
+            rm -f "$hermes_home/plugins/tgd"
+        fi
+        if [[ -L "$hermes_home/AGENTS.md" ]] && readlink "$hermes_home/AGENTS.md" 2>/dev/null | grep -q "/tGD/.hermes/AGENTS.md"; then
+            echo "   🗑️  Removing Hermes AGENTS.md: $(display_home_path "$hermes_home")/AGENTS.md"
+            rm -f "$hermes_home/AGENTS.md"
+        fi
+    done < <(hermes_homes)
 
     # Remove Codex top-level skills/tGD symlink
     if [[ -L "$HOME/.codex/skills/tGD" ]]; then
@@ -229,7 +310,7 @@ PYEOF
     fi
 
     # 3. Remove Understand-Anything links
-    for dir in "$HOME/.claude/skills" "$HOME/.agents/skills" "$HOME/.codex/skills" "$HOME/.config/opencode/skills" "$HOME/.gemini/skills" "$HOME/.pi/agent/skills" "$HOME/.hermes/skills"; do
+    for dir in "$HOME/.claude/skills" "$HOME/.agents/skills" "$HOME/.codex/skills" "$HOME/.config/opencode/skills" "$HOME/.gemini/skills" "$HOME/.pi/agent/skills" "$HOME/.hermes/skills" "$HOME/.hermes/profiles"/*/skills; do
         if [[ -d "$dir" ]]; then
             for link in "$dir"/understand*; do
                 if [[ -L "$link" ]] && readlink "$link" 2>/dev/null | grep -q "understand-anything"; then
@@ -392,7 +473,11 @@ if [[ "$MODE" == "upgrade" ]]; then
     purge_old_tgd_symlinks "$HOME/.codex/skills" "Codex CLI"
     purge_old_tgd_symlinks "$HOME/.gemini/skills" "Gemini CLI"
     purge_old_tgd_symlinks "$HOME/.pi/agent/skills" "Pi"
-    purge_old_tgd_symlinks "$HOME/.hermes/skills" "Hermes"
+    while IFS= read -r hermes_home; do
+        [[ -n "$hermes_home" ]] || continue
+        purge_stale_symlinks "$hermes_home/skills" "Hermes skills ($(display_home_path "$hermes_home"))"
+        purge_old_tgd_symlinks "$hermes_home/skills" "Hermes ($(display_home_path "$hermes_home"))"
+    done < <(hermes_homes)
     echo ""
 fi
 
@@ -687,37 +772,26 @@ fi
 # Hermes Agent
 if command -v hermes &> /dev/null; then
     echo "   📂 Hermes Agent detected."
-    # Link skills (individual symlinks like Claude Code)
     if [ -d "$TGD_DIR/skills" ]; then
-        mkdir -p "$HOME/.hermes/skills"
-        for skill in "$TGD_DIR"/skills/*/; do
-            skill_name=$(basename "$skill")
-            # Skip nested symlink traps
-            if [ "$skill_name" = "skills" ]; then
-                continue
-            fi
-            if [ -d "$HOME/.hermes/skills/$skill_name" ] && [ ! -L "$HOME/.hermes/skills/$skill_name" ]; then
-                rm -rf "$HOME/.hermes/skills/$skill_name"
-            fi
-            ln -sf "$skill" "$HOME/.hermes/skills/$skill_name" 2>/dev/null || true
-        done
-        echo "   ✅ Skills linked."
+        while IFS= read -r hermes_home; do
+            [[ -n "$hermes_home" ]] || continue
+            link_tgd_skills_to_hermes_home "$hermes_home"
+        done < <(hermes_homes)
     fi
 
-    # Install plugin (symlink the plugin directory)
     if [ -d "$TGD_DIR/.hermes/plugins/tgd" ]; then
-        mkdir -p "$HOME/.hermes/plugins"
-        if [ -d "$HOME/.hermes/plugins/tgd" ] && [ ! -L "$HOME/.hermes/plugins/tgd" ]; then
-            rm -rf "$HOME/.hermes/plugins/tgd"
-        fi
-        ln -sf "$TGD_DIR/.hermes/plugins/tgd" "$HOME/.hermes/plugins/tgd" 2>/dev/null || true
-        echo "   ✅ Plugin linked (7 commands + session-start hook)."
+        while IFS= read -r hermes_home; do
+            [[ -n "$hermes_home" ]] || continue
+            link_hermes_plugin_to_home "$hermes_home"
+        done < <(hermes_homes)
     fi
 
-    # Link AGENTS.md
     if [ -f "$TGD_DIR/.hermes/AGENTS.md" ]; then
-        ln -sf "$TGD_DIR/.hermes/AGENTS.md" "$HOME/.hermes/AGENTS.md" 2>/dev/null || true
-        echo "   ✅ AGENTS.md linked."
+        while IFS= read -r hermes_home; do
+            [[ -n "$hermes_home" ]] || continue
+            link_hermes_agents_to_home "$hermes_home"
+        done < <(hermes_homes)
+        echo "   ✅ Hermes AGENTS.md linked across profiles."
     fi
 else
     echo "   ℹ️  Hermes Agent not detected — skip plugin install."
@@ -872,13 +946,9 @@ if [ -d "$UA_SKILLS_DIR" ]; then
         fi
         ln -sf "$UA_SKILLS_DIR" "$HOME/.pi/agent/skills/understand-anything" 2>/dev/null && echo "   ✅ Pi: Understand-Anything skills linked."
     fi
-    # Hermes Agent: folder symlink in ~/.hermes/skills/
+    # Hermes Agent: folder symlink in every Hermes profile home.
     if [ -d "$HOME/.hermes" ] || [ -L "$HOME/.hermes" ]; then
-        mkdir -p "$HOME/.hermes/skills"
-        if [ -d "$HOME/.hermes/skills/understand-anything" ] && [ ! -L "$HOME/.hermes/skills/understand-anything" ]; then
-            rm -rf "$HOME/.hermes/skills/understand-anything"
-        fi
-        ln -sf "$UA_SKILLS_DIR" "$HOME/.hermes/skills/understand-anything" 2>/dev/null && echo "   ✅ Hermes Agent: Understand-Anything skills linked."
+        link_skill_folder_to_hermes_homes "$UA_SKILLS_DIR" "understand-anything" "Understand-Anything skills"
     fi
 fi
 
@@ -989,13 +1059,9 @@ if command -v pi &> /dev/null || [ -n "$CI" ]; then
     ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.pi/agent/skills/tgd-rules" 2>/dev/null && echo "   ✅ Pi: ~/.pi/agent/skills/tgd-rules → symlink"
 fi
 
-# Hermes Agent: ~/.hermes/skills/tgd-rules
+# Hermes Agent: ~/.hermes/skills/tgd-rules plus every existing profile.
 if command -v hermes &> /dev/null || [ -n "$CI" ]; then
-    mkdir -p "$HOME/.hermes/skills"
-    if [ -d "$HOME/.hermes/skills/tgd-rules" ] && [ ! -L "$HOME/.hermes/skills/tgd-rules" ]; then
-        rm -rf "$HOME/.hermes/skills/tgd-rules"
-    fi
-    ln -sf "$TGD_DIR/skills/tgd-rules" "$HOME/.hermes/skills/tgd-rules" 2>/dev/null && echo "   ✅ Hermes Agent: ~/.hermes/skills/tgd-rules → symlink"
+    link_skill_folder_to_hermes_homes "$TGD_DIR/skills/tgd-rules" "tgd-rules" "tgd-rules"
 fi
 
 echo ""
