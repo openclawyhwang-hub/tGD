@@ -1,0 +1,31 @@
+---
+id: {{ source_file.slug }}
+title: {{ source_file.path }}
+sidebar_label: {{ source_file.path }}
+---
+
+# `{{ source_file.path }}`
+
+{% if source_file.available %}
+
+<div className="tgd-source-code">
+{% for line in source_file.lines %}
+<div id="L{{ line.number }}" className="tgd-source-line"><a className="tgd-line-no" href="#L{{ line.number }}">{{ line.number }}</a><code>{{ line.text }}</code></div>
+{% endfor %}
+</div>
+
+{% else %}
+
+_Source file unavailable locally._
+
+The knowledge graph referenced this path, but the generator could not read the file from:
+
+`{{ repo_path }}/{{ source_file.path }}`
+
+Symbol links fall back to this placeholder page so navigation never breaks.
+
+{% endif %}
+
+---
+
+**Related pages:** [Source Browser]({{ base_path }}/source) · [{{ project.name }} Home]({{ base_path }})

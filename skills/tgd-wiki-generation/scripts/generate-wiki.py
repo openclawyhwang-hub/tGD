@@ -27,6 +27,7 @@ Outputs (all under $TGD_DIR/wiki/):
     docs/repos/<slug>/onboarding.mdx
     docs/repos/<slug>/modules/*.mdx
     docs/repos/<slug>/flows/*.mdx
+    docs/repos/<slug>/source/*.mdx            ← offline source browser + line anchors
     docs/repos/<slug>/diagrams/index.mdx
     docs/repos/<slug>/diagrams/architecture.mmd
     docs/repos/<slug>/diagrams/dependencies.mmd
@@ -41,6 +42,7 @@ Degrades gracefully when optional per-repo data is missing.
 from __future__ import annotations
 
 import argparse
+import html
 import json
 import re
 import shutil
@@ -86,6 +88,7 @@ class WikiModel:
     dependency_mermaid: str = ""
     patterns: List[Dict[str, Any]] = field(default_factory=list)
     node_paths: Dict[str, str] = field(default_factory=dict)
+    source_files: List[Dict[str, Any]] = field(default_factory=list)
     generated_at: str = ""
 
 
@@ -218,6 +221,131 @@ FILE_LEVEL_TYPES = {
 }
 
 
+SYMBOL_TYPES = {"function", "class", "method", "interface", "type", "enum", "component"}
+
+
+def source_slug(file_path: str) -> str:
+    """Stable source-page slug for a repo-relative file path."""
+    stem = _SLUG_RX.sub("-", (file_path or "source").lower()).strip("-")
+    return stem or "source"
+
+
+def source_href(repo_slug: str, file_path: str, line: Optional[int] = None) -> str:
+    href = f"/repos/{repo_slug}/source/{source_slug(file_path)}"
+    if line and line > 0:
+        href += f"#L{line}"
+    return href
+
+
+def explicit_line(node: Dict[str, Any]) -> Optional[int]:
+    """Read line number from common graph schemas, if present."""
+    for key in ("startLine", "line", "lineNumber", "lineno"):
+        value = node.get(key)
+        if isinstance(value, int) and value > 0:
+            return value
+    for key in ("range", "location", "loc"):
+        value = node.get(key) or {}
+        if isinstance(value, dict):
+            start = value.get("start") or value.get("begin") or {}
+            if isinstance(start, dict):
+                line = start.get("line") or start.get("lineNumber")
+                if isinstance(line, int) and line > 0:
+                    return line
+    return None
+
+
+def infer_symbol_line(repo_root: Path, file_path: str, symbol_name: str, node_type: str) -> Optional[int]:
+    """Best-effort offline symbol locator.
+
+    UA graphs do not consistently include line numbers. When the local source
+    file exists, infer the line with conservative regexes. If no match is found,
+    callers fall back to the file-level source page.
+    """
+    if not repo_root or not file_path or not symbol_name:
+        return None
+    path = (repo_root / file_path).resolve()
+    try:
+        if not path.is_file() or repo_root.resolve() not in path.parents:
+            return None
+        lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
+    except Exception:
+        return None
+
+    escaped = re.escape(symbol_name)
+    patterns = [
+        rf"^\s*(async\s+)?def\s+{escaped}\s*\(",
+        rf"^\s*class\s+{escaped}\b",
+        rf"^\s*(export\s+)?(async\s+)?function\s+{escaped}\s*\(",
+        rf"^\s*(export\s+)?(const|let|var)\s+{escaped}\s*=",
+        rf"^\s*(export\s+)?class\s+{escaped}\b",
+        rf"^\s*(export\s+)?interface\s+{escaped}\b",
+        rf"^\s*(export\s+)?type\s+{escaped}\b",
+        rf"^\s*{escaped}\s*[:=]\s*",  # object method / property shorthand
+    ]
+    for i, line in enumerate(lines, start=1):
+        if any(re.search(p, line) for p in patterns):
+            return i
+    return None
+
+
+def collect_source_files(nodes: List[Dict[str, Any]], repo_root: Path) -> List[Dict[str, Any]]:
+    seen: Dict[str, Dict[str, Any]] = {}
+    for n in nodes:
+        fp = n.get("filePath") or ""
+        if not fp:
+            continue
+        item = seen.setdefault(fp, {
+            "path": fp,
+            "slug": source_slug(fp),
+            "href": "",  # filled by caller with repo slug
+            "available": False,
+            "line_count": 0,
+            "language": language_for_path(fp),
+            "lines": [],
+        })
+        full = (repo_root / fp).resolve() if repo_root else Path(fp)
+        try:
+            if repo_root and full.is_file() and repo_root.resolve() in full.parents:
+                raw_lines = full.read_text(encoding="utf-8", errors="replace").splitlines()
+                item["available"] = True
+                item["line_count"] = len(raw_lines)
+                item["lines"] = [
+                    {"number": idx, "text": html.escape(text).replace("{", "&#123;").replace("}", "&#125;")}
+                    for idx, text in enumerate(raw_lines, start=1)
+                ]
+        except Exception:
+            pass
+    return sorted(seen.values(), key=lambda x: x["path"])
+
+
+def language_for_path(file_path: str) -> str:
+    ext = Path(file_path).suffix.lower().lstrip(".")
+    return {
+        "py": "python",
+        "ts": "typescript",
+        "tsx": "tsx",
+        "js": "javascript",
+        "jsx": "jsx",
+        "rs": "rust",
+        "go": "go",
+        "java": "java",
+        "kt": "kotlin",
+        "swift": "swift",
+        "rb": "ruby",
+        "php": "php",
+        "cs": "csharp",
+        "cpp": "cpp",
+        "c": "c",
+        "h": "c",
+        "md": "markdown",
+        "json": "json",
+        "yaml": "yaml",
+        "yml": "yaml",
+        "toml": "toml",
+        "sh": "bash",
+    }.get(ext, "text")
+
+
 def _node_map(nodes: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
     return {n["id"]: n for n in nodes if "id" in n}
 
@@ -236,6 +364,8 @@ def build_modules(
     layers: List[Dict[str, Any]],
     node_map: Dict[str, Dict[str, Any]],
     edges: List[Dict[str, Any]],
+    repo_slug: str,
+    repo_root: Path,
 ) -> List[Dict[str, Any]]:
     modules: List[Dict[str, Any]] = []
     for layer in layers:
@@ -252,13 +382,21 @@ def build_modules(
             entry = {
                 "path": node.get("filePath") or node.get("name") or nid,
                 "summary": node.get("summary") or "",
+                "source_href": source_href(repo_slug, node.get("filePath") or node.get("name") or nid),
             }
             if ntype in FILE_LEVEL_TYPES:
                 files.append(entry)
-            elif ntype in {"function", "class"}:
+            elif ntype in SYMBOL_TYPES:
+                symbol_file = node.get("filePath") or ""
+                line = explicit_line(node) or infer_symbol_line(
+                    repo_root, symbol_file, node.get("name") or nid, ntype or ""
+                )
                 symbols.append({
                     "name": node.get("name") or nid,
-                    "file": node.get("filePath") or "",
+                    "file": symbol_file,
+                    "line": line,
+                    "source_href": source_href(repo_slug, symbol_file, line) if symbol_file else "",
+                    "file_href": source_href(repo_slug, symbol_file) if symbol_file else "",
                     "summary": node.get("summary") or "",
                 })
         symbols_capped = sorted(symbols, key=lambda s: s["name"])[:40]
@@ -493,6 +631,14 @@ def build_repo_manifest(model: WikiModel, base_path: str) -> Dict[str, Any]:
             "flow",
             f["description"],
         )
+    add("source", f"wiki/docs/repos/{slug}/source/index.mdx", "source-index", "Source browser")
+    for sf in model.source_files:
+        add(
+            f"source/{sf['slug']}",
+            f"wiki/docs/repos/{slug}/source/{sf['slug']}.mdx",
+            "source-file",
+            sf["path"],
+        )
     add("diagrams", f"wiki/docs/repos/{slug}/diagrams/index.mdx", "diagrams",
         "Architecture and dependency diagrams")
 
@@ -590,6 +736,7 @@ def compile_repo_model(
     graph: Dict[str, Any],
     repo_slug: str,
     repo_path: str,
+    repo_root: Path,
     dashboard_url: Optional[str],
 ) -> WikiModel:
     project = graph.get("project") or {}
@@ -617,7 +764,7 @@ def compile_repo_model(
 
     node_map = _node_map(nodes)
     node_paths = _node_paths(nodes)
-    modules = build_modules(escaped_layers, node_map, edges)
+    modules = build_modules(escaped_layers, node_map, edges, repo_slug, repo_root)
     for m in modules:
         m["summary"] = escape_mdx_inline(m["summary"])
         for f in m["files"]:
@@ -629,6 +776,9 @@ def compile_repo_model(
     entry_points = detect_entry_points(nodes)
     arch_mm = build_architecture_mermaid(escaped_layers, edges, node_map)
     dep_mm = build_dependency_mermaid(edges, node_map)
+    source_files = collect_source_files(nodes, repo_root)
+    for sf in source_files:
+        sf["href"] = source_href(repo_slug, sf["path"])
 
     return WikiModel(
         project=escaped_project,
@@ -646,6 +796,7 @@ def compile_repo_model(
         dependency_mermaid=dep_mm,
         patterns=[],
         node_paths=node_paths,
+        source_files=source_files,
         generated_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
     )
 
@@ -689,6 +840,7 @@ def render_repo(
         "dashboard_url": model.dashboard_url,
         "modules": model.modules,
         "flows": model.flows,
+        "source_files": model.source_files,
         "kpi": kpi,
         "all_repos": all_repos,
     }
@@ -744,6 +896,17 @@ def render_repo(
         write_text(
             repo_docs_dir / "flows" / f"{f['slug']}.mdx",
             render(env, "flow.mdx.jinja", {**ctx, "flow": f}),
+        )
+
+    # source/*.mdx — offline source browser with line anchors for symbol jumps
+    write_text(
+        repo_docs_dir / "source" / "index.mdx",
+        render(env, "source-index.mdx.jinja", {**ctx}),
+    )
+    for sf in model.source_files:
+        write_text(
+            repo_docs_dir / "source" / f"{sf['slug']}.mdx",
+            render(env, "source-file.mdx.jinja", {**ctx, "source_file": sf}),
         )
 
     write_text(
@@ -852,6 +1015,7 @@ def main() -> int:
         )
 
         repo_path = infer_repo_path(scan_dir, graph.get("project") or {})
+        repo_root = Path(repo_path).expanduser().resolve() if repo_path else Path("")
         this_dashboard = args.dashboard_url if slug == primary_slug else None
         dashboard_urls[slug] = this_dashboard
 
@@ -859,6 +1023,7 @@ def main() -> int:
             graph=graph,
             repo_slug=slug,
             repo_path=repo_path,
+            repo_root=repo_root,
             dashboard_url=this_dashboard,
         )
         # override generated_at so all repos share one timestamp
@@ -878,6 +1043,7 @@ def main() -> int:
             "flows": [{"slug": f["slug"], "title": f["title"]} for f in model.flows],
             "module_count": len(model.modules),
             "flow_count": len(model.flows),
+            "source_count": len(model.source_files),
             "kpi": {
                 "files": sum(1 for n in model.nodes if n.get("type") in FILE_LEVEL_TYPES),
                 "edges": len(model.edges),

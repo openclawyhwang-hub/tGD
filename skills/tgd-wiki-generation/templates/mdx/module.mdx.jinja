@@ -17,7 +17,7 @@ import LayerBadge from '@site/src/components/LayerBadge';
 {% if module.files %}
 | File | Role |
 |---|---|
-{% for f in module.files %}| `{{ f.path }}` | {{ f.summary or "_(no summary)_" }} |
+{% for f in module.files %}| [`{{ f.path }}`]({{ f.source_href }}) | {{ f.summary or "_(no summary)_" }} |
 {% endfor %}
 {% else %}
 _No files were mapped into this module._
@@ -26,9 +26,9 @@ _No files were mapped into this module._
 {% if module.symbols %}
 ## Important Symbols
 
-| Symbol | File | Purpose |
-|---|---|---|
-{% for s in module.symbols %}| `{{ s.name }}` | `{{ s.file }}` | {{ s.summary or "_(no summary)_" }} |
+| Symbol | File | Line | Purpose |
+|---|---|---:|---|
+{% for s in module.symbols %}| {% if s.source_href %}[`{{ s.name }}`]({{ s.source_href }}){% else %}`{{ s.name }}`{% endif %} | {% if s.file_href %}[`{{ s.file }}`]({{ s.file_href }}){% elif s.file %}`{{ s.file }}`{% else %}_unknown_{% endif %} | {{ s.line or "—" }} | {{ s.summary or "_(no summary)_" }} |
 {% endfor %}
 {% endif %}
 

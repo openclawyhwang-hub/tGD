@@ -293,3 +293,45 @@ table {
   padding-bottom: 0.35rem;
   margin-top: 2rem;
 }
+
+/* ------------------------------------------------------------
+ * Source browser
+ * ---------------------------------------------------------- */
+.tgd-source-code {
+  border: 1px solid var(--tgd-border-subtle);
+  border-radius: 10px;
+  overflow: auto;
+  background: var(--ifm-code-background);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  margin: 1rem 0 2rem;
+}
+
+.tgd-source-line {
+  display: grid;
+  grid-template-columns: 4.25rem minmax(0, 1fr);
+  min-width: max-content;
+}
+
+.tgd-source-line:target,
+.tgd-source-line:hover {
+  background: var(--docusaurus-highlighted-code-line-bg);
+}
+
+.tgd-line-no {
+  display: inline-block;
+  padding: 0 0.75rem;
+  color: var(--ifm-color-emphasis-500);
+  text-align: right;
+  user-select: none;
+  text-decoration: none !important;
+  border-right: 1px solid var(--tgd-border-subtle);
+}
+
+.tgd-source-line code {
+  white-space: pre;
+  background: transparent;
+  border: 0;
+  padding: 0 1rem;
+}

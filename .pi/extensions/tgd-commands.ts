@@ -68,6 +68,7 @@ const tgdPrompts: Record<string, string> = {
     "  - index.mdx, overview.mdx, architecture.mdx, onboarding.mdx\n" +
     "  - modules/<layer>.mdx — one page per architectural layer\n" +
     "  - flows/<step>.mdx — one page per tour step\n" +
+    "  - source/<file>.mdx — offline source browser with line anchors for symbol jumps\n" +
     "  - diagrams/{architecture,dependencies}.mmd — Mermaid source\n" +
     "  - manifest.json — per-repo machine-readable index\n" +
     "- docusaurus.config.ts, sidebars.ts, package.json, .gitignore — auto-generated (config has a Repos dropdown when >1 repo scanned)\n" +

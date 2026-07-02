@@ -64,6 +64,7 @@ $TGD_DIR/
     │       │   ├── onboarding.mdx
     │       │   ├── modules/*.mdx ← one per architectural layer
     │       │   ├── flows/*.mdx   ← one per tour step
+    │       │   ├── source/*.mdx  ← offline source browser + line anchors
     │       │   ├── diagrams/
     │       │   │   ├── index.mdx
     │       │   │   ├── architecture.mmd
@@ -197,7 +198,8 @@ directory instead.
 - Hard-failing when `npm` is missing instead of soft-failing on the build
 - Generating `manifest.json` without listing every page written to disk
 - Leaving stale files behind on regeneration
-- Skipping MDX escape (`<`, `{` in summaries → build failure)
+- ❌ **Not generating source pages** — symbol links must never point to external GitHub-only URLs; offline source pages under `docs/repos/<slug>/source/` are required.
+- ❌ **Skipping MDX escape** (`<`, `{` in summaries/source snippets → build failure)
 - Silently swallowing template rendering errors — every failure must surface
 - Modifying `$TGD_DIR/wiki/src/components/` from anywhere other than skill assets
 
@@ -213,6 +215,8 @@ After running this skill:
   - [ ] `$TGD_DIR/wiki/docs/repos/<slug>/overview.mdx`, `architecture.mdx`, `onboarding.mdx` exist
   - [ ] `$TGD_DIR/wiki/docs/repos/<slug>/modules/` contains one page per layer
   - [ ] `$TGD_DIR/wiki/docs/repos/<slug>/flows/` contains one page per tour step (or is empty if no tour)
+  - [ ] `$TGD_DIR/wiki/docs/repos/<slug>/source/index.mdx` exists
+  - [ ] Symbol tables link to `/repos/<slug>/source/<file>#L<line>` when line numbers are explicit or inferable
   - [ ] `$TGD_DIR/wiki/docs/repos/<slug>/diagrams/architecture.mmd` and `dependencies.mmd` exist
   - [ ] `$TGD_DIR/wiki/docs/repos/<slug>/manifest.json` exists
 - [ ] `$TGD_DIR/wiki/docusaurus.config.ts` exists — with a Repos dropdown when >1 repo

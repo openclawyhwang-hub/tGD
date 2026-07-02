@@ -116,6 +116,7 @@ Resolve `$TGD_REPO_ROOT` to the cloned tGD repo (typically `~/tGD/`).
   - `index.mdx`, `overview.mdx`, `architecture.mdx`, `onboarding.mdx`
   - `modules/<layer>.mdx` — one page per architectural layer
   - `flows/<step>.mdx` — one page per tour step
+  - `source/<file>.mdx` — offline source browser with line anchors for symbol jumps
   - `diagrams/{architecture,dependencies}.mmd` — Mermaid source
   - `manifest.json` — per-repo machine-readable index
 - `docusaurus.config.ts`, `sidebars.ts`, `package.json`, `.gitignore` — auto-generated (config has a Repos dropdown when >1 repo scanned)
