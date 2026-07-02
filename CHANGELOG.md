@@ -4,43 +4,29 @@ All notable changes to tGD will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/). Versions follow [CalVer](https://calver.org/) (YYYY.MM.DD).
 
-## v2026.07.02.2
-
-### ✨ Features
-- add offline local search (`29907c9`)
-### 📝 Documentation
-- update CHANGELOG.md for v2026.07.02.1 (`d8617fa`)
-
-
-## v2026.07.02.1
-
-### ✨ Features
-- add offline symbol-to-source jump links (`31ca617`)
-- full multi-repo wiki with per-repo trees + navbar dropdown (`a852eba`)
-### 📝 Documentation
-- update CHANGELOG.md for v2026.07.02 (`7eaac04`)
-### 🔧 Chores
-- ignore legacy codewiki runtime dirs (data/ storage/ tmp/) (`8a370d5`)
-### 📦 Other Changes
-- Revert "feat(tgd-wiki): enforce layout/brand contract with verify-wiki.py" (`169bc2e`)
-- Revert "docs: update CHANGELOG.md for v2026.07.02" (`e1ca5ee`)
-
-
 ## v2026.07.02
 
-### ✨ Features
-- migrate to Docusaurus 3 for uniform DeepWiki-style output (`573da88`)
-- auto-install MkDocs for tGD Wiki site (`960d4a7`)
-- generate DeepWiki-style docs from CodeGraph + UA (`9e3dc1a`)
-### 🐛 Bug Fixes
-- promote Dashboard to a first-class Step 5 (`64062eb`)
-- unignore .hermes/plugins/tgd/ — was blocked by tGD/ gitignore rule (`f00f739`)
-### 📝 Documentation
-- update CHANGELOG.md for v--yes (`448e90b`)
-### ♻️ Refactoring
-- nest all wiki artefacts under $TGD_DIR/wiki/ (`39ee3b4`)
-### 📦 Other Changes
-- Revert "docs: update CHANGELOG.md for v--yes" (`e16a7dd`)
+### Added
+- **DeepWiki-style wiki generation** — generate human-readable wiki pages from CodeGraph and Understand-Anything outputs (`9e3dc1a`)
+- **Docusaurus 3 wiki site output** — render generated wiki content with a uniform DeepWiki-style web layout (`573da88`)
+- **Multi-repo wiki navigation** — add per-repo trees and a navbar dropdown for multi-repo scans (`a852eba`)
+- **Offline symbol navigation** — add source jump links from generated wiki pages without requiring external services (`31ca617`)
+- **Offline local search** — add local search for generated wiki sites (`29907c9`)
+
+### Changed
+- **Wiki artifact layout** — nest generated wiki artifacts under `$TGD_DIR/wiki/` (`39ee3b4`)
+- **Setup support for wiki sites** — auto-install MkDocs dependencies needed by the tGD Wiki site flow (`960d4a7`)
+
+### Fixed
+- **Hermes plugin packaging** — unignore `.hermes/plugins/tgd/`, which had been blocked by the repo gitignore rule (`f00f739`)
+- **Pi tgd-map flow** — promote Dashboard to a first-class Step 5 in the Pi command flow (`64062eb`)
+- **Release script flag parsing** — skip `--yes` and `-y` when resolving the release version (`3ea3671`)
+
+### Removed
+- **Overbuilt wiki verification gate** — remove the layout/brand contract gate after determining it was unnecessary for real failures (`169bc2e`)
+
+### Chores
+- **Legacy runtime ignores** — ignore legacy CodeWiki runtime directories (`data/`, `storage/`, `tmp/`) (`8a370d5`)
 
 
 ## v2026.07.01
