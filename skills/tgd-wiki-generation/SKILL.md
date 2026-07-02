@@ -54,6 +54,7 @@ $TGD_DIR/
 └── wiki/                         ← ALL wiki artefacts live here
     ├── docs/
     │   ├── index.mdx             ← top-level home (repo grid)
+    │   ├── search.mdx            ← offline local search UI
     │   ├── sources.mdx           ← all-repos summary page
     │   ├── manifest.json         ← top-level manifest (all repos)
     │   └── repos/
@@ -77,7 +78,10 @@ $TGD_DIR/
     │   │   ├── ModuleCard.tsx
     │   │   ├── KPIGrid.tsx
     │   │   ├── LayerBadge.tsx
+    │   │   ├── LocalSearch.tsx
     │   │   └── Hero.tsx
+    │   ├── data/
+    │   │   └── searchIndex.ts    ← generated offline search index
     │   └── css/
     │       └── custom.css        ← tGD brand theme (copied from skill on every run)
     ├── docusaurus.config.ts      ← auto-generated (with Repos dropdown when > 1 repo)
@@ -209,6 +213,8 @@ After running this skill:
 
 - [ ] `$TGD_DIR/wiki/docs/index.mdx` exists (top-level home with repo grid)
 - [ ] `$TGD_DIR/wiki/docs/manifest.json` exists with a `repos` array (one entry per scan)
+- [ ] `$TGD_DIR/wiki/docs/search.mdx` exists and imports LocalSearch
+- [ ] `$TGD_DIR/wiki/src/data/searchIndex.ts` exists and contains repo/module/symbol/source entries
 - [ ] `$TGD_DIR/wiki/docs/sources.mdx` exists
 - [ ] For each repo scanned:
   - [ ] `$TGD_DIR/wiki/docs/repos/<slug>/index.mdx` exists

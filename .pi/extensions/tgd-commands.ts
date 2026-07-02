@@ -62,6 +62,7 @@ const tgdPrompts: Record<string, string> = {
     "  bash   $TGD_REPO_ROOT/skills/tgd-wiki-generation/scripts/build-site.sh \"$TGD_DIR\"\n\n" +
     "Outputs (all under $TGD_DIR/wiki/):\n" +
     "- docs/index.mdx — top-level home with repo selector grid\n" +
+    "- docs/search.mdx — offline local search UI (repo/module/symbol/source)\n" +
     "- docs/sources.mdx — all-repos summary page\n" +
     "- docs/manifest.json — top-level manifest listing every scanned repo\n" +
     "- docs/repos/<slug>/ — one full wiki tree per scanned repo, containing:\n" +

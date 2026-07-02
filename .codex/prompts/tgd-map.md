@@ -110,6 +110,7 @@ Resolve `$TGD_REPO_ROOT` to the cloned tGD repo (typically `~/tGD/`).
 **Outputs (all under `$TGD_DIR/wiki/`):**
 
 - `docs/index.mdx` — top-level home with repo selector grid
+- `docs/search.mdx` — offline local search UI (repo/module/symbol/source)
 - `docs/sources.mdx` — all-repos summary page
 - `docs/manifest.json` — top-level manifest listing every scanned repo
 - `docs/repos/<slug>/` — one full wiki tree per scanned repo, containing:

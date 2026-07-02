@@ -47,6 +47,7 @@ const config: Config = {
       title: {{ navbar_title | tojson }},
       items: [
         {to: '/', label: 'Home', position: 'left'},
+        {to: '/search', label: 'Search', position: 'left'},
         {% if multi_repo %}
         {
           type: 'dropdown',

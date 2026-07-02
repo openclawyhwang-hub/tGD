@@ -232,14 +232,16 @@ flowchart LR
 ### 📖 DeepWiki-Style Project Documentation
 `/tgd-map` now compiles CodeGraph + Understand-Anything analysis into a
 browsable **Docusaurus 3** static site at `$TGD_DIR/wiki/build/`. You get:
-- **`wiki/docs/index.mdx`** — unified human entry point with a Hero, KPI grid, Module cards, flows, and diagrams
-- **`wiki/docs/manifest.json`** — machine-readable index for downstream tGD stages
+- **Multi-repo wiki trees** — every scanned repo gets `wiki/docs/repos/<slug>/` with overview, architecture, onboarding, modules, flows, diagrams, and source pages
+- **Repo selector** — top-level `wiki/docs/index.mdx` shows a repo grid; navbar includes a Repos dropdown when multiple repos are scanned
+- **Offline local search** — `wiki/docs/search.mdx` searches repos, modules, symbols, flows, and source files in-browser with no external service
+- **Symbol → source jumps** — module tables link functions/classes to `source/<file>#L<line>` using graph line numbers or local source inference
+- **`wiki/docs/manifest.json`** — machine-readable top-level index; each repo also has `repos/<slug>/manifest.json`
 - **Mermaid diagrams** — architecture, dependencies, and per-module graphs
-- **React components** — ModuleCard, KPIGrid, LayerBadge, Hero (uniform layout across every project)
+- **React components** — ModuleCard, KPIGrid, LayerBadge, LocalSearch, Hero (uniform layout across every project)
 - **`npm run start`** — dev server with hot reload; **`npm run serve`** — production preview
-- Full-text search, dark mode, mobile-friendly nav out of the box
 
-Everything lives in `$TGD_DIR`, so the wiki never pollutes your code repo.
+Everything lives in `$TGD_DIR/wiki/`, so the wiki never pollutes your code repo.
 Layout is uniform across projects because CSS and React components ship
 inside the `tgd-wiki-generation` skill and are copied on every `/tgd-map`.
 
